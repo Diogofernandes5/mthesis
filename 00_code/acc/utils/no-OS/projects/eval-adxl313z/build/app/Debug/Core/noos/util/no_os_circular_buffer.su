@@ -1,0 +1,13 @@
+../Core/noos/util/no_os_circular_buffer.c:56:9:no_os_cb_cfg	24	static
+../Core/noos/util/no_os_circular_buffer.c:84:9:no_os_cb_init	24	static
+../Core/noos/util/no_os_circular_buffer.c:114:9:no_os_cb_remove	16	static
+../Core/noos/util/no_os_circular_buffer.c:135:9:no_os_cb_size	24	static
+../Core/noos/util/no_os_circular_buffer.c:166:16:no_os_cb_prepare_async_operation	40	static
+../Core/noos/util/no_os_circular_buffer.c:224:16:no_os_cb_end_async_operation	24	static
+../Core/noos/util/no_os_circular_buffer.c:258:16:no_os_cb_operation	56	static
+../Core/noos/util/no_os_circular_buffer.c:317:9:no_os_cb_prepare_async_write	32	static
+../Core/noos/util/no_os_circular_buffer.c:342:9:no_os_cb_prepare_async_read	32	static
+../Core/noos/util/no_os_circular_buffer.c:362:9:no_os_cb_end_async_write	16	static
+../Core/noos/util/no_os_circular_buffer.c:367:9:no_os_cb_end_async_read	16	static
+../Core/noos/util/no_os_circular_buffer.c:383:9:no_os_cb_write	24	static
+../Core/noos/util/no_os_circular_buffer.c:399:9:no_os_cb_read	24	static

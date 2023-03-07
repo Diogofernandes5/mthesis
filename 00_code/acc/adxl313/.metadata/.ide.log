@@ -1,0 +1,10 @@
+2023-02-16 12:25:35,808 [INFO] Activator:179 - 
+
+
+2023-02-16 12:25:35,809 [INFO] Activator:180 - !SESSION log4j initialized
+2023-02-16 12:25:39,056 [ERROR] ConfigurationRetriever:140 - IOException on connection: citools.st.com
+2023-02-16 12:25:39,058 [ERROR] ConfigurationRetriever:140 - IOException on connection: citools.st.com
+2023-02-16 12:25:39,059 [ERROR] ConfigurationRetriever:140 - IOException on connection: citools.st.com
+2023-02-16 12:25:57,306 [ERROR] ConfigurationRetriever:140 - IOException on connection: citools.st.com
+2023-02-16 12:25:57,307 [ERROR] ConfigurationRetriever:140 - IOException on connection: citools.st.com
+2023-02-16 12:25:57,307 [ERROR] ConfigurationRetriever:140 - IOException on connection: citools.st.com

@@ -1,0 +1,36 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (10.3-2021.10)
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+../Core/noos/util/no_os_circular_buffer.c \
+../Core/noos/util/no_os_lf256fifo.c \
+../Core/noos/util/no_os_list.c \
+../Core/noos/util/no_os_util.c 
+
+OBJS += \
+./Core/noos/util/no_os_circular_buffer.o \
+./Core/noos/util/no_os_lf256fifo.o \
+./Core/noos/util/no_os_list.o \
+./Core/noos/util/no_os_util.o 
+
+C_DEPS += \
+./Core/noos/util/no_os_circular_buffer.d \
+./Core/noos/util/no_os_lf256fifo.d \
+./Core/noos/util/no_os_list.d \
+./Core/noos/util/no_os_util.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+Core/noos/util/%.o Core/noos/util/%.su: ../Core/noos/util/%.c Core/noos/util/subdir.mk
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -D_USE_STD_INT_TYPES -DUSE_HAL_DRIVER -D_USE_STD_INT_TYPES -DTINYIIOD_VERSION_MINOR=1 -DTINYIIOD_VERSION_MAJOR=0 -DTINYIIOD_VERSION_GIT=0x440e425 -DSTM32_PLATFORM -DSTM32F401xE -DIIO_SUPPORT -DIIO_EXAMPLE=1 -DIIOD_BUFFER_SIZE=0x1000 -DDISABLE_SECURE_SOCKET -DDEBUG -DSTM32F401xE -c -I../Core/Inc -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/noos/include -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/noos/iio/iio_app/ -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/noos/iio/ -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/noos/drivers/platform/stm32/ -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/noos/drivers/accel/adxl313/ -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/eval-adxl313z/src/platform/stm32/ -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/eval-adxl313z/src/platform/ -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/eval-adxl313z/src/examples/iio_example/ -I/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/build/app/Core/eval-adxl313z/src/common/ -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+
+clean: clean-Core-2f-noos-2f-util
+
+clean-Core-2f-noos-2f-util:
+	-$(RM) ./Core/noos/util/no_os_circular_buffer.d ./Core/noos/util/no_os_circular_buffer.o ./Core/noos/util/no_os_circular_buffer.su ./Core/noos/util/no_os_lf256fifo.d ./Core/noos/util/no_os_lf256fifo.o ./Core/noos/util/no_os_lf256fifo.su ./Core/noos/util/no_os_list.d ./Core/noos/util/no_os_list.o ./Core/noos/util/no_os_list.su ./Core/noos/util/no_os_util.d ./Core/noos/util/no_os_util.o ./Core/noos/util/no_os_util.su
+
+.PHONY: clean-Core-2f-noos-2f-util
+

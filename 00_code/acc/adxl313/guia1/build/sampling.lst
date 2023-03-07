@@ -1,0 +1,2292 @@
+ARM GAS  /tmp/cc3Lotsd.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"sampling.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.start_sampling,"ax",%progbits
+  17              		.align	1
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-d16
+  24              	start_sampling:
+  25              	.LFB148:
+  26              		.file 1 "../Core/Src/sampling.c"
+   1:../Core/Src/sampling.c **** #include "sampling.h"
+   2:../Core/Src/sampling.c **** 
+   3:../Core/Src/sampling.c **** #include "utils.h"
+   4:../Core/Src/sampling.c **** #include "parser.h"
+   5:../Core/Src/sampling.c **** #include "signals.h"
+   6:../Core/Src/sampling.c **** 
+   7:../Core/Src/sampling.c **** #include "filters.h"
+   8:../Core/Src/sampling.c **** #include "filter_coefs.h"
+   9:../Core/Src/sampling.c **** 
+  10:../Core/Src/sampling.c **** #include "adc.h"
+  11:../Core/Src/sampling.c **** #include "usart.h" // Using Uart_puts
+  12:../Core/Src/sampling.c **** #include "tim.h"
+  13:../Core/Src/sampling.c **** 
+  14:../Core/Src/sampling.c **** /******************************************************************************
+  15:../Core/Src/sampling.c **** Global Variables
+  16:../Core/Src/sampling.c **** ******************************************************************************/
+  17:../Core/Src/sampling.c **** 
+  18:../Core/Src/sampling.c **** static uint8_t Sampling_flag = 0;	// Sampling in process
+  19:../Core/Src/sampling.c **** static uint8_t SP_cb_done = 0;			// Sampling period callback done
+  20:../Core/Src/sampling.c **** filter_t f = {
+  21:../Core/Src/sampling.c **** 	.M = 0,
+  22:../Core/Src/sampling.c **** 	.N = 0,
+  23:../Core/Src/sampling.c **** 	.x_ant = NULL,
+  24:../Core/Src/sampling.c **** 	.y_ant = NULL,
+  25:../Core/Src/sampling.c **** 	.y_coefs = NULL,
+  26:../Core/Src/sampling.c **** 	.x_coefs = NULL,
+  27:../Core/Src/sampling.c **** 	.status = 0
+  28:../Core/Src/sampling.c **** };
+  29:../Core/Src/sampling.c **** 
+  30:../Core/Src/sampling.c **** /******************************************************************************
+  31:../Core/Src/sampling.c **** @function  Sampling Period
+  32:../Core/Src/sampling.c **** @usage		 SP <timeunit> <units>
+ARM GAS  /tmp/cc3Lotsd.s 			page 2
+
+
+  33:../Core/Src/sampling.c **** 
+  34:../Core/Src/sampling.c **** @brief	 	 Defines sampling period
+  35:../Core/Src/sampling.c **** ******************************************************************************/
+  36:../Core/Src/sampling.c **** 
+  37:../Core/Src/sampling.c **** // Array of strings containg the valid timeunits
+  38:../Core/Src/sampling.c **** const char* timeunits_arr[] =
+  39:../Core/Src/sampling.c **** {
+  40:../Core/Src/sampling.c **** 	"micro",
+  41:../Core/Src/sampling.c **** 	"ms",
+  42:../Core/Src/sampling.c **** 	"s"
+  43:../Core/Src/sampling.c **** };
+  44:../Core/Src/sampling.c **** 
+  45:../Core/Src/sampling.c **** /* Fill timer parameters: 
+  46:../Core/Src/sampling.c **** 	Prescaler (PSC)
+  47:../Core/Src/sampling.c **** 	Counter Period (Period)
+  48:../Core/Src/sampling.c **** 
+  49:../Core/Src/sampling.c **** 	timer_freq = 108MHz / ((PSC-1) * (Period-1))
+  50:../Core/Src/sampling.c **** */
+  51:../Core/Src/sampling.c **** const uint16_t timer_reloads[3][2] =
+  52:../Core/Src/sampling.c **** {
+  53:../Core/Src/sampling.c **** 	// 1MHz 			= 108Mhz / (54 * 2)
+  54:../Core/Src/sampling.c **** 	// (PSC-1) 		= 54
+  55:../Core/Src/sampling.c **** 	// (Period-1) = 2
+  56:../Core/Src/sampling.c **** 	{54	, 2 },
+  57:../Core/Src/sampling.c **** 	
+  58:../Core/Src/sampling.c **** 	// 1kHz 			= 108Mhz / (54000 * 2)
+  59:../Core/Src/sampling.c **** 	// (PSC-1) 		= 54000
+  60:../Core/Src/sampling.c **** 	// (Period-1) = 2
+  61:../Core/Src/sampling.c **** 	{54000, 2 },
+  62:../Core/Src/sampling.c **** 	
+  63:../Core/Src/sampling.c **** 	// 1Hz 				= 108Mhz / (60000 * 1800)
+  64:../Core/Src/sampling.c **** 	// (PSC-1) 		= 60000
+  65:../Core/Src/sampling.c **** 	// (Period-1) = 1800
+  66:../Core/Src/sampling.c **** 	{60000, 1800}
+  67:../Core/Src/sampling.c **** };
+  68:../Core/Src/sampling.c **** 
+  69:../Core/Src/sampling.c **** char sp_cb(uint8_t argc, char** argv)
+  70:../Core/Src/sampling.c **** {
+  71:../Core/Src/sampling.c **** 	uint32_t units;
+  72:../Core/Src/sampling.c **** 	uint8_t i;
+  73:../Core/Src/sampling.c **** 	uint8_t timeunits_arr_len;
+  74:../Core/Src/sampling.c **** 	uint8_t retval = (char)(-EINVARG);
+  75:../Core/Src/sampling.c **** 	char str[40];
+  76:../Core/Src/sampling.c **** 	
+  77:../Core/Src/sampling.c **** 	if(argc != 3) // number of arguments invalid?
+  78:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+  79:../Core/Src/sampling.c **** 	
+  80:../Core/Src/sampling.c **** 	units = my_atoi(argv[2]);
+  81:../Core/Src/sampling.c **** 	if((units == 0) || (!IS_ADDR16(units)))
+  82:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+  83:../Core/Src/sampling.c **** 	
+  84:../Core/Src/sampling.c **** 	// get number of valid <timeunits>
+  85:../Core/Src/sampling.c **** 	timeunits_arr_len = (sizeof(timeunits_arr) / sizeof(timeunits_arr[0]));
+  86:../Core/Src/sampling.c **** 	// Check if <timeunit> is valid
+  87:../Core/Src/sampling.c **** 	for(i = 0; i < timeunits_arr_len; i++)
+  88:../Core/Src/sampling.c **** 	{
+  89:../Core/Src/sampling.c **** 		if(strcmp(argv[1], timeunits_arr[i]) == 0)
+ARM GAS  /tmp/cc3Lotsd.s 			page 3
+
+
+  90:../Core/Src/sampling.c **** 		{
+  91:../Core/Src/sampling.c **** 			SP_cb_done = 1; // Mark that Sampling Period has been defined
+  92:../Core/Src/sampling.c **** 			// Update Timer reload values
+  93:../Core/Src/sampling.c **** 			TIMER_6_Update(timer_reloads[i][0], (timer_reloads[i][1] * (uint16_t)(units)));
+  94:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Sampling period defined as %ld %s\n\r", units, timeunits_arr[i]);
+  95:../Core/Src/sampling.c **** 			UART_puts(str);
+  96:../Core/Src/sampling.c **** 			// Exit success
+  97:../Core/Src/sampling.c **** 			retval = 0;
+  98:../Core/Src/sampling.c **** 			break;
+  99:../Core/Src/sampling.c **** 		}
+ 100:../Core/Src/sampling.c **** 	}
+ 101:../Core/Src/sampling.c **** 	
+ 102:../Core/Src/sampling.c **** 	// If <timeunit> was not found, retval equals (-EINVARG)
+ 103:../Core/Src/sampling.c **** 	return retval;
+ 104:../Core/Src/sampling.c **** }
+ 105:../Core/Src/sampling.c **** 
+ 106:../Core/Src/sampling.c **** /******************************************************************************
+ 107:../Core/Src/sampling.c **** @function  Analog Channel
+ 108:../Core/Src/sampling.c **** @usage		 AC <addr4>
+ 109:../Core/Src/sampling.c **** 
+ 110:../Core/Src/sampling.c **** @brief	 	 Sets ADC channel to be used for sampling
+ 111:../Core/Src/sampling.c **** ******************************************************************************/
+ 112:../Core/Src/sampling.c **** 
+ 113:../Core/Src/sampling.c **** char ac_cb(uint8_t argc, char** argv)
+ 114:../Core/Src/sampling.c **** {
+ 115:../Core/Src/sampling.c **** 	uint8_t addr;
+ 116:../Core/Src/sampling.c **** 	char str[62];
+ 117:../Core/Src/sampling.c **** 	
+ 118:../Core/Src/sampling.c **** 	if(argc != 2) // number of arguments invalid?
+ 119:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 120:../Core/Src/sampling.c **** 	
+ 121:../Core/Src/sampling.c **** 	addr = my_atoi(argv[1]);
+ 122:../Core/Src/sampling.c **** 	if(!IS_ADDR4(addr))
+ 123:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 124:../Core/Src/sampling.c **** 
+ 125:../Core/Src/sampling.c **** 	if(ADC_Config_Channel(&hadc1, addr)) // Config selected channel
+ 126:../Core/Src/sampling.c **** 	{
+ 127:../Core/Src/sampling.c **** 		// Config function has returned an error code
+ 128:../Core/Src/sampling.c **** 		UART_puts("Pin not configured as input mode.\n\r");	// not able to read pin value
+ 129:../Core/Src/sampling.c **** 		return (char)(-EPERM);
+ 130:../Core/Src/sampling.c **** 	}
+ 131:../Core/Src/sampling.c **** 	
+ 132:../Core/Src/sampling.c **** 	snprintf(str, sizeof(str), "ADC Channel %d selected for sampling.\n\r", addr);
+ 133:../Core/Src/sampling.c **** 	UART_puts(str);
+ 134:../Core/Src/sampling.c **** 	
+ 135:../Core/Src/sampling.c **** 	return 0;
+ 136:../Core/Src/sampling.c **** }
+ 137:../Core/Src/sampling.c **** 
+ 138:../Core/Src/sampling.c **** /******************************************************************************
+ 139:../Core/Src/sampling.c **** @function  Filter ON
+ 140:../Core/Src/sampling.c **** @usage		 FN
+ 141:../Core/Src/sampling.c **** 
+ 142:../Core/Src/sampling.c **** @brief	 	 Enable digital filter
+ 143:../Core/Src/sampling.c **** ******************************************************************************/
+ 144:../Core/Src/sampling.c **** 
+ 145:../Core/Src/sampling.c **** char fn_cb(uint8_t argc, char** argv)
+ 146:../Core/Src/sampling.c **** {
+ARM GAS  /tmp/cc3Lotsd.s 			page 4
+
+
+ 147:../Core/Src/sampling.c **** 	if(argc != 2) // number of arguments invalid?
+ 148:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 149:../Core/Src/sampling.c **** 	
+ 150:../Core/Src/sampling.c **** 	if(f.status == 1)
+ 151:../Core/Src/sampling.c **** 	{
+ 152:../Core/Src/sampling.c **** 		UART_puts("Filter already enabled.\n\r");
+ 153:../Core/Src/sampling.c **** 		return 0;
+ 154:../Core/Src/sampling.c **** 	}
+ 155:../Core/Src/sampling.c **** 
+ 156:../Core/Src/sampling.c **** 	// select filter
+ 157:../Core/Src/sampling.c **** 	if(strcmp(argv[1], "LP") == 0)
+ 158:../Core/Src/sampling.c **** 	{
+ 159:../Core/Src/sampling.c **** 		// set Low Pass filter
+ 160:../Core/Src/sampling.c **** 		f.M = FIR_LP_M_;
+ 161:../Core/Src/sampling.c **** 		f.N = 0;
+ 162:../Core/Src/sampling.c **** 		f.dc = 0;
+ 163:../Core/Src/sampling.c **** 		f.x_coefs = FIR_LP_x_coefs;
+ 164:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 165:../Core/Src/sampling.c **** 		UART_puts("Selected Low-Pass Filter.\n\r");
+ 166:../Core/Src/sampling.c **** 	}
+ 167:../Core/Src/sampling.c **** 	else if(strcmp(argv[1], "HP") == 0)
+ 168:../Core/Src/sampling.c **** 	{
+ 169:../Core/Src/sampling.c **** 		// set High Pass filter
+ 170:../Core/Src/sampling.c **** 		f.M = FIR_HP_M_;
+ 171:../Core/Src/sampling.c **** 		f.N = 0;
+ 172:../Core/Src/sampling.c **** 		f.dc = 4095/2;
+ 173:../Core/Src/sampling.c **** 		f.x_coefs = FIR_HP_x_coefs;
+ 174:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 175:../Core/Src/sampling.c **** 		UART_puts("Selected High-Pass Filter.\n\r");
+ 176:../Core/Src/sampling.c **** 	}
+ 177:../Core/Src/sampling.c **** 	else if(strcmp(argv[1], "BP") == 0)
+ 178:../Core/Src/sampling.c **** 	{
+ 179:../Core/Src/sampling.c **** 		// set Band Pass filter
+ 180:../Core/Src/sampling.c **** 		f.M = FIR_BP_M_;
+ 181:../Core/Src/sampling.c **** 		f.N = 0;
+ 182:../Core/Src/sampling.c **** 		f.dc = 4095/2;
+ 183:../Core/Src/sampling.c **** 		f.x_coefs = FIR_BP_x_coefs;
+ 184:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 185:../Core/Src/sampling.c **** 		UART_puts("Selected Band-Pass Filter.\n\r");
+ 186:../Core/Src/sampling.c **** 	}
+ 187:../Core/Src/sampling.c **** 	else
+ 188:../Core/Src/sampling.c **** 	{
+ 189:../Core/Src/sampling.c **** 		UART_puts("Filter not recognized.\n\r");
+ 190:../Core/Src/sampling.c **** 		return 0;
+ 191:../Core/Src/sampling.c **** 	}
+ 192:../Core/Src/sampling.c **** 
+ 193:../Core/Src/sampling.c **** 	// init filter
+ 194:../Core/Src/sampling.c **** 	if(filter_init(&f) == (char)(-1)) // Filter has already been initialized?
+ 195:../Core/Src/sampling.c **** 	{
+ 196:../Core/Src/sampling.c **** 		UART_puts("Error initializing filter.\n\r");
+ 197:../Core/Src/sampling.c **** 		return 0;
+ 198:../Core/Src/sampling.c **** 	}
+ 199:../Core/Src/sampling.c **** 	
+ 200:../Core/Src/sampling.c **** 	// Filter enabled
+ 201:../Core/Src/sampling.c **** 	UART_puts("Filter ON.\n\r");
+ 202:../Core/Src/sampling.c **** 	return 0;
+ 203:../Core/Src/sampling.c **** }
+ARM GAS  /tmp/cc3Lotsd.s 			page 5
+
+
+ 204:../Core/Src/sampling.c **** 
+ 205:../Core/Src/sampling.c **** /******************************************************************************
+ 206:../Core/Src/sampling.c **** @function  Filter OFF
+ 207:../Core/Src/sampling.c **** @usage		 FF
+ 208:../Core/Src/sampling.c **** 
+ 209:../Core/Src/sampling.c **** @brief	 	 Disable digital filter
+ 210:../Core/Src/sampling.c **** ******************************************************************************/
+ 211:../Core/Src/sampling.c **** 
+ 212:../Core/Src/sampling.c **** char ff_cb(uint8_t argc, char** argv)
+ 213:../Core/Src/sampling.c **** {
+ 214:../Core/Src/sampling.c **** 	if(argc != 1) // number of arguments invalid?
+ 215:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 216:../Core/Src/sampling.c **** 		
+ 217:../Core/Src/sampling.c **** 	if(filter_kill(&f) == (char)(-1)) // Filter has already been disabled?
+ 218:../Core/Src/sampling.c **** 	{
+ 219:../Core/Src/sampling.c **** 		UART_puts("Filter already disabled.\n\r");
+ 220:../Core/Src/sampling.c **** 		return 0;
+ 221:../Core/Src/sampling.c **** 	}
+ 222:../Core/Src/sampling.c **** 	
+ 223:../Core/Src/sampling.c **** 	// Filter disabled
+ 224:../Core/Src/sampling.c **** 	UART_puts("Filter OFF.\n\r");
+ 225:../Core/Src/sampling.c **** 	return 0;
+ 226:../Core/Src/sampling.c **** }
+ 227:../Core/Src/sampling.c **** 
+ 228:../Core/Src/sampling.c **** /******************************************************************************
+ 229:../Core/Src/sampling.c **** @function  Sample / Sample K values
+ 230:../Core/Src/sampling.c **** @usage		 S </dig>
+ 231:../Core/Src/sampling.c **** 
+ 232:../Core/Src/sampling.c **** @brief	 	 Begin sampling. Number of samples to be taken is optional. It can 
+ 233:../Core/Src/sampling.c **** 					 be defined by <dig>
+ 234:../Core/Src/sampling.c **** ******************************************************************************/
+ 235:../Core/Src/sampling.c **** 
+ 236:../Core/Src/sampling.c **** static void start_sampling(void)
+ 237:../Core/Src/sampling.c **** {
+  27              		.loc 1 237 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+ 238:../Core/Src/sampling.c **** 	// Reset sample number
+ 239:../Core/Src/sampling.c **** 	ADC_smp_num = 1;
+  36              		.loc 1 239 2 view .LVU1
+  37              		.loc 1 239 14 is_stmt 0 view .LVU2
+  38 0002 054B     		ldr	r3, .L3
+  39 0004 0122     		movs	r2, #1
+  40 0006 1A80     		strh	r2, [r3]	@ movhi
+ 240:../Core/Src/sampling.c **** 	// Enable ADC conversions
+ 241:../Core/Src/sampling.c **** 	HAL_ADC_Start_IT(&hadc1);
+  41              		.loc 1 241 2 is_stmt 1 view .LVU3
+  42 0008 0448     		ldr	r0, .L3+4
+  43 000a FFF7FEFF 		bl	HAL_ADC_Start_IT
+  44              	.LVL0:
+ 242:../Core/Src/sampling.c **** 	// Start generating ADC conversions
+ARM GAS  /tmp/cc3Lotsd.s 			page 6
+
+
+ 243:../Core/Src/sampling.c **** 	HAL_TIM_Base_Start_IT(&htim6);
+  45              		.loc 1 243 2 view .LVU4
+  46 000e 0448     		ldr	r0, .L3+8
+  47 0010 FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
+  48              	.LVL1:
+ 244:../Core/Src/sampling.c **** }
+  49              		.loc 1 244 1 is_stmt 0 view .LVU5
+  50 0014 08BD     		pop	{r3, pc}
+  51              	.L4:
+  52 0016 00BF     		.align	2
+  53              	.L3:
+  54 0018 00000000 		.word	ADC_smp_num
+  55 001c 00000000 		.word	hadc1
+  56 0020 00000000 		.word	htim6
+  57              		.cfi_endproc
+  58              	.LFE148:
+  60              		.section	.text.stop_sampling,"ax",%progbits
+  61              		.align	1
+  62              		.syntax unified
+  63              		.thumb
+  64              		.thumb_func
+  65              		.fpu fpv5-d16
+  67              	stop_sampling:
+  68              	.LFB149:
+ 245:../Core/Src/sampling.c **** 
+ 246:../Core/Src/sampling.c **** static void stop_sampling(void)
+ 247:../Core/Src/sampling.c **** {
+  69              		.loc 1 247 1 is_stmt 1 view -0
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 0
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73 0000 08B5     		push	{r3, lr}
+  74              	.LCFI1:
+  75              		.cfi_def_cfa_offset 8
+  76              		.cfi_offset 3, -8
+  77              		.cfi_offset 14, -4
+ 248:../Core/Src/sampling.c **** 	// Disable ADC conversions
+ 249:../Core/Src/sampling.c **** 	HAL_ADC_Stop_IT(&hadc1);
+  78              		.loc 1 249 2 view .LVU7
+  79 0002 0348     		ldr	r0, .L7
+  80 0004 FFF7FEFF 		bl	HAL_ADC_Stop_IT
+  81              	.LVL2:
+ 250:../Core/Src/sampling.c **** 	// Stop generating ADC conversions
+ 251:../Core/Src/sampling.c **** 	HAL_TIM_Base_Stop_IT(&htim6);
+  82              		.loc 1 251 2 view .LVU8
+  83 0008 0248     		ldr	r0, .L7+4
+  84 000a FFF7FEFF 		bl	HAL_TIM_Base_Stop_IT
+  85              	.LVL3:
+ 252:../Core/Src/sampling.c **** }
+  86              		.loc 1 252 1 is_stmt 0 view .LVU9
+  87 000e 08BD     		pop	{r3, pc}
+  88              	.L8:
+  89              		.align	2
+  90              	.L7:
+  91 0010 00000000 		.word	hadc1
+  92 0014 00000000 		.word	htim6
+  93              		.cfi_endproc
+ARM GAS  /tmp/cc3Lotsd.s 			page 7
+
+
+  94              	.LFE149:
+  96              		.section	.rodata.sp_cb.str1.4,"aMS",%progbits,1
+  97              		.align	2
+  98              	.LC0:
+  99 0000 53616D70 		.ascii	"Sampling period defined as %ld %s\012\015\000"
+  99      6C696E67 
+  99      20706572 
+  99      696F6420 
+  99      64656669 
+ 100              		.section	.text.sp_cb,"ax",%progbits
+ 101              		.align	1
+ 102              		.global	sp_cb
+ 103              		.syntax unified
+ 104              		.thumb
+ 105              		.thumb_func
+ 106              		.fpu fpv5-d16
+ 108              	sp_cb:
+ 109              	.LVL4:
+ 110              	.LFB144:
+  70:../Core/Src/sampling.c **** 	uint32_t units;
+ 111              		.loc 1 70 1 is_stmt 1 view -0
+ 112              		.cfi_startproc
+ 113              		@ args = 0, pretend = 0, frame = 40
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+  71:../Core/Src/sampling.c **** 	uint8_t i;
+ 115              		.loc 1 71 2 view .LVU11
+  72:../Core/Src/sampling.c **** 	uint8_t timeunits_arr_len;
+ 116              		.loc 1 72 2 view .LVU12
+  73:../Core/Src/sampling.c **** 	uint8_t retval = (char)(-EINVARG);
+ 117              		.loc 1 73 2 view .LVU13
+  74:../Core/Src/sampling.c **** 	char str[40];
+ 118              		.loc 1 74 2 view .LVU14
+  75:../Core/Src/sampling.c **** 	
+ 119              		.loc 1 75 2 view .LVU15
+  77:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 120              		.loc 1 77 2 view .LVU16
+  77:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 121              		.loc 1 77 4 is_stmt 0 view .LVU17
+ 122 0000 0328     		cmp	r0, #3
+ 123 0002 01D0     		beq	.L20
+  78:../Core/Src/sampling.c **** 	
+ 124              		.loc 1 78 10 view .LVU18
+ 125 0004 FA20     		movs	r0, #250
+ 126              	.LVL5:
+ 104:../Core/Src/sampling.c **** 
+ 127              		.loc 1 104 1 view .LVU19
+ 128 0006 7047     		bx	lr
+ 129              	.LVL6:
+ 130              	.L20:
+  70:../Core/Src/sampling.c **** 	uint32_t units;
+ 131              		.loc 1 70 1 view .LVU20
+ 132 0008 F0B5     		push	{r4, r5, r6, r7, lr}
+ 133              	.LCFI2:
+ 134              		.cfi_def_cfa_offset 20
+ 135              		.cfi_offset 4, -20
+ 136              		.cfi_offset 5, -16
+ 137              		.cfi_offset 6, -12
+ARM GAS  /tmp/cc3Lotsd.s 			page 8
+
+
+ 138              		.cfi_offset 7, -8
+ 139              		.cfi_offset 14, -4
+ 140 000a 8DB0     		sub	sp, sp, #52
+ 141              	.LCFI3:
+ 142              		.cfi_def_cfa_offset 72
+ 143 000c 0D46     		mov	r5, r1
+  80:../Core/Src/sampling.c **** 	if((units == 0) || (!IS_ADDR16(units)))
+ 144              		.loc 1 80 2 is_stmt 1 view .LVU21
+  80:../Core/Src/sampling.c **** 	if((units == 0) || (!IS_ADDR16(units)))
+ 145              		.loc 1 80 10 is_stmt 0 view .LVU22
+ 146 000e 8868     		ldr	r0, [r1, #8]
+ 147              	.LVL7:
+  80:../Core/Src/sampling.c **** 	if((units == 0) || (!IS_ADDR16(units)))
+ 148              		.loc 1 80 10 view .LVU23
+ 149 0010 FFF7FEFF 		bl	my_atoi
+ 150              	.LVL8:
+  80:../Core/Src/sampling.c **** 	if((units == 0) || (!IS_ADDR16(units)))
+ 151              		.loc 1 80 10 view .LVU24
+ 152 0014 0646     		mov	r6, r0
+ 153              	.LVL9:
+  81:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 154              		.loc 1 81 2 is_stmt 1 view .LVU25
+  81:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 155              		.loc 1 81 18 is_stmt 0 view .LVU26
+ 156 0016 421E     		subs	r2, r0, #1
+  81:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 157              		.loc 1 81 4 view .LVU27
+ 158 0018 4FF6FE73 		movw	r3, #65534
+ 159 001c 9A42     		cmp	r2, r3
+ 160 001e 2CD8     		bhi	.L15
+  87:../Core/Src/sampling.c **** 	{
+ 161              		.loc 1 87 8 view .LVU28
+ 162 0020 0024     		movs	r4, #0
+ 163              	.LVL10:
+ 164              	.L11:
+  87:../Core/Src/sampling.c **** 	{
+ 165              		.loc 1 87 13 is_stmt 1 discriminator 1 view .LVU29
+  87:../Core/Src/sampling.c **** 	{
+ 166              		.loc 1 87 2 is_stmt 0 discriminator 1 view .LVU30
+ 167 0022 022C     		cmp	r4, #2
+ 168 0024 26D8     		bhi	.L21
+  89:../Core/Src/sampling.c **** 		{
+ 169              		.loc 1 89 3 is_stmt 1 view .LVU31
+  89:../Core/Src/sampling.c **** 		{
+ 170              		.loc 1 89 6 is_stmt 0 view .LVU32
+ 171 0026 164B     		ldr	r3, .L23
+ 172 0028 53F82410 		ldr	r1, [r3, r4, lsl #2]
+ 173 002c 6868     		ldr	r0, [r5, #4]
+ 174 002e FFF7FEFF 		bl	strcmp
+ 175              	.LVL11:
+  89:../Core/Src/sampling.c **** 		{
+ 176              		.loc 1 89 5 view .LVU33
+ 177 0032 10B1     		cbz	r0, .L22
+  87:../Core/Src/sampling.c **** 	{
+ 178              		.loc 1 87 36 is_stmt 1 discriminator 2 view .LVU34
+  87:../Core/Src/sampling.c **** 	{
+ 179              		.loc 1 87 37 is_stmt 0 discriminator 2 view .LVU35
+ARM GAS  /tmp/cc3Lotsd.s 			page 9
+
+
+ 180 0034 0134     		adds	r4, r4, #1
+ 181              	.LVL12:
+  87:../Core/Src/sampling.c **** 	{
+ 182              		.loc 1 87 37 discriminator 2 view .LVU36
+ 183 0036 E4B2     		uxtb	r4, r4
+ 184              	.LVL13:
+  87:../Core/Src/sampling.c **** 	{
+ 185              		.loc 1 87 37 discriminator 2 view .LVU37
+ 186 0038 F3E7     		b	.L11
+ 187              	.L22:
+  91:../Core/Src/sampling.c **** 			// Update Timer reload values
+ 188              		.loc 1 91 4 is_stmt 1 view .LVU38
+  91:../Core/Src/sampling.c **** 			// Update Timer reload values
+ 189              		.loc 1 91 15 is_stmt 0 view .LVU39
+ 190 003a 124B     		ldr	r3, .L23+4
+ 191 003c 0122     		movs	r2, #1
+ 192 003e 1A70     		strb	r2, [r3]
+  93:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Sampling period defined as %ld %s\n\r", units, timeunits_arr[i]);
+ 193              		.loc 1 93 4 is_stmt 1 view .LVU40
+  93:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Sampling period defined as %ld %s\n\r", units, timeunits_arr[i]);
+ 194              		.loc 1 93 35 is_stmt 0 view .LVU41
+ 195 0040 114B     		ldr	r3, .L23+8
+  93:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Sampling period defined as %ld %s\n\r", units, timeunits_arr[i]);
+ 196              		.loc 1 93 57 view .LVU42
+ 197 0042 03EB8402 		add	r2, r3, r4, lsl #2
+ 198 0046 5188     		ldrh	r1, [r2, #2]
+  93:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Sampling period defined as %ld %s\n\r", units, timeunits_arr[i]);
+ 199              		.loc 1 93 61 view .LVU43
+ 200 0048 B2B2     		uxth	r2, r6
+  93:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Sampling period defined as %ld %s\n\r", units, timeunits_arr[i]);
+ 201              		.loc 1 93 4 view .LVU44
+ 202 004a 02FB01F1 		mul	r1, r2, r1
+ 203 004e 33F82400 		ldrh	r0, [r3, r4, lsl #2]
+ 204 0052 FFF7FEFF 		bl	TIMER_6_Update
+ 205              	.LVL14:
+  94:../Core/Src/sampling.c **** 			UART_puts(str);
+ 206              		.loc 1 94 4 is_stmt 1 view .LVU45
+ 207 0056 0A4B     		ldr	r3, .L23
+ 208 0058 53F82430 		ldr	r3, [r3, r4, lsl #2]
+ 209 005c 0093     		str	r3, [sp]
+ 210 005e 3346     		mov	r3, r6
+ 211 0060 0A4A     		ldr	r2, .L23+12
+ 212 0062 2821     		movs	r1, #40
+ 213 0064 02A8     		add	r0, sp, #8
+ 214 0066 FFF7FEFF 		bl	snprintf
+ 215              	.LVL15:
+  95:../Core/Src/sampling.c **** 			// Exit success
+ 216              		.loc 1 95 4 view .LVU46
+ 217 006a 02A8     		add	r0, sp, #8
+ 218 006c FFF7FEFF 		bl	UART_puts
+ 219              	.LVL16:
+  97:../Core/Src/sampling.c **** 			break;
+ 220              		.loc 1 97 4 view .LVU47
+  98:../Core/Src/sampling.c **** 		}
+ 221              		.loc 1 98 4 view .LVU48
+  97:../Core/Src/sampling.c **** 			break;
+ 222              		.loc 1 97 11 is_stmt 0 view .LVU49
+ARM GAS  /tmp/cc3Lotsd.s 			page 10
+
+
+ 223 0070 0020     		movs	r0, #0
+  98:../Core/Src/sampling.c **** 		}
+ 224              		.loc 1 98 4 view .LVU50
+ 225 0072 00E0     		b	.L10
+ 226              	.LVL17:
+ 227              	.L21:
+  74:../Core/Src/sampling.c **** 	char str[40];
+ 228              		.loc 1 74 10 view .LVU51
+ 229 0074 FA20     		movs	r0, #250
+ 230              	.LVL18:
+ 231              	.L10:
+ 104:../Core/Src/sampling.c **** 
+ 232              		.loc 1 104 1 view .LVU52
+ 233 0076 0DB0     		add	sp, sp, #52
+ 234              	.LCFI4:
+ 235              		.cfi_remember_state
+ 236              		.cfi_def_cfa_offset 20
+ 237              		@ sp needed
+ 238 0078 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 239              	.LVL19:
+ 240              	.L15:
+ 241              	.LCFI5:
+ 242              		.cfi_restore_state
+  82:../Core/Src/sampling.c **** 	
+ 243              		.loc 1 82 10 view .LVU53
+ 244 007a FA20     		movs	r0, #250
+ 245              	.LVL20:
+  82:../Core/Src/sampling.c **** 	
+ 246              		.loc 1 82 10 view .LVU54
+ 247 007c FBE7     		b	.L10
+ 248              	.L24:
+ 249 007e 00BF     		.align	2
+ 250              	.L23:
+ 251 0080 00000000 		.word	.LANCHOR0
+ 252 0084 00000000 		.word	.LANCHOR1
+ 253 0088 00000000 		.word	.LANCHOR2
+ 254 008c 00000000 		.word	.LC0
+ 255              		.cfi_endproc
+ 256              	.LFE144:
+ 258              		.section	.rodata.ac_cb.str1.4,"aMS",%progbits,1
+ 259              		.align	2
+ 260              	.LC1:
+ 261 0000 50696E20 		.ascii	"Pin not configured as input mode.\012\015\000"
+ 261      6E6F7420 
+ 261      636F6E66 
+ 261      69677572 
+ 261      65642061 
+ 262              		.align	2
+ 263              	.LC2:
+ 264 0024 41444320 		.ascii	"ADC Channel %d selected for sampling.\012\015\000"
+ 264      4368616E 
+ 264      6E656C20 
+ 264      25642073 
+ 264      656C6563 
+ 265              		.section	.text.ac_cb,"ax",%progbits
+ 266              		.align	1
+ 267              		.global	ac_cb
+ARM GAS  /tmp/cc3Lotsd.s 			page 11
+
+
+ 268              		.syntax unified
+ 269              		.thumb
+ 270              		.thumb_func
+ 271              		.fpu fpv5-d16
+ 273              	ac_cb:
+ 274              	.LVL21:
+ 275              	.LFB145:
+ 114:../Core/Src/sampling.c **** 	uint8_t addr;
+ 276              		.loc 1 114 1 is_stmt 1 view -0
+ 277              		.cfi_startproc
+ 278              		@ args = 0, pretend = 0, frame = 64
+ 279              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114:../Core/Src/sampling.c **** 	uint8_t addr;
+ 280              		.loc 1 114 1 is_stmt 0 view .LVU56
+ 281 0000 30B5     		push	{r4, r5, lr}
+ 282              	.LCFI6:
+ 283              		.cfi_def_cfa_offset 12
+ 284              		.cfi_offset 4, -12
+ 285              		.cfi_offset 5, -8
+ 286              		.cfi_offset 14, -4
+ 287 0002 91B0     		sub	sp, sp, #68
+ 288              	.LCFI7:
+ 289              		.cfi_def_cfa_offset 80
+ 115:../Core/Src/sampling.c **** 	char str[62];
+ 290              		.loc 1 115 2 is_stmt 1 view .LVU57
+ 116:../Core/Src/sampling.c **** 	
+ 291              		.loc 1 116 2 view .LVU58
+ 118:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 292              		.loc 1 118 2 view .LVU59
+ 118:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 293              		.loc 1 118 4 is_stmt 0 view .LVU60
+ 294 0004 0228     		cmp	r0, #2
+ 295 0006 03D0     		beq	.L31
+ 119:../Core/Src/sampling.c **** 	
+ 296              		.loc 1 119 10 view .LVU61
+ 297 0008 FA25     		movs	r5, #250
+ 298              	.LVL22:
+ 299              	.L26:
+ 136:../Core/Src/sampling.c **** 
+ 300              		.loc 1 136 1 view .LVU62
+ 301 000a 2846     		mov	r0, r5
+ 302 000c 11B0     		add	sp, sp, #68
+ 303              	.LCFI8:
+ 304              		.cfi_remember_state
+ 305              		.cfi_def_cfa_offset 12
+ 306              		@ sp needed
+ 307 000e 30BD     		pop	{r4, r5, pc}
+ 308              	.LVL23:
+ 309              	.L31:
+ 310              	.LCFI9:
+ 311              		.cfi_restore_state
+ 121:../Core/Src/sampling.c **** 	if(!IS_ADDR4(addr))
+ 312              		.loc 1 121 2 is_stmt 1 view .LVU63
+ 121:../Core/Src/sampling.c **** 	if(!IS_ADDR4(addr))
+ 313              		.loc 1 121 9 is_stmt 0 view .LVU64
+ 314 0010 4868     		ldr	r0, [r1, #4]
+ 315              	.LVL24:
+ARM GAS  /tmp/cc3Lotsd.s 			page 12
+
+
+ 121:../Core/Src/sampling.c **** 	if(!IS_ADDR4(addr))
+ 316              		.loc 1 121 9 view .LVU65
+ 317 0012 FFF7FEFF 		bl	my_atoi
+ 318              	.LVL25:
+ 121:../Core/Src/sampling.c **** 	if(!IS_ADDR4(addr))
+ 319              		.loc 1 121 9 view .LVU66
+ 320 0016 0446     		mov	r4, r0
+ 121:../Core/Src/sampling.c **** 	if(!IS_ADDR4(addr))
+ 321              		.loc 1 121 7 view .LVU67
+ 322 0018 C1B2     		uxtb	r1, r0
+ 323              	.LVL26:
+ 122:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 324              		.loc 1 122 2 is_stmt 1 view .LVU68
+ 122:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 325              		.loc 1 122 4 is_stmt 0 view .LVU69
+ 326 001a 0F29     		cmp	r1, #15
+ 327 001c 13D8     		bhi	.L29
+ 125:../Core/Src/sampling.c **** 	{
+ 328              		.loc 1 125 2 is_stmt 1 view .LVU70
+ 125:../Core/Src/sampling.c **** 	{
+ 329              		.loc 1 125 5 is_stmt 0 view .LVU71
+ 330 001e 0B48     		ldr	r0, .L33
+ 331 0020 FFF7FEFF 		bl	ADC_Config_Channel
+ 332              	.LVL27:
+ 125:../Core/Src/sampling.c **** 	{
+ 333              		.loc 1 125 4 view .LVU72
+ 334 0024 0546     		mov	r5, r0
+ 335 0026 48B9     		cbnz	r0, .L32
+ 132:../Core/Src/sampling.c **** 	UART_puts(str);
+ 336              		.loc 1 132 2 is_stmt 1 view .LVU73
+ 337 0028 E3B2     		uxtb	r3, r4
+ 338 002a 094A     		ldr	r2, .L33+4
+ 339 002c 3E21     		movs	r1, #62
+ 340 002e 6846     		mov	r0, sp
+ 341 0030 FFF7FEFF 		bl	snprintf
+ 342              	.LVL28:
+ 133:../Core/Src/sampling.c **** 	
+ 343              		.loc 1 133 2 view .LVU74
+ 344 0034 6846     		mov	r0, sp
+ 345 0036 FFF7FEFF 		bl	UART_puts
+ 346              	.LVL29:
+ 135:../Core/Src/sampling.c **** }
+ 347              		.loc 1 135 2 view .LVU75
+ 135:../Core/Src/sampling.c **** }
+ 348              		.loc 1 135 9 is_stmt 0 view .LVU76
+ 349 003a E6E7     		b	.L26
+ 350              	.L32:
+ 128:../Core/Src/sampling.c **** 		return (char)(-EPERM);
+ 351              		.loc 1 128 3 is_stmt 1 view .LVU77
+ 352 003c 0548     		ldr	r0, .L33+8
+ 353 003e FFF7FEFF 		bl	UART_puts
+ 354              	.LVL30:
+ 129:../Core/Src/sampling.c **** 	}
+ 355              		.loc 1 129 3 view .LVU78
+ 129:../Core/Src/sampling.c **** 	}
+ 356              		.loc 1 129 10 is_stmt 0 view .LVU79
+ 357 0042 F925     		movs	r5, #249
+ARM GAS  /tmp/cc3Lotsd.s 			page 13
+
+
+ 358 0044 E1E7     		b	.L26
+ 359              	.LVL31:
+ 360              	.L29:
+ 123:../Core/Src/sampling.c **** 
+ 361              		.loc 1 123 10 view .LVU80
+ 362 0046 FA25     		movs	r5, #250
+ 363 0048 DFE7     		b	.L26
+ 364              	.L34:
+ 365 004a 00BF     		.align	2
+ 366              	.L33:
+ 367 004c 00000000 		.word	hadc1
+ 368 0050 24000000 		.word	.LC2
+ 369 0054 00000000 		.word	.LC1
+ 370              		.cfi_endproc
+ 371              	.LFE145:
+ 373              		.section	.rodata.fn_cb.str1.4,"aMS",%progbits,1
+ 374              		.align	2
+ 375              	.LC3:
+ 376 0000 46696C74 		.ascii	"Filter already enabled.\012\015\000"
+ 376      65722061 
+ 376      6C726561 
+ 376      64792065 
+ 376      6E61626C 
+ 377 001a 0000     		.align	2
+ 378              	.LC4:
+ 379 001c 4C5000   		.ascii	"LP\000"
+ 380 001f 00       		.align	2
+ 381              	.LC5:
+ 382 0020 53656C65 		.ascii	"Selected Low-Pass Filter.\012\015\000"
+ 382      63746564 
+ 382      204C6F77 
+ 382      2D506173 
+ 382      73204669 
+ 383              		.align	2
+ 384              	.LC6:
+ 385 003c 485000   		.ascii	"HP\000"
+ 386 003f 00       		.align	2
+ 387              	.LC7:
+ 388 0040 53656C65 		.ascii	"Selected High-Pass Filter.\012\015\000"
+ 388      63746564 
+ 388      20486967 
+ 388      682D5061 
+ 388      73732046 
+ 389 005d 000000   		.align	2
+ 390              	.LC8:
+ 391 0060 425000   		.ascii	"BP\000"
+ 392 0063 00       		.align	2
+ 393              	.LC9:
+ 394 0064 53656C65 		.ascii	"Selected Band-Pass Filter.\012\015\000"
+ 394      63746564 
+ 394      2042616E 
+ 394      642D5061 
+ 394      73732046 
+ 395 0081 000000   		.align	2
+ 396              	.LC10:
+ 397 0084 46696C74 		.ascii	"Filter not recognized.\012\015\000"
+ 397      6572206E 
+ARM GAS  /tmp/cc3Lotsd.s 			page 14
+
+
+ 397      6F742072 
+ 397      65636F67 
+ 397      6E697A65 
+ 398 009d 000000   		.align	2
+ 399              	.LC11:
+ 400 00a0 4572726F 		.ascii	"Error initializing filter.\012\015\000"
+ 400      7220696E 
+ 400      69746961 
+ 400      6C697A69 
+ 400      6E672066 
+ 401 00bd 000000   		.align	2
+ 402              	.LC12:
+ 403 00c0 46696C74 		.ascii	"Filter ON.\012\015\000"
+ 403      6572204F 
+ 403      4E2E0A0D 
+ 403      00
+ 404              		.section	.text.fn_cb,"ax",%progbits
+ 405              		.align	1
+ 406              		.global	fn_cb
+ 407              		.syntax unified
+ 408              		.thumb
+ 409              		.thumb_func
+ 410              		.fpu fpv5-d16
+ 412              	fn_cb:
+ 413              	.LVL32:
+ 414              	.LFB146:
+ 146:../Core/Src/sampling.c **** 	if(argc != 2) // number of arguments invalid?
+ 415              		.loc 1 146 1 is_stmt 1 view -0
+ 416              		.cfi_startproc
+ 417              		@ args = 0, pretend = 0, frame = 0
+ 418              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 419              		.loc 1 147 2 view .LVU82
+ 147:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 420              		.loc 1 147 4 is_stmt 0 view .LVU83
+ 421 0000 0228     		cmp	r0, #2
+ 422 0002 5CD1     		bne	.L43
+ 146:../Core/Src/sampling.c **** 	if(argc != 2) // number of arguments invalid?
+ 423              		.loc 1 146 1 view .LVU84
+ 424 0004 10B5     		push	{r4, lr}
+ 425              	.LCFI10:
+ 426              		.cfi_def_cfa_offset 8
+ 427              		.cfi_offset 4, -8
+ 428              		.cfi_offset 14, -4
+ 150:../Core/Src/sampling.c **** 	{
+ 429              		.loc 1 150 2 is_stmt 1 view .LVU85
+ 150:../Core/Src/sampling.c **** 	{
+ 430              		.loc 1 150 6 is_stmt 0 view .LVU86
+ 431 0006 2F4B     		ldr	r3, .L52
+ 432 0008 1B7F     		ldrb	r3, [r3, #28]	@ zero_extendqisi2
+ 150:../Core/Src/sampling.c **** 	{
+ 433              		.loc 1 150 4 view .LVU87
+ 434 000a 012B     		cmp	r3, #1
+ 435 000c 21D0     		beq	.L48
+ 157:../Core/Src/sampling.c **** 	{
+ 436              		.loc 1 157 2 is_stmt 1 view .LVU88
+ 157:../Core/Src/sampling.c **** 	{
+ARM GAS  /tmp/cc3Lotsd.s 			page 15
+
+
+ 437              		.loc 1 157 5 is_stmt 0 view .LVU89
+ 438 000e 4C68     		ldr	r4, [r1, #4]
+ 439 0010 2D49     		ldr	r1, .L52+4
+ 440              	.LVL33:
+ 157:../Core/Src/sampling.c **** 	{
+ 441              		.loc 1 157 5 view .LVU90
+ 442 0012 2046     		mov	r0, r4
+ 443              	.LVL34:
+ 157:../Core/Src/sampling.c **** 	{
+ 444              		.loc 1 157 5 view .LVU91
+ 445 0014 FFF7FEFF 		bl	strcmp
+ 446              	.LVL35:
+ 157:../Core/Src/sampling.c **** 	{
+ 447              		.loc 1 157 4 view .LVU92
+ 448 0018 00B3     		cbz	r0, .L49
+ 167:../Core/Src/sampling.c **** 	{
+ 449              		.loc 1 167 7 is_stmt 1 view .LVU93
+ 167:../Core/Src/sampling.c **** 	{
+ 450              		.loc 1 167 10 is_stmt 0 view .LVU94
+ 451 001a 2C49     		ldr	r1, .L52+8
+ 452 001c 2046     		mov	r0, r4
+ 453 001e FFF7FEFF 		bl	strcmp
+ 454              	.LVL36:
+ 167:../Core/Src/sampling.c **** 	{
+ 455              		.loc 1 167 9 view .LVU95
+ 456 0022 0028     		cmp	r0, #0
+ 457 0024 31D0     		beq	.L50
+ 177:../Core/Src/sampling.c **** 	{
+ 458              		.loc 1 177 7 is_stmt 1 view .LVU96
+ 177:../Core/Src/sampling.c **** 	{
+ 459              		.loc 1 177 10 is_stmt 0 view .LVU97
+ 460 0026 2A49     		ldr	r1, .L52+12
+ 461 0028 2046     		mov	r0, r4
+ 462 002a FFF7FEFF 		bl	strcmp
+ 463              	.LVL37:
+ 177:../Core/Src/sampling.c **** 	{
+ 464              		.loc 1 177 9 view .LVU98
+ 465 002e 0028     		cmp	r0, #0
+ 466 0030 3BD1     		bne	.L41
+ 180:../Core/Src/sampling.c **** 		f.N = 0;
+ 467              		.loc 1 180 3 is_stmt 1 view .LVU99
+ 180:../Core/Src/sampling.c **** 		f.N = 0;
+ 468              		.loc 1 180 7 is_stmt 0 view .LVU100
+ 469 0032 244B     		ldr	r3, .L52
+ 470 0034 1222     		movs	r2, #18
+ 471 0036 1A60     		str	r2, [r3]
+ 181:../Core/Src/sampling.c **** 		f.dc = 4095/2;
+ 472              		.loc 1 181 3 is_stmt 1 view .LVU101
+ 181:../Core/Src/sampling.c **** 		f.dc = 4095/2;
+ 473              		.loc 1 181 7 is_stmt 0 view .LVU102
+ 474 0038 0022     		movs	r2, #0
+ 475 003a 5A60     		str	r2, [r3, #4]
+ 182:../Core/Src/sampling.c **** 		f.x_coefs = FIR_BP_x_coefs;
+ 476              		.loc 1 182 3 is_stmt 1 view .LVU103
+ 182:../Core/Src/sampling.c **** 		f.x_coefs = FIR_BP_x_coefs;
+ 477              		.loc 1 182 8 is_stmt 0 view .LVU104
+ 478 003c 40F2FF72 		movw	r2, #2047
+ARM GAS  /tmp/cc3Lotsd.s 			page 16
+
+
+ 479 0040 9A61     		str	r2, [r3, #24]
+ 183:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 480              		.loc 1 183 3 is_stmt 1 view .LVU105
+ 183:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 481              		.loc 1 183 13 is_stmt 0 view .LVU106
+ 482 0042 244A     		ldr	r2, .L52+16
+ 483 0044 5A61     		str	r2, [r3, #20]
+ 184:../Core/Src/sampling.c **** 		UART_puts("Selected Band-Pass Filter.\n\r");
+ 484              		.loc 1 184 3 is_stmt 1 view .LVU107
+ 184:../Core/Src/sampling.c **** 		UART_puts("Selected Band-Pass Filter.\n\r");
+ 485              		.loc 1 184 13 is_stmt 0 view .LVU108
+ 486 0046 244A     		ldr	r2, .L52+20
+ 487 0048 1A61     		str	r2, [r3, #16]
+ 185:../Core/Src/sampling.c **** 	}
+ 488              		.loc 1 185 3 is_stmt 1 view .LVU109
+ 489 004a 2448     		ldr	r0, .L52+24
+ 490 004c FFF7FEFF 		bl	UART_puts
+ 491              	.LVL38:
+ 492 0050 11E0     		b	.L39
+ 493              	.LVL39:
+ 494              	.L48:
+ 152:../Core/Src/sampling.c **** 		return 0;
+ 495              		.loc 1 152 3 view .LVU110
+ 496 0052 2348     		ldr	r0, .L52+28
+ 497              	.LVL40:
+ 152:../Core/Src/sampling.c **** 		return 0;
+ 498              		.loc 1 152 3 is_stmt 0 view .LVU111
+ 499 0054 FFF7FEFF 		bl	UART_puts
+ 500              	.LVL41:
+ 153:../Core/Src/sampling.c **** 	}
+ 501              		.loc 1 153 3 is_stmt 1 view .LVU112
+ 153:../Core/Src/sampling.c **** 	}
+ 502              		.loc 1 153 10 is_stmt 0 view .LVU113
+ 503 0058 0020     		movs	r0, #0
+ 504 005a 15E0     		b	.L36
+ 505              	.L49:
+ 160:../Core/Src/sampling.c **** 		f.N = 0;
+ 506              		.loc 1 160 3 is_stmt 1 view .LVU114
+ 160:../Core/Src/sampling.c **** 		f.N = 0;
+ 507              		.loc 1 160 7 is_stmt 0 view .LVU115
+ 508 005c 194B     		ldr	r3, .L52
+ 509 005e 2A22     		movs	r2, #42
+ 510 0060 1A60     		str	r2, [r3]
+ 161:../Core/Src/sampling.c **** 		f.dc = 0;
+ 511              		.loc 1 161 3 is_stmt 1 view .LVU116
+ 161:../Core/Src/sampling.c **** 		f.dc = 0;
+ 512              		.loc 1 161 7 is_stmt 0 view .LVU117
+ 513 0062 0022     		movs	r2, #0
+ 514 0064 5A60     		str	r2, [r3, #4]
+ 162:../Core/Src/sampling.c **** 		f.x_coefs = FIR_LP_x_coefs;
+ 515              		.loc 1 162 3 is_stmt 1 view .LVU118
+ 162:../Core/Src/sampling.c **** 		f.x_coefs = FIR_LP_x_coefs;
+ 516              		.loc 1 162 8 is_stmt 0 view .LVU119
+ 517 0066 9A61     		str	r2, [r3, #24]
+ 163:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 518              		.loc 1 163 3 is_stmt 1 view .LVU120
+ 163:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ARM GAS  /tmp/cc3Lotsd.s 			page 17
+
+
+ 519              		.loc 1 163 13 is_stmt 0 view .LVU121
+ 520 0068 1E4A     		ldr	r2, .L52+32
+ 521 006a 5A61     		str	r2, [r3, #20]
+ 164:../Core/Src/sampling.c **** 		UART_puts("Selected Low-Pass Filter.\n\r");
+ 522              		.loc 1 164 3 is_stmt 1 view .LVU122
+ 164:../Core/Src/sampling.c **** 		UART_puts("Selected Low-Pass Filter.\n\r");
+ 523              		.loc 1 164 13 is_stmt 0 view .LVU123
+ 524 006c 1A4A     		ldr	r2, .L52+20
+ 525 006e 1A61     		str	r2, [r3, #16]
+ 165:../Core/Src/sampling.c **** 	}
+ 526              		.loc 1 165 3 is_stmt 1 view .LVU124
+ 527 0070 1D48     		ldr	r0, .L52+36
+ 528 0072 FFF7FEFF 		bl	UART_puts
+ 529              	.LVL42:
+ 530              	.L39:
+ 194:../Core/Src/sampling.c **** 	{
+ 531              		.loc 1 194 2 view .LVU125
+ 194:../Core/Src/sampling.c **** 	{
+ 532              		.loc 1 194 5 is_stmt 0 view .LVU126
+ 533 0076 1348     		ldr	r0, .L52
+ 534 0078 FFF7FEFF 		bl	filter_init
+ 535              	.LVL43:
+ 194:../Core/Src/sampling.c **** 	{
+ 536              		.loc 1 194 4 view .LVU127
+ 537 007c FF28     		cmp	r0, #255
+ 538 007e 19D0     		beq	.L51
+ 201:../Core/Src/sampling.c **** 	return 0;
+ 539              		.loc 1 201 2 is_stmt 1 view .LVU128
+ 540 0080 1A48     		ldr	r0, .L52+40
+ 541 0082 FFF7FEFF 		bl	UART_puts
+ 542              	.LVL44:
+ 202:../Core/Src/sampling.c **** }
+ 543              		.loc 1 202 2 view .LVU129
+ 202:../Core/Src/sampling.c **** }
+ 544              		.loc 1 202 9 is_stmt 0 view .LVU130
+ 545 0086 0020     		movs	r0, #0
+ 546              	.L36:
+ 203:../Core/Src/sampling.c **** 
+ 547              		.loc 1 203 1 view .LVU131
+ 548 0088 10BD     		pop	{r4, pc}
+ 549              	.L50:
+ 170:../Core/Src/sampling.c **** 		f.N = 0;
+ 550              		.loc 1 170 3 is_stmt 1 view .LVU132
+ 170:../Core/Src/sampling.c **** 		f.N = 0;
+ 551              		.loc 1 170 7 is_stmt 0 view .LVU133
+ 552 008a 0E4B     		ldr	r3, .L52
+ 553 008c 1C22     		movs	r2, #28
+ 554 008e 1A60     		str	r2, [r3]
+ 171:../Core/Src/sampling.c **** 		f.dc = 4095/2;
+ 555              		.loc 1 171 3 is_stmt 1 view .LVU134
+ 171:../Core/Src/sampling.c **** 		f.dc = 4095/2;
+ 556              		.loc 1 171 7 is_stmt 0 view .LVU135
+ 557 0090 0022     		movs	r2, #0
+ 558 0092 5A60     		str	r2, [r3, #4]
+ 172:../Core/Src/sampling.c **** 		f.x_coefs = FIR_HP_x_coefs;
+ 559              		.loc 1 172 3 is_stmt 1 view .LVU136
+ 172:../Core/Src/sampling.c **** 		f.x_coefs = FIR_HP_x_coefs;
+ARM GAS  /tmp/cc3Lotsd.s 			page 18
+
+
+ 560              		.loc 1 172 8 is_stmt 0 view .LVU137
+ 561 0094 40F2FF72 		movw	r2, #2047
+ 562 0098 9A61     		str	r2, [r3, #24]
+ 173:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 563              		.loc 1 173 3 is_stmt 1 view .LVU138
+ 173:../Core/Src/sampling.c **** 		f.y_coefs = FIR_y_coefs;
+ 564              		.loc 1 173 13 is_stmt 0 view .LVU139
+ 565 009a 154A     		ldr	r2, .L52+44
+ 566 009c 5A61     		str	r2, [r3, #20]
+ 174:../Core/Src/sampling.c **** 		UART_puts("Selected High-Pass Filter.\n\r");
+ 567              		.loc 1 174 3 is_stmt 1 view .LVU140
+ 174:../Core/Src/sampling.c **** 		UART_puts("Selected High-Pass Filter.\n\r");
+ 568              		.loc 1 174 13 is_stmt 0 view .LVU141
+ 569 009e 0E4A     		ldr	r2, .L52+20
+ 570 00a0 1A61     		str	r2, [r3, #16]
+ 175:../Core/Src/sampling.c **** 	}
+ 571              		.loc 1 175 3 is_stmt 1 view .LVU142
+ 572 00a2 1448     		ldr	r0, .L52+48
+ 573 00a4 FFF7FEFF 		bl	UART_puts
+ 574              	.LVL45:
+ 575 00a8 E5E7     		b	.L39
+ 576              	.L41:
+ 189:../Core/Src/sampling.c **** 		return 0;
+ 577              		.loc 1 189 3 view .LVU143
+ 578 00aa 1348     		ldr	r0, .L52+52
+ 579 00ac FFF7FEFF 		bl	UART_puts
+ 580              	.LVL46:
+ 190:../Core/Src/sampling.c **** 	}
+ 581              		.loc 1 190 3 view .LVU144
+ 190:../Core/Src/sampling.c **** 	}
+ 582              		.loc 1 190 10 is_stmt 0 view .LVU145
+ 583 00b0 0020     		movs	r0, #0
+ 584 00b2 E9E7     		b	.L36
+ 585              	.L51:
+ 196:../Core/Src/sampling.c **** 		return 0;
+ 586              		.loc 1 196 3 is_stmt 1 view .LVU146
+ 587 00b4 1148     		ldr	r0, .L52+56
+ 588 00b6 FFF7FEFF 		bl	UART_puts
+ 589              	.LVL47:
+ 197:../Core/Src/sampling.c **** 	}
+ 590              		.loc 1 197 3 view .LVU147
+ 197:../Core/Src/sampling.c **** 	}
+ 591              		.loc 1 197 10 is_stmt 0 view .LVU148
+ 592 00ba 0020     		movs	r0, #0
+ 593 00bc E4E7     		b	.L36
+ 594              	.LVL48:
+ 595              	.L43:
+ 596              	.LCFI11:
+ 597              		.cfi_def_cfa_offset 0
+ 598              		.cfi_restore 4
+ 599              		.cfi_restore 14
+ 148:../Core/Src/sampling.c **** 	
+ 600              		.loc 1 148 10 view .LVU149
+ 601 00be FA20     		movs	r0, #250
+ 602              	.LVL49:
+ 203:../Core/Src/sampling.c **** 
+ 603              		.loc 1 203 1 view .LVU150
+ARM GAS  /tmp/cc3Lotsd.s 			page 19
+
+
+ 604 00c0 7047     		bx	lr
+ 605              	.L53:
+ 606 00c2 00BF     		.align	2
+ 607              	.L52:
+ 608 00c4 00000000 		.word	.LANCHOR3
+ 609 00c8 1C000000 		.word	.LC4
+ 610 00cc 3C000000 		.word	.LC6
+ 611 00d0 60000000 		.word	.LC8
+ 612 00d4 00000000 		.word	.LANCHOR7
+ 613 00d8 00000000 		.word	.LANCHOR5
+ 614 00dc 64000000 		.word	.LC9
+ 615 00e0 00000000 		.word	.LC3
+ 616 00e4 00000000 		.word	.LANCHOR4
+ 617 00e8 20000000 		.word	.LC5
+ 618 00ec C0000000 		.word	.LC12
+ 619 00f0 00000000 		.word	.LANCHOR6
+ 620 00f4 40000000 		.word	.LC7
+ 621 00f8 84000000 		.word	.LC10
+ 622 00fc A0000000 		.word	.LC11
+ 623              		.cfi_endproc
+ 624              	.LFE146:
+ 626              		.section	.rodata.ff_cb.str1.4,"aMS",%progbits,1
+ 627              		.align	2
+ 628              	.LC13:
+ 629 0000 46696C74 		.ascii	"Filter already disabled.\012\015\000"
+ 629      65722061 
+ 629      6C726561 
+ 629      64792064 
+ 629      69736162 
+ 630 001b 00       		.align	2
+ 631              	.LC14:
+ 632 001c 46696C74 		.ascii	"Filter OFF.\012\015\000"
+ 632      6572204F 
+ 632      46462E0A 
+ 632      0D00
+ 633              		.section	.text.ff_cb,"ax",%progbits
+ 634              		.align	1
+ 635              		.global	ff_cb
+ 636              		.syntax unified
+ 637              		.thumb
+ 638              		.thumb_func
+ 639              		.fpu fpv5-d16
+ 641              	ff_cb:
+ 642              	.LVL50:
+ 643              	.LFB147:
+ 213:../Core/Src/sampling.c **** 	if(argc != 1) // number of arguments invalid?
+ 644              		.loc 1 213 1 is_stmt 1 view -0
+ 645              		.cfi_startproc
+ 646              		@ args = 0, pretend = 0, frame = 0
+ 647              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 648              		.loc 1 214 2 view .LVU152
+ 214:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 649              		.loc 1 214 4 is_stmt 0 view .LVU153
+ 650 0000 0128     		cmp	r0, #1
+ 651 0002 01D0     		beq	.L62
+ 215:../Core/Src/sampling.c **** 		
+ARM GAS  /tmp/cc3Lotsd.s 			page 20
+
+
+ 652              		.loc 1 215 10 view .LVU154
+ 653 0004 FA20     		movs	r0, #250
+ 654              	.LVL51:
+ 226:../Core/Src/sampling.c **** 
+ 655              		.loc 1 226 1 view .LVU155
+ 656 0006 7047     		bx	lr
+ 657              	.LVL52:
+ 658              	.L62:
+ 213:../Core/Src/sampling.c **** 	if(argc != 1) // number of arguments invalid?
+ 659              		.loc 1 213 1 view .LVU156
+ 660 0008 08B5     		push	{r3, lr}
+ 661              	.LCFI12:
+ 662              		.cfi_def_cfa_offset 8
+ 663              		.cfi_offset 3, -8
+ 664              		.cfi_offset 14, -4
+ 217:../Core/Src/sampling.c **** 	{
+ 665              		.loc 1 217 2 is_stmt 1 view .LVU157
+ 217:../Core/Src/sampling.c **** 	{
+ 666              		.loc 1 217 5 is_stmt 0 view .LVU158
+ 667 000a 0748     		ldr	r0, .L64
+ 668              	.LVL53:
+ 217:../Core/Src/sampling.c **** 	{
+ 669              		.loc 1 217 5 view .LVU159
+ 670 000c FFF7FEFF 		bl	filter_kill
+ 671              	.LVL54:
+ 217:../Core/Src/sampling.c **** 	{
+ 672              		.loc 1 217 4 view .LVU160
+ 673 0010 FF28     		cmp	r0, #255
+ 674 0012 04D0     		beq	.L63
+ 224:../Core/Src/sampling.c **** 	return 0;
+ 675              		.loc 1 224 2 is_stmt 1 view .LVU161
+ 676 0014 0548     		ldr	r0, .L64+4
+ 677 0016 FFF7FEFF 		bl	UART_puts
+ 678              	.LVL55:
+ 225:../Core/Src/sampling.c **** }
+ 679              		.loc 1 225 2 view .LVU162
+ 225:../Core/Src/sampling.c **** }
+ 680              		.loc 1 225 9 is_stmt 0 view .LVU163
+ 681 001a 0020     		movs	r0, #0
+ 682              	.L55:
+ 226:../Core/Src/sampling.c **** 
+ 683              		.loc 1 226 1 view .LVU164
+ 684 001c 08BD     		pop	{r3, pc}
+ 685              	.L63:
+ 219:../Core/Src/sampling.c **** 		return 0;
+ 686              		.loc 1 219 3 is_stmt 1 view .LVU165
+ 687 001e 0448     		ldr	r0, .L64+8
+ 688 0020 FFF7FEFF 		bl	UART_puts
+ 689              	.LVL56:
+ 220:../Core/Src/sampling.c **** 	}
+ 690              		.loc 1 220 3 view .LVU166
+ 220:../Core/Src/sampling.c **** 	}
+ 691              		.loc 1 220 10 is_stmt 0 view .LVU167
+ 692 0024 0020     		movs	r0, #0
+ 693 0026 F9E7     		b	.L55
+ 694              	.L65:
+ 695              		.align	2
+ARM GAS  /tmp/cc3Lotsd.s 			page 21
+
+
+ 696              	.L64:
+ 697 0028 00000000 		.word	.LANCHOR3
+ 698 002c 1C000000 		.word	.LC14
+ 699 0030 00000000 		.word	.LC13
+ 700              		.cfi_endproc
+ 701              	.LFE147:
+ 703              		.section	.rodata.s_cb.str1.4,"aMS",%progbits,1
+ 704              		.align	2
+ 705              	.LC15:
+ 706 0000 53616D70 		.ascii	"Sampling already in progress.\012\015\000"
+ 706      6C696E67 
+ 706      20616C72 
+ 706      65616479 
+ 706      20696E20 
+ 707              		.align	2
+ 708              	.LC16:
+ 709 0020 53616D70 		.ascii	"Sampling period not defined.\012\015\000"
+ 709      6C696E67 
+ 709      20706572 
+ 709      696F6420 
+ 709      6E6F7420 
+ 710 003f 00       		.align	2
+ 711              	.LC17:
+ 712 0040 53746172 		.ascii	"Starting sampling...\012\015\000"
+ 712      74696E67 
+ 712      2073616D 
+ 712      706C696E 
+ 712      672E2E2E 
+ 713 0057 00       		.align	2
+ 714              	.LC18:
+ 715 0058 53616D70 		.ascii	"Sampling %d values...\012\015\000"
+ 715      6C696E67 
+ 715      20256420 
+ 715      76616C75 
+ 715      65732E2E 
+ 716              		.align	2
+ 717              	.LC19:
+ 718 0070 53616D70 		.ascii	"Sampled values:\012\015\000"
+ 718      6C656420 
+ 718      76616C75 
+ 718      65733A0A 
+ 718      0D00
+ 719              		.section	.text.s_cb,"ax",%progbits
+ 720              		.align	1
+ 721              		.global	s_cb
+ 722              		.syntax unified
+ 723              		.thumb
+ 724              		.thumb_func
+ 725              		.fpu fpv5-d16
+ 727              	s_cb:
+ 728              	.LVL57:
+ 729              	.LFB150:
+ 253:../Core/Src/sampling.c **** 
+ 254:../Core/Src/sampling.c **** char s_cb(uint8_t argc, char** argv)
+ 255:../Core/Src/sampling.c **** {
+ 730              		.loc 1 255 1 is_stmt 1 view -0
+ 731              		.cfi_startproc
+ARM GAS  /tmp/cc3Lotsd.s 			page 22
+
+
+ 732              		@ args = 0, pretend = 0, frame = 32
+ 733              		@ frame_needed = 0, uses_anonymous_args = 0
+ 734              		.loc 1 255 1 is_stmt 0 view .LVU169
+ 735 0000 10B5     		push	{r4, lr}
+ 736              	.LCFI13:
+ 737              		.cfi_def_cfa_offset 8
+ 738              		.cfi_offset 4, -8
+ 739              		.cfi_offset 14, -4
+ 740 0002 88B0     		sub	sp, sp, #32
+ 741              	.LCFI14:
+ 742              		.cfi_def_cfa_offset 40
+ 256:../Core/Src/sampling.c **** 	char str[32];
+ 743              		.loc 1 256 2 is_stmt 1 view .LVU170
+ 257:../Core/Src/sampling.c **** 	
+ 258:../Core/Src/sampling.c **** 	if(argc > 2) // number of arguments invalid?
+ 744              		.loc 1 258 2 view .LVU171
+ 745              		.loc 1 258 4 is_stmt 0 view .LVU172
+ 746 0004 0228     		cmp	r0, #2
+ 747 0006 46D8     		bhi	.L72
+ 259:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 260:../Core/Src/sampling.c **** 	
+ 261:../Core/Src/sampling.c **** 	if(Sampling_flag == 1) // sampling in progress?
+ 748              		.loc 1 261 2 is_stmt 1 view .LVU173
+ 749              		.loc 1 261 19 is_stmt 0 view .LVU174
+ 750 0008 264B     		ldr	r3, .L79
+ 751 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 752              		.loc 1 261 4 view .LVU175
+ 753 000c 012B     		cmp	r3, #1
+ 754 000e 2ED0     		beq	.L76
+ 262:../Core/Src/sampling.c **** 	{
+ 263:../Core/Src/sampling.c **** 		UART_puts("Sampling already in progress.\n\r");
+ 264:../Core/Src/sampling.c **** 		return 0;
+ 265:../Core/Src/sampling.c **** 	}
+ 266:../Core/Src/sampling.c **** 	
+ 267:../Core/Src/sampling.c **** 	if(SP_cb_done == 0) // sampling period defined?
+ 755              		.loc 1 267 2 is_stmt 1 view .LVU176
+ 756              		.loc 1 267 16 is_stmt 0 view .LVU177
+ 757 0010 254B     		ldr	r3, .L79+4
+ 758 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 759              		.loc 1 267 4 view .LVU178
+ 760 0014 002B     		cmp	r3, #0
+ 761 0016 2FD0     		beq	.L77
+ 268:../Core/Src/sampling.c **** 	{
+ 269:../Core/Src/sampling.c **** 		UART_puts("Sampling period not defined.\n\r");
+ 270:../Core/Src/sampling.c **** 		return (char) (-EPERM);
+ 271:../Core/Src/sampling.c **** 	}
+ 272:../Core/Src/sampling.c **** 	
+ 273:../Core/Src/sampling.c **** 	if(argc == 1)
+ 762              		.loc 1 273 2 is_stmt 1 view .LVU179
+ 763              		.loc 1 273 4 is_stmt 0 view .LVU180
+ 764 0018 0128     		cmp	r0, #1
+ 765 001a 32D0     		beq	.L78
+ 274:../Core/Src/sampling.c **** 	{
+ 275:../Core/Src/sampling.c **** 		// Begin infinite sampling
+ 276:../Core/Src/sampling.c **** 		UART_puts("Starting sampling...\n\r");
+ 277:../Core/Src/sampling.c **** 
+ 278:../Core/Src/sampling.c **** 		// Start taking samples
+ARM GAS  /tmp/cc3Lotsd.s 			page 23
+
+
+ 279:../Core/Src/sampling.c **** 		start_sampling();
+ 280:../Core/Src/sampling.c **** 		// Mark that sampling is in progress
+ 281:../Core/Src/sampling.c **** 		Sampling_flag = 1;
+ 282:../Core/Src/sampling.c **** 		return 0;
+ 283:../Core/Src/sampling.c **** 	}
+ 284:../Core/Src/sampling.c **** 	
+ 285:../Core/Src/sampling.c **** 	// Else, argument 1 defines number of samples to be taken
+ 286:../Core/Src/sampling.c **** 	smps_left = my_atoi(argv[1]);
+ 766              		.loc 1 286 2 is_stmt 1 view .LVU181
+ 767              		.loc 1 286 14 is_stmt 0 view .LVU182
+ 768 001c 4868     		ldr	r0, [r1, #4]
+ 769              	.LVL58:
+ 770              		.loc 1 286 14 view .LVU183
+ 771 001e FFF7FEFF 		bl	my_atoi
+ 772              	.LVL59:
+ 773              		.loc 1 286 12 view .LVU184
+ 774 0022 C0B2     		uxtb	r0, r0
+ 775 0024 214B     		ldr	r3, .L79+8
+ 776 0026 1870     		strb	r0, [r3]
+ 287:../Core/Src/sampling.c **** 	if(!IS_DIG(smps_left))
+ 777              		.loc 1 287 2 is_stmt 1 view .LVU185
+ 778              		.loc 1 287 6 is_stmt 0 view .LVU186
+ 779 0028 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 780              		.loc 1 287 4 view .LVU187
+ 781 002a 002B     		cmp	r3, #0
+ 782 002c 35D0     		beq	.L73
+ 783              		.loc 1 287 6 discriminator 1 view .LVU188
+ 784 002e 1F4B     		ldr	r3, .L79+8
+ 785 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 786 0032 DBB2     		uxtb	r3, r3
+ 787              		.loc 1 287 5 discriminator 1 view .LVU189
+ 788 0034 092B     		cmp	r3, #9
+ 789 0036 32D8     		bhi	.L74
+ 288:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 289:../Core/Src/sampling.c **** 	
+ 290:../Core/Src/sampling.c **** 	// Begin sampling K values
+ 291:../Core/Src/sampling.c **** 	sprintf(str, "Sampling %d values...\n\r", smps_left);
+ 790              		.loc 1 291 2 is_stmt 1 view .LVU190
+ 791 0038 1C4B     		ldr	r3, .L79+8
+ 792 003a 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 793 003c 1C49     		ldr	r1, .L79+12
+ 794 003e 6846     		mov	r0, sp
+ 795 0040 FFF7FEFF 		bl	sprintf
+ 796              	.LVL60:
+ 292:../Core/Src/sampling.c **** 	UART_puts(str);
+ 797              		.loc 1 292 2 view .LVU191
+ 798 0044 6846     		mov	r0, sp
+ 799 0046 FFF7FEFF 		bl	UART_puts
+ 800              	.LVL61:
+ 293:../Core/Src/sampling.c **** 	
+ 294:../Core/Src/sampling.c **** 	start_sampling(); // Start taking samples
+ 801              		.loc 1 294 2 view .LVU192
+ 802 004a FFF7FEFF 		bl	start_sampling
+ 803              	.LVL62:
+ 295:../Core/Src/sampling.c **** 	while (smps_left) // Taking samples
+ 804              		.loc 1 295 2 view .LVU193
+ 805              	.L71:
+ARM GAS  /tmp/cc3Lotsd.s 			page 24
+
+
+ 296:../Core/Src/sampling.c **** 		;
+ 806              		.loc 1 296 3 discriminator 1 view .LVU194
+ 295:../Core/Src/sampling.c **** 	while (smps_left) // Taking samples
+ 807              		.loc 1 295 8 discriminator 1 view .LVU195
+ 295:../Core/Src/sampling.c **** 	while (smps_left) // Taking samples
+ 808              		.loc 1 295 9 is_stmt 0 discriminator 1 view .LVU196
+ 809 004e 174B     		ldr	r3, .L79+8
+ 810 0050 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 295:../Core/Src/sampling.c **** 	while (smps_left) // Taking samples
+ 811              		.loc 1 295 8 discriminator 1 view .LVU197
+ 812 0052 03F0FF04 		and	r4, r3, #255
+ 813 0056 002B     		cmp	r3, #0
+ 814 0058 F9D1     		bne	.L71
+ 297:../Core/Src/sampling.c **** 	stop_sampling(); 	// Stop taking samples
+ 815              		.loc 1 297 2 is_stmt 1 view .LVU198
+ 816 005a FFF7FEFF 		bl	stop_sampling
+ 817              	.LVL63:
+ 298:../Core/Src/sampling.c **** 	
+ 299:../Core/Src/sampling.c **** 	UART_puts("Sampled values:\n\r");
+ 818              		.loc 1 299 2 view .LVU199
+ 819 005e 1548     		ldr	r0, .L79+16
+ 820 0060 FFF7FEFF 		bl	UART_puts
+ 821              	.LVL64:
+ 300:../Core/Src/sampling.c **** 	print_adcValues();
+ 822              		.loc 1 300 2 view .LVU200
+ 823 0064 FFF7FEFF 		bl	print_adcValues
+ 824              	.LVL65:
+ 301:../Core/Src/sampling.c **** 	
+ 302:../Core/Src/sampling.c **** 	return 0;
+ 825              		.loc 1 302 2 view .LVU201
+ 826              	.L67:
+ 303:../Core/Src/sampling.c **** }
+ 827              		.loc 1 303 1 is_stmt 0 view .LVU202
+ 828 0068 2046     		mov	r0, r4
+ 829 006a 08B0     		add	sp, sp, #32
+ 830              	.LCFI15:
+ 831              		.cfi_remember_state
+ 832              		.cfi_def_cfa_offset 8
+ 833              		@ sp needed
+ 834 006c 10BD     		pop	{r4, pc}
+ 835              	.LVL66:
+ 836              	.L76:
+ 837              	.LCFI16:
+ 838              		.cfi_restore_state
+ 263:../Core/Src/sampling.c **** 		return 0;
+ 839              		.loc 1 263 3 is_stmt 1 view .LVU203
+ 840 006e 1248     		ldr	r0, .L79+20
+ 841              	.LVL67:
+ 263:../Core/Src/sampling.c **** 		return 0;
+ 842              		.loc 1 263 3 is_stmt 0 view .LVU204
+ 843 0070 FFF7FEFF 		bl	UART_puts
+ 844              	.LVL68:
+ 264:../Core/Src/sampling.c **** 	}
+ 845              		.loc 1 264 3 is_stmt 1 view .LVU205
+ 264:../Core/Src/sampling.c **** 	}
+ 846              		.loc 1 264 10 is_stmt 0 view .LVU206
+ 847 0074 0024     		movs	r4, #0
+ARM GAS  /tmp/cc3Lotsd.s 			page 25
+
+
+ 848 0076 F7E7     		b	.L67
+ 849              	.LVL69:
+ 850              	.L77:
+ 269:../Core/Src/sampling.c **** 		return (char) (-EPERM);
+ 851              		.loc 1 269 3 is_stmt 1 view .LVU207
+ 852 0078 1048     		ldr	r0, .L79+24
+ 853              	.LVL70:
+ 269:../Core/Src/sampling.c **** 		return (char) (-EPERM);
+ 854              		.loc 1 269 3 is_stmt 0 view .LVU208
+ 855 007a FFF7FEFF 		bl	UART_puts
+ 856              	.LVL71:
+ 270:../Core/Src/sampling.c **** 	}
+ 857              		.loc 1 270 3 is_stmt 1 view .LVU209
+ 270:../Core/Src/sampling.c **** 	}
+ 858              		.loc 1 270 10 is_stmt 0 view .LVU210
+ 859 007e F924     		movs	r4, #249
+ 860 0080 F2E7     		b	.L67
+ 861              	.LVL72:
+ 862              	.L78:
+ 276:../Core/Src/sampling.c **** 
+ 863              		.loc 1 276 3 is_stmt 1 view .LVU211
+ 864 0082 0F48     		ldr	r0, .L79+28
+ 865              	.LVL73:
+ 276:../Core/Src/sampling.c **** 
+ 866              		.loc 1 276 3 is_stmt 0 view .LVU212
+ 867 0084 FFF7FEFF 		bl	UART_puts
+ 868              	.LVL74:
+ 279:../Core/Src/sampling.c **** 		// Mark that sampling is in progress
+ 869              		.loc 1 279 3 is_stmt 1 view .LVU213
+ 870 0088 FFF7FEFF 		bl	start_sampling
+ 871              	.LVL75:
+ 281:../Core/Src/sampling.c **** 		return 0;
+ 872              		.loc 1 281 3 view .LVU214
+ 281:../Core/Src/sampling.c **** 		return 0;
+ 873              		.loc 1 281 17 is_stmt 0 view .LVU215
+ 874 008c 054B     		ldr	r3, .L79
+ 875 008e 0122     		movs	r2, #1
+ 876 0090 1A70     		strb	r2, [r3]
+ 282:../Core/Src/sampling.c **** 	}
+ 877              		.loc 1 282 3 is_stmt 1 view .LVU216
+ 282:../Core/Src/sampling.c **** 	}
+ 878              		.loc 1 282 10 is_stmt 0 view .LVU217
+ 879 0092 0024     		movs	r4, #0
+ 880 0094 E8E7     		b	.L67
+ 881              	.LVL76:
+ 882              	.L72:
+ 259:../Core/Src/sampling.c **** 	
+ 883              		.loc 1 259 10 view .LVU218
+ 884 0096 FA24     		movs	r4, #250
+ 885 0098 E6E7     		b	.L67
+ 886              	.LVL77:
+ 887              	.L73:
+ 288:../Core/Src/sampling.c **** 	
+ 888              		.loc 1 288 10 view .LVU219
+ 889 009a FA24     		movs	r4, #250
+ 890 009c E4E7     		b	.L67
+ 891              	.L74:
+ARM GAS  /tmp/cc3Lotsd.s 			page 26
+
+
+ 892 009e FA24     		movs	r4, #250
+ 893 00a0 E2E7     		b	.L67
+ 894              	.L80:
+ 895 00a2 00BF     		.align	2
+ 896              	.L79:
+ 897 00a4 00000000 		.word	.LANCHOR8
+ 898 00a8 00000000 		.word	.LANCHOR1
+ 899 00ac 00000000 		.word	smps_left
+ 900 00b0 58000000 		.word	.LC18
+ 901 00b4 70000000 		.word	.LC19
+ 902 00b8 00000000 		.word	.LC15
+ 903 00bc 20000000 		.word	.LC16
+ 904 00c0 40000000 		.word	.LC17
+ 905              		.cfi_endproc
+ 906              	.LFE150:
+ 908              		.section	.rodata.st_cb.str1.4,"aMS",%progbits,1
+ 909              		.align	2
+ 910              	.LC20:
+ 911 0000 4E6F2073 		.ascii	"No sampling in progress.\012\015\000"
+ 911      616D706C 
+ 911      696E6720 
+ 911      696E2070 
+ 911      726F6772 
+ 912 001b 00       		.align	2
+ 913              	.LC21:
+ 914 001c 53616D70 		.ascii	"Sampling stopped.\012\015\000"
+ 914      6C696E67 
+ 914      2073746F 
+ 914      70706564 
+ 914      2E0A0D00 
+ 915              		.section	.text.st_cb,"ax",%progbits
+ 916              		.align	1
+ 917              		.global	st_cb
+ 918              		.syntax unified
+ 919              		.thumb
+ 920              		.thumb_func
+ 921              		.fpu fpv5-d16
+ 923              	st_cb:
+ 924              	.LVL78:
+ 925              	.LFB151:
+ 304:../Core/Src/sampling.c **** 
+ 305:../Core/Src/sampling.c **** /******************************************************************************
+ 306:../Core/Src/sampling.c **** @function  Stop Sampling
+ 307:../Core/Src/sampling.c **** @usage		 ST
+ 308:../Core/Src/sampling.c **** 
+ 309:../Core/Src/sampling.c **** @brief	 	 Stops sampling
+ 310:../Core/Src/sampling.c **** ******************************************************************************/
+ 311:../Core/Src/sampling.c **** 
+ 312:../Core/Src/sampling.c **** char st_cb(uint8_t argc, char** argv)
+ 313:../Core/Src/sampling.c **** {
+ 926              		.loc 1 313 1 is_stmt 1 view -0
+ 927              		.cfi_startproc
+ 928              		@ args = 0, pretend = 0, frame = 0
+ 929              		@ frame_needed = 0, uses_anonymous_args = 0
+ 930              		.loc 1 313 1 is_stmt 0 view .LVU221
+ 931 0000 10B5     		push	{r4, lr}
+ 932              	.LCFI17:
+ARM GAS  /tmp/cc3Lotsd.s 			page 27
+
+
+ 933              		.cfi_def_cfa_offset 8
+ 934              		.cfi_offset 4, -8
+ 935              		.cfi_offset 14, -4
+ 314:../Core/Src/sampling.c **** 	if(argc != 1) // number of arguments invalid?
+ 936              		.loc 1 314 2 is_stmt 1 view .LVU222
+ 937              		.loc 1 314 4 is_stmt 0 view .LVU223
+ 938 0002 0128     		cmp	r0, #1
+ 939 0004 10D1     		bne	.L84
+ 315:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 316:../Core/Src/sampling.c **** 	
+ 317:../Core/Src/sampling.c **** 	if(Sampling_flag == 0)// There was no sampling in progress to be terminated
+ 940              		.loc 1 317 2 is_stmt 1 view .LVU224
+ 941              		.loc 1 317 19 is_stmt 0 view .LVU225
+ 942 0006 094B     		ldr	r3, .L87
+ 943 0008 1C78     		ldrb	r4, [r3]	@ zero_extendqisi2
+ 944              		.loc 1 317 4 view .LVU226
+ 945 000a 4CB1     		cbz	r4, .L86
+ 318:../Core/Src/sampling.c **** 	{
+ 319:../Core/Src/sampling.c **** 		UART_puts("No sampling in progress.\n\r");
+ 320:../Core/Src/sampling.c **** 		return 0;
+ 321:../Core/Src/sampling.c **** 	}	
+ 322:../Core/Src/sampling.c **** 	// Stop taking samples
+ 323:../Core/Src/sampling.c **** 	stop_sampling();
+ 946              		.loc 1 323 2 is_stmt 1 view .LVU227
+ 947 000c FFF7FEFF 		bl	stop_sampling
+ 948              	.LVL79:
+ 324:../Core/Src/sampling.c **** 	Sampling_flag = 0;
+ 949              		.loc 1 324 2 view .LVU228
+ 950              		.loc 1 324 16 is_stmt 0 view .LVU229
+ 951 0010 0024     		movs	r4, #0
+ 952 0012 064B     		ldr	r3, .L87
+ 953 0014 1C70     		strb	r4, [r3]
+ 325:../Core/Src/sampling.c **** 	
+ 326:../Core/Src/sampling.c **** 	UART_puts("Sampling stopped.\n\r");
+ 954              		.loc 1 326 2 is_stmt 1 view .LVU230
+ 955 0016 0648     		ldr	r0, .L87+4
+ 956 0018 FFF7FEFF 		bl	UART_puts
+ 957              	.LVL80:
+ 327:../Core/Src/sampling.c **** //	UART_puts("Sampled values:\n\r");
+ 328:../Core/Src/sampling.c **** 	return 0;
+ 958              		.loc 1 328 2 view .LVU231
+ 959              	.L82:
+ 329:../Core/Src/sampling.c **** }
+ 960              		.loc 1 329 1 is_stmt 0 view .LVU232
+ 961 001c 2046     		mov	r0, r4
+ 962 001e 10BD     		pop	{r4, pc}
+ 963              	.LVL81:
+ 964              	.L86:
+ 319:../Core/Src/sampling.c **** 		return 0;
+ 965              		.loc 1 319 3 is_stmt 1 view .LVU233
+ 966 0020 0448     		ldr	r0, .L87+8
+ 967              	.LVL82:
+ 319:../Core/Src/sampling.c **** 		return 0;
+ 968              		.loc 1 319 3 is_stmt 0 view .LVU234
+ 969 0022 FFF7FEFF 		bl	UART_puts
+ 970              	.LVL83:
+ 320:../Core/Src/sampling.c **** 	}	
+ARM GAS  /tmp/cc3Lotsd.s 			page 28
+
+
+ 971              		.loc 1 320 3 is_stmt 1 view .LVU235
+ 320:../Core/Src/sampling.c **** 	}	
+ 972              		.loc 1 320 10 is_stmt 0 view .LVU236
+ 973 0026 F9E7     		b	.L82
+ 974              	.LVL84:
+ 975              	.L84:
+ 315:../Core/Src/sampling.c **** 	
+ 976              		.loc 1 315 10 view .LVU237
+ 977 0028 FA24     		movs	r4, #250
+ 978 002a F7E7     		b	.L82
+ 979              	.L88:
+ 980              		.align	2
+ 981              	.L87:
+ 982 002c 00000000 		.word	.LANCHOR8
+ 983 0030 1C000000 		.word	.LC21
+ 984 0034 00000000 		.word	.LC20
+ 985              		.cfi_endproc
+ 986              	.LFE151:
+ 988              		.section	.rodata.wg_cb.str1.4,"aMS",%progbits,1
+ 989              		.align	2
+ 990              	.LC22:
+ 991 0000 4F464600 		.ascii	"OFF\000"
+ 992              		.align	2
+ 993              	.LC23:
+ 994 0004 57617665 		.ascii	"Wave Generator OFF.\012\015\000"
+ 994      2047656E 
+ 994      65726174 
+ 994      6F72204F 
+ 994      46462E0A 
+ 995 001a 0000     		.align	2
+ 996              	.LC24:
+ 997 001c 47656E65 		.ascii	"Generating %s wave at %ld Hz.\012\015\000"
+ 997      72617469 
+ 997      6E672025 
+ 997      73207761 
+ 997      76652061 
+ 998              		.section	.text.wg_cb,"ax",%progbits
+ 999              		.align	1
+ 1000              		.global	wg_cb
+ 1001              		.syntax unified
+ 1002              		.thumb
+ 1003              		.thumb_func
+ 1004              		.fpu fpv5-d16
+ 1006              	wg_cb:
+ 1007              	.LVL85:
+ 1008              	.LFB152:
+ 330:../Core/Src/sampling.c **** 
+ 331:../Core/Src/sampling.c **** /******************************************************************************
+ 332:../Core/Src/sampling.c **** @function  Wave Generator
+ 333:../Core/Src/sampling.c **** @usage		 WG <signal> <frequency> / WG OFF
+ 334:../Core/Src/sampling.c **** 
+ 335:../Core/Src/sampling.c **** @brief	 	 Generates a <signal> at a given <frequency>. To stop signal output
+ 336:../Core/Src/sampling.c **** 					 is used 'WG OFF'
+ 337:../Core/Src/sampling.c **** ******************************************************************************/
+ 338:../Core/Src/sampling.c **** 
+ 339:../Core/Src/sampling.c **** const Signal_t signal_list[] = 
+ 340:../Core/Src/sampling.c **** {
+ARM GAS  /tmp/cc3Lotsd.s 			page 29
+
+
+ 341:../Core/Src/sampling.c **** 	{"sin", wavegen_sin},
+ 342:../Core/Src/sampling.c **** 	{"tri", wavegen_tri},
+ 343:../Core/Src/sampling.c **** 	{"sqr", wavegen_sqr},
+ 344:../Core/Src/sampling.c **** 	{"stw", wavegen_stw},
+ 345:../Core/Src/sampling.c **** 	{0,0}
+ 346:../Core/Src/sampling.c **** };
+ 347:../Core/Src/sampling.c **** 
+ 348:../Core/Src/sampling.c **** char wg_cb(uint8_t argc, char** argv)
+ 349:../Core/Src/sampling.c **** {
+ 1009              		.loc 1 349 1 is_stmt 1 view -0
+ 1010              		.cfi_startproc
+ 1011              		@ args = 0, pretend = 0, frame = 40
+ 1012              		@ frame_needed = 0, uses_anonymous_args = 0
+ 350:../Core/Src/sampling.c **** 	uint32_t freq;
+ 1013              		.loc 1 350 2 view .LVU239
+ 351:../Core/Src/sampling.c **** 	uint8_t retval = (char)(-EINVARG);
+ 1014              		.loc 1 351 2 view .LVU240
+ 352:../Core/Src/sampling.c **** 	const Signal_t *signal_ptr = signal_list;
+ 1015              		.loc 1 352 2 view .LVU241
+ 353:../Core/Src/sampling.c **** 	char str[40];
+ 1016              		.loc 1 353 2 view .LVU242
+ 354:../Core/Src/sampling.c **** 	
+ 355:../Core/Src/sampling.c **** 	if(argc > 3) // number of arguments invalid?
+ 1017              		.loc 1 355 2 view .LVU243
+ 1018              		.loc 1 355 4 is_stmt 0 view .LVU244
+ 1019 0000 0328     		cmp	r0, #3
+ 1020 0002 3AD8     		bhi	.L96
+ 349:../Core/Src/sampling.c **** 	uint32_t freq;
+ 1021              		.loc 1 349 1 view .LVU245
+ 1022 0004 70B5     		push	{r4, r5, r6, lr}
+ 1023              	.LCFI18:
+ 1024              		.cfi_def_cfa_offset 16
+ 1025              		.cfi_offset 4, -16
+ 1026              		.cfi_offset 5, -12
+ 1027              		.cfi_offset 6, -8
+ 1028              		.cfi_offset 14, -4
+ 1029 0006 8CB0     		sub	sp, sp, #48
+ 1030              	.LCFI19:
+ 1031              		.cfi_def_cfa_offset 64
+ 1032 0008 0D46     		mov	r5, r1
+ 356:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 357:../Core/Src/sampling.c **** 	
+ 358:../Core/Src/sampling.c **** 	if(argc == 2)
+ 1033              		.loc 1 358 2 is_stmt 1 view .LVU246
+ 1034              		.loc 1 358 4 is_stmt 0 view .LVU247
+ 1035 000a 0228     		cmp	r0, #2
+ 1036 000c 0FD0     		beq	.L103
+ 359:../Core/Src/sampling.c **** 	{
+ 360:../Core/Src/sampling.c **** 		// With 2 arguments, the only valid command is "WG OFF"
+ 361:../Core/Src/sampling.c **** 		if(strcmp(argv[1], "OFF") == 0)
+ 362:../Core/Src/sampling.c **** 		{
+ 363:../Core/Src/sampling.c **** 			// Stop signal output
+ 364:../Core/Src/sampling.c **** 			wavegen_stop();
+ 365:../Core/Src/sampling.c **** 			UART_puts("Wave Generator OFF.\n\r");
+ 366:../Core/Src/sampling.c **** 			retval = 0; // Exit success
+ 367:../Core/Src/sampling.c **** 		}
+ 368:../Core/Src/sampling.c **** 		// Else, invalid argument
+ARM GAS  /tmp/cc3Lotsd.s 			page 30
+
+
+ 369:../Core/Src/sampling.c **** 		return retval;
+ 370:../Core/Src/sampling.c **** 	}
+ 371:../Core/Src/sampling.c **** 	
+ 372:../Core/Src/sampling.c **** 	freq = my_atoi(argv[2]);
+ 1037              		.loc 1 372 2 is_stmt 1 view .LVU248
+ 1038              		.loc 1 372 9 is_stmt 0 view .LVU249
+ 1039 000e 8868     		ldr	r0, [r1, #8]
+ 1040              	.LVL86:
+ 1041              		.loc 1 372 9 view .LVU250
+ 1042 0010 FFF7FEFF 		bl	my_atoi
+ 1043              	.LVL87:
+ 1044              		.loc 1 372 9 view .LVU251
+ 1045 0014 0646     		mov	r6, r0
+ 1046              	.LVL88:
+ 373:../Core/Src/sampling.c **** 	if((freq == 0) || (freq > 100))
+ 1047              		.loc 1 373 2 is_stmt 1 view .LVU252
+ 1048              		.loc 1 373 17 is_stmt 0 view .LVU253
+ 1049 0016 431E     		subs	r3, r0, #1
+ 1050              		.loc 1 373 4 view .LVU254
+ 1051 0018 632B     		cmp	r3, #99
+ 1052 001a 30D8     		bhi	.L98
+ 352:../Core/Src/sampling.c **** 	char str[40];
+ 1053              		.loc 1 352 18 view .LVU255
+ 1054 001c 194C     		ldr	r4, .L107
+ 1055              	.LVL89:
+ 1056              	.L93:
+ 374:../Core/Src/sampling.c **** 		return (char)(-EINVARG);
+ 375:../Core/Src/sampling.c **** 	
+ 376:../Core/Src/sampling.c **** 	// check if given <signal> is valid
+ 377:../Core/Src/sampling.c **** 	while(signal_ptr->name)
+ 1057              		.loc 1 377 7 is_stmt 1 view .LVU256
+ 1058              		.loc 1 377 18 is_stmt 0 view .LVU257
+ 1059 001e 2168     		ldr	r1, [r4]
+ 1060              		.loc 1 377 7 view .LVU258
+ 1061 0020 41B3     		cbz	r1, .L104
+ 378:../Core/Src/sampling.c **** 	{
+ 379:../Core/Src/sampling.c **** 		if(strcmp(argv[1], signal_ptr->name) == 0)
+ 1062              		.loc 1 379 3 is_stmt 1 view .LVU259
+ 1063              		.loc 1 379 6 is_stmt 0 view .LVU260
+ 1064 0022 6868     		ldr	r0, [r5, #4]
+ 1065 0024 FFF7FEFF 		bl	strcmp
+ 1066              	.LVL90:
+ 1067              		.loc 1 379 5 view .LVU261
+ 1068 0028 78B1     		cbz	r0, .L105
+ 380:../Core/Src/sampling.c **** 		{
+ 381:../Core/Src/sampling.c **** 			wavegen_init(); // Init WaveGen peripherals
+ 382:../Core/Src/sampling.c **** 			signal_ptr->fn();// Generate signal
+ 383:../Core/Src/sampling.c **** 			wavegen_freq_update(freq); // Update signal frequency
+ 384:../Core/Src/sampling.c **** 			wavegen_start(); // Start signal output
+ 385:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Generating %s wave at %ld Hz.\n\r", argv[1], freq);
+ 386:../Core/Src/sampling.c **** 			UART_puts(str);
+ 387:../Core/Src/sampling.c **** 			retval = 0;	// Exit success
+ 388:../Core/Src/sampling.c **** 			break;
+ 389:../Core/Src/sampling.c **** 		}
+ 390:../Core/Src/sampling.c **** 		signal_ptr++;
+ 1069              		.loc 1 390 3 is_stmt 1 view .LVU262
+ 1070              		.loc 1 390 13 is_stmt 0 view .LVU263
+ARM GAS  /tmp/cc3Lotsd.s 			page 31
+
+
+ 1071 002a 0834     		adds	r4, r4, #8
+ 1072              	.LVL91:
+ 1073              		.loc 1 390 13 view .LVU264
+ 1074 002c F7E7     		b	.L93
+ 1075              	.LVL92:
+ 1076              	.L103:
+ 361:../Core/Src/sampling.c **** 		{
+ 1077              		.loc 1 361 3 is_stmt 1 view .LVU265
+ 361:../Core/Src/sampling.c **** 		{
+ 1078              		.loc 1 361 6 is_stmt 0 view .LVU266
+ 1079 002e 1649     		ldr	r1, .L107+4
+ 1080              	.LVL93:
+ 361:../Core/Src/sampling.c **** 		{
+ 1081              		.loc 1 361 6 view .LVU267
+ 1082 0030 6868     		ldr	r0, [r5, #4]
+ 1083              	.LVL94:
+ 361:../Core/Src/sampling.c **** 		{
+ 1084              		.loc 1 361 6 view .LVU268
+ 1085 0032 FFF7FEFF 		bl	strcmp
+ 1086              	.LVL95:
+ 361:../Core/Src/sampling.c **** 		{
+ 1087              		.loc 1 361 5 view .LVU269
+ 1088 0036 08B1     		cbz	r0, .L106
+ 351:../Core/Src/sampling.c **** 	const Signal_t *signal_ptr = signal_list;
+ 1089              		.loc 1 351 10 view .LVU270
+ 1090 0038 FA20     		movs	r0, #250
+ 369:../Core/Src/sampling.c **** 	}
+ 1091              		.loc 1 369 3 is_stmt 1 view .LVU271
+ 369:../Core/Src/sampling.c **** 	}
+ 1092              		.loc 1 369 10 is_stmt 0 view .LVU272
+ 1093 003a 1CE0     		b	.L90
+ 1094              	.L106:
+ 364:../Core/Src/sampling.c **** 			UART_puts("Wave Generator OFF.\n\r");
+ 1095              		.loc 1 364 4 is_stmt 1 view .LVU273
+ 1096 003c FFF7FEFF 		bl	wavegen_stop
+ 1097              	.LVL96:
+ 365:../Core/Src/sampling.c **** 			retval = 0; // Exit success
+ 1098              		.loc 1 365 4 view .LVU274
+ 1099 0040 1248     		ldr	r0, .L107+8
+ 1100 0042 FFF7FEFF 		bl	UART_puts
+ 1101              	.LVL97:
+ 366:../Core/Src/sampling.c **** 		}
+ 1102              		.loc 1 366 4 view .LVU275
+ 366:../Core/Src/sampling.c **** 		}
+ 1103              		.loc 1 366 11 is_stmt 0 view .LVU276
+ 1104 0046 0020     		movs	r0, #0
+ 1105 0048 15E0     		b	.L90
+ 1106              	.LVL98:
+ 1107              	.L105:
+ 381:../Core/Src/sampling.c **** 			signal_ptr->fn();// Generate signal
+ 1108              		.loc 1 381 4 is_stmt 1 view .LVU277
+ 1109 004a FFF7FEFF 		bl	wavegen_init
+ 1110              	.LVL99:
+ 382:../Core/Src/sampling.c **** 			wavegen_freq_update(freq); // Update signal frequency
+ 1111              		.loc 1 382 4 view .LVU278
+ 382:../Core/Src/sampling.c **** 			wavegen_freq_update(freq); // Update signal frequency
+ 1112              		.loc 1 382 14 is_stmt 0 view .LVU279
+ARM GAS  /tmp/cc3Lotsd.s 			page 32
+
+
+ 1113 004e 6368     		ldr	r3, [r4, #4]
+ 382:../Core/Src/sampling.c **** 			wavegen_freq_update(freq); // Update signal frequency
+ 1114              		.loc 1 382 4 view .LVU280
+ 1115 0050 9847     		blx	r3
+ 1116              	.LVL100:
+ 383:../Core/Src/sampling.c **** 			wavegen_start(); // Start signal output
+ 1117              		.loc 1 383 4 is_stmt 1 view .LVU281
+ 1118 0052 3046     		mov	r0, r6
+ 1119 0054 FFF7FEFF 		bl	wavegen_freq_update
+ 1120              	.LVL101:
+ 384:../Core/Src/sampling.c **** 			snprintf(str, sizeof(str), "Generating %s wave at %ld Hz.\n\r", argv[1], freq);
+ 1121              		.loc 1 384 4 view .LVU282
+ 1122 0058 FFF7FEFF 		bl	wavegen_start
+ 1123              	.LVL102:
+ 385:../Core/Src/sampling.c **** 			UART_puts(str);
+ 1124              		.loc 1 385 4 view .LVU283
+ 1125 005c 0096     		str	r6, [sp]
+ 1126 005e 6B68     		ldr	r3, [r5, #4]
+ 1127 0060 0B4A     		ldr	r2, .L107+12
+ 1128 0062 2821     		movs	r1, #40
+ 1129 0064 02A8     		add	r0, sp, #8
+ 1130 0066 FFF7FEFF 		bl	snprintf
+ 1131              	.LVL103:
+ 386:../Core/Src/sampling.c **** 			retval = 0;	// Exit success
+ 1132              		.loc 1 386 4 view .LVU284
+ 1133 006a 02A8     		add	r0, sp, #8
+ 1134 006c FFF7FEFF 		bl	UART_puts
+ 1135              	.LVL104:
+ 387:../Core/Src/sampling.c **** 			break;
+ 1136              		.loc 1 387 4 view .LVU285
+ 388:../Core/Src/sampling.c **** 		}
+ 1137              		.loc 1 388 4 view .LVU286
+ 387:../Core/Src/sampling.c **** 			break;
+ 1138              		.loc 1 387 11 is_stmt 0 view .LVU287
+ 1139 0070 0020     		movs	r0, #0
+ 388:../Core/Src/sampling.c **** 		}
+ 1140              		.loc 1 388 4 view .LVU288
+ 1141 0072 00E0     		b	.L90
+ 1142              	.LVL105:
+ 1143              	.L104:
+ 351:../Core/Src/sampling.c **** 	const Signal_t *signal_ptr = signal_list;
+ 1144              		.loc 1 351 10 view .LVU289
+ 1145 0074 FA20     		movs	r0, #250
+ 1146              	.LVL106:
+ 1147              	.L90:
+ 391:../Core/Src/sampling.c **** 	}
+ 392:../Core/Src/sampling.c **** 
+ 393:../Core/Src/sampling.c **** 	// If <signal> was not found, retval equals (-EINVARG)
+ 394:../Core/Src/sampling.c **** 	return retval;
+ 395:../Core/Src/sampling.c **** }
+ 1148              		.loc 1 395 1 view .LVU290
+ 1149 0076 0CB0     		add	sp, sp, #48
+ 1150              	.LCFI20:
+ 1151              		.cfi_def_cfa_offset 16
+ 1152              		@ sp needed
+ 1153 0078 70BD     		pop	{r4, r5, r6, pc}
+ 1154              	.LVL107:
+ARM GAS  /tmp/cc3Lotsd.s 			page 33
+
+
+ 1155              	.L96:
+ 1156              	.LCFI21:
+ 1157              		.cfi_def_cfa_offset 0
+ 1158              		.cfi_restore 4
+ 1159              		.cfi_restore 5
+ 1160              		.cfi_restore 6
+ 1161              		.cfi_restore 14
+ 356:../Core/Src/sampling.c **** 	
+ 1162              		.loc 1 356 10 view .LVU291
+ 1163 007a FA20     		movs	r0, #250
+ 1164              	.LVL108:
+ 1165              		.loc 1 395 1 view .LVU292
+ 1166 007c 7047     		bx	lr
+ 1167              	.LVL109:
+ 1168              	.L98:
+ 1169              	.LCFI22:
+ 1170              		.cfi_def_cfa_offset 64
+ 1171              		.cfi_offset 4, -16
+ 1172              		.cfi_offset 5, -12
+ 1173              		.cfi_offset 6, -8
+ 1174              		.cfi_offset 14, -4
+ 374:../Core/Src/sampling.c **** 	
+ 1175              		.loc 1 374 10 view .LVU293
+ 1176 007e FA20     		movs	r0, #250
+ 1177              	.LVL110:
+ 374:../Core/Src/sampling.c **** 	
+ 1178              		.loc 1 374 10 view .LVU294
+ 1179 0080 F9E7     		b	.L90
+ 1180              	.L108:
+ 1181 0082 00BF     		.align	2
+ 1182              	.L107:
+ 1183 0084 00000000 		.word	.LANCHOR9
+ 1184 0088 00000000 		.word	.LC22
+ 1185 008c 04000000 		.word	.LC23
+ 1186 0090 1C000000 		.word	.LC24
+ 1187              		.cfi_endproc
+ 1188              	.LFE152:
+ 1190              		.global	signal_list
+ 1191              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1192              		.align	2
+ 1193              	.LC25:
+ 1194 0000 73696E00 		.ascii	"sin\000"
+ 1195              		.align	2
+ 1196              	.LC26:
+ 1197 0004 74726900 		.ascii	"tri\000"
+ 1198              		.align	2
+ 1199              	.LC27:
+ 1200 0008 73717200 		.ascii	"sqr\000"
+ 1201              		.align	2
+ 1202              	.LC28:
+ 1203 000c 73747700 		.ascii	"stw\000"
+ 1204              		.global	timer_reloads
+ 1205              		.global	timeunits_arr
+ 1206              		.align	2
+ 1207              	.LC29:
+ 1208 0010 6D696372 		.ascii	"micro\000"
+ 1208      6F00
+ARM GAS  /tmp/cc3Lotsd.s 			page 34
+
+
+ 1209 0016 0000     		.align	2
+ 1210              	.LC30:
+ 1211 0018 6D7300   		.ascii	"ms\000"
+ 1212 001b 00       		.align	2
+ 1213              	.LC31:
+ 1214 001c 7300     		.ascii	"s\000"
+ 1215              		.global	f
+ 1216              		.global	FIR_BP_x_coefs
+ 1217              		.global	FIR_HP_x_coefs
+ 1218              		.global	FIR_LP_x_coefs
+ 1219              		.global	FIR_y_coefs
+ 1220              		.global	IIR_x_coefs
+ 1221              		.global	IIR_y_coefs
+ 1222              		.global	IIR_filter_weight
+ 1223              		.section	.bss.SP_cb_done,"aw",%nobits
+ 1224              		.set	.LANCHOR1,. + 0
+ 1227              	SP_cb_done:
+ 1228 0000 00       		.space	1
+ 1229              		.section	.bss.Sampling_flag,"aw",%nobits
+ 1230              		.set	.LANCHOR8,. + 0
+ 1233              	Sampling_flag:
+ 1234 0000 00       		.space	1
+ 1235              		.section	.bss.f,"aw",%nobits
+ 1236              		.align	2
+ 1237              		.set	.LANCHOR3,. + 0
+ 1240              	f:
+ 1241 0000 00000000 		.space	32
+ 1241      00000000 
+ 1241      00000000 
+ 1241      00000000 
+ 1241      00000000 
+ 1242              		.section	.data.timeunits_arr,"aw"
+ 1243              		.align	2
+ 1244              		.set	.LANCHOR0,. + 0
+ 1247              	timeunits_arr:
+ 1248 0000 10000000 		.word	.LC29
+ 1249 0004 18000000 		.word	.LC30
+ 1250 0008 1C000000 		.word	.LC31
+ 1251              		.section	.rodata.FIR_BP_x_coefs,"a"
+ 1252              		.align	2
+ 1253              		.set	.LANCHOR7,. + 0
+ 1256              	FIR_BP_x_coefs:
+ 1257 0000 2A3B7D3C 		.word	1014840106
+ 1258 0004 18963F3D 		.word	1027577368
+ 1259 0008 431A553D 		.word	1028987459
+ 1260 000c 92FF3FA4 		.word	-1539309678
+ 1261 0010 B262B8BD 		.word	-1111989582
+ 1262 0014 BD001BBE 		.word	-1105526595
+ 1263 0018 90A0F8BD 		.word	-1107779440
+ 1264 001c 00000000 		.word	0
+ 1265 0020 DA720E3E 		.word	1041134298
+ 1266 0024 CDCC4C3E 		.word	1045220557
+ 1267 0028 DA720E3E 		.word	1041134298
+ 1268 002c 00000000 		.word	0
+ 1269 0030 90A0F8BD 		.word	-1107779440
+ 1270 0034 BD001BBE 		.word	-1105526595
+ 1271 0038 B262B8BD 		.word	-1111989582
+ARM GAS  /tmp/cc3Lotsd.s 			page 35
+
+
+ 1272 003c 92FF3FA4 		.word	-1539309678
+ 1273 0040 431A553D 		.word	1028987459
+ 1274 0044 18963F3D 		.word	1027577368
+ 1275 0048 2A3B7D3C 		.word	1014840106
+ 1276              		.section	.rodata.FIR_HP_x_coefs,"a"
+ 1277              		.align	2
+ 1278              		.set	.LANCHOR6,. + 0
+ 1281              	FIR_HP_x_coefs:
+ 1282 0000 8539E6BB 		.word	-1142539899
+ 1283 0004 73077B3B 		.word	997918579
+ 1284 0008 65717F3C 		.word	1014985061
+ 1285 000c DF36D33C 		.word	1020475103
+ 1286 0010 3961023D 		.word	1023566137
+ 1287 0014 C713013D 		.word	1023480775
+ 1288 0018 1896BF3C 		.word	1019188760
+ 1289 001c 5D18E93B 		.word	1005131869
+ 1290 0020 B64C86BC 		.word	-1132049226
+ 1291 0024 B26238BD 		.word	-1120378190
+ 1292 0028 B0FF9ABD 		.word	-1113915472
+ 1293 002c 62A1D6BD 		.word	-1110007454
+ 1294 0030 A9D903BE 		.word	-1107043927
+ 1295 0034 6EFA13BE 		.word	-1105986962
+ 1296 0038 9A99593F 		.word	1062836634
+ 1297 003c 6EFA13BE 		.word	-1105986962
+ 1298 0040 A9D903BE 		.word	-1107043927
+ 1299 0044 62A1D6BD 		.word	-1110007454
+ 1300 0048 B0FF9ABD 		.word	-1113915472
+ 1301 004c B26238BD 		.word	-1120378190
+ 1302 0050 B64C86BC 		.word	-1132049226
+ 1303 0054 5D18E93B 		.word	1005131869
+ 1304 0058 1896BF3C 		.word	1019188760
+ 1305 005c C713013D 		.word	1023480775
+ 1306 0060 3961023D 		.word	1023566137
+ 1307 0064 DF36D33C 		.word	1020475103
+ 1308 0068 65717F3C 		.word	1014985061
+ 1309 006c 73077B3B 		.word	997918579
+ 1310 0070 8539E6BB 		.word	-1142539899
+ 1311              		.section	.rodata.FIR_LP_x_coefs,"a"
+ 1312              		.align	2
+ 1313              		.set	.LANCHOR4,. + 0
+ 1316              	FIR_LP_x_coefs:
+ 1317 0000 3D7C993B 		.word	999914557
+ 1318 0004 75D18FA2 		.word	-1567633035
+ 1319 0008 D3A3A9BB 		.word	-1146510381
+ 1320 000c 994B2ABC 		.word	-1138078823
+ 1321 0010 512F78BC 		.word	-1132974255
+ 1322 0014 37009BBC 		.word	-1130692553
+ 1323 0018 AAD7ADBC 		.word	-1129457750
+ 1324 001c D124B1BC 		.word	-1129241391
+ 1325 0020 7C46A2BC 		.word	-1130215812
+ 1326 0024 65717FBC 		.word	-1132498587
+ 1327 0028 E38112BC 		.word	-1139637789
+ 1328 002c 75D18F22 		.word	579850613
+ 1329 0030 8C0F333C 		.word	1009979276
+ 1330 0034 1896BF3C 		.word	1019188760
+ 1331 0038 04AF163D 		.word	1024896772
+ 1332 003c E7A94E3D 		.word	1028565479
+ARM GAS  /tmp/cc3Lotsd.s 			page 36
+
+
+ 1333 0040 3961823D 		.word	1031954745
+ 1334 0044 B0FF9A3D 		.word	1033568176
+ 1335 0048 5CCCAF3D 		.word	1034931292
+ 1336 004c 9E96BF3D 		.word	1035966110
+ 1337 0050 8A72C93D 		.word	1036612234
+ 1338 0054 CDCCCC3D 		.word	1036831949
+ 1339 0058 8A72C93D 		.word	1036612234
+ 1340 005c 9E96BF3D 		.word	1035966110
+ 1341 0060 5CCCAF3D 		.word	1034931292
+ 1342 0064 B0FF9A3D 		.word	1033568176
+ 1343 0068 3961823D 		.word	1031954745
+ 1344 006c E7A94E3D 		.word	1028565479
+ 1345 0070 04AF163D 		.word	1024896772
+ 1346 0074 1896BF3C 		.word	1019188760
+ 1347 0078 8C0F333C 		.word	1009979276
+ 1348 007c 75D18F22 		.word	579850613
+ 1349 0080 E38112BC 		.word	-1139637789
+ 1350 0084 65717FBC 		.word	-1132498587
+ 1351 0088 7C46A2BC 		.word	-1130215812
+ 1352 008c D124B1BC 		.word	-1129241391
+ 1353 0090 AAD7ADBC 		.word	-1129457750
+ 1354 0094 37009BBC 		.word	-1130692553
+ 1355 0098 512F78BC 		.word	-1132974255
+ 1356 009c 994B2ABC 		.word	-1138078823
+ 1357 00a0 D3A3A9BB 		.word	-1146510381
+ 1358 00a4 75D18FA2 		.word	-1567633035
+ 1359 00a8 3D7C993B 		.word	999914557
+ 1360              		.section	.rodata.FIR_y_coefs,"a"
+ 1361              		.align	2
+ 1362              		.set	.LANCHOR5,. + 0
+ 1365              	FIR_y_coefs:
+ 1366 0000 00000000 		.space	4
+ 1367              		.section	.rodata.IIR_filter_weight,"a"
+ 1368              		.align	2
+ 1371              	IIR_filter_weight:
+ 1372 0000 CDCCCC3E 		.word	1053609165
+ 1373              		.section	.rodata.IIR_x_coefs,"a"
+ 1374              		.align	2
+ 1377              	IIR_x_coefs:
+ 1378 0000 00000000 		.word	0
+ 1379 0004 9A99193F 		.word	1058642330
+ 1380              		.section	.rodata.IIR_y_coefs,"a"
+ 1381              		.align	2
+ 1384              	IIR_y_coefs:
+ 1385 0000 00000000 		.word	0
+ 1386 0004 CDCCCC3E 		.word	1053609165
+ 1387              		.section	.rodata.signal_list,"a"
+ 1388              		.align	2
+ 1389              		.set	.LANCHOR9,. + 0
+ 1392              	signal_list:
+ 1393 0000 00000000 		.word	.LC25
+ 1394 0004 00000000 		.word	wavegen_sin
+ 1395 0008 04000000 		.word	.LC26
+ 1396 000c 00000000 		.word	wavegen_tri
+ 1397 0010 08000000 		.word	.LC27
+ 1398 0014 00000000 		.word	wavegen_sqr
+ 1399 0018 0C000000 		.word	.LC28
+ARM GAS  /tmp/cc3Lotsd.s 			page 37
+
+
+ 1400 001c 00000000 		.word	wavegen_stw
+ 1401 0020 00000000 		.word	0
+ 1402 0024 00000000 		.word	0
+ 1403              		.section	.rodata.timer_reloads,"a"
+ 1404              		.align	2
+ 1405              		.set	.LANCHOR2,. + 0
+ 1408              	timer_reloads:
+ 1409 0000 3600     		.short	54
+ 1410 0002 0200     		.short	2
+ 1411 0004 F0D2     		.short	-11536
+ 1412 0006 0200     		.short	2
+ 1413 0008 60EA     		.short	-5536
+ 1414 000a 0807     		.short	1800
+ 1415              		.text
+ 1416              	.Letext0:
+ 1417              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 1418              		.file 3 "../Core/Inc/filters.h"
+ 1419              		.file 4 "../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h"
+ 1420              		.file 5 "../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h"
+ 1421              		.file 6 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 1422              		.file 7 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 1423              		.file 8 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_adc.h"
+ 1424              		.file 9 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h"
+ 1425              		.file 10 "../Core/Inc/signals.h"
+ 1426              		.file 11 "../Core/Inc/filter_coefs.h"
+ 1427              		.file 12 "../Core/Inc/adc.h"
+ 1428              		.file 13 "../Core/Inc/tim.h"
+ 1429              		.file 14 "../Core/Inc/sampling.h"
+ 1430              		.file 15 "../Core/Inc/utils.h"
+ 1431              		.file 16 "/usr/include/newlib/string.h"
+ 1432              		.file 17 "../Core/Inc/usart.h"
+ 1433              		.file 18 "/usr/include/newlib/stdio.h"
+ARM GAS  /tmp/cc3Lotsd.s 			page 38
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 sampling.c
+     /tmp/cc3Lotsd.s:17     .text.start_sampling:0000000000000000 $t
+     /tmp/cc3Lotsd.s:24     .text.start_sampling:0000000000000000 start_sampling
+     /tmp/cc3Lotsd.s:54     .text.start_sampling:0000000000000018 $d
+     /tmp/cc3Lotsd.s:61     .text.stop_sampling:0000000000000000 $t
+     /tmp/cc3Lotsd.s:67     .text.stop_sampling:0000000000000000 stop_sampling
+     /tmp/cc3Lotsd.s:91     .text.stop_sampling:0000000000000010 $d
+     /tmp/cc3Lotsd.s:97     .rodata.sp_cb.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:101    .text.sp_cb:0000000000000000 $t
+     /tmp/cc3Lotsd.s:108    .text.sp_cb:0000000000000000 sp_cb
+     /tmp/cc3Lotsd.s:251    .text.sp_cb:0000000000000080 $d
+     /tmp/cc3Lotsd.s:259    .rodata.ac_cb.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:266    .text.ac_cb:0000000000000000 $t
+     /tmp/cc3Lotsd.s:273    .text.ac_cb:0000000000000000 ac_cb
+     /tmp/cc3Lotsd.s:367    .text.ac_cb:000000000000004c $d
+     /tmp/cc3Lotsd.s:374    .rodata.fn_cb.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:405    .text.fn_cb:0000000000000000 $t
+     /tmp/cc3Lotsd.s:412    .text.fn_cb:0000000000000000 fn_cb
+     /tmp/cc3Lotsd.s:608    .text.fn_cb:00000000000000c4 $d
+     /tmp/cc3Lotsd.s:627    .rodata.ff_cb.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:634    .text.ff_cb:0000000000000000 $t
+     /tmp/cc3Lotsd.s:641    .text.ff_cb:0000000000000000 ff_cb
+     /tmp/cc3Lotsd.s:697    .text.ff_cb:0000000000000028 $d
+     /tmp/cc3Lotsd.s:704    .rodata.s_cb.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:720    .text.s_cb:0000000000000000 $t
+     /tmp/cc3Lotsd.s:727    .text.s_cb:0000000000000000 s_cb
+     /tmp/cc3Lotsd.s:897    .text.s_cb:00000000000000a4 $d
+     /tmp/cc3Lotsd.s:909    .rodata.st_cb.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:916    .text.st_cb:0000000000000000 $t
+     /tmp/cc3Lotsd.s:923    .text.st_cb:0000000000000000 st_cb
+     /tmp/cc3Lotsd.s:982    .text.st_cb:000000000000002c $d
+     /tmp/cc3Lotsd.s:989    .rodata.wg_cb.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:999    .text.wg_cb:0000000000000000 $t
+     /tmp/cc3Lotsd.s:1006   .text.wg_cb:0000000000000000 wg_cb
+     /tmp/cc3Lotsd.s:1183   .text.wg_cb:0000000000000084 $d
+     /tmp/cc3Lotsd.s:1392   .rodata.signal_list:0000000000000000 signal_list
+     /tmp/cc3Lotsd.s:1192   .rodata.str1.4:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1408   .rodata.timer_reloads:0000000000000000 timer_reloads
+     /tmp/cc3Lotsd.s:1247   .data.timeunits_arr:0000000000000000 timeunits_arr
+     /tmp/cc3Lotsd.s:1240   .bss.f:0000000000000000 f
+     /tmp/cc3Lotsd.s:1256   .rodata.FIR_BP_x_coefs:0000000000000000 FIR_BP_x_coefs
+     /tmp/cc3Lotsd.s:1281   .rodata.FIR_HP_x_coefs:0000000000000000 FIR_HP_x_coefs
+     /tmp/cc3Lotsd.s:1316   .rodata.FIR_LP_x_coefs:0000000000000000 FIR_LP_x_coefs
+     /tmp/cc3Lotsd.s:1365   .rodata.FIR_y_coefs:0000000000000000 FIR_y_coefs
+     /tmp/cc3Lotsd.s:1377   .rodata.IIR_x_coefs:0000000000000000 IIR_x_coefs
+     /tmp/cc3Lotsd.s:1384   .rodata.IIR_y_coefs:0000000000000000 IIR_y_coefs
+     /tmp/cc3Lotsd.s:1371   .rodata.IIR_filter_weight:0000000000000000 IIR_filter_weight
+     /tmp/cc3Lotsd.s:1227   .bss.SP_cb_done:0000000000000000 SP_cb_done
+     /tmp/cc3Lotsd.s:1228   .bss.SP_cb_done:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1233   .bss.Sampling_flag:0000000000000000 Sampling_flag
+     /tmp/cc3Lotsd.s:1234   .bss.Sampling_flag:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1236   .bss.f:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1243   .data.timeunits_arr:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1252   .rodata.FIR_BP_x_coefs:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1277   .rodata.FIR_HP_x_coefs:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1312   .rodata.FIR_LP_x_coefs:0000000000000000 $d
+ARM GAS  /tmp/cc3Lotsd.s 			page 39
+
+
+     /tmp/cc3Lotsd.s:1361   .rodata.FIR_y_coefs:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1368   .rodata.IIR_filter_weight:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1374   .rodata.IIR_x_coefs:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1381   .rodata.IIR_y_coefs:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1388   .rodata.signal_list:0000000000000000 $d
+     /tmp/cc3Lotsd.s:1404   .rodata.timer_reloads:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+HAL_ADC_Start_IT
+HAL_TIM_Base_Start_IT
+ADC_smp_num
+hadc1
+htim6
+HAL_ADC_Stop_IT
+HAL_TIM_Base_Stop_IT
+my_atoi
+strcmp
+TIMER_6_Update
+snprintf
+UART_puts
+ADC_Config_Channel
+filter_init
+filter_kill
+sprintf
+print_adcValues
+smps_left
+wavegen_stop
+wavegen_init
+wavegen_freq_update
+wavegen_start
+wavegen_sin
+wavegen_tri
+wavegen_sqr
+wavegen_stw
