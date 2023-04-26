@@ -1,0 +1,398 @@
+ARM GAS  /tmp/cc67hpY3.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"parser.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.rodata.parse_cmd.str1.4,"aMS",%progbits,1
+  17              		.align	2
+  18              	.LC0:
+  19 0000 2000     		.ascii	" \000"
+  20              		.section	.text.parse_cmd,"ax",%progbits
+  21              		.align	1
+  22              		.global	parse_cmd
+  23              		.arch armv7e-m
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  27              		.fpu fpv5-d16
+  29              	parse_cmd:
+  30              	.LVL0:
+  31              	.LFB0:
+  32              		.file 1 "../Core/Src/parser.c"
+   1:../Core/Src/parser.c **** #include "parser.h"
+   2:../Core/Src/parser.c **** #include <string.h>
+   3:../Core/Src/parser.c **** #include <stdint.h>
+   4:../Core/Src/parser.c **** #include <stdlib.h>
+   5:../Core/Src/parser.c **** 
+   6:../Core/Src/parser.c **** /*
+   7:../Core/Src/parser.c **** 	Analyses the command sent in str_in and execute its callback
+   8:../Core/Src/parser.c **** */
+   9:../Core/Src/parser.c **** char parse_cmd(const Command_t cmd_list[], const char *str_in)
+  10:../Core/Src/parser.c **** {		
+  33              		.loc 1 10 1 view -0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37              		.loc 1 10 1 is_stmt 0 view .LVU1
+  38 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 24
+  41              		.cfi_offset 4, -24
+  42              		.cfi_offset 5, -20
+  43              		.cfi_offset 6, -16
+  44              		.cfi_offset 7, -12
+  45              		.cfi_offset 8, -8
+  46              		.cfi_offset 14, -4
+  11:../Core/Src/parser.c **** 	char **argv = NULL; // List of arguments
+  47              		.loc 1 11 2 is_stmt 1 view .LVU2
+ARM GAS  /tmp/cc67hpY3.s 			page 2
+
+
+  48              	.LVL1:
+  12:../Core/Src/parser.c **** 	char *arg; // aux variable. Holds latest found argument
+  49              		.loc 1 12 2 view .LVU3
+  13:../Core/Src/parser.c **** 	char *s; // copy of received command. Necessary to use strtok
+  50              		.loc 1 13 2 view .LVU4
+  14:../Core/Src/parser.c **** 	
+  15:../Core/Src/parser.c **** 	uint8_t len;
+  51              		.loc 1 15 2 view .LVU5
+  16:../Core/Src/parser.c **** 	uint8_t argc = 0;
+  52              		.loc 1 16 2 view .LVU6
+  17:../Core/Src/parser.c **** 	char retval = (char)(-ECMDNF);
+  53              		.loc 1 17 2 view .LVU7
+  18:../Core/Src/parser.c **** 	
+  19:../Core/Src/parser.c **** 	if ((str_in == NULL) || (strlen(str_in) == 0)) // empty command
+  54              		.loc 1 19 2 view .LVU8
+  55              		.loc 1 19 5 is_stmt 0 view .LVU9
+  56 0004 0029     		cmp	r1, #0
+  57 0006 50D0     		beq	.L12
+  58 0008 0746     		mov	r7, r0
+  59 000a 0C46     		mov	r4, r1
+  60              		.loc 1 19 42 discriminator 1 view .LVU10
+  61 000c 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+  62              		.loc 1 19 23 discriminator 1 view .LVU11
+  63 000e 002B     		cmp	r3, #0
+  64 0010 4DD0     		beq	.L13
+  20:../Core/Src/parser.c **** 		return (char)(-ENOCMD);
+  21:../Core/Src/parser.c **** 	//if (cmd_list == NULL) // no list
+  22:../Core/Src/parser.c **** 		//return (-ENOLIST);   
+  23:../Core/Src/parser.c **** 
+  24:../Core/Src/parser.c **** 	len = strlen(str_in) + 1;
+  65              		.loc 1 24 2 is_stmt 1 view .LVU12
+  66              		.loc 1 24 8 is_stmt 0 view .LVU13
+  67 0012 0846     		mov	r0, r1
+  68              	.LVL2:
+  69              		.loc 1 24 8 view .LVU14
+  70 0014 FFF7FEFF 		bl	strlen
+  71              	.LVL3:
+  72              		.loc 1 24 23 view .LVU15
+  73 0018 C0B2     		uxtb	r0, r0
+  74              		.loc 1 24 6 view .LVU16
+  75 001a 0130     		adds	r0, r0, #1
+  76              	.LVL4:
+  25:../Core/Src/parser.c **** 	s = malloc(len);                 // just in case str_in is const
+  77              		.loc 1 25 2 is_stmt 1 view .LVU17
+  78              		.loc 1 25 6 is_stmt 0 view .LVU18
+  79 001c C0B2     		uxtb	r0, r0
+  80              		.loc 1 25 6 view .LVU19
+  81 001e FFF7FEFF 		bl	malloc
+  82              	.LVL5:
+  26:../Core/Src/parser.c **** 	
+  27:../Core/Src/parser.c **** 	if(s == NULL)
+  83              		.loc 1 27 2 is_stmt 1 view .LVU20
+  84              		.loc 1 27 4 is_stmt 0 view .LVU21
+  85 0022 8046     		mov	r8, r0
+  86 0024 0028     		cmp	r0, #0
+  87 0026 44D0     		beq	.L14
+  28:../Core/Src/parser.c **** 		return (char)(-ENOMEM);
+ARM GAS  /tmp/cc67hpY3.s 			page 3
+
+
+  29:../Core/Src/parser.c **** 	
+  30:../Core/Src/parser.c **** 	strcpy(s, str_in);
+  88              		.loc 1 30 2 is_stmt 1 view .LVU22
+  89 0028 2146     		mov	r1, r4
+  90 002a FFF7FEFF 		bl	strcpy
+  91              	.LVL6:
+  31:../Core/Src/parser.c **** 	arg = strtok(s, DELIMETER);
+  92              		.loc 1 31 2 view .LVU23
+  93              		.loc 1 31 8 is_stmt 0 view .LVU24
+  94 002e 2249     		ldr	r1, .L19
+  95 0030 4046     		mov	r0, r8
+  96 0032 FFF7FEFF 		bl	strtok
+  97              	.LVL7:
+  98 0036 0546     		mov	r5, r0
+  99              	.LVL8:
+  32:../Core/Src/parser.c **** 	while (arg)
+ 100              		.loc 1 32 2 is_stmt 1 view .LVU25
+  16:../Core/Src/parser.c **** 	char retval = (char)(-ECMDNF);
+ 101              		.loc 1 16 10 is_stmt 0 view .LVU26
+ 102 0038 0024     		movs	r4, #0
+ 103              	.LVL9:
+  11:../Core/Src/parser.c **** 	char *arg; // aux variable. Holds latest found argument
+ 104              		.loc 1 11 9 view .LVU27
+ 105 003a 2646     		mov	r6, r4
+ 106              		.loc 1 32 8 view .LVU28
+ 107 003c 0EE0     		b	.L3
+ 108              	.LVL10:
+ 109              	.L4:
+  33:../Core/Src/parser.c **** 	{
+  34:../Core/Src/parser.c **** 		argc++;
+  35:../Core/Src/parser.c **** 		len = sizeof (argv);
+  36:../Core/Src/parser.c **** 		if(argc == 1)
+  37:../Core/Src/parser.c **** 				argv = malloc(len);
+  38:../Core/Src/parser.c **** 		else
+  39:../Core/Src/parser.c **** 				argv = realloc(argv, argc * len);
+ 110              		.loc 1 39 5 is_stmt 1 view .LVU29
+ 111              		.loc 1 39 12 is_stmt 0 view .LVU30
+ 112 003e A100     		lsls	r1, r4, #2
+ 113 0040 3046     		mov	r0, r6
+ 114              	.LVL11:
+ 115              		.loc 1 39 12 view .LVU31
+ 116 0042 FFF7FEFF 		bl	realloc
+ 117              	.LVL12:
+ 118 0046 0646     		mov	r6, r0
+ 119              	.LVL13:
+ 120              	.L5:
+  40:../Core/Src/parser.c **** 
+  41:../Core/Src/parser.c **** 		argv[argc-1] = arg;
+ 121              		.loc 1 41 3 is_stmt 1 view .LVU32
+ 122              		.loc 1 41 7 is_stmt 0 view .LVU33
+ 123 0048 6FF04043 		mvn	r3, #-1073741824
+ 124 004c 2344     		add	r3, r3, r4
+ 125              		.loc 1 41 16 view .LVU34
+ 126 004e 46F82350 		str	r5, [r6, r3, lsl #2]
+  42:../Core/Src/parser.c **** 		arg = strtok(NULL, DELIMETER);
+ 127              		.loc 1 42 3 is_stmt 1 view .LVU35
+ 128              		.loc 1 42 9 is_stmt 0 view .LVU36
+ARM GAS  /tmp/cc67hpY3.s 			page 4
+
+
+ 129 0052 1949     		ldr	r1, .L19
+ 130 0054 0020     		movs	r0, #0
+ 131              	.LVL14:
+ 132              		.loc 1 42 9 view .LVU37
+ 133 0056 FFF7FEFF 		bl	strtok
+ 134              	.LVL15:
+ 135 005a 0546     		mov	r5, r0
+ 136              	.LVL16:
+ 137              	.L3:
+  32:../Core/Src/parser.c **** 	{
+ 138              		.loc 1 32 8 is_stmt 1 view .LVU38
+ 139 005c 45B1     		cbz	r5, .L16
+  34:../Core/Src/parser.c **** 		len = sizeof (argv);
+ 140              		.loc 1 34 3 view .LVU39
+  34:../Core/Src/parser.c **** 		len = sizeof (argv);
+ 141              		.loc 1 34 7 is_stmt 0 view .LVU40
+ 142 005e 0134     		adds	r4, r4, #1
+ 143              	.LVL17:
+  34:../Core/Src/parser.c **** 		len = sizeof (argv);
+ 144              		.loc 1 34 7 view .LVU41
+ 145 0060 E4B2     		uxtb	r4, r4
+ 146              	.LVL18:
+  35:../Core/Src/parser.c **** 		if(argc == 1)
+ 147              		.loc 1 35 3 is_stmt 1 view .LVU42
+  36:../Core/Src/parser.c **** 				argv = malloc(len);
+ 148              		.loc 1 36 3 view .LVU43
+  36:../Core/Src/parser.c **** 				argv = malloc(len);
+ 149              		.loc 1 36 5 is_stmt 0 view .LVU44
+ 150 0062 012C     		cmp	r4, #1
+ 151 0064 EBD1     		bne	.L4
+  37:../Core/Src/parser.c **** 		else
+ 152              		.loc 1 37 5 is_stmt 1 view .LVU45
+  37:../Core/Src/parser.c **** 		else
+ 153              		.loc 1 37 12 is_stmt 0 view .LVU46
+ 154 0066 0420     		movs	r0, #4
+ 155              	.LVL19:
+  37:../Core/Src/parser.c **** 		else
+ 156              		.loc 1 37 12 view .LVU47
+ 157 0068 FFF7FEFF 		bl	malloc
+ 158              	.LVL20:
+ 159 006c 0646     		mov	r6, r0
+ 160              	.LVL21:
+  37:../Core/Src/parser.c **** 		else
+ 161              		.loc 1 37 12 view .LVU48
+ 162 006e EBE7     		b	.L5
+ 163              	.LVL22:
+ 164              	.L16:
+  43:../Core/Src/parser.c **** 	}
+  44:../Core/Src/parser.c **** 
+  45:../Core/Src/parser.c **** 	if (argc)
+ 165              		.loc 1 45 2 is_stmt 1 view .LVU49
+ 166              		.loc 1 45 5 is_stmt 0 view .LVU50
+ 167 0070 84B9     		cbnz	r4, .L7
+  17:../Core/Src/parser.c **** 	
+ 168              		.loc 1 17 7 view .LVU51
+ 169 0072 FB24     		movs	r4, #251
+ 170              	.LVL23:
+ARM GAS  /tmp/cc67hpY3.s 			page 5
+
+
+ 171              	.L8:
+  46:../Core/Src/parser.c **** 	{
+  47:../Core/Src/parser.c **** 		const Command_t *p;
+  48:../Core/Src/parser.c **** 
+  49:../Core/Src/parser.c **** 		for(p = cmd_list; p->cmd; p++)
+  50:../Core/Src/parser.c **** 		{
+  51:../Core/Src/parser.c **** 			if(strcmp(p->cmd, argv[0]) == 0)
+  52:../Core/Src/parser.c **** 			{
+  53:../Core/Src/parser.c **** 				retval = (p->fn(argc, argv)); // Execute func
+  54:../Core/Src/parser.c **** 				break;
+  55:../Core/Src/parser.c **** 			}
+  56:../Core/Src/parser.c **** 		}
+  57:../Core/Src/parser.c **** 	}
+  58:../Core/Src/parser.c **** 
+  59:../Core/Src/parser.c **** 	// command not found
+  60:../Core/Src/parser.c **** 	if(argv)
+ 172              		.loc 1 60 2 is_stmt 1 view .LVU52
+ 173              		.loc 1 60 4 is_stmt 0 view .LVU53
+ 174 0074 16B1     		cbz	r6, .L11
+  61:../Core/Src/parser.c **** 		free(argv);
+ 175              		.loc 1 61 3 is_stmt 1 view .LVU54
+ 176 0076 3046     		mov	r0, r6
+ 177 0078 FFF7FEFF 		bl	free
+ 178              	.LVL24:
+ 179              	.L11:
+  62:../Core/Src/parser.c **** 
+  63:../Core/Src/parser.c **** 	free(s);
+ 180              		.loc 1 63 2 view .LVU55
+ 181 007c 4046     		mov	r0, r8
+ 182 007e FFF7FEFF 		bl	free
+ 183              	.LVL25:
+  64:../Core/Src/parser.c **** 
+  65:../Core/Src/parser.c **** 	return retval;
+ 184              		.loc 1 65 2 view .LVU56
+ 185              	.L2:
+  66:../Core/Src/parser.c **** }
+ 186              		.loc 1 66 1 is_stmt 0 view .LVU57
+ 187 0082 2046     		mov	r0, r4
+ 188 0084 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 189              	.LVL26:
+ 190              	.L18:
+ 191              	.LBB2:
+  53:../Core/Src/parser.c **** 				break;
+ 192              		.loc 1 53 5 is_stmt 1 view .LVU58
+  53:../Core/Src/parser.c **** 				break;
+ 193              		.loc 1 53 16 is_stmt 0 view .LVU59
+ 194 0088 FB68     		ldr	r3, [r7, #12]
+  53:../Core/Src/parser.c **** 				break;
+ 195              		.loc 1 53 15 view .LVU60
+ 196 008a 3146     		mov	r1, r6
+ 197 008c 2046     		mov	r0, r4
+ 198 008e 9847     		blx	r3
+ 199              	.LVL27:
+ 200 0090 0446     		mov	r4, r0
+ 201              	.LVL28:
+  54:../Core/Src/parser.c **** 			}
+ 202              		.loc 1 54 5 is_stmt 1 view .LVU61
+ARM GAS  /tmp/cc67hpY3.s 			page 6
+
+
+ 203 0092 EFE7     		b	.L8
+ 204              	.LVL29:
+ 205              	.L7:
+  49:../Core/Src/parser.c **** 		{
+ 206              		.loc 1 49 21 discriminator 1 view .LVU62
+  49:../Core/Src/parser.c **** 		{
+ 207              		.loc 1 49 22 is_stmt 0 discriminator 1 view .LVU63
+ 208 0094 3868     		ldr	r0, [r7]
+  49:../Core/Src/parser.c **** 		{
+ 209              		.loc 1 49 3 discriminator 1 view .LVU64
+ 210 0096 30B1     		cbz	r0, .L17
+  51:../Core/Src/parser.c **** 			{
+ 211              		.loc 1 51 4 is_stmt 1 view .LVU65
+  51:../Core/Src/parser.c **** 			{
+ 212              		.loc 1 51 7 is_stmt 0 view .LVU66
+ 213 0098 3168     		ldr	r1, [r6]
+ 214 009a FFF7FEFF 		bl	strcmp
+ 215              	.LVL30:
+  51:../Core/Src/parser.c **** 			{
+ 216              		.loc 1 51 6 view .LVU67
+ 217 009e 0028     		cmp	r0, #0
+ 218 00a0 F2D0     		beq	.L18
+  49:../Core/Src/parser.c **** 		{
+ 219              		.loc 1 49 29 is_stmt 1 discriminator 2 view .LVU68
+  49:../Core/Src/parser.c **** 		{
+ 220              		.loc 1 49 30 is_stmt 0 discriminator 2 view .LVU69
+ 221 00a2 1037     		adds	r7, r7, #16
+ 222              	.LVL31:
+  49:../Core/Src/parser.c **** 		{
+ 223              		.loc 1 49 30 discriminator 2 view .LVU70
+ 224 00a4 F6E7     		b	.L7
+ 225              	.L17:
+  49:../Core/Src/parser.c **** 		{
+ 226              		.loc 1 49 30 discriminator 2 view .LVU71
+ 227              	.LBE2:
+  17:../Core/Src/parser.c **** 	
+ 228              		.loc 1 17 7 view .LVU72
+ 229 00a6 FB24     		movs	r4, #251
+ 230              	.LVL32:
+  17:../Core/Src/parser.c **** 	
+ 231              		.loc 1 17 7 view .LVU73
+ 232 00a8 E4E7     		b	.L8
+ 233              	.LVL33:
+ 234              	.L12:
+  20:../Core/Src/parser.c **** 	//if (cmd_list == NULL) // no list
+ 235              		.loc 1 20 10 view .LVU74
+ 236 00aa FE24     		movs	r4, #254
+ 237 00ac E9E7     		b	.L2
+ 238              	.L13:
+  20:../Core/Src/parser.c **** 	//if (cmd_list == NULL) // no list
+ 239              		.loc 1 20 10 view .LVU75
+ 240 00ae FE24     		movs	r4, #254
+ 241 00b0 E7E7     		b	.L2
+ 242              	.LVL34:
+ 243              	.L14:
+  28:../Core/Src/parser.c **** 	
+ 244              		.loc 1 28 10 view .LVU76
+ARM GAS  /tmp/cc67hpY3.s 			page 7
+
+
+ 245 00b2 FC24     		movs	r4, #252
+ 246              	.LVL35:
+  28:../Core/Src/parser.c **** 	
+ 247              		.loc 1 28 10 view .LVU77
+ 248 00b4 E5E7     		b	.L2
+ 249              	.L20:
+ 250 00b6 00BF     		.align	2
+ 251              	.L19:
+ 252 00b8 00000000 		.word	.LC0
+ 253              		.cfi_endproc
+ 254              	.LFE0:
+ 256              		.text
+ 257              	.Letext0:
+ 258              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 259              		.file 3 "../Core/Inc/parser.h"
+ 260              		.file 4 "/usr/include/newlib/string.h"
+ 261              		.file 5 "/usr/include/newlib/stdlib.h"
+ARM GAS  /tmp/cc67hpY3.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 parser.c
+     /tmp/cc67hpY3.s:17     .rodata.parse_cmd.str1.4:0000000000000000 $d
+     /tmp/cc67hpY3.s:21     .text.parse_cmd:0000000000000000 $t
+     /tmp/cc67hpY3.s:29     .text.parse_cmd:0000000000000000 parse_cmd
+     /tmp/cc67hpY3.s:252    .text.parse_cmd:00000000000000b8 $d
+
+UNDEFINED SYMBOLS
+strlen
+malloc
+strcpy
+strtok
+realloc
+free
+strcmp
