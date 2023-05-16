@@ -45,8 +45,10 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
     uint8_t ret = 0;
     uint32_t k; /* iterator */
     uint32_t j;
-    uint8_t *dof_min = (uint8_t*) malloc(sizeof(uint8_t));
-    float *fourier_factor = (float*) malloc(sizeof(float));
+    // uint8_t *dof_min = (uint8_t*) malloc(sizeof(uint8_t));
+    uint8_t dof_min = 0;
+    // float *fourier_factor = (float*) malloc(sizeof(float));
+    float fourier_factor = 0.0;
 
 	// verify power of 2 length
 	if(!is_powerof2((float) N_i))
@@ -57,7 +59,7 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
 		return _EXIT_FAILURE;
 	}
 
-    uint16_t half_N_i = (uint16_t) N_i >> 1; /* half lenght of the time 
+    uint16_t half_N_i = (uint16_t) (N_i >> 1); /* half lenght of the time 
                                                     series array */
     
     /* Compute FFT of time series array - Equation 3 */
@@ -67,6 +69,7 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
         UART_puts("It was not possible to allocate 'y_aux' pointer!\n\r");
         return -ENOMEM;
     }
+    memset(y_aux, 0, N_i);
 
     ret = fft(y_i, N_i, y_aux);
     if(ret)
@@ -76,8 +79,8 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
     }
 
     /* Construct wavenumber array used in transform - Equation 5 */
-    /* NOTE: in Torrence's matlab code this is done in another way
-        where after half array, the wk is descending */
+    /* NOTE: in Torrence's paper this is done in another way
+        where after half array, the wk is descending negatively */
     float *wk = (float*) calloc(N_i, sizeof(float));
     if(wk == NULL)
     {
@@ -88,16 +91,18 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
     float multiplier_aux = (2 * M_PI) / (N_i * dt_i);
 
     /* k <= N/2 */
-    for(k = 0; k < (half_N_i + 1); k++)
+    wk[0] = 0;
+    for(k = 1; k < half_N_i + 1; k++)
     {
         wk[k] = multiplier_aux * k;
     }
 
     /* k > N/2 */
-    // for(k = half_N_i; k <= N_i; k++)
-    // {
-    //     wk[k] = - multiplier_aux * k;
-    // }
+    for(k = 1; k < half_N_i; k++)
+    {
+        wk[N_i - k] = - multiplier_aux * k;
+    //     wk[k] = multiplier_aux * (k - half_N_i + 1);
+    }
 
     float *daughter = (float*) calloc(N_i, sizeof(float));
     if(daughter == NULL)
@@ -107,12 +112,12 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
     }
 
     /* Loop through scales */
-    for(j = 0; j < (J_i + 1); j++)
+    for(j = 0; j < J_i; j++)
     {
         scale_o[j] = s0_i * pow(2, (j * dj_i));
 
         ret = wave_bases[mother_i](wk, N_i, scale_o[j], param_i, 
-            daughter, fourier_factor, coi_o, dof_min);
+            daughter, &fourier_factor, coi_o, &dof_min);
 
         if(ret)
         {
@@ -120,13 +125,13 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
             return _EXIT_FAILURE;
         }
 
-        for(uint32_t i = 0; i < (N_i + 1); i++)
+        for(uint32_t i = 0; i < N_i; i++)
         {
-            y_cwt_o[i].Re = complex_mul_re(y_i[i].Re, y_i[i].Im, daughter[i], 0);
-            y_cwt_o[i].Im = complex_mul_im(y_i[i].Re, y_i[i].Im, daughter[i], 0);
+            y_cwt_o[(j * N_i) + i].Re = complex_mul_re(y_i[i].Re, y_i[i].Im, daughter[i], 0);
+            y_cwt_o[(j * N_i) + i].Im = complex_mul_im(y_i[i].Re, y_i[i].Im, daughter[i], 0);
         }
 
-        ret = ifft(y_cwt_o, N_i, y_aux);
+        ret = ifft(&y_cwt_o[j], N_i, y_aux);
 
         if(ret)
         {
@@ -135,14 +140,11 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
             return _EXIT_FAILURE;
         }
 
-        period_o[j] = (*fourier_factor) * scale_o[j];
+        period_o[j] = fourier_factor * scale_o[j];
     }
 
-    /* Liberate memory space */
+    /* Free memory space */
     free(y_aux);
-
-    free(dof_min);
-    free(fourier_factor);
 
     free(wk);
     free(daughter);

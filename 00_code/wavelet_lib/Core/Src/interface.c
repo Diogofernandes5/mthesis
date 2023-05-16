@@ -36,8 +36,8 @@ char ver_cb(uint8_t argc, char** argv)
 	// 1.0 Interfacing with STM
 	// 1.1 Sampling using ADC
 	// 1.2 Digital filters (IIR/FIR)
-	UART_puts("Current version: 1.2\n\rUsing STM32F767ZI-NUCLEO.\n\n\r");
-	UART_puts("Developers:\n\r- Diogo Fernandes\n\r- Tomas Abreu\n\r@LPI-II Universidade do Minho, April 2021\n\r");
+	UART_puts("\n\rCurrent version: 1.2\n\rUsing STM32F767ZI-NUCLEO.\n\n\r");
+	// UART_puts("Developers:\n\r- Diogo Fernandes\n\r- Tomas Abreu\n\r@LPI-II Universidade do Minho, April 2021\n\r");
 	return 0;
 }
 

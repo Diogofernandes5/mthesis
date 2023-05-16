@@ -25,26 +25,27 @@ int morlet_base (float *wk_i, uint32_t N_i, float scale_i, float param_i,
     float *daughter_o, float *fourier_factor_o, float *coi_o, uint8_t *dof_min_o)
 {
 	float wk0 = (param_i == -1) ? 6.0 : param_i;
+	uint16_t half_N_i = N_i >> 1;
 
 	float *expnt = (float*) calloc(N_i, sizeof(float));
-	// UART_puts("Created values: ");
+
 	if(expnt == NULL) /* Allocation error */ 
     {
         UART_puts("It was not possible to allocate 'expnt' pointer!\n\r");
         return -ENOMEM;
     }
+	memset(expnt, N_i, 0.0);
 	
-	/* Verify normalization <<<<<<<<<<-----------------------------------------------*/
 	float norm = sqrt(scale_i * wk_i[1] * N_i) * pow(M_PI, -0.25);
 
-	for (uint32_t k = 0; k < ((N_i >> 1) + 1); k++)
+	for (uint32_t k = 0; k < half_N_i + 1; k++)
 	{
 		expnt[k] = - pow(((scale_i * wk_i[k]) - wk0), 2.0) / 2;
 		daughter_o[k] = norm * exp(expnt[k]); 
 	}
 
-	for (uint32_t k = ((N_i >> 1) + 1); k < (N_i + 1); k++)
-		daughter_o[k] = norm * exp(expnt[k]); 
+	// for (uint32_t k = half_N_i; k < N_i; k++)
+	// 	daughter_o[k] = norm * exp(expnt[k]); 
 
 	free(expnt);
 	

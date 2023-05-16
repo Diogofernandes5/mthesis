@@ -1,0 +1,700 @@
+ARM GAS  /tmp/cchK2bl0.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"fft.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.fft,"ax",%progbits
+  17              		.align	1
+  18              		.global	fft
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-d16
+  25              	fft:
+  26              	.LVL0:
+  27              	.LFB2:
+  28              		.file 1 "../Core/Src/fft.c"
+   1:../Core/Src/fft.c **** #include "fft.h"
+   2:../Core/Src/fft.c **** 
+   3:../Core/Src/fft.c **** #include "errdef.h"
+   4:../Core/Src/fft.c **** #include "utils.h"
+   5:../Core/Src/fft.c **** 
+   6:../Core/Src/fft.c **** #include <math.h> // -lm flag needed
+   7:../Core/Src/fft.c **** 
+   8:../Core/Src/fft.c **** /**
+   9:../Core/Src/fft.c ****  * @brief   Applies fft over an time-series array
+  10:../Core/Src/fft.c ****  *                  Will be executed recursively through the stages 
+  11:../Core/Src/fft.c ****  *                      The number of stages are equal to --------------------------------------
+  12:../Core/Src/fft.c ****  * 
+  13:../Core/Src/fft.c ****  * @param   y_io - time-series array, returns by reference 
+  14:../Core/Src/fft.c ****  *                                      in the frequency domain
+  15:../Core/Src/fft.c ****  * @param   N_i - length of the array
+  16:../Core/Src/fft.c ****  * @param   aux_i - auxiliary array with the same size of y_io
+  17:../Core/Src/fft.c ****  *                                      used to point to the odd and even arrays
+  18:../Core/Src/fft.c ****  * 
+  19:../Core/Src/fft.c ****  * @retval  success
+  20:../Core/Src/fft.c ****  * */
+  21:../Core/Src/fft.c **** uint8_t fft(complex *y_io, uint32_t N_i, complex *aux_i)
+  22:../Core/Src/fft.c **** {
+  29              		.loc 1 22 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 32
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  23:../Core/Src/fft.c ****     if(N_i > 1)     /* not last stage? */
+  33              		.loc 1 23 5 view .LVU1
+  34              		.loc 1 23 7 is_stmt 0 view .LVU2
+  35 0000 0129     		cmp	r1, #1
+ARM GAS  /tmp/cchK2bl0.s 			page 2
+
+
+  36 0002 40F28580 		bls	.L8
+  22:../Core/Src/fft.c ****     if(N_i > 1)     /* not last stage? */
+  37              		.loc 1 22 1 view .LVU3
+  38 0006 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 24
+  41              		.cfi_offset 4, -24
+  42              		.cfi_offset 5, -20
+  43              		.cfi_offset 6, -16
+  44              		.cfi_offset 7, -12
+  45              		.cfi_offset 8, -8
+  46              		.cfi_offset 14, -4
+  47 000a 2DED068B 		vpush.64	{d8, d9, d10}
+  48              	.LCFI1:
+  49              		.cfi_def_cfa_offset 48
+  50              		.cfi_offset 80, -48
+  51              		.cfi_offset 81, -44
+  52              		.cfi_offset 82, -40
+  53              		.cfi_offset 83, -36
+  54              		.cfi_offset 84, -32
+  55              		.cfi_offset 85, -28
+  56 000e 88B0     		sub	sp, sp, #32
+  57              	.LCFI2:
+  58              		.cfi_def_cfa_offset 80
+  59 0010 0546     		mov	r5, r0
+  60 0012 09EE101A 		vmov	s18, r1	@ int
+  61 0016 1746     		mov	r7, r2
+  62              	.LBB2:
+  24:../Core/Src/fft.c ****     {
+  25:../Core/Src/fft.c ****         complex z, w;
+  63              		.loc 1 25 9 is_stmt 1 view .LVU4
+  26:../Core/Src/fft.c ****         uint32_t half_N_i = (N_i >> 1);         /* N_i/2 */
+  64              		.loc 1 26 9 view .LVU5
+  65              		.loc 1 26 18 is_stmt 0 view .LVU6
+  66 0018 4E08     		lsrs	r6, r1, #1
+  67              	.LVL1:
+  27:../Core/Src/fft.c **** 
+  28:../Core/Src/fft.c ****         complex *ve = aux_i;                    /* even array points to first position */ 
+  68              		.loc 1 28 9 is_stmt 1 view .LVU7
+  29:../Core/Src/fft.c ****         complex *vo = aux_i + half_N_i;         /* odd  array points to middle position */
+  69              		.loc 1 29 9 view .LVU8
+  70              		.loc 1 29 18 is_stmt 0 view .LVU9
+  71 001a 02EB0618 		add	r8, r2, r6, lsl #4
+  72              	.LVL2:
+  30:../Core/Src/fft.c **** 
+  31:../Core/Src/fft.c ****         for(int k = 0; k < half_N_i; k++) 
+  73              		.loc 1 31 9 is_stmt 1 view .LVU10
+  74              	.LBB3:
+  75              		.loc 1 31 13 view .LVU11
+  76              		.loc 1 31 17 is_stmt 0 view .LVU12
+  77 001e 0024     		movs	r4, #0
+  78              		.loc 1 31 9 view .LVU13
+  79 0020 12E0     		b	.L3
+  80              	.LVL3:
+  81              	.L4:
+  32:../Core/Src/fft.c ****         {
+  33:../Core/Src/fft.c ****             /* ve[k] = y_io[k * 2]; */
+ARM GAS  /tmp/cchK2bl0.s 			page 3
+
+
+  34:../Core/Src/fft.c ****             ve[k] = y_io[k << 1];
+  82              		.loc 1 34 13 is_stmt 1 discriminator 3 view .LVU14
+  83              		.loc 1 34 28 is_stmt 0 discriminator 3 view .LVU15
+  84 0022 4FEA440C 		lsl	ip, r4, #1
+  85              		.loc 1 34 25 discriminator 3 view .LVU16
+  86 0026 05EB4413 		add	r3, r5, r4, lsl #5
+  87              		.loc 1 34 15 discriminator 3 view .LVU17
+  88 002a 07EB041E 		add	lr, r7, r4, lsl #4
+  89              		.loc 1 34 19 discriminator 3 view .LVU18
+  90 002e 0FCB     		ldm	r3, {r0, r1, r2, r3}
+  91 0030 8EE80F00 		stm	lr, {r0, r1, r2, r3}
+  35:../Core/Src/fft.c ****             vo[k] = y_io[(k << 1) + 1];
+  92              		.loc 1 35 13 is_stmt 1 discriminator 3 view .LVU19
+  93              		.loc 1 35 25 is_stmt 0 discriminator 3 view .LVU20
+  94 0034 0CF10103 		add	r3, ip, #1
+  95 0038 05EB0313 		add	r3, r5, r3, lsl #4
+  96              		.loc 1 35 15 discriminator 3 view .LVU21
+  97 003c 08EB041C 		add	ip, r8, r4, lsl #4
+  98              		.loc 1 35 19 discriminator 3 view .LVU22
+  99 0040 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 100 0042 8CE80F00 		stm	ip, {r0, r1, r2, r3}
+  31:../Core/Src/fft.c ****         {
+ 101              		.loc 1 31 38 is_stmt 1 discriminator 3 view .LVU23
+  31:../Core/Src/fft.c ****         {
+ 102              		.loc 1 31 39 is_stmt 0 discriminator 3 view .LVU24
+ 103 0046 0134     		adds	r4, r4, #1
+ 104              	.LVL4:
+ 105              	.L3:
+  31:../Core/Src/fft.c ****         {
+ 106              		.loc 1 31 24 is_stmt 1 discriminator 1 view .LVU25
+  31:../Core/Src/fft.c ****         {
+ 107              		.loc 1 31 9 is_stmt 0 discriminator 1 view .LVU26
+ 108 0048 B442     		cmp	r4, r6
+ 109 004a EAD3     		bcc	.L4
+ 110              	.LBE3:
+  36:../Core/Src/fft.c ****         }
+  37:../Core/Src/fft.c **** 
+  38:../Core/Src/fft.c ****         fft(ve, half_N_i, y_io);        /* FFT on even-indexed elements of y_io[] */
+ 111              		.loc 1 38 9 is_stmt 1 view .LVU27
+ 112 004c 2A46     		mov	r2, r5
+ 113 004e 3146     		mov	r1, r6
+ 114 0050 3846     		mov	r0, r7
+ 115 0052 FFF7FEFF 		bl	fft
+ 116              	.LVL5:
+  39:../Core/Src/fft.c ****         fft(vo, half_N_i, y_io);        /* FFT on odd-indexed elements of y_io[] */
+ 117              		.loc 1 39 9 view .LVU28
+ 118 0056 2A46     		mov	r2, r5
+ 119 0058 3146     		mov	r1, r6
+ 120 005a 4046     		mov	r0, r8
+ 121 005c FFF7FEFF 		bl	fft
+ 122              	.LVL6:
+  40:../Core/Src/fft.c **** 
+  41:../Core/Src/fft.c ****         /* apply twiddle factor of this stage and 2-pt DFT*/
+  42:../Core/Src/fft.c ****         for(int m = 0; m < half_N_i; m++) 
+ 123              		.loc 1 42 9 view .LVU29
+ 124              	.LBB4:
+ 125              		.loc 1 42 13 view .LVU30
+ARM GAS  /tmp/cchK2bl0.s 			page 4
+
+
+ 126              		.loc 1 42 17 is_stmt 0 view .LVU31
+ 127 0060 0024     		movs	r4, #0
+ 128              	.LVL7:
+ 129              		.loc 1 42 9 view .LVU32
+ 130 0062 4DE0     		b	.L5
+ 131              	.LVL8:
+ 132              	.L6:
+  43:../Core/Src/fft.c ****         {
+  44:../Core/Src/fft.c ****             /* Twiddle factor:
+  45:../Core/Src/fft.c ****                 w = exp(-2i*PI*m/N_i):
+  46:../Core/Src/fft.c ****                     Re(e^-ix) = cos(x)
+  47:../Core/Src/fft.c ****                     Im(e^-ix) = -sen(x) */
+  48:../Core/Src/fft.c ****             w.Re =  cos((2 * PI * m) / (double)N_i);
+ 133              		.loc 1 48 13 is_stmt 1 discriminator 3 view .LVU33
+ 134              		.loc 1 48 33 is_stmt 0 discriminator 3 view .LVU34
+ 135 0064 07EE904A 		vmov	s15, r4	@ int
+ 136 0068 B8EEE77B 		vcvt.f64.s32	d7, s15
+ 137 006c 9FED2A6B 		vldr.64	d6, .L11
+ 138 0070 27EE067B 		vmul.f64	d7, d7, d6
+ 139              		.loc 1 48 40 discriminator 3 view .LVU35
+ 140 0074 B8EE496B 		vcvt.f64.u32	d6, s18
+ 141              		.loc 1 48 21 discriminator 3 view .LVU36
+ 142 0078 87EE06AB 		vdiv.f64	d10, d7, d6
+ 143 007c B0EE4A0B 		vmov.f64	d0, d10
+ 144 0080 FFF7FEFF 		bl	cos
+ 145              	.LVL9:
+ 146 0084 B0EE408B 		vmov.f64	d8, d0
+ 147              		.loc 1 48 18 discriminator 3 view .LVU37
+ 148 0088 8DED040B 		vstr.64	d0, [sp, #16]
+  49:../Core/Src/fft.c ****             w.Im = -sin((2 * PI * m) / (double)N_i);
+ 149              		.loc 1 49 13 is_stmt 1 discriminator 3 view .LVU38
+ 150              		.loc 1 49 21 is_stmt 0 discriminator 3 view .LVU39
+ 151 008c B0EE4A0B 		vmov.f64	d0, d10
+ 152 0090 FFF7FEFF 		bl	sin
+ 153              	.LVL10:
+ 154              		.loc 1 49 20 discriminator 3 view .LVU40
+ 155 0094 B1EE407B 		vneg.f64	d7, d0
+ 156              		.loc 1 49 18 discriminator 3 view .LVU41
+ 157 0098 8DED067B 		vstr.64	d7, [sp, #24]
+  50:../Core/Src/fft.c **** 
+  51:../Core/Src/fft.c ****             /* w * vo[m] */
+  52:../Core/Src/fft.c ****             z.Re = complex_mul_re(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Re(w*vo[m]) */
+ 158              		.loc 1 52 13 is_stmt 1 discriminator 3 view .LVU42
+ 159              		.loc 1 52 20 is_stmt 0 discriminator 3 view .LVU43
+ 160 009c 08EB0413 		add	r3, r8, r4, lsl #4
+ 161 00a0 93ED000B 		vldr.64	d0, [r3]
+ 162 00a4 93ED025B 		vldr.64	d5, [r3, #8]
+ 163 00a8 27EE056B 		vmul.f64	d6, d7, d5
+ 164 00ac 18EE006B 		vnmls.f64	d6, d8, d0
+ 165              		.loc 1 52 18 discriminator 3 view .LVU44
+ 166 00b0 8DED006B 		vstr.64	d6, [sp]
+  53:../Core/Src/fft.c ****             z.Im = complex_mul_im(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Im(w*vo[m]) */
+ 167              		.loc 1 53 13 is_stmt 1 discriminator 3 view .LVU45
+ 168              		.loc 1 53 20 is_stmt 0 discriminator 3 view .LVU46
+ 169 00b4 27EE007B 		vmul.f64	d7, d7, d0
+ 170 00b8 08EE057B 		vmla.f64	d7, d8, d5
+ 171              		.loc 1 53 18 discriminator 3 view .LVU47
+ARM GAS  /tmp/cchK2bl0.s 			page 5
+
+
+ 172 00bc 8DED027B 		vstr.64	d7, [sp, #8]
+  54:../Core/Src/fft.c **** 
+  55:../Core/Src/fft.c ****             /* out1 = ve + w(m)*vo */ 
+  56:../Core/Src/fft.c ****             y_io[m].Re = ve[m].Re + z.Re;
+ 173              		.loc 1 56 13 is_stmt 1 discriminator 3 view .LVU48
+ 174              		.loc 1 56 28 is_stmt 0 discriminator 3 view .LVU49
+ 175 00c0 07EB0412 		add	r2, r7, r4, lsl #4
+ 176              		.loc 1 56 31 discriminator 3 view .LVU50
+ 177 00c4 92ED005B 		vldr.64	d5, [r2]
+ 178              		.loc 1 56 17 discriminator 3 view .LVU51
+ 179 00c8 05EB0413 		add	r3, r5, r4, lsl #4
+ 180              		.loc 1 56 35 discriminator 3 view .LVU52
+ 181 00cc 36EE055B 		vadd.f64	d5, d6, d5
+ 182              		.loc 1 56 24 discriminator 3 view .LVU53
+ 183 00d0 83ED005B 		vstr.64	d5, [r3]
+  57:../Core/Src/fft.c ****             y_io[m].Im = ve[m].Im + z.Im;
+ 184              		.loc 1 57 13 is_stmt 1 discriminator 3 view .LVU54
+ 185              		.loc 1 57 31 is_stmt 0 discriminator 3 view .LVU55
+ 186 00d4 92ED025B 		vldr.64	d5, [r2, #8]
+ 187              		.loc 1 57 35 discriminator 3 view .LVU56
+ 188 00d8 37EE055B 		vadd.f64	d5, d7, d5
+ 189              		.loc 1 57 24 discriminator 3 view .LVU57
+ 190 00dc 83ED025B 		vstr.64	d5, [r3, #8]
+  58:../Core/Src/fft.c **** 
+  59:../Core/Src/fft.c ****             /* out2 = ve - w(m+(N_i/2))*vo */ 
+  60:../Core/Src/fft.c ****             y_io[m + half_N_i].Re = ve[m].Re - z.Re;
+ 191              		.loc 1 60 13 is_stmt 1 discriminator 3 view .LVU58
+ 192              		.loc 1 60 42 is_stmt 0 discriminator 3 view .LVU59
+ 193 00e0 92ED005B 		vldr.64	d5, [r2]
+ 194              		.loc 1 60 20 discriminator 3 view .LVU60
+ 195 00e4 A319     		adds	r3, r4, r6
+ 196              		.loc 1 60 17 discriminator 3 view .LVU61
+ 197 00e6 05EB0313 		add	r3, r5, r3, lsl #4
+ 198              		.loc 1 60 46 discriminator 3 view .LVU62
+ 199 00ea 35EE466B 		vsub.f64	d6, d5, d6
+ 200              		.loc 1 60 35 discriminator 3 view .LVU63
+ 201 00ee 83ED006B 		vstr.64	d6, [r3]
+  61:../Core/Src/fft.c ****             y_io[m + half_N_i].Im = ve[m].Im - z.Im;
+ 202              		.loc 1 61 13 is_stmt 1 discriminator 3 view .LVU64
+ 203              		.loc 1 61 42 is_stmt 0 discriminator 3 view .LVU65
+ 204 00f2 92ED026B 		vldr.64	d6, [r2, #8]
+ 205              		.loc 1 61 46 discriminator 3 view .LVU66
+ 206 00f6 36EE477B 		vsub.f64	d7, d6, d7
+ 207              		.loc 1 61 35 discriminator 3 view .LVU67
+ 208 00fa 83ED027B 		vstr.64	d7, [r3, #8]
+  42:../Core/Src/fft.c ****         {
+ 209              		.loc 1 42 38 is_stmt 1 discriminator 3 view .LVU68
+  42:../Core/Src/fft.c ****         {
+ 210              		.loc 1 42 39 is_stmt 0 discriminator 3 view .LVU69
+ 211 00fe 0134     		adds	r4, r4, #1
+ 212              	.LVL11:
+ 213              	.L5:
+  42:../Core/Src/fft.c ****         {
+ 214              		.loc 1 42 24 is_stmt 1 discriminator 1 view .LVU70
+  42:../Core/Src/fft.c ****         {
+ 215              		.loc 1 42 9 is_stmt 0 discriminator 1 view .LVU71
+ 216 0100 B442     		cmp	r4, r6
+ARM GAS  /tmp/cchK2bl0.s 			page 6
+
+
+ 217 0102 AFD3     		bcc	.L6
+ 218              	.LBE4:
+ 219              	.LBE2:
+  62:../Core/Src/fft.c ****         }
+  63:../Core/Src/fft.c ****     }
+  64:../Core/Src/fft.c ****     
+  65:../Core/Src/fft.c ****     return _EXIT_SUCCESS;
+ 220              		.loc 1 65 5 is_stmt 1 view .LVU72
+  66:../Core/Src/fft.c **** }
+ 221              		.loc 1 66 1 is_stmt 0 view .LVU73
+ 222 0104 0020     		movs	r0, #0
+ 223 0106 08B0     		add	sp, sp, #32
+ 224              	.LCFI3:
+ 225              		.cfi_def_cfa_offset 48
+ 226              		@ sp needed
+ 227 0108 BDEC068B 		vldm	sp!, {d8-d10}
+ 228              	.LCFI4:
+ 229              		.cfi_restore 84
+ 230              		.cfi_restore 85
+ 231              		.cfi_restore 82
+ 232              		.cfi_restore 83
+ 233              		.cfi_restore 80
+ 234              		.cfi_restore 81
+ 235              		.cfi_def_cfa_offset 24
+ 236              	.LVL12:
+ 237              		.loc 1 66 1 view .LVU74
+ 238 010c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 239              	.LVL13:
+ 240              	.L8:
+ 241              	.LCFI5:
+ 242              		.cfi_def_cfa_offset 0
+ 243              		.cfi_restore 4
+ 244              		.cfi_restore 5
+ 245              		.cfi_restore 6
+ 246              		.cfi_restore 7
+ 247              		.cfi_restore 8
+ 248              		.cfi_restore 14
+  65:../Core/Src/fft.c **** }
+ 249              		.loc 1 65 5 is_stmt 1 view .LVU75
+ 250              		.loc 1 66 1 is_stmt 0 view .LVU76
+ 251 0110 0020     		movs	r0, #0
+ 252              	.LVL14:
+ 253              		.loc 1 66 1 view .LVU77
+ 254 0112 7047     		bx	lr
+ 255              	.L12:
+ 256 0114 AFF30080 		.align	3
+ 257              	.L11:
+ 258 0118 182D4454 		.word	1413754136
+ 259 011c FB211940 		.word	1075388923
+ 260              		.cfi_endproc
+ 261              	.LFE2:
+ 263              		.section	.text.ifft,"ax",%progbits
+ 264              		.align	1
+ 265              		.global	ifft
+ 266              		.syntax unified
+ 267              		.thumb
+ 268              		.thumb_func
+ARM GAS  /tmp/cchK2bl0.s 			page 7
+
+
+ 269              		.fpu fpv5-d16
+ 271              	ifft:
+ 272              	.LVL15:
+ 273              	.LFB3:
+  67:../Core/Src/fft.c **** 
+  68:../Core/Src/fft.c **** /**
+  69:../Core/Src/fft.c ****  * @brief   Applies ifft over an frequency-series array
+  70:../Core/Src/fft.c ****  *                  Will be executed recursively through the stages 
+  71:../Core/Src/fft.c ****  *                      The number of stages are equal to --------------------------------------
+  72:../Core/Src/fft.c ****  * 
+  73:../Core/Src/fft.c ****  * @param   y_io - frequency-series array, returns by reference 
+  74:../Core/Src/fft.c ****  *                                      in the time domain
+  75:../Core/Src/fft.c ****  * @param   N_i - length of the array
+  76:../Core/Src/fft.c ****  * @param   aux_i - auxiliary array with the same size of y_io
+  77:../Core/Src/fft.c ****  *                                      used to point to the odd and even arrays
+  78:../Core/Src/fft.c ****  * 
+  79:../Core/Src/fft.c ****  * @retval  success
+  80:../Core/Src/fft.c ****  * */
+  81:../Core/Src/fft.c **** uint8_t ifft(complex *y_io, uint32_t N_i, complex *aux_i)
+  82:../Core/Src/fft.c **** {
+ 274              		.loc 1 82 1 is_stmt 1 view -0
+ 275              		.cfi_startproc
+ 276              		@ args = 0, pretend = 0, frame = 32
+ 277              		@ frame_needed = 0, uses_anonymous_args = 0
+  83:../Core/Src/fft.c ****     /* not last stage? */
+  84:../Core/Src/fft.c ****     if(N_i > 1)
+ 278              		.loc 1 84 5 view .LVU79
+ 279              		.loc 1 84 7 is_stmt 0 view .LVU80
+ 280 0000 0129     		cmp	r1, #1
+ 281 0002 40F28380 		bls	.L20
+  82:../Core/Src/fft.c ****     /* not last stage? */
+ 282              		.loc 1 82 1 view .LVU81
+ 283 0006 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 284              	.LCFI6:
+ 285              		.cfi_def_cfa_offset 24
+ 286              		.cfi_offset 4, -24
+ 287              		.cfi_offset 5, -20
+ 288              		.cfi_offset 6, -16
+ 289              		.cfi_offset 7, -12
+ 290              		.cfi_offset 8, -8
+ 291              		.cfi_offset 14, -4
+ 292 000a 2DED068B 		vpush.64	{d8, d9, d10}
+ 293              	.LCFI7:
+ 294              		.cfi_def_cfa_offset 48
+ 295              		.cfi_offset 80, -48
+ 296              		.cfi_offset 81, -44
+ 297              		.cfi_offset 82, -40
+ 298              		.cfi_offset 83, -36
+ 299              		.cfi_offset 84, -32
+ 300              		.cfi_offset 85, -28
+ 301 000e 88B0     		sub	sp, sp, #32
+ 302              	.LCFI8:
+ 303              		.cfi_def_cfa_offset 80
+ 304 0010 0546     		mov	r5, r0
+ 305 0012 09EE101A 		vmov	s18, r1	@ int
+ 306 0016 1746     		mov	r7, r2
+ 307              	.LBB5:
+ARM GAS  /tmp/cchK2bl0.s 			page 8
+
+
+  85:../Core/Src/fft.c ****     {
+  86:../Core/Src/fft.c ****         complex z, w;
+ 308              		.loc 1 86 9 is_stmt 1 view .LVU82
+  87:../Core/Src/fft.c ****         uint32_t half_N_i = (N_i >> 1);         /* N_i/2 */
+ 309              		.loc 1 87 9 view .LVU83
+ 310              		.loc 1 87 18 is_stmt 0 view .LVU84
+ 311 0018 4E08     		lsrs	r6, r1, #1
+ 312              	.LVL16:
+  88:../Core/Src/fft.c **** 
+  89:../Core/Src/fft.c ****         complex *ve = aux_i;                    /* even array points to first position */ 
+ 313              		.loc 1 89 9 is_stmt 1 view .LVU85
+  90:../Core/Src/fft.c ****         complex *vo = aux_i + half_N_i;         /* odd  array points to middle position */
+ 314              		.loc 1 90 9 view .LVU86
+ 315              		.loc 1 90 18 is_stmt 0 view .LVU87
+ 316 001a 02EB0618 		add	r8, r2, r6, lsl #4
+ 317              	.LVL17:
+  91:../Core/Src/fft.c **** 
+  92:../Core/Src/fft.c ****         for(int k = 0; k < half_N_i; k++) 
+ 318              		.loc 1 92 9 is_stmt 1 view .LVU88
+ 319              	.LBB6:
+ 320              		.loc 1 92 13 view .LVU89
+ 321              		.loc 1 92 17 is_stmt 0 view .LVU90
+ 322 001e 0024     		movs	r4, #0
+ 323              		.loc 1 92 9 view .LVU91
+ 324 0020 12E0     		b	.L15
+ 325              	.LVL18:
+ 326              	.L16:
+  93:../Core/Src/fft.c ****         {
+  94:../Core/Src/fft.c ****             /* ve[k] = y_io[k * 2]; */
+  95:../Core/Src/fft.c ****             ve[k] = y_io[k << 1];
+ 327              		.loc 1 95 13 is_stmt 1 discriminator 3 view .LVU92
+ 328              		.loc 1 95 28 is_stmt 0 discriminator 3 view .LVU93
+ 329 0022 4FEA440C 		lsl	ip, r4, #1
+ 330              		.loc 1 95 25 discriminator 3 view .LVU94
+ 331 0026 05EB4413 		add	r3, r5, r4, lsl #5
+ 332              		.loc 1 95 15 discriminator 3 view .LVU95
+ 333 002a 07EB041E 		add	lr, r7, r4, lsl #4
+ 334              		.loc 1 95 19 discriminator 3 view .LVU96
+ 335 002e 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 336 0030 8EE80F00 		stm	lr, {r0, r1, r2, r3}
+  96:../Core/Src/fft.c ****             vo[k] = y_io[(k << 1) + 1];
+ 337              		.loc 1 96 13 is_stmt 1 discriminator 3 view .LVU97
+ 338              		.loc 1 96 25 is_stmt 0 discriminator 3 view .LVU98
+ 339 0034 0CF10103 		add	r3, ip, #1
+ 340 0038 05EB0313 		add	r3, r5, r3, lsl #4
+ 341              		.loc 1 96 15 discriminator 3 view .LVU99
+ 342 003c 08EB041C 		add	ip, r8, r4, lsl #4
+ 343              		.loc 1 96 19 discriminator 3 view .LVU100
+ 344 0040 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 345 0042 8CE80F00 		stm	ip, {r0, r1, r2, r3}
+  92:../Core/Src/fft.c ****         {
+ 346              		.loc 1 92 38 is_stmt 1 discriminator 3 view .LVU101
+  92:../Core/Src/fft.c ****         {
+ 347              		.loc 1 92 39 is_stmt 0 discriminator 3 view .LVU102
+ 348 0046 0134     		adds	r4, r4, #1
+ 349              	.LVL19:
+ 350              	.L15:
+ARM GAS  /tmp/cchK2bl0.s 			page 9
+
+
+  92:../Core/Src/fft.c ****         {
+ 351              		.loc 1 92 24 is_stmt 1 discriminator 1 view .LVU103
+  92:../Core/Src/fft.c ****         {
+ 352              		.loc 1 92 9 is_stmt 0 discriminator 1 view .LVU104
+ 353 0048 B442     		cmp	r4, r6
+ 354 004a EAD3     		bcc	.L16
+ 355              	.LBE6:
+  97:../Core/Src/fft.c ****         }
+  98:../Core/Src/fft.c **** 
+  99:../Core/Src/fft.c ****             ifft(ve, half_N_i, y_io);        /* FFT on even-indexed elements of y_io[] */
+ 356              		.loc 1 99 13 is_stmt 1 view .LVU105
+ 357 004c 2A46     		mov	r2, r5
+ 358 004e 3146     		mov	r1, r6
+ 359 0050 3846     		mov	r0, r7
+ 360 0052 FFF7FEFF 		bl	ifft
+ 361              	.LVL20:
+ 100:../Core/Src/fft.c ****             ifft(vo, half_N_i, y_io);        /* FFT on odd-indexed elements of y_io[] */
+ 362              		.loc 1 100 13 view .LVU106
+ 363 0056 2A46     		mov	r2, r5
+ 364 0058 3146     		mov	r1, r6
+ 365 005a 4046     		mov	r0, r8
+ 366 005c FFF7FEFF 		bl	ifft
+ 367              	.LVL21:
+ 101:../Core/Src/fft.c **** 
+ 102:../Core/Src/fft.c ****         /* apply twiddle factor of this stage and 2-pt DFT*/
+ 103:../Core/Src/fft.c ****         for(int m = 0; m < half_N_i; m++) 
+ 368              		.loc 1 103 9 view .LVU107
+ 369              	.LBB7:
+ 370              		.loc 1 103 13 view .LVU108
+ 371              		.loc 1 103 17 is_stmt 0 view .LVU109
+ 372 0060 0024     		movs	r4, #0
+ 373              	.LVL22:
+ 374              		.loc 1 103 9 view .LVU110
+ 375 0062 4BE0     		b	.L17
+ 376              	.LVL23:
+ 377              	.L18:
+ 104:../Core/Src/fft.c ****         {
+ 105:../Core/Src/fft.c ****             w.Re = cos((2 * PI * m) / (double)N_i);
+ 378              		.loc 1 105 13 is_stmt 1 discriminator 3 view .LVU111
+ 379              		.loc 1 105 32 is_stmt 0 discriminator 3 view .LVU112
+ 380 0064 07EE904A 		vmov	s15, r4	@ int
+ 381 0068 B8EEE77B 		vcvt.f64.s32	d7, s15
+ 382 006c 9FED286B 		vldr.64	d6, .L23
+ 383 0070 27EE067B 		vmul.f64	d7, d7, d6
+ 384              		.loc 1 105 39 discriminator 3 view .LVU113
+ 385 0074 B8EE496B 		vcvt.f64.u32	d6, s18
+ 386              		.loc 1 105 20 discriminator 3 view .LVU114
+ 387 0078 87EE06AB 		vdiv.f64	d10, d7, d6
+ 388 007c B0EE4A0B 		vmov.f64	d0, d10
+ 389 0080 FFF7FEFF 		bl	cos
+ 390              	.LVL24:
+ 391 0084 B0EE408B 		vmov.f64	d8, d0
+ 392              		.loc 1 105 18 discriminator 3 view .LVU115
+ 393 0088 8DED040B 		vstr.64	d0, [sp, #16]
+ 106:../Core/Src/fft.c ****             w.Im = sin((2 * PI * m) / (double)N_i);
+ 394              		.loc 1 106 13 is_stmt 1 discriminator 3 view .LVU116
+ 395              		.loc 1 106 20 is_stmt 0 discriminator 3 view .LVU117
+ARM GAS  /tmp/cchK2bl0.s 			page 10
+
+
+ 396 008c B0EE4A0B 		vmov.f64	d0, d10
+ 397 0090 FFF7FEFF 		bl	sin
+ 398              	.LVL25:
+ 399              		.loc 1 106 18 discriminator 3 view .LVU118
+ 400 0094 8DED060B 		vstr.64	d0, [sp, #24]
+ 107:../Core/Src/fft.c **** 
+ 108:../Core/Src/fft.c ****             /* w * vo[m] */
+ 109:../Core/Src/fft.c ****             z.Re = complex_mul_re(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Re(w*vo[m]) */
+ 401              		.loc 1 109 13 is_stmt 1 discriminator 3 view .LVU119
+ 402              		.loc 1 109 20 is_stmt 0 discriminator 3 view .LVU120
+ 403 0098 08EB0413 		add	r3, r8, r4, lsl #4
+ 404 009c 93ED007B 		vldr.64	d7, [r3]
+ 405 00a0 93ED025B 		vldr.64	d5, [r3, #8]
+ 406 00a4 20EE056B 		vmul.f64	d6, d0, d5
+ 407 00a8 18EE076B 		vnmls.f64	d6, d8, d7
+ 408              		.loc 1 109 18 discriminator 3 view .LVU121
+ 409 00ac 8DED006B 		vstr.64	d6, [sp]
+ 110:../Core/Src/fft.c ****             z.Im = complex_mul_im(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Im(w*vo[m]) */
+ 410              		.loc 1 110 13 is_stmt 1 discriminator 3 view .LVU122
+ 411              		.loc 1 110 20 is_stmt 0 discriminator 3 view .LVU123
+ 412 00b0 20EE077B 		vmul.f64	d7, d0, d7
+ 413 00b4 08EE057B 		vmla.f64	d7, d8, d5
+ 414              		.loc 1 110 18 discriminator 3 view .LVU124
+ 415 00b8 8DED027B 		vstr.64	d7, [sp, #8]
+ 111:../Core/Src/fft.c **** 
+ 112:../Core/Src/fft.c ****             /* out1 = ve + w(m)*vo */ 
+ 113:../Core/Src/fft.c ****             y_io[m].Re = ve[m].Re + z.Re;
+ 416              		.loc 1 113 13 is_stmt 1 discriminator 3 view .LVU125
+ 417              		.loc 1 113 28 is_stmt 0 discriminator 3 view .LVU126
+ 418 00bc 07EB0412 		add	r2, r7, r4, lsl #4
+ 419              		.loc 1 113 31 discriminator 3 view .LVU127
+ 420 00c0 92ED005B 		vldr.64	d5, [r2]
+ 421              		.loc 1 113 17 discriminator 3 view .LVU128
+ 422 00c4 05EB0413 		add	r3, r5, r4, lsl #4
+ 423              		.loc 1 113 35 discriminator 3 view .LVU129
+ 424 00c8 36EE055B 		vadd.f64	d5, d6, d5
+ 425              		.loc 1 113 24 discriminator 3 view .LVU130
+ 426 00cc 83ED005B 		vstr.64	d5, [r3]
+ 114:../Core/Src/fft.c ****             y_io[m].Im = ve[m].Im + z.Im;
+ 427              		.loc 1 114 13 is_stmt 1 discriminator 3 view .LVU131
+ 428              		.loc 1 114 31 is_stmt 0 discriminator 3 view .LVU132
+ 429 00d0 92ED025B 		vldr.64	d5, [r2, #8]
+ 430              		.loc 1 114 35 discriminator 3 view .LVU133
+ 431 00d4 37EE055B 		vadd.f64	d5, d7, d5
+ 432              		.loc 1 114 24 discriminator 3 view .LVU134
+ 433 00d8 83ED025B 		vstr.64	d5, [r3, #8]
+ 115:../Core/Src/fft.c **** 
+ 116:../Core/Src/fft.c ****             /* out2 = ve - w(m+(N_i/2))*vo */ 
+ 117:../Core/Src/fft.c ****             y_io[m + half_N_i].Re = ve[m].Re - z.Re;
+ 434              		.loc 1 117 13 is_stmt 1 discriminator 3 view .LVU135
+ 435              		.loc 1 117 42 is_stmt 0 discriminator 3 view .LVU136
+ 436 00dc 92ED005B 		vldr.64	d5, [r2]
+ 437              		.loc 1 117 20 discriminator 3 view .LVU137
+ 438 00e0 A319     		adds	r3, r4, r6
+ 439              		.loc 1 117 17 discriminator 3 view .LVU138
+ 440 00e2 05EB0313 		add	r3, r5, r3, lsl #4
+ 441              		.loc 1 117 46 discriminator 3 view .LVU139
+ARM GAS  /tmp/cchK2bl0.s 			page 11
+
+
+ 442 00e6 35EE466B 		vsub.f64	d6, d5, d6
+ 443              		.loc 1 117 35 discriminator 3 view .LVU140
+ 444 00ea 83ED006B 		vstr.64	d6, [r3]
+ 118:../Core/Src/fft.c ****             y_io[m + half_N_i].Im = ve[m].Im - z.Im;
+ 445              		.loc 1 118 13 is_stmt 1 discriminator 3 view .LVU141
+ 446              		.loc 1 118 42 is_stmt 0 discriminator 3 view .LVU142
+ 447 00ee 92ED026B 		vldr.64	d6, [r2, #8]
+ 448              		.loc 1 118 46 discriminator 3 view .LVU143
+ 449 00f2 36EE477B 		vsub.f64	d7, d6, d7
+ 450              		.loc 1 118 35 discriminator 3 view .LVU144
+ 451 00f6 83ED027B 		vstr.64	d7, [r3, #8]
+ 103:../Core/Src/fft.c ****         {
+ 452              		.loc 1 103 38 is_stmt 1 discriminator 3 view .LVU145
+ 103:../Core/Src/fft.c ****         {
+ 453              		.loc 1 103 39 is_stmt 0 discriminator 3 view .LVU146
+ 454 00fa 0134     		adds	r4, r4, #1
+ 455              	.LVL26:
+ 456              	.L17:
+ 103:../Core/Src/fft.c ****         {
+ 457              		.loc 1 103 24 is_stmt 1 discriminator 1 view .LVU147
+ 103:../Core/Src/fft.c ****         {
+ 458              		.loc 1 103 9 is_stmt 0 discriminator 1 view .LVU148
+ 459 00fc B442     		cmp	r4, r6
+ 460 00fe B1D3     		bcc	.L18
+ 461              	.LBE7:
+ 462              	.LBE5:
+ 119:../Core/Src/fft.c ****         }
+ 120:../Core/Src/fft.c ****     }
+ 121:../Core/Src/fft.c **** 
+ 122:../Core/Src/fft.c ****     return _EXIT_SUCCESS;
+ 463              		.loc 1 122 5 is_stmt 1 view .LVU149
+ 123:../Core/Src/fft.c **** }...
+ 464              		.loc 1 123 1 is_stmt 0 view .LVU150
+ 465 0100 0020     		movs	r0, #0
+ 466 0102 08B0     		add	sp, sp, #32
+ 467              	.LCFI9:
+ 468              		.cfi_def_cfa_offset 48
+ 469              		@ sp needed
+ 470 0104 BDEC068B 		vldm	sp!, {d8-d10}
+ 471              	.LCFI10:
+ 472              		.cfi_restore 84
+ 473              		.cfi_restore 85
+ 474              		.cfi_restore 82
+ 475              		.cfi_restore 83
+ 476              		.cfi_restore 80
+ 477              		.cfi_restore 81
+ 478              		.cfi_def_cfa_offset 24
+ 479              	.LVL27:
+ 480              		.loc 1 123 1 view .LVU151
+ 481 0108 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 482              	.LVL28:
+ 483              	.L20:
+ 484              	.LCFI11:
+ 485              		.cfi_def_cfa_offset 0
+ 486              		.cfi_restore 4
+ 487              		.cfi_restore 5
+ 488              		.cfi_restore 6
+ARM GAS  /tmp/cchK2bl0.s 			page 12
+
+
+ 489              		.cfi_restore 7
+ 490              		.cfi_restore 8
+ 491              		.cfi_restore 14
+ 122:../Core/Src/fft.c ****     return _EXIT_SUCCESS;
+ 492              		.loc 1 122 5 is_stmt 1 view .LVU152
+ 493              		.loc 1 123 1 is_stmt 0 view .LVU153
+ 494 010c 0020     		movs	r0, #0
+ 495              	.LVL29:
+ 496              		.loc 1 123 1 view .LVU154
+ 497 010e 7047     		bx	lr
+ 498              	.L24:
+ 499              		.align	3
+ 500              	.L23:
+ 501 0110 182D4454 		.word	1413754136
+ 502 0114 FB211940 		.word	1075388923
+ 503              		.cfi_endproc
+ 504              	.LFE3:
+ 506              		.text
+ 507              	.Letext0:
+ 508              		.file 2 "../Core/Inc/complex.h"
+ 509              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 510              		.file 4 "/usr/include/newlib/math.h"
+ARM GAS  /tmp/cchK2bl0.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 fft.c
+     /tmp/cchK2bl0.s:17     .text.fft:0000000000000000 $t
+     /tmp/cchK2bl0.s:25     .text.fft:0000000000000000 fft
+     /tmp/cchK2bl0.s:258    .text.fft:0000000000000118 $d
+     /tmp/cchK2bl0.s:264    .text.ifft:0000000000000000 $t
+     /tmp/cchK2bl0.s:271    .text.ifft:0000000000000000 ifft
+     /tmp/cchK2bl0.s:501    .text.ifft:0000000000000110 $d
+
+UNDEFINED SYMBOLS
+cos
+sin

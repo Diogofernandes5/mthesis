@@ -1,0 +1,2531 @@
+ARM GAS  /tmp/ccnKynSC.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"interface.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.rodata.memory_read.str1.4,"aMS",%progbits,1
+  17              		.align	2
+  18              	.LC0:
+  19 0000 4D656D6F 		.ascii	"Memory [0x%04X]:     (0x%02X)\012\015\000"
+  19      7279205B 
+  19      30782530 
+  19      34585D3A 
+  19      20202020 
+  20              		.align	2
+  21              	.LC1:
+  22 0020 4D656D6F 		.ascii	"Memory [0x%04X]: '%c' (0x%02X)\012\015\000"
+  22      7279205B 
+  22      30782530 
+  22      34585D3A 
+  22      20272563 
+  23              		.section	.text.memory_read,"ax",%progbits
+  24              		.align	1
+  25              		.arch armv7e-m
+  26              		.syntax unified
+  27              		.thumb
+  28              		.thumb_func
+  29              		.fpu fpv5-d16
+  31              	memory_read:
+  32              	.LVL0:
+  33              	.LFB154:
+  34              		.file 1 "../Core/Src/interface.c"
+   1:../Core/Src/interface.c **** #include "utils.h"
+   2:../Core/Src/interface.c **** #include "parser.h"
+   3:../Core/Src/interface.c **** 
+   4:../Core/Src/interface.c **** #include "usart.h"
+   5:../Core/Src/interface.c **** #include "gpio.h"
+   6:../Core/Src/interface.c **** #include "adc.h"
+   7:../Core/Src/interface.c **** 
+   8:../Core/Src/interface.c **** #include <stdlib.h>
+   9:../Core/Src/interface.c **** 
+  10:../Core/Src/interface.c **** /******************************************************************************
+  11:../Core/Src/interface.c **** Private defines
+  12:../Core/Src/interface.c **** ******************************************************************************/
+  13:../Core/Src/interface.c **** 
+  14:../Core/Src/interface.c **** // SRAM1: 0x20020000 - 0x2007BFFF (368kB)
+  15:../Core/Src/interface.c **** #define SRAM_BASE (uint8_t *)0x20060000		// read and write memory base pointer
+  16:../Core/Src/interface.c **** #define SRAM_TOP (uint8_t *)0x2006FFFF		// read and write memory top pointer
+ARM GAS  /tmp/ccnKynSC.s 			page 2
+
+
+  17:../Core/Src/interface.c **** 
+  18:../Core/Src/interface.c **** /******************************************************************************
+  19:../Core/Src/interface.c **** Function Helpers Prototypes
+  20:../Core/Src/interface.c **** ******************************************************************************/
+  21:../Core/Src/interface.c **** 
+  22:../Core/Src/interface.c **** static char memory_read(uint16_t addr, uint8_t len);
+  23:../Core/Src/interface.c **** static char memory_write(uint16_t addr, uint8_t len, char byte);
+  24:../Core/Src/interface.c **** 
+  25:../Core/Src/interface.c **** /******************************************************************************
+  26:../Core/Src/interface.c **** @function  Version
+  27:../Core/Src/interface.c **** @usage		 VER
+  28:../Core/Src/interface.c **** 
+  29:../Core/Src/interface.c **** @brief	 	 Prints the version and colaborators info 
+  30:../Core/Src/interface.c **** ******************************************************************************/
+  31:../Core/Src/interface.c **** char ver_cb(uint8_t argc, char** argv)
+  32:../Core/Src/interface.c **** {
+  33:../Core/Src/interface.c **** 	if(argc != 1) // number of arguments invalid?
+  34:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  35:../Core/Src/interface.c **** 	
+  36:../Core/Src/interface.c **** 	// 1.0 Interfacing with STM
+  37:../Core/Src/interface.c **** 	// 1.1 Sampling using ADC
+  38:../Core/Src/interface.c **** 	// 1.2 Digital filters (IIR/FIR)
+  39:../Core/Src/interface.c **** 	UART_puts("\n\rCurrent version: 1.2\n\rUsing STM32F767ZI-NUCLEO.\n\n\r");
+  40:../Core/Src/interface.c **** 	// UART_puts("Developers:\n\r- Diogo Fernandes\n\r- Tomas Abreu\n\r@LPI-II Universidade do Minho, 
+  41:../Core/Src/interface.c **** 	return 0;
+  42:../Core/Src/interface.c **** }
+  43:../Core/Src/interface.c **** 
+  44:../Core/Src/interface.c **** /******************************************************************************
+  45:../Core/Src/interface.c **** @function  Memory Read
+  46:../Core/Src/interface.c **** @usage		 MR <addr16> <length8>
+  47:../Core/Src/interface.c **** 
+  48:../Core/Src/interface.c **** @brief	 	 Read <length> memory positions, starting on <addr>
+  49:../Core/Src/interface.c **** ******************************************************************************/
+  50:../Core/Src/interface.c **** char mr_cb(uint8_t argc, char** argv)
+  51:../Core/Src/interface.c **** {
+  52:../Core/Src/interface.c **** 	uint32_t addr;
+  53:../Core/Src/interface.c **** 	uint16_t len;
+  54:../Core/Src/interface.c **** 	
+  55:../Core/Src/interface.c **** 	if(argc != 3) // number of arguments invalid?
+  56:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  57:../Core/Src/interface.c **** 	
+  58:../Core/Src/interface.c **** 	addr = my_atoi(argv[1]);		// converts argument to int 
+  59:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+  60:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  61:../Core/Src/interface.c **** 	
+  62:../Core/Src/interface.c **** 	len = my_atoi(argv[2]);			// converts argument to int 
+  63:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+  64:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  65:../Core/Src/interface.c **** 	
+  66:../Core/Src/interface.c **** 	return memory_read(addr, len);
+  67:../Core/Src/interface.c **** }
+  68:../Core/Src/interface.c **** 
+  69:../Core/Src/interface.c **** /******************************************************************************
+  70:../Core/Src/interface.c **** @function  Memory Write
+  71:../Core/Src/interface.c **** @usage		 MW <addr16> <length8> <byte8>
+  72:../Core/Src/interface.c **** 
+  73:../Core/Src/interface.c **** @brief	 	 Write <byte>, starting on memory address <addr> for <lenght> positions
+ARM GAS  /tmp/ccnKynSC.s 			page 3
+
+
+  74:../Core/Src/interface.c **** ******************************************************************************/
+  75:../Core/Src/interface.c **** char mw_cb(uint8_t argc, char** argv)
+  76:../Core/Src/interface.c **** {
+  77:../Core/Src/interface.c **** 	uint32_t addr;
+  78:../Core/Src/interface.c **** 	uint16_t len;
+  79:../Core/Src/interface.c **** 	uint16_t byte;
+  80:../Core/Src/interface.c **** 	
+  81:../Core/Src/interface.c **** 	if(argc != 4) 	// number of arguments invalid?
+  82:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  83:../Core/Src/interface.c **** 	
+  84:../Core/Src/interface.c **** 	addr = my_atoi(argv[1]);	// converts argument to int 
+  85:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+  86:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  87:../Core/Src/interface.c **** 	
+  88:../Core/Src/interface.c **** 	len = (char) my_atoi(argv[2]);	// converts argument to int 
+  89:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+  90:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  91:../Core/Src/interface.c **** 		
+  92:../Core/Src/interface.c **** 	byte = (char) my_atoi(argv[3]);	// converts argument to int 
+  93:../Core/Src/interface.c **** 	if(!IS_ADDR8(byte))
+  94:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+  95:../Core/Src/interface.c **** 
+  96:../Core/Src/interface.c **** 	return memory_write(addr, len, byte);
+  97:../Core/Src/interface.c **** }
+  98:../Core/Src/interface.c **** 
+  99:../Core/Src/interface.c **** /******************************************************************************
+ 100:../Core/Src/interface.c **** @function  Make Pin Input
+ 101:../Core/Src/interface.c **** @usage		 MI <port_addr8> <pin_setting8>
+ 102:../Core/Src/interface.c **** 
+ 103:../Core/Src/interface.c **** @brief	 	 
+ 104:../Core/Src/interface.c **** ******************************************************************************/
+ 105:../Core/Src/interface.c **** char mi_cb(uint8_t argc, char** argv)
+ 106:../Core/Src/interface.c **** {
+ 107:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 108:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 109:../Core/Src/interface.c **** 	char str[32];	// Output message
+ 110:../Core/Src/interface.c **** 	
+ 111:../Core/Src/interface.c **** 	if(argc != 3) // number of arguments invalid?
+ 112:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 113:../Core/Src/interface.c **** 	
+ 114:../Core/Src/interface.c **** 	port_addr = my_atoi(argv[1]);
+ 115:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 116:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 117:../Core/Src/interface.c **** 	
+ 118:../Core/Src/interface.c **** 	pin_setting = my_atoi(argv[2]);
+ 119:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 120:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 121:../Core/Src/interface.c **** 	
+ 122:../Core/Src/interface.c **** 	if(GPIO_check_res_pins(port_addr, &pin_setting))
+ 123:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ 124:../Core/Src/interface.c **** 	
+ 125:../Core/Src/interface.c **** 	GPIO_config_pins(port_addr, pin_setting, GPIO_MODE_INPUT);
+ 126:../Core/Src/interface.c **** 	
+ 127:../Core/Src/interface.c **** 	for(uint8_t i = 0; i < 16; i++) // check entire byte for bits at level high
+ 128:../Core/Src/interface.c **** 	{
+ 129:../Core/Src/interface.c **** 		if(((pin_setting & 0x01) == 1) && (GPIO_PIN_MODE(port_addr, i) == GPIO_MODE_INPUT)) // checks if 
+ 130:../Core/Src/interface.c **** 		{
+ARM GAS  /tmp/ccnKynSC.s 			page 4
+
+
+ 131:../Core/Src/interface.c **** 			sprintf(str, "Pin %2d configured as input.\n\r", i);
+ 132:../Core/Src/interface.c **** 			UART_puts(str);
+ 133:../Core/Src/interface.c **** 		}
+ 134:../Core/Src/interface.c **** 		pin_setting >>= 1;
+ 135:../Core/Src/interface.c **** 	}
+ 136:../Core/Src/interface.c **** 	return 0;
+ 137:../Core/Src/interface.c **** }
+ 138:../Core/Src/interface.c **** 
+ 139:../Core/Src/interface.c **** /******************************************************************************
+ 140:../Core/Src/interface.c **** @function  Make Pin Output
+ 141:../Core/Src/interface.c **** @usage		 MO <port_addr8> <pin_setting8>
+ 142:../Core/Src/interface.c **** 
+ 143:../Core/Src/interface.c **** @brief	 	 
+ 144:../Core/Src/interface.c **** ******************************************************************************/
+ 145:../Core/Src/interface.c **** char mo_cb(uint8_t argc, char** argv)
+ 146:../Core/Src/interface.c **** {
+ 147:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 148:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 149:../Core/Src/interface.c **** 	char str[32];	// Output message
+ 150:../Core/Src/interface.c **** 	
+ 151:../Core/Src/interface.c **** 	if(argc != 3) // number of arguments invalid?
+ 152:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 153:../Core/Src/interface.c **** 	
+ 154:../Core/Src/interface.c **** 	port_addr = my_atoi(argv[1]);
+ 155:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 156:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 157:../Core/Src/interface.c **** 	
+ 158:../Core/Src/interface.c **** 	pin_setting = my_atoi(argv[2]);
+ 159:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 160:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 161:../Core/Src/interface.c **** 		
+ 162:../Core/Src/interface.c **** 	if(GPIO_check_res_pins(port_addr, &pin_setting))
+ 163:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ 164:../Core/Src/interface.c **** 	
+ 165:../Core/Src/interface.c **** 	GPIO_config_pins(port_addr, pin_setting, GPIO_MODE_OUTPUT_PP);
+ 166:../Core/Src/interface.c **** 	
+ 167:../Core/Src/interface.c **** 	for(uint8_t i = 0; i < 16; i++) // check entire byte for bits at level high
+ 168:../Core/Src/interface.c **** 	{
+ 169:../Core/Src/interface.c **** 		if(((pin_setting & 0x01) == 1) && (GPIO_PIN_MODE(port_addr, i) == GPIO_MODE_OUTPUT_PP)) // checks
+ 170:../Core/Src/interface.c **** 		{
+ 171:../Core/Src/interface.c **** 			sprintf(str, "Pin %2d configured as output.\n\r", i);		
+ 172:../Core/Src/interface.c **** 			UART_puts(str);
+ 173:../Core/Src/interface.c **** 		}
+ 174:../Core/Src/interface.c **** 		pin_setting >>= 1;
+ 175:../Core/Src/interface.c **** 	}
+ 176:../Core/Src/interface.c **** 	return 0;
+ 177:../Core/Src/interface.c **** }
+ 178:../Core/Src/interface.c **** 
+ 179:../Core/Src/interface.c **** /******************************************************************************
+ 180:../Core/Src/interface.c **** @function  Read Digital Input
+ 181:../Core/Src/interface.c **** @usage		 RD <port_addr8> <pin_setting8>
+ 182:../Core/Src/interface.c **** 
+ 183:../Core/Src/interface.c **** @brief	 	 
+ 184:../Core/Src/interface.c **** ******************************************************************************/
+ 185:../Core/Src/interface.c **** char rd_cb(uint8_t argc, char** argv)
+ 186:../Core/Src/interface.c **** {
+ 187:../Core/Src/interface.c **** 	uint16_t port_addr;
+ARM GAS  /tmp/ccnKynSC.s 			page 5
+
+
+ 188:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 189:../Core/Src/interface.c **** 	char str[42];	// Output message
+ 190:../Core/Src/interface.c **** 	
+ 191:../Core/Src/interface.c **** 	if(argc != 3) // number of arguments invalid?
+ 192:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 193:../Core/Src/interface.c **** 	
+ 194:../Core/Src/interface.c **** 	port_addr = my_atoi(argv[1]);
+ 195:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 196:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 197:../Core/Src/interface.c **** 	
+ 198:../Core/Src/interface.c **** 	pin_setting = my_atoi(argv[2]);
+ 199:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 200:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 201:../Core/Src/interface.c **** 	
+ 202:../Core/Src/interface.c **** 	sprintf(str, "GPIO Port %c\n\r", (char)(port_addr + 'A'));
+ 203:../Core/Src/interface.c **** 	UART_puts(str);
+ 204:../Core/Src/interface.c **** 	
+ 205:../Core/Src/interface.c **** 	for(uint8_t i = 0; i < 16; i++) // check entire byte for bits at level high
+ 206:../Core/Src/interface.c **** 	{
+ 207:../Core/Src/interface.c **** 		if((pin_setting & 0x01) == 1) // checks if LSB is 1
+ 208:../Core/Src/interface.c **** 		{
+ 209:../Core/Src/interface.c **** 			if(GPIO_PIN_MODE(port_addr, i) == GPIO_MODE_INPUT) // PinMode as input?
+ 210:../Core/Src/interface.c **** 			{
+ 211:../Core/Src/interface.c **** 				uint8_t val;
+ 212:../Core/Src/interface.c **** 				val = HAL_GPIO_ReadPin(GPIO_Ports[port_addr], GPIO_Pins[i]);
+ 213:../Core/Src/interface.c **** 				sprintf(str, "Pin %2d - '%d'\n\r", i, val);
+ 214:../Core/Src/interface.c **** 			}
+ 215:../Core/Src/interface.c **** 			else
+ 216:../Core/Src/interface.c **** 				sprintf(str, "Pin %2d not configured as input mode.\n\r", i);	// not able to read pin value
+ 217:../Core/Src/interface.c **** 			
+ 218:../Core/Src/interface.c **** 			UART_puts(str);
+ 219:../Core/Src/interface.c **** 		}
+ 220:../Core/Src/interface.c **** 		else
+ 221:../Core/Src/interface.c **** 			UART_puts("0\n\r");
+ 222:../Core/Src/interface.c **** 		
+ 223:../Core/Src/interface.c **** 		pin_setting >>= 1;
+ 224:../Core/Src/interface.c **** 	}
+ 225:../Core/Src/interface.c **** 	return 0;
+ 226:../Core/Src/interface.c **** }
+ 227:../Core/Src/interface.c **** 
+ 228:../Core/Src/interface.c **** /******************************************************************************
+ 229:../Core/Src/interface.c **** @function  Write Digital Output
+ 230:../Core/Src/interface.c **** @usage		 WD <port_addr8> <pin_setting8> <pin_values8>
+ 231:../Core/Src/interface.c **** 
+ 232:../Core/Src/interface.c **** @brief	 	 
+ 233:../Core/Src/interface.c **** ******************************************************************************/
+ 234:../Core/Src/interface.c **** char wd_cb(uint8_t argc, char** argv)
+ 235:../Core/Src/interface.c **** {
+ 236:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 237:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 238:../Core/Src/interface.c **** 	uint16_t pin_values;
+ 239:../Core/Src/interface.c **** 	char str[42];	// Output message
+ 240:../Core/Src/interface.c **** 	
+ 241:../Core/Src/interface.c **** 	if(argc != 4) // number of arguments invalid?
+ 242:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 243:../Core/Src/interface.c **** 	
+ 244:../Core/Src/interface.c **** 	port_addr = my_atoi(argv[1]);
+ARM GAS  /tmp/ccnKynSC.s 			page 6
+
+
+ 245:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 246:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 247:../Core/Src/interface.c **** 	
+ 248:../Core/Src/interface.c **** 	pin_setting = my_atoi(argv[2]);
+ 249:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 250:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 251:../Core/Src/interface.c **** 	
+ 252:../Core/Src/interface.c **** 	pin_values = my_atoi(argv[3]);
+ 253:../Core/Src/interface.c **** 	if(!IS_ADDR8(pin_values))
+ 254:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 255:../Core/Src/interface.c **** 
+ 256:../Core/Src/interface.c **** 	sprintf(str, "GPIO Port %c\n\r", (char)(port_addr + 'A'));
+ 257:../Core/Src/interface.c **** 	UART_puts(str);
+ 258:../Core/Src/interface.c **** 	
+ 259:../Core/Src/interface.c **** 	for(uint8_t i = 0; i < 16; i++) // check entire byte for bits at level high
+ 260:../Core/Src/interface.c **** 	{
+ 261:../Core/Src/interface.c **** 		if((pin_setting & 0x01) == 1) // checks if LSB is 1
+ 262:../Core/Src/interface.c **** 		{
+ 263:../Core/Src/interface.c **** 			if(GPIO_PIN_MODE(port_addr, i) == GPIO_MODE_OUTPUT_PP) // PinMode as output push-pull?
+ 264:../Core/Src/interface.c **** 			{
+ 265:../Core/Src/interface.c **** 				uint8_t pin_val = (pin_values & 0x01);
+ 266:../Core/Src/interface.c **** 				HAL_GPIO_WritePin(GPIO_Ports[port_addr], GPIO_Pins[i], (GPIO_PinState)pin_val);
+ 267:../Core/Src/interface.c **** 				sprintf(str, "Pin %2d - '%d'\n\r", i, pin_val);
+ 268:../Core/Src/interface.c **** 			}
+ 269:../Core/Src/interface.c **** 			else
+ 270:../Core/Src/interface.c **** 				sprintf(str, "Pin %2d not configured as output mode.\n\r", i);	// not able to read pin value
+ 271:../Core/Src/interface.c **** 			
+ 272:../Core/Src/interface.c **** 			UART_puts(str);
+ 273:../Core/Src/interface.c **** 		}
+ 274:../Core/Src/interface.c **** 		pin_setting >>= 1;
+ 275:../Core/Src/interface.c **** 		pin_values >>= 1;
+ 276:../Core/Src/interface.c **** 	}
+ 277:../Core/Src/interface.c **** 	
+ 278:../Core/Src/interface.c **** 	return 0;
+ 279:../Core/Src/interface.c **** }
+ 280:../Core/Src/interface.c **** 
+ 281:../Core/Src/interface.c **** /******************************************************************************
+ 282:../Core/Src/interface.c **** @function  Analog Read
+ 283:../Core/Src/interface.c **** @usage		 RA <addr2>
+ 284:../Core/Src/interface.c **** 
+ 285:../Core/Src/interface.c **** @brief	 	 
+ 286:../Core/Src/interface.c **** ******************************************************************************/
+ 287:../Core/Src/interface.c **** char ra_cb(uint8_t argc, char** argv)
+ 288:../Core/Src/interface.c **** {
+ 289:../Core/Src/interface.c **** 	uint8_t addr;
+ 290:../Core/Src/interface.c **** 	uint32_t adcValue;
+ 291:../Core/Src/interface.c **** 	uint32_t volt;
+ 292:../Core/Src/interface.c **** 	char str[40];	// Output message
+ 293:../Core/Src/interface.c **** 	
+ 294:../Core/Src/interface.c **** 	if(argc != 2) // number of arguments invalid?
+ 295:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 296:../Core/Src/interface.c **** 	
+ 297:../Core/Src/interface.c **** 	addr = my_atoi(argv[1]);
+ 298:../Core/Src/interface.c **** 	if(!IS_ADDR4(addr))
+ 299:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 300:../Core/Src/interface.c **** 
+ 301:../Core/Src/interface.c **** 	if(ADC_Config_Channel(&hadc1, addr)) // PinMode as output push-pull?
+ARM GAS  /tmp/ccnKynSC.s 			page 7
+
+
+ 302:../Core/Src/interface.c **** 	{
+ 303:../Core/Src/interface.c **** 		UART_puts("Pin not configured as input mode.\n\r");	// not able to read pin value
+ 304:../Core/Src/interface.c **** 		return (char)(-EPERM);
+ 305:../Core/Src/interface.c **** 	}
+ 306:../Core/Src/interface.c **** 	
+ 307:../Core/Src/interface.c **** 	adcValue = ADC_Polling_Conv(&hadc1);
+ 308:../Core/Src/interface.c **** 	volt = ((double)adcValue * 3300 / 4095);
+ 309:../Core/Src/interface.c **** 	sprintf(str, "ADC Channel %2d value: %ld mV.\n\r", addr, volt);
+ 310:../Core/Src/interface.c **** 	UART_puts(str);
+ 311:../Core/Src/interface.c **** 	
+ 312:../Core/Src/interface.c **** 	ADC_DeConfig_Channel(&hadc1, addr); // Restores initial pin mode
+ 313:../Core/Src/interface.c **** 	
+ 314:../Core/Src/interface.c **** 	return 0;
+ 315:../Core/Src/interface.c **** }
+ 316:../Core/Src/interface.c **** 
+ 317:../Core/Src/interface.c **** 
+ 318:../Core/Src/interface.c **** /******************************************************************************
+ 319:../Core/Src/interface.c **** 
+ 320:../Core/Src/interface.c **** 
+ 321:../Core/Src/interface.c **** 
+ 322:../Core/Src/interface.c **** Function Helpers Implementation
+ 323:../Core/Src/interface.c **** 
+ 324:../Core/Src/interface.c **** 
+ 325:../Core/Src/interface.c **** 
+ 326:../Core/Src/interface.c **** ******************************************************************************/
+ 327:../Core/Src/interface.c **** 
+ 328:../Core/Src/interface.c **** 
+ 329:../Core/Src/interface.c **** /******************************************************************************
+ 330:../Core/Src/interface.c **** @function  Memory Read
+ 331:../Core/Src/interface.c **** @usage		 MR <addr16> <length8>
+ 332:../Core/Src/interface.c **** @param  	 Base reading address
+ 333:../Core/Src/interface.c **** @param  	 Number of addresses to be read
+ 334:../Core/Src/interface.c **** 
+ 335:../Core/Src/interface.c **** @brief	 	 Read <length> memory positions, starting on <addr>
+ 336:../Core/Src/interface.c **** ******************************************************************************/
+ 337:../Core/Src/interface.c **** static char memory_read(uint16_t addr, uint8_t len)
+ 338:../Core/Src/interface.c **** {
+  35              		.loc 1 338 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 48
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39              		.loc 1 338 1 is_stmt 0 view .LVU1
+  40 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 20
+  43              		.cfi_offset 4, -20
+  44              		.cfi_offset 5, -16
+  45              		.cfi_offset 6, -12
+  46              		.cfi_offset 7, -8
+  47              		.cfi_offset 14, -4
+  48 0002 8FB0     		sub	sp, sp, #60
+  49              	.LCFI1:
+  50              		.cfi_def_cfa_offset 80
+ 339:../Core/Src/interface.c **** 	uint8_t i;
+  51              		.loc 1 339 2 is_stmt 1 view .LVU2
+ 340:../Core/Src/interface.c **** 	uint8_t* memory_ptr = (SRAM_BASE + addr); // Start reading memory from SRAM_BASE. addr is used as 
+  52              		.loc 1 340 2 view .LVU3
+ARM GAS  /tmp/ccnKynSC.s 			page 8
+
+
+  53              		.loc 1 340 11 is_stmt 0 view .LVU4
+  54 0004 154E     		ldr	r6, .L10
+  55 0006 0644     		add	r6, r6, r0
+  56              	.LVL1:
+ 341:../Core/Src/interface.c **** 	char str[42];	// Output message
+  57              		.loc 1 341 2 is_stmt 1 view .LVU5
+ 342:../Core/Src/interface.c **** 	
+ 343:../Core/Src/interface.c **** 	if((memory_ptr + (len - 1)) > SRAM_TOP) // Check if memory_ptr won't go over memory top
+  58              		.loc 1 343 2 view .LVU6
+  59              		.loc 1 343 17 is_stmt 0 view .LVU7
+  60 0008 4B1E     		subs	r3, r1, #1
+  61 000a 3344     		add	r3, r3, r6
+  62              		.loc 1 343 4 view .LVU8
+  63 000c 144A     		ldr	r2, .L10+4
+  64 000e 9342     		cmp	r3, r2
+  65 0010 22D8     		bhi	.L7
+  66 0012 0446     		mov	r4, r0
+  67 0014 0F46     		mov	r7, r1
+ 344:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 345:../Core/Src/interface.c **** 
+ 346:../Core/Src/interface.c **** 	for (i = 0; i < len; i++, addr++, memory_ptr++)
+  68              		.loc 1 346 9 view .LVU9
+  69 0016 0025     		movs	r5, #0
+  70 0018 0DE0     		b	.L3
+  71              	.LVL2:
+  72              	.L4:
+ 347:../Core/Src/interface.c **** 	{
+ 348:../Core/Src/interface.c **** 		if(!IS_PRINTABLE(*memory_ptr)) // checks if (*memory_ptr) is a printable character
+ 349:../Core/Src/interface.c **** 			sprintf(str, "Memory [0x%04X]:     (0x%02X)\n\r", addr, (*memory_ptr));
+ 350:../Core/Src/interface.c **** 		else // Character is printable
+ 351:../Core/Src/interface.c **** 			sprintf(str, "Memory [0x%04X]: '%c' (0x%02X)\n\r", addr, (*memory_ptr), (*memory_ptr));
+  73              		.loc 1 351 4 is_stmt 1 view .LVU10
+  74 001a 0093     		str	r3, [sp]
+  75 001c 2246     		mov	r2, r4
+  76 001e 1149     		ldr	r1, .L10+8
+  77 0020 03A8     		add	r0, sp, #12
+  78 0022 FFF7FEFF 		bl	sprintf
+  79              	.LVL3:
+  80              	.L5:
+ 352:../Core/Src/interface.c **** 		
+ 353:../Core/Src/interface.c **** 		UART_puts(str); // Print string
+  81              		.loc 1 353 3 discriminator 2 view .LVU11
+  82 0026 03A8     		add	r0, sp, #12
+  83 0028 FFF7FEFF 		bl	UART_puts
+  84              	.LVL4:
+ 346:../Core/Src/interface.c **** 	{
+  85              		.loc 1 346 23 discriminator 2 view .LVU12
+ 346:../Core/Src/interface.c **** 	{
+  86              		.loc 1 346 24 is_stmt 0 discriminator 2 view .LVU13
+  87 002c 0135     		adds	r5, r5, #1
+  88              	.LVL5:
+ 346:../Core/Src/interface.c **** 	{
+  89              		.loc 1 346 24 discriminator 2 view .LVU14
+  90 002e EDB2     		uxtb	r5, r5
+  91              	.LVL6:
+ 346:../Core/Src/interface.c **** 	{
+  92              		.loc 1 346 32 discriminator 2 view .LVU15
+ARM GAS  /tmp/ccnKynSC.s 			page 9
+
+
+  93 0030 0134     		adds	r4, r4, #1
+  94              	.LVL7:
+ 346:../Core/Src/interface.c **** 	{
+  95              		.loc 1 346 32 discriminator 2 view .LVU16
+  96 0032 A4B2     		uxth	r4, r4
+  97              	.LVL8:
+ 346:../Core/Src/interface.c **** 	{
+  98              		.loc 1 346 46 discriminator 2 view .LVU17
+  99 0034 0136     		adds	r6, r6, #1
+ 100              	.LVL9:
+ 101              	.L3:
+ 346:../Core/Src/interface.c **** 	{
+ 102              		.loc 1 346 14 is_stmt 1 discriminator 1 view .LVU18
+ 346:../Core/Src/interface.c **** 	{
+ 103              		.loc 1 346 2 is_stmt 0 discriminator 1 view .LVU19
+ 104 0036 BD42     		cmp	r5, r7
+ 105 0038 0BD2     		bcs	.L9
+ 348:../Core/Src/interface.c **** 			sprintf(str, "Memory [0x%04X]:     (0x%02X)\n\r", addr, (*memory_ptr));
+ 106              		.loc 1 348 3 is_stmt 1 view .LVU20
+ 348:../Core/Src/interface.c **** 			sprintf(str, "Memory [0x%04X]:     (0x%02X)\n\r", addr, (*memory_ptr));
+ 107              		.loc 1 348 7 is_stmt 0 view .LVU21
+ 108 003a 3378     		ldrb	r3, [r6]	@ zero_extendqisi2
+ 348:../Core/Src/interface.c **** 			sprintf(str, "Memory [0x%04X]:     (0x%02X)\n\r", addr, (*memory_ptr));
+ 109              		.loc 1 348 6 view .LVU22
+ 110 003c A3F12002 		sub	r2, r3, #32
+ 111 0040 D2B2     		uxtb	r2, r2
+ 348:../Core/Src/interface.c **** 			sprintf(str, "Memory [0x%04X]:     (0x%02X)\n\r", addr, (*memory_ptr));
+ 112              		.loc 1 348 5 view .LVU23
+ 113 0042 5E2A     		cmp	r2, #94
+ 114 0044 E9D9     		bls	.L4
+ 349:../Core/Src/interface.c **** 		else // Character is printable
+ 115              		.loc 1 349 4 is_stmt 1 view .LVU24
+ 116 0046 2246     		mov	r2, r4
+ 117 0048 0749     		ldr	r1, .L10+12
+ 118 004a 03A8     		add	r0, sp, #12
+ 119 004c FFF7FEFF 		bl	sprintf
+ 120              	.LVL10:
+ 121 0050 E9E7     		b	.L5
+ 122              	.L9:
+ 354:../Core/Src/interface.c **** 	}
+ 355:../Core/Src/interface.c **** 	
+ 356:../Core/Src/interface.c **** 	return 0;
+ 123              		.loc 1 356 9 is_stmt 0 view .LVU25
+ 124 0052 0020     		movs	r0, #0
+ 125              	.LVL11:
+ 126              	.L2:
+ 357:../Core/Src/interface.c **** }
+ 127              		.loc 1 357 1 view .LVU26
+ 128 0054 0FB0     		add	sp, sp, #60
+ 129              	.LCFI2:
+ 130              		.cfi_remember_state
+ 131              		.cfi_def_cfa_offset 20
+ 132              		@ sp needed
+ 133 0056 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 134              	.LVL12:
+ 135              	.L7:
+ 136              	.LCFI3:
+ARM GAS  /tmp/ccnKynSC.s 			page 10
+
+
+ 137              		.cfi_restore_state
+ 344:../Core/Src/interface.c **** 
+ 138              		.loc 1 344 10 view .LVU27
+ 139 0058 FA20     		movs	r0, #250
+ 140              	.LVL13:
+ 344:../Core/Src/interface.c **** 
+ 141              		.loc 1 344 10 view .LVU28
+ 142 005a FBE7     		b	.L2
+ 143              	.L11:
+ 144              		.align	2
+ 145              	.L10:
+ 146 005c 00000620 		.word	537264128
+ 147 0060 FFFF0620 		.word	537329663
+ 148 0064 20000000 		.word	.LC1
+ 149 0068 00000000 		.word	.LC0
+ 150              		.cfi_endproc
+ 151              	.LFE154:
+ 153              		.section	.rodata.memory_write.str1.4,"aMS",%progbits,1
+ 154              		.align	2
+ 155              	.LC2:
+ 156 0000 42797465 		.ascii	"Byte 0x%02X:\012\015\000"
+ 156      20307825 
+ 156      3032583A 
+ 156      0A0D00
+ 157 000f 00       		.align	2
+ 158              	.LC3:
+ 159 0010 42797465 		.ascii	"Byte '%c' [0x%02X]:\012\015\000"
+ 159      20272563 
+ 159      27205B30 
+ 159      78253032 
+ 159      585D3A0A 
+ 160 0026 0000     		.align	2
+ 161              	.LC4:
+ 162 0028 094D656D 		.ascii	"\011Memory [0x%04X] successfuly written.\012\015\000"
+ 162      6F727920 
+ 162      5B307825 
+ 162      3034585D 
+ 162      20737563 
+ 163              		.section	.text.memory_write,"ax",%progbits
+ 164              		.align	1
+ 165              		.syntax unified
+ 166              		.thumb
+ 167              		.thumb_func
+ 168              		.fpu fpv5-d16
+ 170              	memory_write:
+ 171              	.LVL14:
+ 172              	.LFB155:
+ 358:../Core/Src/interface.c **** 
+ 359:../Core/Src/interface.c **** /******************************************************************************
+ 360:../Core/Src/interface.c **** @function  Memory Write
+ 361:../Core/Src/interface.c **** @usage		 MW <addr16> <length8> <byte8>
+ 362:../Core/Src/interface.c **** @param  	 Base writing address
+ 363:../Core/Src/interface.c **** @param  	 Number of addresses to be written
+ 364:../Core/Src/interface.c **** @param  	 Byte to be written 
+ 365:../Core/Src/interface.c **** 
+ 366:../Core/Src/interface.c **** @brief	 	 Write <byte>, starting on memory address <addr> for <lenght> positions
+ 367:../Core/Src/interface.c **** ******************************************************************************/
+ARM GAS  /tmp/ccnKynSC.s 			page 11
+
+
+ 368:../Core/Src/interface.c **** static char memory_write(uint16_t addr, uint8_t len, char byte)
+ 369:../Core/Src/interface.c **** {
+ 173              		.loc 1 369 1 is_stmt 1 view -0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 48
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 177              		.loc 1 369 1 is_stmt 0 view .LVU30
+ 178 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 179              	.LCFI4:
+ 180              		.cfi_def_cfa_offset 24
+ 181              		.cfi_offset 4, -24
+ 182              		.cfi_offset 5, -20
+ 183              		.cfi_offset 6, -16
+ 184              		.cfi_offset 7, -12
+ 185              		.cfi_offset 8, -8
+ 186              		.cfi_offset 14, -4
+ 187 0004 8CB0     		sub	sp, sp, #48
+ 188              	.LCFI5:
+ 189              		.cfi_def_cfa_offset 72
+ 190 0006 1746     		mov	r7, r2
+ 370:../Core/Src/interface.c **** 	uint8_t i;
+ 191              		.loc 1 370 2 is_stmt 1 view .LVU31
+ 371:../Core/Src/interface.c **** 	uint8_t* memory_ptr = (SRAM_BASE + addr); // Start reading memory from SRAM_BASE. addr is used as 
+ 192              		.loc 1 371 2 view .LVU32
+ 193              		.loc 1 371 11 is_stmt 0 view .LVU33
+ 194 0008 1A4E     		ldr	r6, .L20
+ 195 000a 0644     		add	r6, r6, r0
+ 196              	.LVL15:
+ 372:../Core/Src/interface.c **** 	char str[42];	// Output message
+ 197              		.loc 1 372 2 is_stmt 1 view .LVU34
+ 373:../Core/Src/interface.c **** 	
+ 374:../Core/Src/interface.c **** 	if((memory_ptr + (len - 1)) > SRAM_TOP) // Check if memory_ptr won't go over memory top
+ 198              		.loc 1 374 2 view .LVU35
+ 199              		.loc 1 374 17 is_stmt 0 view .LVU36
+ 200 000c 4B1E     		subs	r3, r1, #1
+ 201 000e 3344     		add	r3, r3, r6
+ 202              		.loc 1 374 4 view .LVU37
+ 203 0010 194A     		ldr	r2, .L20+4
+ 204              	.LVL16:
+ 205              		.loc 1 374 4 view .LVU38
+ 206 0012 9342     		cmp	r3, r2
+ 207 0014 2BD8     		bhi	.L18
+ 208 0016 0446     		mov	r4, r0
+ 209 0018 8846     		mov	r8, r1
+ 375:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 376:../Core/Src/interface.c **** 
+ 377:../Core/Src/interface.c **** 	if(!IS_PRINTABLE(byte)) // checks if (byte) is a printable character
+ 210              		.loc 1 377 2 is_stmt 1 view .LVU39
+ 211              		.loc 1 377 5 is_stmt 0 view .LVU40
+ 212 001a A7F12003 		sub	r3, r7, #32
+ 213 001e DBB2     		uxtb	r3, r3
+ 214              		.loc 1 377 4 view .LVU41
+ 215 0020 5E2B     		cmp	r3, #94
+ 216 0022 09D9     		bls	.L14
+ 378:../Core/Src/interface.c **** 		sprintf(str, "Byte 0x%02X:\n\r", byte);
+ 217              		.loc 1 378 3 is_stmt 1 view .LVU42
+ 218 0024 3A46     		mov	r2, r7
+ARM GAS  /tmp/ccnKynSC.s 			page 12
+
+
+ 219 0026 1549     		ldr	r1, .L20+8
+ 220              	.LVL17:
+ 221              		.loc 1 378 3 is_stmt 0 view .LVU43
+ 222 0028 01A8     		add	r0, sp, #4
+ 223              	.LVL18:
+ 224              		.loc 1 378 3 view .LVU44
+ 225 002a FFF7FEFF 		bl	sprintf
+ 226              	.LVL19:
+ 227              	.L15:
+ 379:../Core/Src/interface.c **** 	else // Character is printable
+ 380:../Core/Src/interface.c **** 		sprintf(str, "Byte '%c' [0x%02X]:\n\r", byte, byte);
+ 381:../Core/Src/interface.c **** 	
+ 382:../Core/Src/interface.c **** 	UART_puts(str);
+ 228              		.loc 1 382 2 is_stmt 1 view .LVU45
+ 229 002e 01A8     		add	r0, sp, #4
+ 230 0030 FFF7FEFF 		bl	UART_puts
+ 231              	.LVL20:
+ 383:../Core/Src/interface.c **** 	for (i = 0; i < len; i++, addr++, memory_ptr++)
+ 232              		.loc 1 383 2 view .LVU46
+ 233              		.loc 1 383 9 is_stmt 0 view .LVU47
+ 234 0034 0025     		movs	r5, #0
+ 235              		.loc 1 383 2 view .LVU48
+ 236 0036 14E0     		b	.L16
+ 237              	.LVL21:
+ 238              	.L14:
+ 380:../Core/Src/interface.c **** 	
+ 239              		.loc 1 380 3 is_stmt 1 view .LVU49
+ 240 0038 3B46     		mov	r3, r7
+ 241 003a 3A46     		mov	r2, r7
+ 242 003c 1049     		ldr	r1, .L20+12
+ 243              	.LVL22:
+ 380:../Core/Src/interface.c **** 	
+ 244              		.loc 1 380 3 is_stmt 0 view .LVU50
+ 245 003e 01A8     		add	r0, sp, #4
+ 246              	.LVL23:
+ 380:../Core/Src/interface.c **** 	
+ 247              		.loc 1 380 3 view .LVU51
+ 248 0040 FFF7FEFF 		bl	sprintf
+ 249              	.LVL24:
+ 250 0044 F3E7     		b	.L15
+ 251              	.LVL25:
+ 252              	.L17:
+ 384:../Core/Src/interface.c **** 	{
+ 385:../Core/Src/interface.c **** 		(*memory_ptr) = byte;	// write memory pointed by memory_ptr
+ 253              		.loc 1 385 3 is_stmt 1 discriminator 3 view .LVU52
+ 254              		.loc 1 385 17 is_stmt 0 discriminator 3 view .LVU53
+ 255 0046 06F8017B 		strb	r7, [r6], #1
+ 256              	.LVL26:
+ 386:../Core/Src/interface.c **** 		sprintf(str, "\tMemory [0x%04X] successfuly written.\n\r", addr); // format the string we want to
+ 257              		.loc 1 386 3 is_stmt 1 discriminator 3 view .LVU54
+ 258 004a 2246     		mov	r2, r4
+ 259 004c 0D49     		ldr	r1, .L20+16
+ 260 004e 01A8     		add	r0, sp, #4
+ 261 0050 FFF7FEFF 		bl	sprintf
+ 262              	.LVL27:
+ 387:../Core/Src/interface.c **** 		UART_puts(str); // Print string
+ 263              		.loc 1 387 3 discriminator 3 view .LVU55
+ARM GAS  /tmp/ccnKynSC.s 			page 13
+
+
+ 264 0054 01A8     		add	r0, sp, #4
+ 265 0056 FFF7FEFF 		bl	UART_puts
+ 266              	.LVL28:
+ 383:../Core/Src/interface.c **** 	{
+ 267              		.loc 1 383 23 discriminator 3 view .LVU56
+ 383:../Core/Src/interface.c **** 	{
+ 268              		.loc 1 383 24 is_stmt 0 discriminator 3 view .LVU57
+ 269 005a 0135     		adds	r5, r5, #1
+ 270              	.LVL29:
+ 383:../Core/Src/interface.c **** 	{
+ 271              		.loc 1 383 24 discriminator 3 view .LVU58
+ 272 005c EDB2     		uxtb	r5, r5
+ 273              	.LVL30:
+ 383:../Core/Src/interface.c **** 	{
+ 274              		.loc 1 383 32 discriminator 3 view .LVU59
+ 275 005e 0134     		adds	r4, r4, #1
+ 276              	.LVL31:
+ 383:../Core/Src/interface.c **** 	{
+ 277              		.loc 1 383 32 discriminator 3 view .LVU60
+ 278 0060 A4B2     		uxth	r4, r4
+ 279              	.LVL32:
+ 280              	.L16:
+ 383:../Core/Src/interface.c **** 	{
+ 281              		.loc 1 383 14 is_stmt 1 discriminator 1 view .LVU61
+ 383:../Core/Src/interface.c **** 	{
+ 282              		.loc 1 383 2 is_stmt 0 discriminator 1 view .LVU62
+ 283 0062 4545     		cmp	r5, r8
+ 284 0064 EFD3     		bcc	.L17
+ 388:../Core/Src/interface.c **** 	}
+ 389:../Core/Src/interface.c **** 	
+ 390:../Core/Src/interface.c **** 	return 0;
+ 285              		.loc 1 390 9 view .LVU63
+ 286 0066 0020     		movs	r0, #0
+ 287              	.LVL33:
+ 288              	.L13:
+ 391:../Core/Src/interface.c **** }
+ 289              		.loc 1 391 1 view .LVU64
+ 290 0068 0CB0     		add	sp, sp, #48
+ 291              	.LCFI6:
+ 292              		.cfi_remember_state
+ 293              		.cfi_def_cfa_offset 24
+ 294              		@ sp needed
+ 295 006a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 296              	.LVL34:
+ 297              	.L18:
+ 298              	.LCFI7:
+ 299              		.cfi_restore_state
+ 375:../Core/Src/interface.c **** 
+ 300              		.loc 1 375 10 view .LVU65
+ 301 006e FA20     		movs	r0, #250
+ 302              	.LVL35:
+ 375:../Core/Src/interface.c **** 
+ 303              		.loc 1 375 10 view .LVU66
+ 304 0070 FAE7     		b	.L13
+ 305              	.L21:
+ 306 0072 00BF     		.align	2
+ 307              	.L20:
+ARM GAS  /tmp/ccnKynSC.s 			page 14
+
+
+ 308 0074 00000620 		.word	537264128
+ 309 0078 FFFF0620 		.word	537329663
+ 310 007c 00000000 		.word	.LC2
+ 311 0080 10000000 		.word	.LC3
+ 312 0084 28000000 		.word	.LC4
+ 313              		.cfi_endproc
+ 314              	.LFE155:
+ 316              		.section	.rodata.ver_cb.str1.4,"aMS",%progbits,1
+ 317              		.align	2
+ 318              	.LC5:
+ 319 0000 0A0D4375 		.ascii	"\012\015Current version: 1.2\012\015Using STM32F767"
+ 319      7272656E 
+ 319      74207665 
+ 319      7273696F 
+ 319      6E3A2031 
+ 320 0027 5A492D4E 		.ascii	"ZI-NUCLEO.\012\012\015\000"
+ 320      55434C45 
+ 320      4F2E0A0A 
+ 320      0D00
+ 321              		.section	.text.ver_cb,"ax",%progbits
+ 322              		.align	1
+ 323              		.global	ver_cb
+ 324              		.syntax unified
+ 325              		.thumb
+ 326              		.thumb_func
+ 327              		.fpu fpv5-d16
+ 329              	ver_cb:
+ 330              	.LVL36:
+ 331              	.LFB146:
+  32:../Core/Src/interface.c **** 	if(argc != 1) // number of arguments invalid?
+ 332              		.loc 1 32 1 is_stmt 1 view -0
+ 333              		.cfi_startproc
+ 334              		@ args = 0, pretend = 0, frame = 0
+ 335              		@ frame_needed = 0, uses_anonymous_args = 0
+  33:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 336              		.loc 1 33 2 view .LVU68
+  33:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 337              		.loc 1 33 4 is_stmt 0 view .LVU69
+ 338 0000 0128     		cmp	r0, #1
+ 339 0002 01D0     		beq	.L29
+  34:../Core/Src/interface.c **** 	
+ 340              		.loc 1 34 10 view .LVU70
+ 341 0004 FA20     		movs	r0, #250
+ 342              	.LVL37:
+  42:../Core/Src/interface.c **** 
+ 343              		.loc 1 42 1 view .LVU71
+ 344 0006 7047     		bx	lr
+ 345              	.LVL38:
+ 346              	.L29:
+  32:../Core/Src/interface.c **** 	if(argc != 1) // number of arguments invalid?
+ 347              		.loc 1 32 1 view .LVU72
+ 348 0008 08B5     		push	{r3, lr}
+ 349              	.LCFI8:
+ 350              		.cfi_def_cfa_offset 8
+ 351              		.cfi_offset 3, -8
+ 352              		.cfi_offset 14, -4
+  39:../Core/Src/interface.c **** 	// UART_puts("Developers:\n\r- Diogo Fernandes\n\r- Tomas Abreu\n\r@LPI-II Universidade do Minho, 
+ARM GAS  /tmp/ccnKynSC.s 			page 15
+
+
+ 353              		.loc 1 39 2 is_stmt 1 view .LVU73
+ 354 000a 0248     		ldr	r0, .L30
+ 355              	.LVL39:
+  39:../Core/Src/interface.c **** 	// UART_puts("Developers:\n\r- Diogo Fernandes\n\r- Tomas Abreu\n\r@LPI-II Universidade do Minho, 
+ 356              		.loc 1 39 2 is_stmt 0 view .LVU74
+ 357 000c FFF7FEFF 		bl	UART_puts
+ 358              	.LVL40:
+  41:../Core/Src/interface.c **** }
+ 359              		.loc 1 41 2 is_stmt 1 view .LVU75
+  41:../Core/Src/interface.c **** }
+ 360              		.loc 1 41 9 is_stmt 0 view .LVU76
+ 361 0010 0020     		movs	r0, #0
+  42:../Core/Src/interface.c **** 
+ 362              		.loc 1 42 1 view .LVU77
+ 363 0012 08BD     		pop	{r3, pc}
+ 364              	.L31:
+ 365              		.align	2
+ 366              	.L30:
+ 367 0014 00000000 		.word	.LC5
+ 368              		.cfi_endproc
+ 369              	.LFE146:
+ 371              		.section	.text.mr_cb,"ax",%progbits
+ 372              		.align	1
+ 373              		.global	mr_cb
+ 374              		.syntax unified
+ 375              		.thumb
+ 376              		.thumb_func
+ 377              		.fpu fpv5-d16
+ 379              	mr_cb:
+ 380              	.LVL41:
+ 381              	.LFB147:
+  51:../Core/Src/interface.c **** 	uint32_t addr;
+ 382              		.loc 1 51 1 is_stmt 1 view -0
+ 383              		.cfi_startproc
+ 384              		@ args = 0, pretend = 0, frame = 0
+ 385              		@ frame_needed = 0, uses_anonymous_args = 0
+  52:../Core/Src/interface.c **** 	uint16_t len;
+ 386              		.loc 1 52 2 view .LVU79
+  53:../Core/Src/interface.c **** 	
+ 387              		.loc 1 53 2 view .LVU80
+  55:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 388              		.loc 1 55 2 view .LVU81
+  55:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 389              		.loc 1 55 4 is_stmt 0 view .LVU82
+ 390 0000 0328     		cmp	r0, #3
+ 391 0002 01D0     		beq	.L41
+  56:../Core/Src/interface.c **** 	
+ 392              		.loc 1 56 10 view .LVU83
+ 393 0004 FA20     		movs	r0, #250
+ 394              	.LVL42:
+  67:../Core/Src/interface.c **** 
+ 395              		.loc 1 67 1 view .LVU84
+ 396 0006 7047     		bx	lr
+ 397              	.LVL43:
+ 398              	.L41:
+  51:../Core/Src/interface.c **** 	uint32_t addr;
+ 399              		.loc 1 51 1 view .LVU85
+ARM GAS  /tmp/ccnKynSC.s 			page 16
+
+
+ 400 0008 38B5     		push	{r3, r4, r5, lr}
+ 401              	.LCFI9:
+ 402              		.cfi_def_cfa_offset 16
+ 403              		.cfi_offset 3, -16
+ 404              		.cfi_offset 4, -12
+ 405              		.cfi_offset 5, -8
+ 406              		.cfi_offset 14, -4
+ 407 000a 0C46     		mov	r4, r1
+  58:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 408              		.loc 1 58 2 is_stmt 1 view .LVU86
+  58:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 409              		.loc 1 58 9 is_stmt 0 view .LVU87
+ 410 000c 4868     		ldr	r0, [r1, #4]
+ 411              	.LVL44:
+  58:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 412              		.loc 1 58 9 view .LVU88
+ 413 000e FFF7FEFF 		bl	my_atoi
+ 414              	.LVL45:
+  58:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 415              		.loc 1 58 9 view .LVU89
+ 416 0012 0546     		mov	r5, r0
+ 417              	.LVL46:
+  59:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 418              		.loc 1 59 2 is_stmt 1 view .LVU90
+  59:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 419              		.loc 1 59 4 is_stmt 0 view .LVU91
+ 420 0014 B0F5803F 		cmp	r0, #65536
+ 421 0018 0CD2     		bcs	.L35
+  62:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 422              		.loc 1 62 2 is_stmt 1 view .LVU92
+  62:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 423              		.loc 1 62 8 is_stmt 0 view .LVU93
+ 424 001a A068     		ldr	r0, [r4, #8]
+ 425              	.LVL47:
+  62:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 426              		.loc 1 62 8 view .LVU94
+ 427 001c FFF7FEFF 		bl	my_atoi
+ 428              	.LVL48:
+  62:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 429              		.loc 1 62 6 view .LVU95
+ 430 0020 83B2     		uxth	r3, r0
+ 431              	.LVL49:
+  63:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 432              		.loc 1 63 2 is_stmt 1 view .LVU96
+  63:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 433              		.loc 1 63 16 is_stmt 0 view .LVU97
+ 434 0022 013B     		subs	r3, r3, #1
+ 435              	.LVL50:
+  63:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 436              		.loc 1 63 16 view .LVU98
+ 437 0024 9BB2     		uxth	r3, r3
+ 438              	.LVL51:
+  63:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 439              		.loc 1 63 4 view .LVU99
+ 440 0026 FE2B     		cmp	r3, #254
+ 441 0028 06D8     		bhi	.L36
+  66:../Core/Src/interface.c **** }
+ARM GAS  /tmp/ccnKynSC.s 			page 17
+
+
+ 442              		.loc 1 66 2 is_stmt 1 view .LVU100
+  66:../Core/Src/interface.c **** }
+ 443              		.loc 1 66 9 is_stmt 0 view .LVU101
+ 444 002a C1B2     		uxtb	r1, r0
+ 445 002c A8B2     		uxth	r0, r5
+ 446              	.LVL52:
+  66:../Core/Src/interface.c **** }
+ 447              		.loc 1 66 9 view .LVU102
+ 448 002e FFF7FEFF 		bl	memory_read
+ 449              	.LVL53:
+ 450              	.L33:
+  67:../Core/Src/interface.c **** 
+ 451              		.loc 1 67 1 view .LVU103
+ 452 0032 38BD     		pop	{r3, r4, r5, pc}
+ 453              	.LVL54:
+ 454              	.L35:
+  60:../Core/Src/interface.c **** 	
+ 455              		.loc 1 60 10 view .LVU104
+ 456 0034 FA20     		movs	r0, #250
+ 457              	.LVL55:
+  60:../Core/Src/interface.c **** 	
+ 458              		.loc 1 60 10 view .LVU105
+ 459 0036 FCE7     		b	.L33
+ 460              	.LVL56:
+ 461              	.L36:
+  64:../Core/Src/interface.c **** 	
+ 462              		.loc 1 64 10 view .LVU106
+ 463 0038 FA20     		movs	r0, #250
+ 464              	.LVL57:
+  64:../Core/Src/interface.c **** 	
+ 465              		.loc 1 64 10 view .LVU107
+ 466 003a FAE7     		b	.L33
+ 467              		.cfi_endproc
+ 468              	.LFE147:
+ 470              		.section	.text.mw_cb,"ax",%progbits
+ 471              		.align	1
+ 472              		.global	mw_cb
+ 473              		.syntax unified
+ 474              		.thumb
+ 475              		.thumb_func
+ 476              		.fpu fpv5-d16
+ 478              	mw_cb:
+ 479              	.LVL58:
+ 480              	.LFB148:
+  76:../Core/Src/interface.c **** 	uint32_t addr;
+ 481              		.loc 1 76 1 is_stmt 1 view -0
+ 482              		.cfi_startproc
+ 483              		@ args = 0, pretend = 0, frame = 0
+ 484              		@ frame_needed = 0, uses_anonymous_args = 0
+  77:../Core/Src/interface.c **** 	uint16_t len;
+ 485              		.loc 1 77 2 view .LVU109
+  78:../Core/Src/interface.c **** 	uint16_t byte;
+ 486              		.loc 1 78 2 view .LVU110
+  79:../Core/Src/interface.c **** 	
+ 487              		.loc 1 79 2 view .LVU111
+  81:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 488              		.loc 1 81 2 view .LVU112
+ARM GAS  /tmp/ccnKynSC.s 			page 18
+
+
+  81:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 489              		.loc 1 81 4 is_stmt 0 view .LVU113
+ 490 0000 0428     		cmp	r0, #4
+ 491 0002 01D0     		beq	.L51
+  82:../Core/Src/interface.c **** 	
+ 492              		.loc 1 82 10 view .LVU114
+ 493 0004 FA20     		movs	r0, #250
+ 494              	.LVL59:
+  97:../Core/Src/interface.c **** 
+ 495              		.loc 1 97 1 view .LVU115
+ 496 0006 7047     		bx	lr
+ 497              	.LVL60:
+ 498              	.L51:
+  76:../Core/Src/interface.c **** 	uint32_t addr;
+ 499              		.loc 1 76 1 view .LVU116
+ 500 0008 70B5     		push	{r4, r5, r6, lr}
+ 501              	.LCFI10:
+ 502              		.cfi_def_cfa_offset 16
+ 503              		.cfi_offset 4, -16
+ 504              		.cfi_offset 5, -12
+ 505              		.cfi_offset 6, -8
+ 506              		.cfi_offset 14, -4
+ 507 000a 0D46     		mov	r5, r1
+  84:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 508              		.loc 1 84 2 is_stmt 1 view .LVU117
+  84:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 509              		.loc 1 84 9 is_stmt 0 view .LVU118
+ 510 000c 4868     		ldr	r0, [r1, #4]
+ 511              	.LVL61:
+  84:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 512              		.loc 1 84 9 view .LVU119
+ 513 000e FFF7FEFF 		bl	my_atoi
+ 514              	.LVL62:
+  84:../Core/Src/interface.c **** 	if(!IS_ADDR16(addr))
+ 515              		.loc 1 84 9 view .LVU120
+ 516 0012 0446     		mov	r4, r0
+ 517              	.LVL63:
+  85:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 518              		.loc 1 85 2 is_stmt 1 view .LVU121
+  85:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 519              		.loc 1 85 4 is_stmt 0 view .LVU122
+ 520 0014 B0F5803F 		cmp	r0, #65536
+ 521 0018 10D2     		bcs	.L45
+  88:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 522              		.loc 1 88 2 is_stmt 1 view .LVU123
+  88:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 523              		.loc 1 88 15 is_stmt 0 view .LVU124
+ 524 001a A868     		ldr	r0, [r5, #8]
+ 525              	.LVL64:
+  88:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 526              		.loc 1 88 15 view .LVU125
+ 527 001c FFF7FEFF 		bl	my_atoi
+ 528              	.LVL65:
+  88:../Core/Src/interface.c **** 	if((len == 0) || (!IS_ADDR8(len)))
+ 529              		.loc 1 88 8 view .LVU126
+ 530 0020 C6B2     		uxtb	r6, r0
+ 531              	.LVL66:
+ARM GAS  /tmp/ccnKynSC.s 			page 19
+
+
+  89:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 532              		.loc 1 89 2 is_stmt 1 view .LVU127
+  89:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 533              		.loc 1 89 16 is_stmt 0 view .LVU128
+ 534 0022 731E     		subs	r3, r6, #1
+ 535 0024 9BB2     		uxth	r3, r3
+  89:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 536              		.loc 1 89 4 view .LVU129
+ 537 0026 FE2B     		cmp	r3, #254
+ 538 0028 0AD8     		bhi	.L46
+  92:../Core/Src/interface.c **** 	if(!IS_ADDR8(byte))
+ 539              		.loc 1 92 2 is_stmt 1 view .LVU130
+  92:../Core/Src/interface.c **** 	if(!IS_ADDR8(byte))
+ 540              		.loc 1 92 16 is_stmt 0 view .LVU131
+ 541 002a E868     		ldr	r0, [r5, #12]
+ 542 002c FFF7FEFF 		bl	my_atoi
+ 543              	.LVL67:
+  93:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 544              		.loc 1 93 2 is_stmt 1 view .LVU132
+  96:../Core/Src/interface.c **** }
+ 545              		.loc 1 96 2 view .LVU133
+  96:../Core/Src/interface.c **** }
+ 546              		.loc 1 96 9 is_stmt 0 view .LVU134
+ 547 0030 C2B2     		uxtb	r2, r0
+ 548 0032 3146     		mov	r1, r6
+ 549 0034 A0B2     		uxth	r0, r4
+ 550              	.LVL68:
+  96:../Core/Src/interface.c **** }
+ 551              		.loc 1 96 9 view .LVU135
+ 552 0036 FFF7FEFF 		bl	memory_write
+ 553              	.LVL69:
+ 554              	.L43:
+  97:../Core/Src/interface.c **** 
+ 555              		.loc 1 97 1 view .LVU136
+ 556 003a 70BD     		pop	{r4, r5, r6, pc}
+ 557              	.LVL70:
+ 558              	.L45:
+  86:../Core/Src/interface.c **** 	
+ 559              		.loc 1 86 10 view .LVU137
+ 560 003c FA20     		movs	r0, #250
+ 561              	.LVL71:
+  86:../Core/Src/interface.c **** 	
+ 562              		.loc 1 86 10 view .LVU138
+ 563 003e FCE7     		b	.L43
+ 564              	.LVL72:
+ 565              	.L46:
+  90:../Core/Src/interface.c **** 		
+ 566              		.loc 1 90 10 view .LVU139
+ 567 0040 FA20     		movs	r0, #250
+ 568 0042 FAE7     		b	.L43
+ 569              		.cfi_endproc
+ 570              	.LFE148:
+ 572              		.section	.rodata.mi_cb.str1.4,"aMS",%progbits,1
+ 573              		.align	2
+ 574              	.LC6:
+ 575 0000 52657365 		.ascii	"Reserved pins cannot be configured.\012\015\000"
+ 575      72766564 
+ARM GAS  /tmp/ccnKynSC.s 			page 20
+
+
+ 575      2070696E 
+ 575      73206361 
+ 575      6E6E6F74 
+ 576 0026 0000     		.align	2
+ 577              	.LC7:
+ 578 0028 50696E20 		.ascii	"Pin %2d configured as input.\012\015\000"
+ 578      25326420 
+ 578      636F6E66 
+ 578      69677572 
+ 578      65642061 
+ 579              		.section	.text.mi_cb,"ax",%progbits
+ 580              		.align	1
+ 581              		.global	mi_cb
+ 582              		.syntax unified
+ 583              		.thumb
+ 584              		.thumb_func
+ 585              		.fpu fpv5-d16
+ 587              	mi_cb:
+ 588              	.LVL73:
+ 589              	.LFB149:
+ 106:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 590              		.loc 1 106 1 is_stmt 1 view -0
+ 591              		.cfi_startproc
+ 592              		@ args = 0, pretend = 0, frame = 40
+ 593              		@ frame_needed = 0, uses_anonymous_args = 0
+ 107:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 594              		.loc 1 107 2 view .LVU141
+ 108:../Core/Src/interface.c **** 	char str[32];	// Output message
+ 595              		.loc 1 108 2 view .LVU142
+ 109:../Core/Src/interface.c **** 	
+ 596              		.loc 1 109 2 view .LVU143
+ 111:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 597              		.loc 1 111 2 view .LVU144
+ 111:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 598              		.loc 1 111 4 is_stmt 0 view .LVU145
+ 599 0000 0328     		cmp	r0, #3
+ 600 0002 01D0     		beq	.L65
+ 112:../Core/Src/interface.c **** 	
+ 601              		.loc 1 112 10 view .LVU146
+ 602 0004 FA20     		movs	r0, #250
+ 603              	.LVL74:
+ 137:../Core/Src/interface.c **** 
+ 604              		.loc 1 137 1 view .LVU147
+ 605 0006 7047     		bx	lr
+ 606              	.LVL75:
+ 607              	.L65:
+ 106:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 608              		.loc 1 106 1 view .LVU148
+ 609 0008 70B5     		push	{r4, r5, r6, lr}
+ 610              	.LCFI11:
+ 611              		.cfi_def_cfa_offset 16
+ 612              		.cfi_offset 4, -16
+ 613              		.cfi_offset 5, -12
+ 614              		.cfi_offset 6, -8
+ 615              		.cfi_offset 14, -4
+ 616 000a 8AB0     		sub	sp, sp, #40
+ 617              	.LCFI12:
+ARM GAS  /tmp/ccnKynSC.s 			page 21
+
+
+ 618              		.cfi_def_cfa_offset 56
+ 619 000c 0C46     		mov	r4, r1
+ 114:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 620              		.loc 1 114 2 is_stmt 1 view .LVU149
+ 114:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 621              		.loc 1 114 14 is_stmt 0 view .LVU150
+ 622 000e 4868     		ldr	r0, [r1, #4]
+ 623              	.LVL76:
+ 114:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 624              		.loc 1 114 14 view .LVU151
+ 625 0010 FFF7FEFF 		bl	my_atoi
+ 626              	.LVL77:
+ 114:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 627              		.loc 1 114 14 view .LVU152
+ 628 0014 0546     		mov	r5, r0
+ 114:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 629              		.loc 1 114 12 view .LVU153
+ 630 0016 86B2     		uxth	r6, r0
+ 631              	.LVL78:
+ 115:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 632              		.loc 1 115 2 is_stmt 1 view .LVU154
+ 115:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 633              		.loc 1 115 4 is_stmt 0 view .LVU155
+ 634 0018 0A2E     		cmp	r6, #10
+ 635 001a 39D8     		bhi	.L59
+ 118:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 636              		.loc 1 118 2 is_stmt 1 view .LVU156
+ 118:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 637              		.loc 1 118 16 is_stmt 0 view .LVU157
+ 638 001c A068     		ldr	r0, [r4, #8]
+ 639 001e FFF7FEFF 		bl	my_atoi
+ 640              	.LVL79:
+ 118:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 641              		.loc 1 118 14 view .LVU158
+ 642 0022 0990     		str	r0, [sp, #36]
+ 119:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 643              		.loc 1 119 2 is_stmt 1 view .LVU159
+ 119:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 644              		.loc 1 119 5 is_stmt 0 view .LVU160
+ 645 0024 0138     		subs	r0, r0, #1
+ 119:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 646              		.loc 1 119 4 view .LVU161
+ 647 0026 4FF6FE73 		movw	r3, #65534
+ 648 002a 9842     		cmp	r0, r3
+ 649 002c 32D8     		bhi	.L60
+ 122:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ 650              		.loc 1 122 2 is_stmt 1 view .LVU162
+ 122:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ 651              		.loc 1 122 5 is_stmt 0 view .LVU163
+ 652 002e 09A9     		add	r1, sp, #36
+ 653 0030 3046     		mov	r0, r6
+ 654 0032 FFF7FEFF 		bl	GPIO_check_res_pins
+ 655              	.LVL80:
+ 122:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ 656              		.loc 1 122 4 view .LVU164
+ 657 0036 30B9     		cbnz	r0, .L66
+ 658              	.L54:
+ARM GAS  /tmp/ccnKynSC.s 			page 22
+
+
+ 125:../Core/Src/interface.c **** 	
+ 659              		.loc 1 125 2 is_stmt 1 view .LVU165
+ 660 0038 0022     		movs	r2, #0
+ 661 003a 0999     		ldr	r1, [sp, #36]
+ 662 003c E8B2     		uxtb	r0, r5
+ 663 003e FFF7FEFF 		bl	GPIO_config_pins
+ 664              	.LVL81:
+ 127:../Core/Src/interface.c **** 	{
+ 665              		.loc 1 127 2 view .LVU166
+ 666              	.LBB2:
+ 127:../Core/Src/interface.c **** 	{
+ 667              		.loc 1 127 6 view .LVU167
+ 127:../Core/Src/interface.c **** 	{
+ 668              		.loc 1 127 14 is_stmt 0 view .LVU168
+ 669 0042 0024     		movs	r4, #0
+ 670              	.LVL82:
+ 127:../Core/Src/interface.c **** 	{
+ 671              		.loc 1 127 2 view .LVU169
+ 672 0044 08E0     		b	.L55
+ 673              	.LVL83:
+ 674              	.L66:
+ 127:../Core/Src/interface.c **** 	{
+ 675              		.loc 1 127 2 view .LVU170
+ 676              	.LBE2:
+ 123:../Core/Src/interface.c **** 	
+ 677              		.loc 1 123 3 is_stmt 1 view .LVU171
+ 678 0046 1448     		ldr	r0, .L68
+ 679 0048 FFF7FEFF 		bl	UART_puts
+ 680              	.LVL84:
+ 681 004c F4E7     		b	.L54
+ 682              	.LVL85:
+ 683              	.L56:
+ 684              	.LBB3:
+ 134:../Core/Src/interface.c **** 	}
+ 685              		.loc 1 134 3 discriminator 2 view .LVU172
+ 134:../Core/Src/interface.c **** 	}
+ 686              		.loc 1 134 15 is_stmt 0 discriminator 2 view .LVU173
+ 687 004e 099B     		ldr	r3, [sp, #36]
+ 688 0050 5B08     		lsrs	r3, r3, #1
+ 689 0052 0993     		str	r3, [sp, #36]
+ 127:../Core/Src/interface.c **** 	{
+ 690              		.loc 1 127 29 is_stmt 1 discriminator 2 view .LVU174
+ 127:../Core/Src/interface.c **** 	{
+ 691              		.loc 1 127 30 is_stmt 0 discriminator 2 view .LVU175
+ 692 0054 0134     		adds	r4, r4, #1
+ 693              	.LVL86:
+ 127:../Core/Src/interface.c **** 	{
+ 694              		.loc 1 127 30 discriminator 2 view .LVU176
+ 695 0056 E4B2     		uxtb	r4, r4
+ 696              	.LVL87:
+ 697              	.L55:
+ 127:../Core/Src/interface.c **** 	{
+ 698              		.loc 1 127 21 is_stmt 1 discriminator 1 view .LVU177
+ 127:../Core/Src/interface.c **** 	{
+ 699              		.loc 1 127 2 is_stmt 0 discriminator 1 view .LVU178
+ 700 0058 0F2C     		cmp	r4, #15
+ 701 005a 16D8     		bhi	.L67
+ARM GAS  /tmp/ccnKynSC.s 			page 23
+
+
+ 129:../Core/Src/interface.c **** 		{
+ 702              		.loc 1 129 3 is_stmt 1 view .LVU179
+ 129:../Core/Src/interface.c **** 		{
+ 703              		.loc 1 129 5 is_stmt 0 view .LVU180
+ 704 005c 099B     		ldr	r3, [sp, #36]
+ 705 005e 13F0010F 		tst	r3, #1
+ 706 0062 F4D0     		beq	.L56
+ 129:../Core/Src/interface.c **** 		{
+ 707              		.loc 1 129 38 discriminator 1 view .LVU181
+ 708 0064 ABB2     		uxth	r3, r5
+ 709 0066 0D4A     		ldr	r2, .L68+4
+ 710 0068 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 711 006c 1B68     		ldr	r3, [r3]
+ 712 006e 6200     		lsls	r2, r4, #1
+ 713 0070 D340     		lsrs	r3, r3, r2
+ 129:../Core/Src/interface.c **** 		{
+ 714              		.loc 1 129 34 discriminator 1 view .LVU182
+ 715 0072 13F0030F 		tst	r3, #3
+ 716 0076 EAD1     		bne	.L56
+ 131:../Core/Src/interface.c **** 			UART_puts(str);
+ 717              		.loc 1 131 4 is_stmt 1 view .LVU183
+ 718 0078 2246     		mov	r2, r4
+ 719 007a 0949     		ldr	r1, .L68+8
+ 720 007c 01A8     		add	r0, sp, #4
+ 721 007e FFF7FEFF 		bl	sprintf
+ 722              	.LVL88:
+ 132:../Core/Src/interface.c **** 		}
+ 723              		.loc 1 132 4 view .LVU184
+ 724 0082 01A8     		add	r0, sp, #4
+ 725 0084 FFF7FEFF 		bl	UART_puts
+ 726              	.LVL89:
+ 727 0088 E1E7     		b	.L56
+ 728              	.L67:
+ 729              	.LBE3:
+ 136:../Core/Src/interface.c **** }
+ 730              		.loc 1 136 9 is_stmt 0 view .LVU185
+ 731 008a 0020     		movs	r0, #0
+ 732              	.LVL90:
+ 733              	.L53:
+ 137:../Core/Src/interface.c **** 
+ 734              		.loc 1 137 1 view .LVU186
+ 735 008c 0AB0     		add	sp, sp, #40
+ 736              	.LCFI13:
+ 737              		.cfi_remember_state
+ 738              		.cfi_def_cfa_offset 16
+ 739              		@ sp needed
+ 740 008e 70BD     		pop	{r4, r5, r6, pc}
+ 741              	.LVL91:
+ 742              	.L59:
+ 743              	.LCFI14:
+ 744              		.cfi_restore_state
+ 116:../Core/Src/interface.c **** 	
+ 745              		.loc 1 116 10 view .LVU187
+ 746 0090 FA20     		movs	r0, #250
+ 747 0092 FBE7     		b	.L53
+ 748              	.L60:
+ 120:../Core/Src/interface.c **** 	
+ARM GAS  /tmp/ccnKynSC.s 			page 24
+
+
+ 749              		.loc 1 120 10 view .LVU188
+ 750 0094 FA20     		movs	r0, #250
+ 751 0096 F9E7     		b	.L53
+ 752              	.L69:
+ 753              		.align	2
+ 754              	.L68:
+ 755 0098 00000000 		.word	.LC6
+ 756 009c 00000000 		.word	GPIO_Ports
+ 757 00a0 28000000 		.word	.LC7
+ 758              		.cfi_endproc
+ 759              	.LFE149:
+ 761              		.section	.rodata.mo_cb.str1.4,"aMS",%progbits,1
+ 762              		.align	2
+ 763              	.LC8:
+ 764 0000 50696E20 		.ascii	"Pin %2d configured as output.\012\015\000"
+ 764      25326420 
+ 764      636F6E66 
+ 764      69677572 
+ 764      65642061 
+ 765              		.section	.text.mo_cb,"ax",%progbits
+ 766              		.align	1
+ 767              		.global	mo_cb
+ 768              		.syntax unified
+ 769              		.thumb
+ 770              		.thumb_func
+ 771              		.fpu fpv5-d16
+ 773              	mo_cb:
+ 774              	.LVL92:
+ 775              	.LFB150:
+ 146:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 776              		.loc 1 146 1 is_stmt 1 view -0
+ 777              		.cfi_startproc
+ 778              		@ args = 0, pretend = 0, frame = 40
+ 779              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 780              		.loc 1 147 2 view .LVU190
+ 148:../Core/Src/interface.c **** 	char str[32];	// Output message
+ 781              		.loc 1 148 2 view .LVU191
+ 149:../Core/Src/interface.c **** 	
+ 782              		.loc 1 149 2 view .LVU192
+ 151:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 783              		.loc 1 151 2 view .LVU193
+ 151:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 784              		.loc 1 151 4 is_stmt 0 view .LVU194
+ 785 0000 0328     		cmp	r0, #3
+ 786 0002 01D0     		beq	.L83
+ 152:../Core/Src/interface.c **** 	
+ 787              		.loc 1 152 10 view .LVU195
+ 788 0004 FA20     		movs	r0, #250
+ 789              	.LVL93:
+ 177:../Core/Src/interface.c **** 
+ 790              		.loc 1 177 1 view .LVU196
+ 791 0006 7047     		bx	lr
+ 792              	.LVL94:
+ 793              	.L83:
+ 146:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 794              		.loc 1 146 1 view .LVU197
+ARM GAS  /tmp/ccnKynSC.s 			page 25
+
+
+ 795 0008 70B5     		push	{r4, r5, r6, lr}
+ 796              	.LCFI15:
+ 797              		.cfi_def_cfa_offset 16
+ 798              		.cfi_offset 4, -16
+ 799              		.cfi_offset 5, -12
+ 800              		.cfi_offset 6, -8
+ 801              		.cfi_offset 14, -4
+ 802 000a 8AB0     		sub	sp, sp, #40
+ 803              	.LCFI16:
+ 804              		.cfi_def_cfa_offset 56
+ 805 000c 0C46     		mov	r4, r1
+ 154:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 806              		.loc 1 154 2 is_stmt 1 view .LVU198
+ 154:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 807              		.loc 1 154 14 is_stmt 0 view .LVU199
+ 808 000e 4868     		ldr	r0, [r1, #4]
+ 809              	.LVL95:
+ 154:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 810              		.loc 1 154 14 view .LVU200
+ 811 0010 FFF7FEFF 		bl	my_atoi
+ 812              	.LVL96:
+ 154:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 813              		.loc 1 154 14 view .LVU201
+ 814 0014 0546     		mov	r5, r0
+ 154:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 815              		.loc 1 154 12 view .LVU202
+ 816 0016 86B2     		uxth	r6, r0
+ 817              	.LVL97:
+ 155:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 818              		.loc 1 155 2 is_stmt 1 view .LVU203
+ 155:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 819              		.loc 1 155 4 is_stmt 0 view .LVU204
+ 820 0018 0A2E     		cmp	r6, #10
+ 821 001a 3AD8     		bhi	.L77
+ 158:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 822              		.loc 1 158 2 is_stmt 1 view .LVU205
+ 158:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 823              		.loc 1 158 16 is_stmt 0 view .LVU206
+ 824 001c A068     		ldr	r0, [r4, #8]
+ 825 001e FFF7FEFF 		bl	my_atoi
+ 826              	.LVL98:
+ 158:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 827              		.loc 1 158 14 view .LVU207
+ 828 0022 0990     		str	r0, [sp, #36]
+ 159:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 829              		.loc 1 159 2 is_stmt 1 view .LVU208
+ 159:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 830              		.loc 1 159 5 is_stmt 0 view .LVU209
+ 831 0024 0138     		subs	r0, r0, #1
+ 159:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 832              		.loc 1 159 4 view .LVU210
+ 833 0026 4FF6FE73 		movw	r3, #65534
+ 834 002a 9842     		cmp	r0, r3
+ 835 002c 33D8     		bhi	.L78
+ 162:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ 836              		.loc 1 162 2 is_stmt 1 view .LVU211
+ 162:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ARM GAS  /tmp/ccnKynSC.s 			page 26
+
+
+ 837              		.loc 1 162 5 is_stmt 0 view .LVU212
+ 838 002e 09A9     		add	r1, sp, #36
+ 839 0030 3046     		mov	r0, r6
+ 840 0032 FFF7FEFF 		bl	GPIO_check_res_pins
+ 841              	.LVL99:
+ 162:../Core/Src/interface.c **** 		UART_puts("Reserved pins cannot be configured.\n\r");
+ 842              		.loc 1 162 4 view .LVU213
+ 843 0036 30B9     		cbnz	r0, .L84
+ 844              	.L72:
+ 165:../Core/Src/interface.c **** 	
+ 845              		.loc 1 165 2 is_stmt 1 view .LVU214
+ 846 0038 0122     		movs	r2, #1
+ 847 003a 0999     		ldr	r1, [sp, #36]
+ 848 003c E8B2     		uxtb	r0, r5
+ 849 003e FFF7FEFF 		bl	GPIO_config_pins
+ 850              	.LVL100:
+ 167:../Core/Src/interface.c **** 	{
+ 851              		.loc 1 167 2 view .LVU215
+ 852              	.LBB4:
+ 167:../Core/Src/interface.c **** 	{
+ 853              		.loc 1 167 6 view .LVU216
+ 167:../Core/Src/interface.c **** 	{
+ 854              		.loc 1 167 14 is_stmt 0 view .LVU217
+ 855 0042 0024     		movs	r4, #0
+ 856              	.LVL101:
+ 167:../Core/Src/interface.c **** 	{
+ 857              		.loc 1 167 2 view .LVU218
+ 858 0044 08E0     		b	.L73
+ 859              	.LVL102:
+ 860              	.L84:
+ 167:../Core/Src/interface.c **** 	{
+ 861              		.loc 1 167 2 view .LVU219
+ 862              	.LBE4:
+ 163:../Core/Src/interface.c **** 	
+ 863              		.loc 1 163 3 is_stmt 1 view .LVU220
+ 864 0046 1548     		ldr	r0, .L86
+ 865 0048 FFF7FEFF 		bl	UART_puts
+ 866              	.LVL103:
+ 867 004c F4E7     		b	.L72
+ 868              	.LVL104:
+ 869              	.L74:
+ 870              	.LBB5:
+ 174:../Core/Src/interface.c **** 	}
+ 871              		.loc 1 174 3 discriminator 2 view .LVU221
+ 174:../Core/Src/interface.c **** 	}
+ 872              		.loc 1 174 15 is_stmt 0 discriminator 2 view .LVU222
+ 873 004e 099B     		ldr	r3, [sp, #36]
+ 874 0050 5B08     		lsrs	r3, r3, #1
+ 875 0052 0993     		str	r3, [sp, #36]
+ 167:../Core/Src/interface.c **** 	{
+ 876              		.loc 1 167 29 is_stmt 1 discriminator 2 view .LVU223
+ 167:../Core/Src/interface.c **** 	{
+ 877              		.loc 1 167 30 is_stmt 0 discriminator 2 view .LVU224
+ 878 0054 0134     		adds	r4, r4, #1
+ 879              	.LVL105:
+ 167:../Core/Src/interface.c **** 	{
+ 880              		.loc 1 167 30 discriminator 2 view .LVU225
+ARM GAS  /tmp/ccnKynSC.s 			page 27
+
+
+ 881 0056 E4B2     		uxtb	r4, r4
+ 882              	.LVL106:
+ 883              	.L73:
+ 167:../Core/Src/interface.c **** 	{
+ 884              		.loc 1 167 21 is_stmt 1 discriminator 1 view .LVU226
+ 167:../Core/Src/interface.c **** 	{
+ 885              		.loc 1 167 2 is_stmt 0 discriminator 1 view .LVU227
+ 886 0058 0F2C     		cmp	r4, #15
+ 887 005a 17D8     		bhi	.L85
+ 169:../Core/Src/interface.c **** 		{
+ 888              		.loc 1 169 3 is_stmt 1 view .LVU228
+ 169:../Core/Src/interface.c **** 		{
+ 889              		.loc 1 169 5 is_stmt 0 view .LVU229
+ 890 005c 099B     		ldr	r3, [sp, #36]
+ 891 005e 13F0010F 		tst	r3, #1
+ 892 0062 F4D0     		beq	.L74
+ 169:../Core/Src/interface.c **** 		{
+ 893              		.loc 1 169 38 discriminator 1 view .LVU230
+ 894 0064 ABB2     		uxth	r3, r5
+ 895 0066 0E4A     		ldr	r2, .L86+4
+ 896 0068 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 897 006c 1B68     		ldr	r3, [r3]
+ 898 006e 6200     		lsls	r2, r4, #1
+ 899 0070 D340     		lsrs	r3, r3, r2
+ 900 0072 03F00303 		and	r3, r3, #3
+ 169:../Core/Src/interface.c **** 		{
+ 901              		.loc 1 169 34 discriminator 1 view .LVU231
+ 902 0076 012B     		cmp	r3, #1
+ 903 0078 E9D1     		bne	.L74
+ 171:../Core/Src/interface.c **** 			UART_puts(str);
+ 904              		.loc 1 171 4 is_stmt 1 view .LVU232
+ 905 007a 2246     		mov	r2, r4
+ 906 007c 0949     		ldr	r1, .L86+8
+ 907 007e 01A8     		add	r0, sp, #4
+ 908 0080 FFF7FEFF 		bl	sprintf
+ 909              	.LVL107:
+ 172:../Core/Src/interface.c **** 		}
+ 910              		.loc 1 172 4 view .LVU233
+ 911 0084 01A8     		add	r0, sp, #4
+ 912 0086 FFF7FEFF 		bl	UART_puts
+ 913              	.LVL108:
+ 914 008a E0E7     		b	.L74
+ 915              	.L85:
+ 916              	.LBE5:
+ 176:../Core/Src/interface.c **** }
+ 917              		.loc 1 176 9 is_stmt 0 view .LVU234
+ 918 008c 0020     		movs	r0, #0
+ 919              	.LVL109:
+ 920              	.L71:
+ 177:../Core/Src/interface.c **** 
+ 921              		.loc 1 177 1 view .LVU235
+ 922 008e 0AB0     		add	sp, sp, #40
+ 923              	.LCFI17:
+ 924              		.cfi_remember_state
+ 925              		.cfi_def_cfa_offset 16
+ 926              		@ sp needed
+ 927 0090 70BD     		pop	{r4, r5, r6, pc}
+ARM GAS  /tmp/ccnKynSC.s 			page 28
+
+
+ 928              	.LVL110:
+ 929              	.L77:
+ 930              	.LCFI18:
+ 931              		.cfi_restore_state
+ 156:../Core/Src/interface.c **** 	
+ 932              		.loc 1 156 10 view .LVU236
+ 933 0092 FA20     		movs	r0, #250
+ 934 0094 FBE7     		b	.L71
+ 935              	.L78:
+ 160:../Core/Src/interface.c **** 		
+ 936              		.loc 1 160 10 view .LVU237
+ 937 0096 FA20     		movs	r0, #250
+ 938 0098 F9E7     		b	.L71
+ 939              	.L87:
+ 940 009a 00BF     		.align	2
+ 941              	.L86:
+ 942 009c 00000000 		.word	.LC6
+ 943 00a0 00000000 		.word	GPIO_Ports
+ 944 00a4 00000000 		.word	.LC8
+ 945              		.cfi_endproc
+ 946              	.LFE150:
+ 948              		.section	.rodata.rd_cb.str1.4,"aMS",%progbits,1
+ 949              		.align	2
+ 950              	.LC9:
+ 951 0000 4750494F 		.ascii	"GPIO Port %c\012\015\000"
+ 951      20506F72 
+ 951      74202563 
+ 951      0A0D00
+ 952 000f 00       		.align	2
+ 953              	.LC10:
+ 954 0010 50696E20 		.ascii	"Pin %2d - '%d'\012\015\000"
+ 954      25326420 
+ 954      2D202725 
+ 954      64270A0D 
+ 954      00
+ 955 0021 000000   		.align	2
+ 956              	.LC11:
+ 957 0024 50696E20 		.ascii	"Pin %2d not configured as input mode.\012\015\000"
+ 957      25326420 
+ 957      6E6F7420 
+ 957      636F6E66 
+ 957      69677572 
+ 958              		.align	2
+ 959              	.LC12:
+ 960 004c 300A0D00 		.ascii	"0\012\015\000"
+ 961              		.section	.text.rd_cb,"ax",%progbits
+ 962              		.align	1
+ 963              		.global	rd_cb
+ 964              		.syntax unified
+ 965              		.thumb
+ 966              		.thumb_func
+ 967              		.fpu fpv5-d16
+ 969              	rd_cb:
+ 970              	.LVL111:
+ 971              	.LFB151:
+ 186:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 972              		.loc 1 186 1 is_stmt 1 view -0
+ARM GAS  /tmp/ccnKynSC.s 			page 29
+
+
+ 973              		.cfi_startproc
+ 974              		@ args = 0, pretend = 0, frame = 48
+ 975              		@ frame_needed = 0, uses_anonymous_args = 0
+ 187:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 976              		.loc 1 187 2 view .LVU239
+ 188:../Core/Src/interface.c **** 	char str[42];	// Output message
+ 977              		.loc 1 188 2 view .LVU240
+ 189:../Core/Src/interface.c **** 	
+ 978              		.loc 1 189 2 view .LVU241
+ 191:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 979              		.loc 1 191 2 view .LVU242
+ 191:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 980              		.loc 1 191 4 is_stmt 0 view .LVU243
+ 981 0000 0328     		cmp	r0, #3
+ 982 0002 01D0     		beq	.L103
+ 192:../Core/Src/interface.c **** 	
+ 983              		.loc 1 192 10 view .LVU244
+ 984 0004 FA20     		movs	r0, #250
+ 985              	.LVL112:
+ 226:../Core/Src/interface.c **** 
+ 986              		.loc 1 226 1 view .LVU245
+ 987 0006 7047     		bx	lr
+ 988              	.LVL113:
+ 989              	.L103:
+ 186:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 990              		.loc 1 186 1 view .LVU246
+ 991 0008 70B5     		push	{r4, r5, r6, lr}
+ 992              	.LCFI19:
+ 993              		.cfi_def_cfa_offset 16
+ 994              		.cfi_offset 4, -16
+ 995              		.cfi_offset 5, -12
+ 996              		.cfi_offset 6, -8
+ 997              		.cfi_offset 14, -4
+ 998 000a 8CB0     		sub	sp, sp, #48
+ 999              	.LCFI20:
+ 1000              		.cfi_def_cfa_offset 64
+ 1001 000c 0C46     		mov	r4, r1
+ 194:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1002              		.loc 1 194 2 is_stmt 1 view .LVU247
+ 194:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1003              		.loc 1 194 14 is_stmt 0 view .LVU248
+ 1004 000e 4868     		ldr	r0, [r1, #4]
+ 1005              	.LVL114:
+ 194:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1006              		.loc 1 194 14 view .LVU249
+ 1007 0010 FFF7FEFF 		bl	my_atoi
+ 1008              	.LVL115:
+ 194:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1009              		.loc 1 194 14 view .LVU250
+ 1010 0014 0646     		mov	r6, r0
+ 194:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1011              		.loc 1 194 12 view .LVU251
+ 1012 0016 83B2     		uxth	r3, r0
+ 1013              	.LVL116:
+ 195:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1014              		.loc 1 195 2 is_stmt 1 view .LVU252
+ 195:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ARM GAS  /tmp/ccnKynSC.s 			page 30
+
+
+ 1015              		.loc 1 195 4 is_stmt 0 view .LVU253
+ 1016 0018 0A2B     		cmp	r3, #10
+ 1017 001a 41D8     		bhi	.L97
+ 198:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 1018              		.loc 1 198 2 is_stmt 1 view .LVU254
+ 198:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 1019              		.loc 1 198 16 is_stmt 0 view .LVU255
+ 1020 001c A068     		ldr	r0, [r4, #8]
+ 1021 001e FFF7FEFF 		bl	my_atoi
+ 1022              	.LVL117:
+ 198:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 1023              		.loc 1 198 16 view .LVU256
+ 1024 0022 0546     		mov	r5, r0
+ 1025              	.LVL118:
+ 199:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1026              		.loc 1 199 2 is_stmt 1 view .LVU257
+ 199:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1027              		.loc 1 199 5 is_stmt 0 view .LVU258
+ 1028 0024 421E     		subs	r2, r0, #1
+ 199:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1029              		.loc 1 199 4 view .LVU259
+ 1030 0026 4FF6FE73 		movw	r3, #65534
+ 1031 002a 9A42     		cmp	r2, r3
+ 1032 002c 3AD8     		bhi	.L98
+ 202:../Core/Src/interface.c **** 	UART_puts(str);
+ 1033              		.loc 1 202 2 is_stmt 1 view .LVU260
+ 202:../Core/Src/interface.c **** 	UART_puts(str);
+ 1034              		.loc 1 202 35 is_stmt 0 view .LVU261
+ 1035 002e 06F14102 		add	r2, r6, #65
+ 202:../Core/Src/interface.c **** 	UART_puts(str);
+ 1036              		.loc 1 202 2 view .LVU262
+ 1037 0032 D2B2     		uxtb	r2, r2
+ 1038 0034 1C49     		ldr	r1, .L105
+ 1039 0036 01A8     		add	r0, sp, #4
+ 1040              	.LVL119:
+ 202:../Core/Src/interface.c **** 	UART_puts(str);
+ 1041              		.loc 1 202 2 view .LVU263
+ 1042 0038 FFF7FEFF 		bl	sprintf
+ 1043              	.LVL120:
+ 203:../Core/Src/interface.c **** 	
+ 1044              		.loc 1 203 2 is_stmt 1 view .LVU264
+ 1045 003c 01A8     		add	r0, sp, #4
+ 1046 003e FFF7FEFF 		bl	UART_puts
+ 1047              	.LVL121:
+ 205:../Core/Src/interface.c **** 	{
+ 1048              		.loc 1 205 2 view .LVU265
+ 1049              	.LBB6:
+ 205:../Core/Src/interface.c **** 	{
+ 1050              		.loc 1 205 6 view .LVU266
+ 205:../Core/Src/interface.c **** 	{
+ 1051              		.loc 1 205 14 is_stmt 0 view .LVU267
+ 1052 0042 0024     		movs	r4, #0
+ 1053              	.LVL122:
+ 205:../Core/Src/interface.c **** 	{
+ 1054              		.loc 1 205 2 view .LVU268
+ 1055 0044 0AE0     		b	.L90
+ 1056              	.LVL123:
+ARM GAS  /tmp/ccnKynSC.s 			page 31
+
+
+ 1057              	.L92:
+ 216:../Core/Src/interface.c **** 			
+ 1058              		.loc 1 216 5 is_stmt 1 view .LVU269
+ 1059 0046 2246     		mov	r2, r4
+ 1060 0048 1849     		ldr	r1, .L105+4
+ 1061 004a 01A8     		add	r0, sp, #4
+ 1062 004c FFF7FEFF 		bl	sprintf
+ 1063              	.LVL124:
+ 1064              	.L93:
+ 218:../Core/Src/interface.c **** 		}
+ 1065              		.loc 1 218 4 view .LVU270
+ 1066 0050 01A8     		add	r0, sp, #4
+ 1067 0052 FFF7FEFF 		bl	UART_puts
+ 1068              	.LVL125:
+ 1069              	.L94:
+ 223:../Core/Src/interface.c **** 	}
+ 1070              		.loc 1 223 3 discriminator 2 view .LVU271
+ 223:../Core/Src/interface.c **** 	}
+ 1071              		.loc 1 223 15 is_stmt 0 discriminator 2 view .LVU272
+ 1072 0056 6D08     		lsrs	r5, r5, #1
+ 1073              	.LVL126:
+ 205:../Core/Src/interface.c **** 	{
+ 1074              		.loc 1 205 29 is_stmt 1 discriminator 2 view .LVU273
+ 205:../Core/Src/interface.c **** 	{
+ 1075              		.loc 1 205 30 is_stmt 0 discriminator 2 view .LVU274
+ 1076 0058 0134     		adds	r4, r4, #1
+ 1077              	.LVL127:
+ 205:../Core/Src/interface.c **** 	{
+ 1078              		.loc 1 205 30 discriminator 2 view .LVU275
+ 1079 005a E4B2     		uxtb	r4, r4
+ 1080              	.LVL128:
+ 1081              	.L90:
+ 205:../Core/Src/interface.c **** 	{
+ 1082              		.loc 1 205 21 is_stmt 1 discriminator 1 view .LVU276
+ 205:../Core/Src/interface.c **** 	{
+ 1083              		.loc 1 205 2 is_stmt 0 discriminator 1 view .LVU277
+ 1084 005c 0F2C     		cmp	r4, #15
+ 1085 005e 1CD8     		bhi	.L104
+ 207:../Core/Src/interface.c **** 		{
+ 1086              		.loc 1 207 3 is_stmt 1 view .LVU278
+ 207:../Core/Src/interface.c **** 		{
+ 1087              		.loc 1 207 5 is_stmt 0 view .LVU279
+ 1088 0060 15F0010F 		tst	r5, #1
+ 1089 0064 15D0     		beq	.L91
+ 209:../Core/Src/interface.c **** 			{
+ 1090              		.loc 1 209 4 is_stmt 1 view .LVU280
+ 209:../Core/Src/interface.c **** 			{
+ 1091              		.loc 1 209 7 is_stmt 0 view .LVU281
+ 1092 0066 B3B2     		uxth	r3, r6
+ 1093 0068 114A     		ldr	r2, .L105+8
+ 1094 006a 52F82300 		ldr	r0, [r2, r3, lsl #2]
+ 1095 006e 0368     		ldr	r3, [r0]
+ 1096 0070 6200     		lsls	r2, r4, #1
+ 1097 0072 D340     		lsrs	r3, r3, r2
+ 209:../Core/Src/interface.c **** 			{
+ 1098              		.loc 1 209 6 view .LVU282
+ 1099 0074 13F0030F 		tst	r3, #3
+ARM GAS  /tmp/ccnKynSC.s 			page 32
+
+
+ 1100 0078 E5D1     		bne	.L92
+ 1101              	.LBB7:
+ 211:../Core/Src/interface.c **** 				val = HAL_GPIO_ReadPin(GPIO_Ports[port_addr], GPIO_Pins[i]);
+ 1102              		.loc 1 211 5 is_stmt 1 view .LVU283
+ 212:../Core/Src/interface.c **** 				sprintf(str, "Pin %2d - '%d'\n\r", i, val);
+ 1103              		.loc 1 212 5 view .LVU284
+ 212:../Core/Src/interface.c **** 				sprintf(str, "Pin %2d - '%d'\n\r", i, val);
+ 1104              		.loc 1 212 11 is_stmt 0 view .LVU285
+ 1105 007a 0E4B     		ldr	r3, .L105+12
+ 1106 007c 33F81410 		ldrh	r1, [r3, r4, lsl #1]
+ 1107 0080 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 1108              	.LVL129:
+ 1109 0084 0346     		mov	r3, r0
+ 1110              	.LVL130:
+ 213:../Core/Src/interface.c **** 			}
+ 1111              		.loc 1 213 5 is_stmt 1 view .LVU286
+ 1112 0086 2246     		mov	r2, r4
+ 1113 0088 0B49     		ldr	r1, .L105+16
+ 1114 008a 01A8     		add	r0, sp, #4
+ 1115 008c FFF7FEFF 		bl	sprintf
+ 1116              	.LVL131:
+ 213:../Core/Src/interface.c **** 			}
+ 1117              		.loc 1 213 5 is_stmt 0 view .LVU287
+ 1118              	.LBE7:
+ 1119 0090 DEE7     		b	.L93
+ 1120              	.L91:
+ 221:../Core/Src/interface.c **** 		
+ 1121              		.loc 1 221 4 is_stmt 1 view .LVU288
+ 1122 0092 0A48     		ldr	r0, .L105+20
+ 1123 0094 FFF7FEFF 		bl	UART_puts
+ 1124              	.LVL132:
+ 1125 0098 DDE7     		b	.L94
+ 1126              	.L104:
+ 1127              	.LBE6:
+ 225:../Core/Src/interface.c **** }
+ 1128              		.loc 1 225 9 is_stmt 0 view .LVU289
+ 1129 009a 0020     		movs	r0, #0
+ 1130              	.LVL133:
+ 1131              	.L89:
+ 226:../Core/Src/interface.c **** 
+ 1132              		.loc 1 226 1 view .LVU290
+ 1133 009c 0CB0     		add	sp, sp, #48
+ 1134              	.LCFI21:
+ 1135              		.cfi_remember_state
+ 1136              		.cfi_def_cfa_offset 16
+ 1137              		@ sp needed
+ 1138 009e 70BD     		pop	{r4, r5, r6, pc}
+ 1139              	.LVL134:
+ 1140              	.L97:
+ 1141              	.LCFI22:
+ 1142              		.cfi_restore_state
+ 196:../Core/Src/interface.c **** 	
+ 1143              		.loc 1 196 10 view .LVU291
+ 1144 00a0 FA20     		movs	r0, #250
+ 1145 00a2 FBE7     		b	.L89
+ 1146              	.LVL135:
+ 1147              	.L98:
+ARM GAS  /tmp/ccnKynSC.s 			page 33
+
+
+ 200:../Core/Src/interface.c **** 	
+ 1148              		.loc 1 200 10 view .LVU292
+ 1149 00a4 FA20     		movs	r0, #250
+ 1150              	.LVL136:
+ 200:../Core/Src/interface.c **** 	
+ 1151              		.loc 1 200 10 view .LVU293
+ 1152 00a6 F9E7     		b	.L89
+ 1153              	.L106:
+ 1154              		.align	2
+ 1155              	.L105:
+ 1156 00a8 00000000 		.word	.LC9
+ 1157 00ac 24000000 		.word	.LC11
+ 1158 00b0 00000000 		.word	GPIO_Ports
+ 1159 00b4 00000000 		.word	GPIO_Pins
+ 1160 00b8 10000000 		.word	.LC10
+ 1161 00bc 4C000000 		.word	.LC12
+ 1162              		.cfi_endproc
+ 1163              	.LFE151:
+ 1165              		.section	.rodata.wd_cb.str1.4,"aMS",%progbits,1
+ 1166              		.align	2
+ 1167              	.LC13:
+ 1168 0000 50696E20 		.ascii	"Pin %2d not configured as output mode.\012\015\000"
+ 1168      25326420 
+ 1168      6E6F7420 
+ 1168      636F6E66 
+ 1168      69677572 
+ 1169              		.section	.text.wd_cb,"ax",%progbits
+ 1170              		.align	1
+ 1171              		.global	wd_cb
+ 1172              		.syntax unified
+ 1173              		.thumb
+ 1174              		.thumb_func
+ 1175              		.fpu fpv5-d16
+ 1177              	wd_cb:
+ 1178              	.LVL137:
+ 1179              	.LFB152:
+ 235:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 1180              		.loc 1 235 1 is_stmt 1 view -0
+ 1181              		.cfi_startproc
+ 1182              		@ args = 0, pretend = 0, frame = 48
+ 1183              		@ frame_needed = 0, uses_anonymous_args = 0
+ 236:../Core/Src/interface.c **** 	uint32_t pin_setting;
+ 1184              		.loc 1 236 2 view .LVU295
+ 237:../Core/Src/interface.c **** 	uint16_t pin_values;
+ 1185              		.loc 1 237 2 view .LVU296
+ 238:../Core/Src/interface.c **** 	char str[42];	// Output message
+ 1186              		.loc 1 238 2 view .LVU297
+ 239:../Core/Src/interface.c **** 	
+ 1187              		.loc 1 239 2 view .LVU298
+ 241:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1188              		.loc 1 241 2 view .LVU299
+ 241:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1189              		.loc 1 241 4 is_stmt 0 view .LVU300
+ 1190 0000 0428     		cmp	r0, #4
+ 1191 0002 01D0     		beq	.L122
+ 242:../Core/Src/interface.c **** 	
+ 1192              		.loc 1 242 10 view .LVU301
+ARM GAS  /tmp/ccnKynSC.s 			page 34
+
+
+ 1193 0004 FA20     		movs	r0, #250
+ 1194              	.LVL138:
+ 279:../Core/Src/interface.c **** 
+ 1195              		.loc 1 279 1 view .LVU302
+ 1196 0006 7047     		bx	lr
+ 1197              	.LVL139:
+ 1198              	.L122:
+ 235:../Core/Src/interface.c **** 	uint16_t port_addr;
+ 1199              		.loc 1 235 1 view .LVU303
+ 1200 0008 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 1201              	.LCFI23:
+ 1202              		.cfi_def_cfa_offset 24
+ 1203              		.cfi_offset 4, -24
+ 1204              		.cfi_offset 5, -20
+ 1205              		.cfi_offset 6, -16
+ 1206              		.cfi_offset 7, -12
+ 1207              		.cfi_offset 8, -8
+ 1208              		.cfi_offset 14, -4
+ 1209 000c 8CB0     		sub	sp, sp, #48
+ 1210              	.LCFI24:
+ 1211              		.cfi_def_cfa_offset 72
+ 1212 000e 0C46     		mov	r4, r1
+ 244:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1213              		.loc 1 244 2 is_stmt 1 view .LVU304
+ 244:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1214              		.loc 1 244 14 is_stmt 0 view .LVU305
+ 1215 0010 4868     		ldr	r0, [r1, #4]
+ 1216              	.LVL140:
+ 244:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1217              		.loc 1 244 14 view .LVU306
+ 1218 0012 FFF7FEFF 		bl	my_atoi
+ 1219              	.LVL141:
+ 244:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1220              		.loc 1 244 14 view .LVU307
+ 1221 0016 0746     		mov	r7, r0
+ 244:../Core/Src/interface.c **** 	if(!IS_PORT_ADDR(port_addr))
+ 1222              		.loc 1 244 12 view .LVU308
+ 1223 0018 83B2     		uxth	r3, r0
+ 1224              	.LVL142:
+ 245:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1225              		.loc 1 245 2 is_stmt 1 view .LVU309
+ 245:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1226              		.loc 1 245 4 is_stmt 0 view .LVU310
+ 1227 001a 0A2B     		cmp	r3, #10
+ 1228 001c 47D8     		bhi	.L115
+ 248:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 1229              		.loc 1 248 2 is_stmt 1 view .LVU311
+ 248:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 1230              		.loc 1 248 16 is_stmt 0 view .LVU312
+ 1231 001e A068     		ldr	r0, [r4, #8]
+ 1232 0020 FFF7FEFF 		bl	my_atoi
+ 1233              	.LVL143:
+ 248:../Core/Src/interface.c **** 	if(!IS_PIN_SETTING(pin_setting))
+ 1234              		.loc 1 248 16 view .LVU313
+ 1235 0024 0546     		mov	r5, r0
+ 1236              	.LVL144:
+ 249:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ARM GAS  /tmp/ccnKynSC.s 			page 35
+
+
+ 1237              		.loc 1 249 2 is_stmt 1 view .LVU314
+ 249:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1238              		.loc 1 249 5 is_stmt 0 view .LVU315
+ 1239 0026 421E     		subs	r2, r0, #1
+ 249:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1240              		.loc 1 249 4 view .LVU316
+ 1241 0028 4FF6FE73 		movw	r3, #65534
+ 1242 002c 9A42     		cmp	r2, r3
+ 1243 002e 42D8     		bhi	.L116
+ 252:../Core/Src/interface.c **** 	if(!IS_ADDR8(pin_values))
+ 1244              		.loc 1 252 2 is_stmt 1 view .LVU317
+ 252:../Core/Src/interface.c **** 	if(!IS_ADDR8(pin_values))
+ 1245              		.loc 1 252 15 is_stmt 0 view .LVU318
+ 1246 0030 E068     		ldr	r0, [r4, #12]
+ 1247              	.LVL145:
+ 252:../Core/Src/interface.c **** 	if(!IS_ADDR8(pin_values))
+ 1248              		.loc 1 252 15 view .LVU319
+ 1249 0032 FFF7FEFF 		bl	my_atoi
+ 1250              	.LVL146:
+ 252:../Core/Src/interface.c **** 	if(!IS_ADDR8(pin_values))
+ 1251              		.loc 1 252 13 view .LVU320
+ 1252 0036 86B2     		uxth	r6, r0
+ 1253              	.LVL147:
+ 253:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1254              		.loc 1 253 2 is_stmt 1 view .LVU321
+ 253:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1255              		.loc 1 253 4 is_stmt 0 view .LVU322
+ 1256 0038 FF2E     		cmp	r6, #255
+ 1257 003a 3ED8     		bhi	.L117
+ 256:../Core/Src/interface.c **** 	UART_puts(str);
+ 1258              		.loc 1 256 2 is_stmt 1 view .LVU323
+ 256:../Core/Src/interface.c **** 	UART_puts(str);
+ 1259              		.loc 1 256 35 is_stmt 0 view .LVU324
+ 1260 003c 07F14102 		add	r2, r7, #65
+ 256:../Core/Src/interface.c **** 	UART_puts(str);
+ 1261              		.loc 1 256 2 view .LVU325
+ 1262 0040 D2B2     		uxtb	r2, r2
+ 1263 0042 1F49     		ldr	r1, .L125
+ 1264 0044 01A8     		add	r0, sp, #4
+ 1265 0046 FFF7FEFF 		bl	sprintf
+ 1266              	.LVL148:
+ 257:../Core/Src/interface.c **** 	
+ 1267              		.loc 1 257 2 is_stmt 1 view .LVU326
+ 1268 004a 01A8     		add	r0, sp, #4
+ 1269 004c FFF7FEFF 		bl	UART_puts
+ 1270              	.LVL149:
+ 259:../Core/Src/interface.c **** 	{
+ 1271              		.loc 1 259 2 view .LVU327
+ 1272              	.LBB8:
+ 259:../Core/Src/interface.c **** 	{
+ 1273              		.loc 1 259 6 view .LVU328
+ 259:../Core/Src/interface.c **** 	{
+ 1274              		.loc 1 259 14 is_stmt 0 view .LVU329
+ 1275 0050 0024     		movs	r4, #0
+ 1276              	.LVL150:
+ 259:../Core/Src/interface.c **** 	{
+ 1277              		.loc 1 259 2 view .LVU330
+ARM GAS  /tmp/ccnKynSC.s 			page 36
+
+
+ 1278 0052 14E0     		b	.L109
+ 1279              	.LVL151:
+ 1280              	.L124:
+ 1281              	.LBB9:
+ 265:../Core/Src/interface.c **** 				HAL_GPIO_WritePin(GPIO_Ports[port_addr], GPIO_Pins[i], (GPIO_PinState)pin_val);
+ 1282              		.loc 1 265 5 is_stmt 1 view .LVU331
+ 265:../Core/Src/interface.c **** 				HAL_GPIO_WritePin(GPIO_Ports[port_addr], GPIO_Pins[i], (GPIO_PinState)pin_val);
+ 1283              		.loc 1 265 13 is_stmt 0 view .LVU332
+ 1284 0054 06F00108 		and	r8, r6, #1
+ 1285              	.LVL152:
+ 266:../Core/Src/interface.c **** 				sprintf(str, "Pin %2d - '%d'\n\r", i, pin_val);
+ 1286              		.loc 1 266 5 is_stmt 1 view .LVU333
+ 1287 0058 4246     		mov	r2, r8
+ 1288 005a 1A4B     		ldr	r3, .L125+4
+ 1289 005c 33F81410 		ldrh	r1, [r3, r4, lsl #1]
+ 1290 0060 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1291              	.LVL153:
+ 267:../Core/Src/interface.c **** 			}
+ 1292              		.loc 1 267 5 view .LVU334
+ 1293 0064 4346     		mov	r3, r8
+ 1294 0066 2246     		mov	r2, r4
+ 1295 0068 1749     		ldr	r1, .L125+8
+ 1296 006a 01A8     		add	r0, sp, #4
+ 1297 006c FFF7FEFF 		bl	sprintf
+ 1298              	.LVL154:
+ 1299              	.L112:
+ 267:../Core/Src/interface.c **** 			}
+ 1300              		.loc 1 267 5 is_stmt 0 view .LVU335
+ 1301              	.LBE9:
+ 272:../Core/Src/interface.c **** 		}
+ 1302              		.loc 1 272 4 is_stmt 1 view .LVU336
+ 1303 0070 01A8     		add	r0, sp, #4
+ 1304 0072 FFF7FEFF 		bl	UART_puts
+ 1305              	.LVL155:
+ 1306              	.L110:
+ 274:../Core/Src/interface.c **** 		pin_values >>= 1;
+ 1307              		.loc 1 274 3 discriminator 2 view .LVU337
+ 274:../Core/Src/interface.c **** 		pin_values >>= 1;
+ 1308              		.loc 1 274 15 is_stmt 0 discriminator 2 view .LVU338
+ 1309 0076 6D08     		lsrs	r5, r5, #1
+ 1310              	.LVL156:
+ 275:../Core/Src/interface.c **** 	}
+ 1311              		.loc 1 275 3 is_stmt 1 discriminator 2 view .LVU339
+ 275:../Core/Src/interface.c **** 	}
+ 1312              		.loc 1 275 14 is_stmt 0 discriminator 2 view .LVU340
+ 1313 0078 7608     		lsrs	r6, r6, #1
+ 1314              	.LVL157:
+ 259:../Core/Src/interface.c **** 	{
+ 1315              		.loc 1 259 29 is_stmt 1 discriminator 2 view .LVU341
+ 259:../Core/Src/interface.c **** 	{
+ 1316              		.loc 1 259 30 is_stmt 0 discriminator 2 view .LVU342
+ 1317 007a 0134     		adds	r4, r4, #1
+ 1318              	.LVL158:
+ 259:../Core/Src/interface.c **** 	{
+ 1319              		.loc 1 259 30 discriminator 2 view .LVU343
+ 1320 007c E4B2     		uxtb	r4, r4
+ 1321              	.LVL159:
+ARM GAS  /tmp/ccnKynSC.s 			page 37
+
+
+ 1322              	.L109:
+ 259:../Core/Src/interface.c **** 	{
+ 1323              		.loc 1 259 21 is_stmt 1 discriminator 1 view .LVU344
+ 259:../Core/Src/interface.c **** 	{
+ 1324              		.loc 1 259 2 is_stmt 0 discriminator 1 view .LVU345
+ 1325 007e 0F2C     		cmp	r4, #15
+ 1326 0080 13D8     		bhi	.L123
+ 261:../Core/Src/interface.c **** 		{
+ 1327              		.loc 1 261 3 is_stmt 1 view .LVU346
+ 261:../Core/Src/interface.c **** 		{
+ 1328              		.loc 1 261 5 is_stmt 0 view .LVU347
+ 1329 0082 15F0010F 		tst	r5, #1
+ 1330 0086 F6D0     		beq	.L110
+ 263:../Core/Src/interface.c **** 			{
+ 1331              		.loc 1 263 4 is_stmt 1 view .LVU348
+ 263:../Core/Src/interface.c **** 			{
+ 1332              		.loc 1 263 7 is_stmt 0 view .LVU349
+ 1333 0088 BBB2     		uxth	r3, r7
+ 1334 008a 104A     		ldr	r2, .L125+12
+ 1335 008c 52F82300 		ldr	r0, [r2, r3, lsl #2]
+ 1336 0090 0368     		ldr	r3, [r0]
+ 1337 0092 6200     		lsls	r2, r4, #1
+ 1338 0094 D340     		lsrs	r3, r3, r2
+ 1339 0096 03F00303 		and	r3, r3, #3
+ 263:../Core/Src/interface.c **** 			{
+ 1340              		.loc 1 263 6 view .LVU350
+ 1341 009a 012B     		cmp	r3, #1
+ 1342 009c DAD0     		beq	.L124
+ 270:../Core/Src/interface.c **** 			
+ 1343              		.loc 1 270 5 is_stmt 1 view .LVU351
+ 1344 009e 2246     		mov	r2, r4
+ 1345 00a0 0B49     		ldr	r1, .L125+16
+ 1346 00a2 01A8     		add	r0, sp, #4
+ 1347 00a4 FFF7FEFF 		bl	sprintf
+ 1348              	.LVL160:
+ 1349 00a8 E2E7     		b	.L112
+ 1350              	.L123:
+ 1351              	.LBE8:
+ 278:../Core/Src/interface.c **** }
+ 1352              		.loc 1 278 9 is_stmt 0 view .LVU352
+ 1353 00aa 0020     		movs	r0, #0
+ 1354              	.LBB10:
+ 1355 00ac 00E0     		b	.L108
+ 1356              	.LVL161:
+ 1357              	.L115:
+ 278:../Core/Src/interface.c **** }
+ 1358              		.loc 1 278 9 view .LVU353
+ 1359              	.LBE10:
+ 246:../Core/Src/interface.c **** 	
+ 1360              		.loc 1 246 10 view .LVU354
+ 1361 00ae FA20     		movs	r0, #250
+ 1362              	.LVL162:
+ 1363              	.L108:
+ 279:../Core/Src/interface.c **** 
+ 1364              		.loc 1 279 1 view .LVU355
+ 1365 00b0 0CB0     		add	sp, sp, #48
+ 1366              	.LCFI25:
+ARM GAS  /tmp/ccnKynSC.s 			page 38
+
+
+ 1367              		.cfi_remember_state
+ 1368              		.cfi_def_cfa_offset 24
+ 1369              		@ sp needed
+ 1370 00b2 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 1371              	.LVL163:
+ 1372              	.L116:
+ 1373              	.LCFI26:
+ 1374              		.cfi_restore_state
+ 250:../Core/Src/interface.c **** 	
+ 1375              		.loc 1 250 10 view .LVU356
+ 1376 00b6 FA20     		movs	r0, #250
+ 1377              	.LVL164:
+ 250:../Core/Src/interface.c **** 	
+ 1378              		.loc 1 250 10 view .LVU357
+ 1379 00b8 FAE7     		b	.L108
+ 1380              	.LVL165:
+ 1381              	.L117:
+ 254:../Core/Src/interface.c **** 
+ 1382              		.loc 1 254 10 view .LVU358
+ 1383 00ba FA20     		movs	r0, #250
+ 1384 00bc F8E7     		b	.L108
+ 1385              	.L126:
+ 1386 00be 00BF     		.align	2
+ 1387              	.L125:
+ 1388 00c0 00000000 		.word	.LC9
+ 1389 00c4 00000000 		.word	GPIO_Pins
+ 1390 00c8 10000000 		.word	.LC10
+ 1391 00cc 00000000 		.word	GPIO_Ports
+ 1392 00d0 00000000 		.word	.LC13
+ 1393              		.cfi_endproc
+ 1394              	.LFE152:
+ 1396              		.section	.rodata.ra_cb.str1.4,"aMS",%progbits,1
+ 1397              		.align	2
+ 1398              	.LC14:
+ 1399 0000 50696E20 		.ascii	"Pin not configured as input mode.\012\015\000"
+ 1399      6E6F7420 
+ 1399      636F6E66 
+ 1399      69677572 
+ 1399      65642061 
+ 1400              		.align	2
+ 1401              	.LC15:
+ 1402 0024 41444320 		.ascii	"ADC Channel %2d value: %ld mV.\012\015\000"
+ 1402      4368616E 
+ 1402      6E656C20 
+ 1402      25326420 
+ 1402      76616C75 
+ 1403              		.section	.text.ra_cb,"ax",%progbits
+ 1404              		.align	1
+ 1405              		.global	ra_cb
+ 1406              		.syntax unified
+ 1407              		.thumb
+ 1408              		.thumb_func
+ 1409              		.fpu fpv5-d16
+ 1411              	ra_cb:
+ 1412              	.LVL166:
+ 1413              	.LFB153:
+ 288:../Core/Src/interface.c **** 	uint8_t addr;
+ARM GAS  /tmp/ccnKynSC.s 			page 39
+
+
+ 1414              		.loc 1 288 1 is_stmt 1 view -0
+ 1415              		.cfi_startproc
+ 1416              		@ args = 0, pretend = 0, frame = 40
+ 1417              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288:../Core/Src/interface.c **** 	uint8_t addr;
+ 1418              		.loc 1 288 1 is_stmt 0 view .LVU360
+ 1419 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1420              	.LCFI27:
+ 1421              		.cfi_def_cfa_offset 20
+ 1422              		.cfi_offset 4, -20
+ 1423              		.cfi_offset 5, -16
+ 1424              		.cfi_offset 6, -12
+ 1425              		.cfi_offset 7, -8
+ 1426              		.cfi_offset 14, -4
+ 1427 0002 8BB0     		sub	sp, sp, #44
+ 1428              	.LCFI28:
+ 1429              		.cfi_def_cfa_offset 64
+ 289:../Core/Src/interface.c **** 	uint32_t adcValue;
+ 1430              		.loc 1 289 2 is_stmt 1 view .LVU361
+ 290:../Core/Src/interface.c **** 	uint32_t volt;
+ 1431              		.loc 1 290 2 view .LVU362
+ 291:../Core/Src/interface.c **** 	char str[40];	// Output message
+ 1432              		.loc 1 291 2 view .LVU363
+ 292:../Core/Src/interface.c **** 	
+ 1433              		.loc 1 292 2 view .LVU364
+ 294:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1434              		.loc 1 294 2 view .LVU365
+ 294:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1435              		.loc 1 294 4 is_stmt 0 view .LVU366
+ 1436 0004 0228     		cmp	r0, #2
+ 1437 0006 03D0     		beq	.L133
+ 295:../Core/Src/interface.c **** 	
+ 1438              		.loc 1 295 10 view .LVU367
+ 1439 0008 FA25     		movs	r5, #250
+ 1440              	.LVL167:
+ 1441              	.L128:
+ 315:../Core/Src/interface.c **** 
+ 1442              		.loc 1 315 1 view .LVU368
+ 1443 000a 2846     		mov	r0, r5
+ 1444 000c 0BB0     		add	sp, sp, #44
+ 1445              	.LCFI29:
+ 1446              		.cfi_remember_state
+ 1447              		.cfi_def_cfa_offset 20
+ 1448              		@ sp needed
+ 1449 000e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1450              	.LVL168:
+ 1451              	.L133:
+ 1452              	.LCFI30:
+ 1453              		.cfi_restore_state
+ 297:../Core/Src/interface.c **** 	if(!IS_ADDR4(addr))
+ 1454              		.loc 1 297 2 is_stmt 1 view .LVU369
+ 297:../Core/Src/interface.c **** 	if(!IS_ADDR4(addr))
+ 1455              		.loc 1 297 9 is_stmt 0 view .LVU370
+ 1456 0010 4868     		ldr	r0, [r1, #4]
+ 1457              	.LVL169:
+ 297:../Core/Src/interface.c **** 	if(!IS_ADDR4(addr))
+ 1458              		.loc 1 297 9 view .LVU371
+ARM GAS  /tmp/ccnKynSC.s 			page 40
+
+
+ 1459 0012 FFF7FEFF 		bl	my_atoi
+ 1460              	.LVL170:
+ 297:../Core/Src/interface.c **** 	if(!IS_ADDR4(addr))
+ 1461              		.loc 1 297 9 view .LVU372
+ 1462 0016 0446     		mov	r4, r0
+ 297:../Core/Src/interface.c **** 	if(!IS_ADDR4(addr))
+ 1463              		.loc 1 297 7 view .LVU373
+ 1464 0018 C6B2     		uxtb	r6, r0
+ 1465              	.LVL171:
+ 298:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1466              		.loc 1 298 2 is_stmt 1 view .LVU374
+ 298:../Core/Src/interface.c **** 		return (char)(-EINVARG);
+ 1467              		.loc 1 298 4 is_stmt 0 view .LVU375
+ 1468 001a 0F2E     		cmp	r6, #15
+ 1469 001c 2BD8     		bhi	.L131
+ 301:../Core/Src/interface.c **** 	{
+ 1470              		.loc 1 301 2 is_stmt 1 view .LVU376
+ 301:../Core/Src/interface.c **** 	{
+ 1471              		.loc 1 301 5 is_stmt 0 view .LVU377
+ 1472 001e 3146     		mov	r1, r6
+ 1473 0020 1B48     		ldr	r0, .L135+16
+ 1474 0022 FFF7FEFF 		bl	ADC_Config_Channel
+ 1475              	.LVL172:
+ 301:../Core/Src/interface.c **** 	{
+ 1476              		.loc 1 301 4 view .LVU378
+ 1477 0026 0546     		mov	r5, r0
+ 1478 0028 00BB     		cbnz	r0, .L134
+ 307:../Core/Src/interface.c **** 	volt = ((double)adcValue * 3300 / 4095);
+ 1479              		.loc 1 307 2 is_stmt 1 view .LVU379
+ 307:../Core/Src/interface.c **** 	volt = ((double)adcValue * 3300 / 4095);
+ 1480              		.loc 1 307 13 is_stmt 0 view .LVU380
+ 1481 002a 194F     		ldr	r7, .L135+16
+ 1482 002c 3846     		mov	r0, r7
+ 1483 002e FFF7FEFF 		bl	ADC_Polling_Conv
+ 1484              	.LVL173:
+ 1485 0032 07EE100A 		vmov	s14, r0	@ int
+ 1486              	.LVL174:
+ 308:../Core/Src/interface.c **** 	sprintf(str, "ADC Channel %2d value: %ld mV.\n\r", addr, volt);
+ 1487              		.loc 1 308 2 is_stmt 1 view .LVU381
+ 308:../Core/Src/interface.c **** 	sprintf(str, "ADC Channel %2d value: %ld mV.\n\r", addr, volt);
+ 1488              		.loc 1 308 10 is_stmt 0 view .LVU382
+ 1489 0036 B8EE477B 		vcvt.f64.u32	d7, s14
+ 308:../Core/Src/interface.c **** 	sprintf(str, "ADC Channel %2d value: %ld mV.\n\r", addr, volt);
+ 1490              		.loc 1 308 27 view .LVU383
+ 1491 003a 9FED116B 		vldr.64	d6, .L135
+ 1492 003e 27EE067B 		vmul.f64	d7, d7, d6
+ 308:../Core/Src/interface.c **** 	sprintf(str, "ADC Channel %2d value: %ld mV.\n\r", addr, volt);
+ 1493              		.loc 1 308 34 view .LVU384
+ 1494 0042 9FED115B 		vldr.64	d5, .L135+8
+ 1495 0046 87EE056B 		vdiv.f64	d6, d7, d5
+ 1496              	.LVL175:
+ 309:../Core/Src/interface.c **** 	UART_puts(str);
+ 1497              		.loc 1 309 2 is_stmt 1 view .LVU385
+ 1498 004a FCEEC67B 		vcvt.u32.f64	s15, d6
+ 1499              	.LVL176:
+ 309:../Core/Src/interface.c **** 	UART_puts(str);
+ 1500              		.loc 1 309 2 is_stmt 0 view .LVU386
+ARM GAS  /tmp/ccnKynSC.s 			page 41
+
+
+ 1501 004e 17EE903A 		vmov	r3, s15	@ int
+ 1502 0052 E2B2     		uxtb	r2, r4
+ 1503 0054 0F49     		ldr	r1, .L135+20
+ 1504 0056 6846     		mov	r0, sp
+ 1505              	.LVL177:
+ 309:../Core/Src/interface.c **** 	UART_puts(str);
+ 1506              		.loc 1 309 2 view .LVU387
+ 1507 0058 FFF7FEFF 		bl	sprintf
+ 1508              	.LVL178:
+ 310:../Core/Src/interface.c **** 	
+ 1509              		.loc 1 310 2 is_stmt 1 view .LVU388
+ 1510 005c 6846     		mov	r0, sp
+ 1511 005e FFF7FEFF 		bl	UART_puts
+ 1512              	.LVL179:
+ 312:../Core/Src/interface.c **** 	
+ 1513              		.loc 1 312 2 view .LVU389
+ 1514 0062 3146     		mov	r1, r6
+ 1515 0064 3846     		mov	r0, r7
+ 1516 0066 FFF7FEFF 		bl	ADC_DeConfig_Channel
+ 1517              	.LVL180:
+ 314:../Core/Src/interface.c **** }
+ 1518              		.loc 1 314 2 view .LVU390
+ 314:../Core/Src/interface.c **** }
+ 1519              		.loc 1 314 9 is_stmt 0 view .LVU391
+ 1520 006a CEE7     		b	.L128
+ 1521              	.L134:
+ 303:../Core/Src/interface.c **** 		return (char)(-EPERM);
+ 1522              		.loc 1 303 3 is_stmt 1 view .LVU392
+ 1523 006c 0A48     		ldr	r0, .L135+24
+ 1524 006e FFF7FEFF 		bl	UART_puts
+ 1525              	.LVL181:
+ 304:../Core/Src/interface.c **** 	}
+ 1526              		.loc 1 304 3 view .LVU393
+ 304:../Core/Src/interface.c **** 	}
+ 1527              		.loc 1 304 10 is_stmt 0 view .LVU394
+ 1528 0072 F925     		movs	r5, #249
+ 1529 0074 C9E7     		b	.L128
+ 1530              	.L131:
+ 299:../Core/Src/interface.c **** 
+ 1531              		.loc 1 299 10 view .LVU395
+ 1532 0076 FA25     		movs	r5, #250
+ 1533 0078 C7E7     		b	.L128
+ 1534              	.L136:
+ 1535 007a 00BFAFF3 		.align	3
+ 1535      0080
+ 1536              	.L135:
+ 1537 0080 00000000 		.word	0
+ 1538 0084 00C8A940 		.word	1084868608
+ 1539 0088 00000000 		.word	0
+ 1540 008c 00FEAF40 		.word	1085275648
+ 1541 0090 00000000 		.word	hadc1
+ 1542 0094 24000000 		.word	.LC15
+ 1543 0098 00000000 		.word	.LC14
+ 1544              		.cfi_endproc
+ 1545              	.LFE153:
+ 1547              		.text
+ 1548              	.Letext0:
+ARM GAS  /tmp/ccnKynSC.s 			page 42
+
+
+ 1549              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 1550              		.file 3 "../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h"
+ 1551              		.file 4 "../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h"
+ 1552              		.file 5 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 1553              		.file 6 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
+ 1554              		.file 7 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 1555              		.file 8 "../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_adc.h"
+ 1556              		.file 9 "../Core/Inc/gpio.h"
+ 1557              		.file 10 "../Core/Inc/adc.h"
+ 1558              		.file 11 "/usr/include/newlib/stdio.h"
+ 1559              		.file 12 "../Core/Inc/usart.h"
+ 1560              		.file 13 "../Core/Inc/utils.h"
+ARM GAS  /tmp/ccnKynSC.s 			page 43
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 interface.c
+     /tmp/ccnKynSC.s:17     .rodata.memory_read.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:24     .text.memory_read:0000000000000000 $t
+     /tmp/ccnKynSC.s:31     .text.memory_read:0000000000000000 memory_read
+     /tmp/ccnKynSC.s:146    .text.memory_read:000000000000005c $d
+     /tmp/ccnKynSC.s:154    .rodata.memory_write.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:164    .text.memory_write:0000000000000000 $t
+     /tmp/ccnKynSC.s:170    .text.memory_write:0000000000000000 memory_write
+     /tmp/ccnKynSC.s:308    .text.memory_write:0000000000000074 $d
+     /tmp/ccnKynSC.s:317    .rodata.ver_cb.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:322    .text.ver_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:329    .text.ver_cb:0000000000000000 ver_cb
+     /tmp/ccnKynSC.s:367    .text.ver_cb:0000000000000014 $d
+     /tmp/ccnKynSC.s:372    .text.mr_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:379    .text.mr_cb:0000000000000000 mr_cb
+     /tmp/ccnKynSC.s:471    .text.mw_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:478    .text.mw_cb:0000000000000000 mw_cb
+     /tmp/ccnKynSC.s:573    .rodata.mi_cb.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:580    .text.mi_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:587    .text.mi_cb:0000000000000000 mi_cb
+     /tmp/ccnKynSC.s:755    .text.mi_cb:0000000000000098 $d
+     /tmp/ccnKynSC.s:762    .rodata.mo_cb.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:766    .text.mo_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:773    .text.mo_cb:0000000000000000 mo_cb
+     /tmp/ccnKynSC.s:942    .text.mo_cb:000000000000009c $d
+     /tmp/ccnKynSC.s:949    .rodata.rd_cb.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:962    .text.rd_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:969    .text.rd_cb:0000000000000000 rd_cb
+     /tmp/ccnKynSC.s:1156   .text.rd_cb:00000000000000a8 $d
+     /tmp/ccnKynSC.s:1166   .rodata.wd_cb.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:1170   .text.wd_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:1177   .text.wd_cb:0000000000000000 wd_cb
+     /tmp/ccnKynSC.s:1388   .text.wd_cb:00000000000000c0 $d
+     /tmp/ccnKynSC.s:1397   .rodata.ra_cb.str1.4:0000000000000000 $d
+     /tmp/ccnKynSC.s:1404   .text.ra_cb:0000000000000000 $t
+     /tmp/ccnKynSC.s:1411   .text.ra_cb:0000000000000000 ra_cb
+     /tmp/ccnKynSC.s:1537   .text.ra_cb:0000000000000080 $d
+
+UNDEFINED SYMBOLS
+sprintf
+UART_puts
+my_atoi
+GPIO_check_res_pins
+GPIO_config_pins
+GPIO_Ports
+HAL_GPIO_ReadPin
+GPIO_Pins
+HAL_GPIO_WritePin
+ADC_Config_Channel
+ADC_Polling_Conv
+ADC_DeConfig_Channel
+hadc1

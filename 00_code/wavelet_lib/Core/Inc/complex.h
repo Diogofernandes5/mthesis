@@ -12,8 +12,8 @@ extern "C" {
 
 typedef struct
 { 
-	float Re; 
-	float Im;
+	double Re; 
+	double Im;
 } complex;
 
 #define complex_mul_re(a_re, a_im, b_re, b_im)  (a_re * b_re - a_im * b_im)

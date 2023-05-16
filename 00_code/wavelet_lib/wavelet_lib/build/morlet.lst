@@ -1,0 +1,363 @@
+ARM GAS  /tmp/ccnYwI6N.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"morlet.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.rodata.morlet_base.str1.4,"aMS",%progbits,1
+  17              		.align	2
+  18              	.LC0:
+  19 0000 49742077 		.ascii	"It was not possible to allocate 'expnt' pointer!\012"
+  19      6173206E 
+  19      6F742070 
+  19      6F737369 
+  19      626C6520 
+  20 0031 0D00     		.ascii	"\015\000"
+  21              		.section	.text.morlet_base,"ax",%progbits
+  22              		.align	1
+  23              		.global	morlet_base
+  24              		.arch armv7e-m
+  25              		.syntax unified
+  26              		.thumb
+  27              		.thumb_func
+  28              		.fpu fpv5-d16
+  30              	morlet_base:
+  31              	.LVL0:
+  32              	.LFB144:
+  33              		.file 1 "../Core/Src/morlet.c"
+   1:../Core/Src/morlet.c **** #include "morlet.h"
+   2:../Core/Src/morlet.c **** 
+   3:../Core/Src/morlet.c **** #include "errdef.h"
+   4:../Core/Src/morlet.c **** #include "usart.h"
+   5:../Core/Src/morlet.c **** 
+   6:../Core/Src/morlet.c **** #include <math.h>
+   7:../Core/Src/morlet.c **** #include <stdlib.h>
+   8:../Core/Src/morlet.c **** 
+   9:../Core/Src/morlet.c **** /**
+  10:../Core/Src/morlet.c ****  * @brief   Create scaled morlet wavelet in the frequency domain (after FFT)
+  11:../Core/Src/morlet.c ****  * 
+  12:../Core/Src/morlet.c ****  * @param   wk_i - wavenumber array at which to calculate the wavelet [Eqn(5)]
+  13:../Core/Src/morlet.c ****  * @param   scale_i - the wavelet scale
+  14:../Core/Src/morlet.c ****  * @param   param_i - nondimensional parameter for the wavelet function
+  15:../Core/Src/morlet.c ****  * 
+  16:../Core/Src/morlet.c ****  * @param   daughter_o - the wavelet function
+  17:../Core/Src/morlet.c ****  * @param   fourier_factor_o - the ratio of Fourier period to scale
+  18:../Core/Src/morlet.c ****  * @param   coi_o - cone-of-influence size at the scale
+  19:../Core/Src/morlet.c ****  * @param   dof_min_o - degrees of freedom for each point in the wavelet power
+  20:../Core/Src/morlet.c ****  *              (2 for Morlet)
+  21:../Core/Src/morlet.c ****  * 
+ARM GAS  /tmp/ccnYwI6N.s 			page 2
+
+
+  22:../Core/Src/morlet.c ****  * @retval  Success
+  23:../Core/Src/morlet.c ****  * */
+  24:../Core/Src/morlet.c **** int morlet_base (float *wk_i, uint32_t N_i, float scale_i, float param_i, 
+  25:../Core/Src/morlet.c ****     float *daughter_o, float *fourier_factor_o, float *coi_o, uint8_t *dof_min_o)
+  26:../Core/Src/morlet.c **** {
+  34              		.loc 1 26 1 view -0
+  35              		.cfi_startproc
+  36              		@ args = 8, pretend = 0, frame = 0
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38              		.loc 1 26 1 is_stmt 0 view .LVU1
+  39 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 32
+  42              		.cfi_offset 4, -32
+  43              		.cfi_offset 5, -28
+  44              		.cfi_offset 6, -24
+  45              		.cfi_offset 7, -20
+  46              		.cfi_offset 8, -16
+  47              		.cfi_offset 9, -12
+  48              		.cfi_offset 10, -8
+  49              		.cfi_offset 14, -4
+  50 0004 2DED048B 		vpush.64	{d8, d9}
+  51              	.LCFI1:
+  52              		.cfi_def_cfa_offset 48
+  53              		.cfi_offset 80, -48
+  54              		.cfi_offset 81, -44
+  55              		.cfi_offset 82, -40
+  56              		.cfi_offset 83, -36
+  57 0008 0646     		mov	r6, r0
+  58 000a 0C46     		mov	r4, r1
+  59 000c B0EE409A 		vmov.f32	s18, s0
+  60 0010 B0EE608A 		vmov.f32	s16, s1
+  61 0014 1746     		mov	r7, r2
+  62 0016 9A46     		mov	r10, r3
+  27:../Core/Src/morlet.c **** 	float wk0 = (param_i == -1) ? 6.0 : param_i;
+  63              		.loc 1 27 2 is_stmt 1 view .LVU2
+  64              		.loc 1 27 36 is_stmt 0 view .LVU3
+  65 0018 FFEE007A 		vmov.f32	s15, #-1.0e+0
+  66 001c F4EE670A 		vcmp.f32	s1, s15
+  67 0020 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  68 0024 01D1     		bne	.L2
+  69 0026 B1EE088A 		vmov.f32	s16, #6.0e+0
+  70              	.L2:
+  71              	.LVL1:
+  28:../Core/Src/morlet.c **** 	uint16_t half_N_i = N_i >> 1;
+  72              		.loc 1 28 2 is_stmt 1 discriminator 4 view .LVU4
+  73              		.loc 1 28 26 is_stmt 0 discriminator 4 view .LVU5
+  74 002a 4FEA5409 		lsr	r9, r4, #1
+  75              	.LVL2:
+  29:../Core/Src/morlet.c **** 
+  30:../Core/Src/morlet.c **** 	float *expnt = (float*) calloc(N_i, sizeof(float));
+  76              		.loc 1 30 2 is_stmt 1 discriminator 4 view .LVU6
+  77              		.loc 1 30 26 is_stmt 0 discriminator 4 view .LVU7
+  78 002e 0421     		movs	r1, #4
+  79              	.LVL3:
+  80              		.loc 1 30 26 discriminator 4 view .LVU8
+  81 0030 2046     		mov	r0, r4
+ARM GAS  /tmp/ccnYwI6N.s 			page 3
+
+
+  82              	.LVL4:
+  83              		.loc 1 30 26 discriminator 4 view .LVU9
+  84 0032 FFF7FEFF 		bl	calloc
+  85              	.LVL5:
+  31:../Core/Src/morlet.c **** 
+  32:../Core/Src/morlet.c **** 	if(expnt == NULL) /* Allocation error */ 
+  86              		.loc 1 32 2 is_stmt 1 discriminator 4 view .LVU10
+  87              		.loc 1 32 4 is_stmt 0 discriminator 4 view .LVU11
+  88 0036 8046     		mov	r8, r0
+  89 0038 A8B1     		cbz	r0, .L9
+  33:../Core/Src/morlet.c ****     {
+  34:../Core/Src/morlet.c ****         UART_puts("It was not possible to allocate 'expnt' pointer!\n\r");
+  35:../Core/Src/morlet.c ****         return -ENOMEM;
+  36:../Core/Src/morlet.c ****     }
+  37:../Core/Src/morlet.c **** 	memset(expnt, N_i, 0.0);
+  90              		.loc 1 37 2 is_stmt 1 view .LVU12
+  38:../Core/Src/morlet.c **** 	
+  39:../Core/Src/morlet.c **** 	float norm = sqrt(scale_i * wk_i[1] * N_i) * pow(M_PI, -0.25);
+  91              		.loc 1 39 2 view .LVU13
+  92              		.loc 1 39 34 is_stmt 0 view .LVU14
+  93 003a 96ED010A 		vldr.32	s0, [r6, #4]
+  94              		.loc 1 39 28 view .LVU15
+  95 003e 60EE097A 		vmul.f32	s15, s0, s18
+  96              		.loc 1 39 38 view .LVU16
+  97 0042 07EE104A 		vmov	s14, r4	@ int
+  98 0046 B8EE470A 		vcvt.f32.u32	s0, s14
+  99 004a 20EE270A 		vmul.f32	s0, s0, s15
+ 100              		.loc 1 39 15 view .LVU17
+ 101 004e B7EEC00A 		vcvt.f64.f32	d0, s0
+ 102 0052 FFF7FEFF 		bl	sqrt
+ 103              	.LVL6:
+ 104              		.loc 1 39 45 view .LVU18
+ 105 0056 9FED347B 		vldr.64	d7, .L10
+ 106 005a 20EE070B 		vmul.f64	d0, d0, d7
+ 107              		.loc 1 39 8 view .LVU19
+ 108 005e F7EEC08B 		vcvt.f32.f64	s17, d0
+ 109              	.LVL7:
+  40:../Core/Src/morlet.c **** 
+  41:../Core/Src/morlet.c **** 	for (uint32_t k = 0; k < half_N_i + 1; k++)
+ 110              		.loc 1 41 2 is_stmt 1 view .LVU20
+ 111              	.LBB2:
+ 112              		.loc 1 41 7 view .LVU21
+ 113              		.loc 1 41 16 is_stmt 0 view .LVU22
+ 114 0062 0024     		movs	r4, #0
+ 115              	.LVL8:
+ 116              		.loc 1 41 2 view .LVU23
+ 117 0064 2CE0     		b	.L5
+ 118              	.LVL9:
+ 119              	.L9:
+ 120              		.loc 1 41 2 view .LVU24
+ 121              	.LBE2:
+  34:../Core/Src/morlet.c ****         return -ENOMEM;
+ 122              		.loc 1 34 9 is_stmt 1 view .LVU25
+ 123 0066 3648     		ldr	r0, .L10+24
+ 124              	.LVL10:
+  34:../Core/Src/morlet.c ****         return -ENOMEM;
+ 125              		.loc 1 34 9 is_stmt 0 view .LVU26
+ARM GAS  /tmp/ccnYwI6N.s 			page 4
+
+
+ 126 0068 FFF7FEFF 		bl	UART_puts
+ 127              	.LVL11:
+  35:../Core/Src/morlet.c ****     }
+ 128              		.loc 1 35 9 is_stmt 1 view .LVU27
+  35:../Core/Src/morlet.c ****     }
+ 129              		.loc 1 35 16 is_stmt 0 view .LVU28
+ 130 006c 6FF00400 		mvn	r0, #4
+ 131 0070 55E0     		b	.L1
+ 132              	.LVL12:
+ 133              	.L6:
+ 134              	.LBB3:
+  42:../Core/Src/morlet.c **** 	{
+  43:../Core/Src/morlet.c **** 		expnt[k] = - pow(((scale_i * wk_i[k]) - wk0), 2.0) / 2;
+ 135              		.loc 1 43 3 is_stmt 1 discriminator 3 view .LVU29
+ 136              		.loc 1 43 36 is_stmt 0 discriminator 3 view .LVU30
+ 137 0072 A500     		lsls	r5, r4, #2
+ 138 0074 06EB8403 		add	r3, r6, r4, lsl #2
+ 139 0078 93ED000A 		vldr.32	s0, [r3]
+ 140              		.loc 1 43 30 discriminator 3 view .LVU31
+ 141 007c 20EE090A 		vmul.f32	s0, s0, s18
+ 142              		.loc 1 43 41 discriminator 3 view .LVU32
+ 143 0080 30EE480A 		vsub.f32	s0, s0, s16
+ 144              		.loc 1 43 16 discriminator 3 view .LVU33
+ 145 0084 B0EE001B 		vmov.f64	d1, #2.0e+0
+ 146 0088 B7EEC00A 		vcvt.f64.f32	d0, s0
+ 147 008c FFF7FEFF 		bl	pow
+ 148              	.LVL13:
+ 149              		.loc 1 43 8 discriminator 3 view .LVU34
+ 150 0090 08EB0503 		add	r3, r8, r5
+ 151              		.loc 1 43 54 discriminator 3 view .LVU35
+ 152 0094 B6EE007B 		vmov.f64	d7, #5.0e-1
+ 153 0098 20EE470B 		vnmul.f64	d0, d0, d7
+ 154 009c B7EEC00B 		vcvt.f32.f64	s0, d0
+ 155              		.loc 1 43 12 discriminator 3 view .LVU36
+ 156 00a0 83ED000A 		vstr.32	s0, [r3]
+  44:../Core/Src/morlet.c **** 		daughter_o[k] = norm * exp(expnt[k]); 
+ 157              		.loc 1 44 3 is_stmt 1 discriminator 3 view .LVU37
+ 158              		.loc 1 44 26 is_stmt 0 discriminator 3 view .LVU38
+ 159 00a4 B7EEC00A 		vcvt.f64.f32	d0, s0
+ 160 00a8 FFF7FEFF 		bl	exp
+ 161              	.LVL14:
+ 162              		.loc 1 44 13 discriminator 3 view .LVU39
+ 163 00ac 3D44     		add	r5, r5, r7
+ 164              		.loc 1 44 24 discriminator 3 view .LVU40
+ 165 00ae B7EEE87A 		vcvt.f64.f32	d7, s17
+ 166 00b2 27EE007B 		vmul.f64	d7, d7, d0
+ 167 00b6 B7EEC77B 		vcvt.f32.f64	s14, d7
+ 168              		.loc 1 44 17 discriminator 3 view .LVU41
+ 169 00ba 85ED007A 		vstr.32	s14, [r5]
+  41:../Core/Src/morlet.c **** 	{
+ 170              		.loc 1 41 41 is_stmt 1 discriminator 3 view .LVU42
+  41:../Core/Src/morlet.c **** 	{
+ 171              		.loc 1 41 42 is_stmt 0 discriminator 3 view .LVU43
+ 172 00be 0134     		adds	r4, r4, #1
+ 173              	.LVL15:
+ 174              	.L5:
+  41:../Core/Src/morlet.c **** 	{
+ARM GAS  /tmp/ccnYwI6N.s 			page 5
+
+
+ 175              		.loc 1 41 23 is_stmt 1 discriminator 1 view .LVU44
+  41:../Core/Src/morlet.c **** 	{
+ 176              		.loc 1 41 36 is_stmt 0 discriminator 1 view .LVU45
+ 177 00c0 1FFA89F3 		uxth	r3, r9
+ 178 00c4 0133     		adds	r3, r3, #1
+  41:../Core/Src/morlet.c **** 	{
+ 179              		.loc 1 41 2 discriminator 1 view .LVU46
+ 180 00c6 A342     		cmp	r3, r4
+ 181 00c8 D3D8     		bhi	.L6
+ 182              	.LBE3:
+  45:../Core/Src/morlet.c **** 	}
+  46:../Core/Src/morlet.c **** 
+  47:../Core/Src/morlet.c **** 	// for (uint32_t k = half_N_i; k < N_i; k++)
+  48:../Core/Src/morlet.c **** 	// 	daughter_o[k] = norm * exp(expnt[k]); 
+  49:../Core/Src/morlet.c **** 
+  50:../Core/Src/morlet.c **** 	free(expnt);
+ 183              		.loc 1 50 2 is_stmt 1 view .LVU47
+ 184 00ca 4046     		mov	r0, r8
+ 185 00cc FFF7FEFF 		bl	free
+ 186              	.LVL16:
+  51:../Core/Src/morlet.c **** 	
+  52:../Core/Src/morlet.c **** 	*fourier_factor_o = (4 * M_PI) / (wk0 + sqrt(2 + pow(wk0, 2)));
+ 187              		.loc 1 52 2 view .LVU48
+ 188              		.loc 1 52 40 is_stmt 0 view .LVU49
+ 189 00d0 B7EEC88A 		vcvt.f64.f32	d8, s16
+ 190              	.LVL17:
+ 191              		.loc 1 52 51 view .LVU50
+ 192 00d4 B0EE001B 		vmov.f64	d1, #2.0e+0
+ 193 00d8 B0EE480B 		vmov.f64	d0, d8
+ 194 00dc FFF7FEFF 		bl	pow
+ 195              	.LVL18:
+ 196              		.loc 1 52 42 view .LVU51
+ 197 00e0 B0EE007B 		vmov.f64	d7, #2.0e+0
+ 198 00e4 30EE070B 		vadd.f64	d0, d0, d7
+ 199 00e8 FFF7FEFF 		bl	sqrt
+ 200              	.LVL19:
+ 201              		.loc 1 52 40 view .LVU52
+ 202 00ec 38EE008B 		vadd.f64	d8, d8, d0
+ 203              		.loc 1 52 33 view .LVU53
+ 204 00f0 9FED0F6B 		vldr.64	d6, .L10+8
+ 205 00f4 86EE087B 		vdiv.f64	d7, d6, d8
+ 206 00f8 B7EEC77B 		vcvt.f32.f64	s14, d7
+ 207              		.loc 1 52 20 view .LVU54
+ 208 00fc 8AED007A 		vstr.32	s14, [r10]
+  53:../Core/Src/morlet.c **** 	*coi_o = *fourier_factor_o / sqrt(2);
+ 209              		.loc 1 53 2 is_stmt 1 view .LVU55
+ 210              		.loc 1 53 11 is_stmt 0 view .LVU56
+ 211 0100 B7EEC77A 		vcvt.f64.f32	d7, s14
+ 212              		.loc 1 53 29 view .LVU57
+ 213 0104 9FED0C5B 		vldr.64	d5, .L10+16
+ 214 0108 87EE056B 		vdiv.f64	d6, d7, d5
+ 215 010c B7EEC66B 		vcvt.f32.f64	s12, d6
+ 216              		.loc 1 53 9 view .LVU58
+ 217 0110 0C9B     		ldr	r3, [sp, #48]
+ 218 0112 83ED006A 		vstr.32	s12, [r3]
+  54:../Core/Src/morlet.c **** 	*dof_min_o = 2;
+ 219              		.loc 1 54 2 is_stmt 1 view .LVU59
+ARM GAS  /tmp/ccnYwI6N.s 			page 6
+
+
+ 220              		.loc 1 54 13 is_stmt 0 view .LVU60
+ 221 0116 0D9B     		ldr	r3, [sp, #52]
+ 222 0118 0222     		movs	r2, #2
+ 223 011a 1A70     		strb	r2, [r3]
+  55:../Core/Src/morlet.c ****  	
+  56:../Core/Src/morlet.c ****  	return _EXIT_SUCCESS;
+ 224              		.loc 1 56 3 is_stmt 1 view .LVU61
+ 225              		.loc 1 56 10 is_stmt 0 view .LVU62
+ 226 011c 0020     		movs	r0, #0
+ 227              	.LVL20:
+ 228              	.L1:
+  57:../Core/Src/morlet.c **** }...
+ 229              		.loc 1 57 1 view .LVU63
+ 230 011e BDEC048B 		vldm	sp!, {d8-d9}
+ 231              	.LCFI2:
+ 232              		.cfi_restore 82
+ 233              		.cfi_restore 83
+ 234              		.cfi_restore 80
+ 235              		.cfi_restore 81
+ 236              		.cfi_def_cfa_offset 32
+ 237              	.LVL21:
+ 238              		.loc 1 57 1 view .LVU64
+ 239 0122 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 240              	.LVL22:
+ 241              	.L11:
+ 242              		.loc 1 57 1 view .LVU65
+ 243 0126 00BF     		.align	3
+ 244              	.L10:
+ 245 0128 10591570 		.word	1880447248
+ 246 012c 3809E83F 		.word	1072171320
+ 247 0130 182D4454 		.word	1413754136
+ 248 0134 FB212940 		.word	1076437499
+ 249 0138 CD3B7F66 		.word	1719614413
+ 250 013c 9EA0F63F 		.word	1073127582
+ 251 0140 00000000 		.word	.LC0
+ 252              		.cfi_endproc
+ 253              	.LFE144:
+ 255              		.text
+ 256              	.Letext0:
+ 257              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 258              		.file 3 "/usr/include/newlib/math.h"
+ 259              		.file 4 "/usr/include/newlib/stdlib.h"
+ 260              		.file 5 "../Core/Inc/usart.h"
+ARM GAS  /tmp/ccnYwI6N.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 morlet.c
+     /tmp/ccnYwI6N.s:17     .rodata.morlet_base.str1.4:0000000000000000 $d
+     /tmp/ccnYwI6N.s:22     .text.morlet_base:0000000000000000 $t
+     /tmp/ccnYwI6N.s:30     .text.morlet_base:0000000000000000 morlet_base
+     /tmp/ccnYwI6N.s:245    .text.morlet_base:0000000000000128 $d
+
+UNDEFINED SYMBOLS
+calloc
+sqrt
+UART_puts
+pow
+exp
+free

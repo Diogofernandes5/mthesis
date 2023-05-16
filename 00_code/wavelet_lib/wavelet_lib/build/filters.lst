@@ -1,0 +1,642 @@
+ARM GAS  /tmp/ccnnnGkN.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"filters.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.filter_init,"ax",%progbits
+  17              		.align	1
+  18              		.global	filter_init
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-d16
+  25              	filter_init:
+  26              	.LVL0:
+  27              	.LFB0:
+  28              		.file 1 "../Core/Src/filters.c"
+   1:../Core/Src/filters.c **** /******************************************************************************
+   2:../Core/Src/filters.c **** @module  filters
+   3:../Core/Src/filters.c **** @brief	 
+   4:../Core/Src/filters.c **** 
+   5:../Core/Src/filters.c **** This module implements a digital filter.
+   6:../Core/Src/filters.c **** A generic digital filter is:
+   7:../Core/Src/filters.c **** 
+   8:../Core/Src/filters.c **** 	y[n] = a1y[n-1] +...+ aNy[n-N] + b0x[n]+b1x[n-1] +...+ bMx[n-M]
+   9:../Core/Src/filters.c **** 
+  10:../Core/Src/filters.c **** 	y - output variable
+  11:../Core/Src/filters.c **** 	x - input variable
+  12:../Core/Src/filters.c **** 	
+  13:../Core/Src/filters.c **** 	ak - y coeficients, from a1 to aN (k in [1, N])
+  14:../Core/Src/filters.c **** 	bk - x coeficients, from b0 to bM (k in [0, M])
+  15:../Core/Src/filters.c **** 	
+  16:../Core/Src/filters.c **** 	N - Number of output (y) past values
+  17:../Core/Src/filters.c **** 	M - Number of input (x) past values
+  18:../Core/Src/filters.c **** 	
+  19:../Core/Src/filters.c **** To implement a digital filter, its used:
+  20:../Core/Src/filters.c **** 
+  21:../Core/Src/filters.c **** 	y_ant[] - Representing y[n-1] ... y[n-N] - output past values
+  22:../Core/Src/filters.c **** 	x_ant[] - Representing x[n] 	... x[n-M] - input past values
+  23:../Core/Src/filters.c **** 
+  24:../Core/Src/filters.c **** 	y_coefs[] - Implements ak[], which is y coeficients
+  25:../Core/Src/filters.c **** 	x_coefs[] - Implements bk[], which is x coeficients
+  26:../Core/Src/filters.c **** 	
+  27:../Core/Src/filters.c **** 
+  28:../Core/Src/filters.c **** Filter types implemented are:
+  29:../Core/Src/filters.c **** 	IIR Filter - Infinite Impulse Response Filter
+  30:../Core/Src/filters.c **** 	FIR Filter - Finite Impulse Response Filter
+ARM GAS  /tmp/ccnnnGkN.s 			page 2
+
+
+  31:../Core/Src/filters.c **** 
+  32:../Core/Src/filters.c **** *******************************************************************************/
+  33:../Core/Src/filters.c **** #include "filters.h"
+  34:../Core/Src/filters.c **** #include <stdint.h>
+  35:../Core/Src/filters.c **** #include <string.h> // Using memset
+  36:../Core/Src/filters.c **** #include <stdlib.h> // using free
+  37:../Core/Src/filters.c **** 
+  38:../Core/Src/filters.c **** /******************************************************************************
+  39:../Core/Src/filters.c **** @function  Filter Init
+  40:../Core/Src/filters.c **** @param		 none
+  41:../Core/Src/filters.c **** @brief	 	 Enables filter
+  42:../Core/Src/filters.c **** @retval 	 Filter state
+  43:../Core/Src/filters.c **** ******************************************************************************/
+  44:../Core/Src/filters.c **** char filter_init(filter_t *ft)
+  45:../Core/Src/filters.c **** {
+  29              		.loc 1 45 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 45 1 is_stmt 0 view .LVU1
+  34 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 24
+  37              		.cfi_offset 3, -24
+  38              		.cfi_offset 4, -20
+  39              		.cfi_offset 5, -16
+  40              		.cfi_offset 6, -12
+  41              		.cfi_offset 7, -8
+  42              		.cfi_offset 14, -4
+  46:../Core/Src/filters.c **** 	if(!ft || ft->status)	// filter enabled?
+  43              		.loc 1 46 2 is_stmt 1 view .LVU2
+  44              		.loc 1 46 4 is_stmt 0 view .LVU3
+  45 0002 00B3     		cbz	r0, .L3
+  46 0004 0446     		mov	r4, r0
+  47              		.loc 1 46 14 discriminator 1 view .LVU4
+  48 0006 067F     		ldrb	r6, [r0, #28]	@ zero_extendqisi2
+  49              		.loc 1 46 9 discriminator 1 view .LVU5
+  50 0008 FEB9     		cbnz	r6, .L4
+  47:../Core/Src/filters.c **** 		// Filter already initialized
+  48:../Core/Src/filters.c **** 		return (char)(-1);
+  49:../Core/Src/filters.c **** 	
+  50:../Core/Src/filters.c **** 	ft->x_ant = (float*)malloc(ft->M + 1);
+  51              		.loc 1 50 2 is_stmt 1 view .LVU6
+  52              		.loc 1 50 31 is_stmt 0 view .LVU7
+  53 000a 0768     		ldr	r7, [r0]
+  54              		.loc 1 50 35 view .LVU8
+  55 000c 0137     		adds	r7, r7, #1
+  56              		.loc 1 50 22 view .LVU9
+  57 000e 3846     		mov	r0, r7
+  58              	.LVL1:
+  59              		.loc 1 50 22 view .LVU10
+  60 0010 FFF7FEFF 		bl	malloc
+  61              	.LVL2:
+  62 0014 0546     		mov	r5, r0
+  63              		.loc 1 50 12 view .LVU11
+  64 0016 A060     		str	r0, [r4, #8]
+  51:../Core/Src/filters.c **** 	if(!ft->x_ant)
+ARM GAS  /tmp/ccnnnGkN.s 			page 3
+
+
+  65              		.loc 1 51 2 is_stmt 1 view .LVU12
+  66              		.loc 1 51 4 is_stmt 0 view .LVU13
+  67 0018 C8B1     		cbz	r0, .L5
+  52:../Core/Src/filters.c **** 		return (char)(-1);
+  53:../Core/Src/filters.c **** 
+  54:../Core/Src/filters.c **** 	ft->y_ant = (float*)malloc(ft->N + 1);
+  68              		.loc 1 54 2 is_stmt 1 view .LVU14
+  69              		.loc 1 54 31 is_stmt 0 view .LVU15
+  70 001a 6068     		ldr	r0, [r4, #4]
+  71              		.loc 1 54 22 view .LVU16
+  72 001c 0130     		adds	r0, r0, #1
+  73 001e FFF7FEFF 		bl	malloc
+  74              	.LVL3:
+  75              		.loc 1 54 12 view .LVU17
+  76 0022 E060     		str	r0, [r4, #12]
+  55:../Core/Src/filters.c **** 	if(!ft->y_ant)
+  77              		.loc 1 55 2 is_stmt 1 view .LVU18
+  78              		.loc 1 55 4 is_stmt 0 view .LVU19
+  79 0024 A8B1     		cbz	r0, .L6
+  56:../Core/Src/filters.c **** 		return (char)(-1);
+  57:../Core/Src/filters.c **** 
+  58:../Core/Src/filters.c **** 	memset(ft->x_ant, 0, (ft->M + 1)*sizeof(ft->x_ant[0])); 	// clear the x_ant buff
+  80              		.loc 1 58 2 is_stmt 1 view .LVU20
+  81 0026 BA00     		lsls	r2, r7, #2
+  82 0028 0021     		movs	r1, #0
+  83 002a 2846     		mov	r0, r5
+  84 002c FFF7FEFF 		bl	memset
+  85              	.LVL4:
+  59:../Core/Src/filters.c **** 	memset(ft->y_ant, 0, (ft->N + 1)*sizeof(ft->y_ant[0]));	// clear the y_ant buff
+  86              		.loc 1 59 2 view .LVU21
+  87              		.loc 1 59 26 is_stmt 0 view .LVU22
+  88 0030 6268     		ldr	r2, [r4, #4]
+  89              		.loc 1 59 30 view .LVU23
+  90 0032 0132     		adds	r2, r2, #1
+  91              		.loc 1 59 2 view .LVU24
+  92 0034 9200     		lsls	r2, r2, #2
+  93 0036 0021     		movs	r1, #0
+  94 0038 E068     		ldr	r0, [r4, #12]
+  95 003a FFF7FEFF 		bl	memset
+  96              	.LVL5:
+  60:../Core/Src/filters.c **** 	ft->status = 1; // enabled
+  97              		.loc 1 60 2 is_stmt 1 view .LVU25
+  98              		.loc 1 60 13 is_stmt 0 view .LVU26
+  99 003e 0123     		movs	r3, #1
+ 100 0040 2377     		strb	r3, [r4, #28]
+  61:../Core/Src/filters.c **** 	// Exit success
+  62:../Core/Src/filters.c **** 	return 0; 
+ 101              		.loc 1 62 2 is_stmt 1 view .LVU27
+ 102              	.LVL6:
+ 103              	.L2:
+  63:../Core/Src/filters.c **** }
+ 104              		.loc 1 63 1 is_stmt 0 view .LVU28
+ 105 0042 3046     		mov	r0, r6
+ 106 0044 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 107              	.LVL7:
+ 108              	.L3:
+  48:../Core/Src/filters.c **** 	
+ARM GAS  /tmp/ccnnnGkN.s 			page 4
+
+
+ 109              		.loc 1 48 10 view .LVU29
+ 110 0046 FF26     		movs	r6, #255
+ 111 0048 FBE7     		b	.L2
+ 112              	.L4:
+  48:../Core/Src/filters.c **** 	
+ 113              		.loc 1 48 10 view .LVU30
+ 114 004a FF26     		movs	r6, #255
+ 115 004c F9E7     		b	.L2
+ 116              	.LVL8:
+ 117              	.L5:
+  52:../Core/Src/filters.c **** 
+ 118              		.loc 1 52 10 view .LVU31
+ 119 004e FF26     		movs	r6, #255
+ 120 0050 F7E7     		b	.L2
+ 121              	.L6:
+  56:../Core/Src/filters.c **** 
+ 122              		.loc 1 56 10 view .LVU32
+ 123 0052 FF26     		movs	r6, #255
+ 124 0054 F5E7     		b	.L2
+ 125              		.cfi_endproc
+ 126              	.LFE0:
+ 128              		.section	.text.filter_kill,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	filter_kill
+ 131              		.syntax unified
+ 132              		.thumb
+ 133              		.thumb_func
+ 134              		.fpu fpv5-d16
+ 136              	filter_kill:
+ 137              	.LVL9:
+ 138              	.LFB1:
+  64:../Core/Src/filters.c **** 
+  65:../Core/Src/filters.c **** /******************************************************************************
+  66:../Core/Src/filters.c **** @function  Filter Kill
+  67:../Core/Src/filters.c **** @param		 none
+  68:../Core/Src/filters.c **** @brief	 	 Disables filter
+  69:../Core/Src/filters.c **** @retval 	 Filter state
+  70:../Core/Src/filters.c **** ******************************************************************************/
+  71:../Core/Src/filters.c **** 
+  72:../Core/Src/filters.c **** char filter_kill(filter_t *ft)
+  73:../Core/Src/filters.c **** {
+ 139              		.loc 1 73 1 is_stmt 1 view -0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 0
+ 142              		@ frame_needed = 0, uses_anonymous_args = 0
+  74:../Core/Src/filters.c **** 	if(!ft || ft->status == 0) // filter disabled?
+ 143              		.loc 1 74 2 view .LVU34
+ 144              		.loc 1 74 4 is_stmt 0 view .LVU35
+ 145 0000 98B1     		cbz	r0, .L10
+  73:../Core/Src/filters.c **** 	if(!ft || ft->status == 0) // filter disabled?
+ 146              		.loc 1 73 1 discriminator 1 view .LVU36
+ 147 0002 38B5     		push	{r3, r4, r5, lr}
+ 148              	.LCFI1:
+ 149              		.cfi_def_cfa_offset 16
+ 150              		.cfi_offset 3, -16
+ 151              		.cfi_offset 4, -12
+ 152              		.cfi_offset 5, -8
+ARM GAS  /tmp/ccnnnGkN.s 			page 5
+
+
+ 153              		.cfi_offset 14, -4
+ 154 0004 0546     		mov	r5, r0
+ 155              		.loc 1 74 14 discriminator 1 view .LVU37
+ 156 0006 037F     		ldrb	r3, [r0, #28]	@ zero_extendqisi2
+ 157              		.loc 1 74 9 discriminator 1 view .LVU38
+ 158 0008 8BB1     		cbz	r3, .L11
+  75:../Core/Src/filters.c **** 		// Filter already disabled
+  76:../Core/Src/filters.c **** 		return (char)(-1);
+  77:../Core/Src/filters.c **** 
+  78:../Core/Src/filters.c **** 	ft->status = 0; // disabled
+ 159              		.loc 1 78 2 is_stmt 1 view .LVU39
+ 160              		.loc 1 78 13 is_stmt 0 view .LVU40
+ 161 000a 0024     		movs	r4, #0
+ 162 000c 0477     		strb	r4, [r0, #28]
+  79:../Core/Src/filters.c **** 
+  80:../Core/Src/filters.c **** 	free(ft->x_ant);
+ 163              		.loc 1 80 2 is_stmt 1 view .LVU41
+ 164 000e 8068     		ldr	r0, [r0, #8]
+ 165              	.LVL10:
+ 166              		.loc 1 80 2 is_stmt 0 view .LVU42
+ 167 0010 FFF7FEFF 		bl	free
+ 168              	.LVL11:
+  81:../Core/Src/filters.c **** 	ft->x_ant = NULL;
+ 169              		.loc 1 81 2 is_stmt 1 view .LVU43
+ 170              		.loc 1 81 12 is_stmt 0 view .LVU44
+ 171 0014 AC60     		str	r4, [r5, #8]
+  82:../Core/Src/filters.c **** 
+  83:../Core/Src/filters.c **** 	free(ft->y_ant);
+ 172              		.loc 1 83 2 is_stmt 1 view .LVU45
+ 173 0016 E868     		ldr	r0, [r5, #12]
+ 174 0018 FFF7FEFF 		bl	free
+ 175              	.LVL12:
+  84:../Core/Src/filters.c **** 	ft->y_ant = NULL;
+ 176              		.loc 1 84 2 view .LVU46
+ 177              		.loc 1 84 12 is_stmt 0 view .LVU47
+ 178 001c EC60     		str	r4, [r5, #12]
+  85:../Core/Src/filters.c **** 
+  86:../Core/Src/filters.c **** 	ft->M = 0;
+ 179              		.loc 1 86 2 is_stmt 1 view .LVU48
+ 180              		.loc 1 86 8 is_stmt 0 view .LVU49
+ 181 001e 2C60     		str	r4, [r5]
+  87:../Core/Src/filters.c **** 	ft->N = 0;
+ 182              		.loc 1 87 2 is_stmt 1 view .LVU50
+ 183              		.loc 1 87 8 is_stmt 0 view .LVU51
+ 184 0020 6C60     		str	r4, [r5, #4]
+  88:../Core/Src/filters.c **** 	ft->x_coefs = NULL;
+ 185              		.loc 1 88 2 is_stmt 1 view .LVU52
+ 186              		.loc 1 88 14 is_stmt 0 view .LVU53
+ 187 0022 6C61     		str	r4, [r5, #20]
+  89:../Core/Src/filters.c **** 	ft->y_coefs = NULL;
+ 188              		.loc 1 89 2 is_stmt 1 view .LVU54
+ 189              		.loc 1 89 14 is_stmt 0 view .LVU55
+ 190 0024 2C61     		str	r4, [r5, #16]
+  90:../Core/Src/filters.c **** 
+  91:../Core/Src/filters.c **** 	// Exit success
+  92:../Core/Src/filters.c **** 	return 0;
+ 191              		.loc 1 92 2 is_stmt 1 view .LVU56
+ARM GAS  /tmp/ccnnnGkN.s 			page 6
+
+
+ 192              		.loc 1 92 9 is_stmt 0 view .LVU57
+ 193 0026 2046     		mov	r0, r4
+ 194              	.L9:
+  93:../Core/Src/filters.c **** }
+ 195              		.loc 1 93 1 view .LVU58
+ 196 0028 38BD     		pop	{r3, r4, r5, pc}
+ 197              	.LVL13:
+ 198              	.L10:
+ 199              	.LCFI2:
+ 200              		.cfi_def_cfa_offset 0
+ 201              		.cfi_restore 3
+ 202              		.cfi_restore 4
+ 203              		.cfi_restore 5
+ 204              		.cfi_restore 14
+  76:../Core/Src/filters.c **** 
+ 205              		.loc 1 76 10 view .LVU59
+ 206 002a FF20     		movs	r0, #255
+ 207              	.LVL14:
+ 208              		.loc 1 93 1 view .LVU60
+ 209 002c 7047     		bx	lr
+ 210              	.LVL15:
+ 211              	.L11:
+ 212              	.LCFI3:
+ 213              		.cfi_def_cfa_offset 16
+ 214              		.cfi_offset 3, -16
+ 215              		.cfi_offset 4, -12
+ 216              		.cfi_offset 5, -8
+ 217              		.cfi_offset 14, -4
+  76:../Core/Src/filters.c **** 
+ 218              		.loc 1 76 10 view .LVU61
+ 219 002e FF20     		movs	r0, #255
+ 220              	.LVL16:
+  76:../Core/Src/filters.c **** 
+ 221              		.loc 1 76 10 view .LVU62
+ 222 0030 FAE7     		b	.L9
+ 223              		.cfi_endproc
+ 224              	.LFE1:
+ 226              		.section	.text.filter_calc,"ax",%progbits
+ 227              		.align	1
+ 228              		.global	filter_calc
+ 229              		.syntax unified
+ 230              		.thumb
+ 231              		.thumb_func
+ 232              		.fpu fpv5-d16
+ 234              	filter_calc:
+ 235              	.LVL17:
+ 236              	.LFB2:
+  94:../Core/Src/filters.c **** 
+  95:../Core/Src/filters.c **** /******************************************************************************
+  96:../Core/Src/filters.c **** @function  Filter Calculations
+  97:../Core/Src/filters.c **** @param		 Value to be filtered
+  98:../Core/Src/filters.c **** @brief	 	 Filters the received value using an expression with pre-defined
+  99:../Core/Src/filters.c **** 					 coefficients.
+ 100:../Core/Src/filters.c **** *******************************************************************************/
+ 101:../Core/Src/filters.c **** #define __CASE_A__
+ 102:../Core/Src/filters.c **** 
+ 103:../Core/Src/filters.c **** #ifdef __CASE_A__
+ARM GAS  /tmp/ccnnnGkN.s 			page 7
+
+
+ 104:../Core/Src/filters.c **** 
+ 105:../Core/Src/filters.c **** float filter_calc(filter_t *ft, uint32_t x)
+ 106:../Core/Src/filters.c **** {
+ 237              		.loc 1 106 1 is_stmt 1 view -0
+ 238              		.cfi_startproc
+ 239              		@ args = 0, pretend = 0, frame = 8
+ 240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 241              		@ link register save eliminated.
+ 242              		.loc 1 106 1 is_stmt 0 view .LVU64
+ 243 0000 82B0     		sub	sp, sp, #8
+ 244              	.LCFI4:
+ 245              		.cfi_def_cfa_offset 8
+ 246 0002 0191     		str	r1, [sp, #4]
+ 107:../Core/Src/filters.c **** 	if(!ft || ft->status == 0)
+ 247              		.loc 1 107 2 is_stmt 1 view .LVU65
+ 248              		.loc 1 107 4 is_stmt 0 view .LVU66
+ 249 0004 0028     		cmp	r0, #0
+ 250 0006 6FD0     		beq	.L22
+ 251 0008 0346     		mov	r3, r0
+ 252              		.loc 1 107 14 discriminator 1 view .LVU67
+ 253 000a 027F     		ldrb	r2, [r0, #28]	@ zero_extendqisi2
+ 254              		.loc 1 107 9 discriminator 1 view .LVU68
+ 255 000c 002A     		cmp	r2, #0
+ 256 000e 6ED0     		beq	.L23
+ 108:../Core/Src/filters.c **** 		// Filter is disabled. Return error
+ 109:../Core/Src/filters.c **** 		return -1;
+ 110:../Core/Src/filters.c **** 	
+ 111:../Core/Src/filters.c **** 	float y = 0;
+ 257              		.loc 1 111 2 is_stmt 1 view .LVU69
+ 258              	.LVL18:
+ 112:../Core/Src/filters.c **** 	int i = ft->M;
+ 259              		.loc 1 112 2 view .LVU70
+ 260              		.loc 1 112 6 is_stmt 0 view .LVU71
+ 261 0010 0268     		ldr	r2, [r0]
+ 262              	.LVL19:
+ 113:../Core/Src/filters.c **** 
+ 114:../Core/Src/filters.c **** 	while(i != 0)
+ 263              		.loc 1 114 2 is_stmt 1 view .LVU72
+ 111:../Core/Src/filters.c **** 	int i = ft->M;
+ 264              		.loc 1 111 8 is_stmt 0 view .LVU73
+ 265 0012 9FED387A 		vldr.32	s14, .L25
+ 266              		.loc 1 114 7 view .LVU74
+ 267 0016 19E0     		b	.L18
+ 268              	.LVL20:
+ 269              	.L19:
+ 115:../Core/Src/filters.c **** 	{
+ 116:../Core/Src/filters.c **** 		// Update x_ant values
+ 117:../Core/Src/filters.c **** 		ft->x_ant[i] = ft->x_ant[i-1];
+ 270              		.loc 1 117 3 is_stmt 1 view .LVU75
+ 271              		.loc 1 117 20 is_stmt 0 view .LVU76
+ 272 0018 9968     		ldr	r1, [r3, #8]
+ 273              		.loc 1 117 12 view .LVU77
+ 274 001a 01EB820C 		add	ip, r1, r2, lsl #2
+ 275              		.loc 1 117 27 view .LVU78
+ 276 001e 6FF04040 		mvn	r0, #-1073741824
+ 277 0022 1044     		add	r0, r0, r2
+ 278 0024 01EB8001 		add	r1, r1, r0, lsl #2
+ARM GAS  /tmp/ccnnnGkN.s 			page 8
+
+
+ 279 0028 0968     		ldr	r1, [r1]	@ float
+ 280              		.loc 1 117 16 view .LVU79
+ 281 002a CCF80010 		str	r1, [ip]	@ float
+ 118:../Core/Src/filters.c **** 		// Add to y only the x_ant values
+ 119:../Core/Src/filters.c **** 		y += ft->x_coefs[i] * ft->x_ant[i];
+ 282              		.loc 1 119 3 is_stmt 1 view .LVU80
+ 283              		.loc 1 119 10 is_stmt 0 view .LVU81
+ 284 002e 5969     		ldr	r1, [r3, #20]
+ 285              		.loc 1 119 19 view .LVU82
+ 286 0030 01EB8201 		add	r1, r1, r2, lsl #2
+ 287 0034 D1ED007A 		vldr.32	s15, [r1]
+ 288              		.loc 1 119 27 view .LVU83
+ 289 0038 9968     		ldr	r1, [r3, #8]
+ 290              		.loc 1 119 34 view .LVU84
+ 291 003a 01EB8201 		add	r1, r1, r2, lsl #2
+ 292 003e D1ED006A 		vldr.32	s13, [r1]
+ 293              		.loc 1 119 23 view .LVU85
+ 294 0042 67EEA67A 		vmul.f32	s15, s15, s13
+ 295              		.loc 1 119 5 view .LVU86
+ 296 0046 37EE277A 		vadd.f32	s14, s14, s15
+ 297              	.LVL21:
+ 120:../Core/Src/filters.c **** 		i--;
+ 298              		.loc 1 120 3 is_stmt 1 view .LVU87
+ 299              		.loc 1 120 4 is_stmt 0 view .LVU88
+ 300 004a 013A     		subs	r2, r2, #1
+ 301              	.LVL22:
+ 302              	.L18:
+ 114:../Core/Src/filters.c **** 	{
+ 303              		.loc 1 114 7 is_stmt 1 view .LVU89
+ 304 004c 002A     		cmp	r2, #0
+ 305 004e E3D1     		bne	.L19
+ 121:../Core/Src/filters.c **** 	}
+ 122:../Core/Src/filters.c **** 	// Update last received X value
+ 123:../Core/Src/filters.c **** 	ft->x_ant[0] = x;
+ 306              		.loc 1 123 2 view .LVU90
+ 307              		.loc 1 123 4 is_stmt 0 view .LVU91
+ 308 0050 9968     		ldr	r1, [r3, #8]
+ 309              		.loc 1 123 15 view .LVU92
+ 310 0052 DDED017A 		vldr.32	s15, [sp, #4]	@ int
+ 311 0056 F8EE677A 		vcvt.f32.u32	s15, s15
+ 312 005a C1ED007A 		vstr.32	s15, [r1]
+ 124:../Core/Src/filters.c **** 	// Add it to y	
+ 125:../Core/Src/filters.c **** 	y += ft->x_coefs[i] * ft->x_ant[i];
+ 313              		.loc 1 125 2 is_stmt 1 view .LVU93
+ 314              		.loc 1 125 9 is_stmt 0 view .LVU94
+ 315 005e 5969     		ldr	r1, [r3, #20]
+ 316              		.loc 1 125 18 view .LVU95
+ 317 0060 01EB8201 		add	r1, r1, r2, lsl #2
+ 318 0064 91ED000A 		vldr.32	s0, [r1]
+ 319              		.loc 1 125 26 view .LVU96
+ 320 0068 9968     		ldr	r1, [r3, #8]
+ 321              		.loc 1 125 33 view .LVU97
+ 322 006a 01EB8202 		add	r2, r1, r2, lsl #2
+ 323              	.LVL23:
+ 324              		.loc 1 125 33 view .LVU98
+ 325 006e D2ED007A 		vldr.32	s15, [r2]
+ 326              		.loc 1 125 22 view .LVU99
+ARM GAS  /tmp/ccnnnGkN.s 			page 9
+
+
+ 327 0072 20EE270A 		vmul.f32	s0, s0, s15
+ 328              		.loc 1 125 4 view .LVU100
+ 329 0076 30EE070A 		vadd.f32	s0, s0, s14
+ 330              	.LVL24:
+ 126:../Core/Src/filters.c **** 	
+ 127:../Core/Src/filters.c **** 	i = ft->N;
+ 331              		.loc 1 127 2 is_stmt 1 view .LVU101
+ 332              		.loc 1 127 4 is_stmt 0 view .LVU102
+ 333 007a 5A68     		ldr	r2, [r3, #4]
+ 334              	.LVL25:
+ 128:../Core/Src/filters.c **** 	while (i != 0)
+ 335              		.loc 1 128 2 is_stmt 1 view .LVU103
+ 336              		.loc 1 128 8 is_stmt 0 view .LVU104
+ 337 007c 19E0     		b	.L20
+ 338              	.L21:
+ 129:../Core/Src/filters.c **** 	{
+ 130:../Core/Src/filters.c **** 		// Update y_ant values
+ 131:../Core/Src/filters.c **** 		ft->y_ant[i] = ft->y_ant[i-1];
+ 339              		.loc 1 131 3 is_stmt 1 view .LVU105
+ 340              		.loc 1 131 20 is_stmt 0 view .LVU106
+ 341 007e D968     		ldr	r1, [r3, #12]
+ 342              		.loc 1 131 12 view .LVU107
+ 343 0080 01EB820C 		add	ip, r1, r2, lsl #2
+ 344              		.loc 1 131 27 view .LVU108
+ 345 0084 6FF04040 		mvn	r0, #-1073741824
+ 346 0088 1044     		add	r0, r0, r2
+ 347 008a 01EB8001 		add	r1, r1, r0, lsl #2
+ 348 008e 0968     		ldr	r1, [r1]	@ float
+ 349              		.loc 1 131 16 view .LVU109
+ 350 0090 CCF80010 		str	r1, [ip]	@ float
+ 132:../Core/Src/filters.c **** 		// Add to y only the y_ant values
+ 133:../Core/Src/filters.c **** 		y += ft->y_coefs[i] * ft->y_ant[i];
+ 351              		.loc 1 133 3 is_stmt 1 view .LVU110
+ 352              		.loc 1 133 10 is_stmt 0 view .LVU111
+ 353 0094 1969     		ldr	r1, [r3, #16]
+ 354              		.loc 1 133 19 view .LVU112
+ 355 0096 01EB8201 		add	r1, r1, r2, lsl #2
+ 356 009a D1ED007A 		vldr.32	s15, [r1]
+ 357              		.loc 1 133 27 view .LVU113
+ 358 009e D968     		ldr	r1, [r3, #12]
+ 359              		.loc 1 133 34 view .LVU114
+ 360 00a0 01EB8201 		add	r1, r1, r2, lsl #2
+ 361 00a4 91ED007A 		vldr.32	s14, [r1]
+ 362              		.loc 1 133 23 view .LVU115
+ 363 00a8 67EE877A 		vmul.f32	s15, s15, s14
+ 364              		.loc 1 133 5 view .LVU116
+ 365 00ac 30EE270A 		vadd.f32	s0, s0, s15
+ 366              	.LVL26:
+ 134:../Core/Src/filters.c **** 		i--;
+ 367              		.loc 1 134 3 is_stmt 1 view .LVU117
+ 368              		.loc 1 134 4 is_stmt 0 view .LVU118
+ 369 00b0 013A     		subs	r2, r2, #1
+ 370              	.LVL27:
+ 371              	.L20:
+ 128:../Core/Src/filters.c **** 	{
+ 372              		.loc 1 128 8 is_stmt 1 view .LVU119
+ 373 00b2 002A     		cmp	r2, #0
+ARM GAS  /tmp/ccnnnGkN.s 			page 10
+
+
+ 374 00b4 E3D1     		bne	.L21
+ 135:../Core/Src/filters.c **** 	}
+ 136:../Core/Src/filters.c **** 	// Update last Y value = x
+ 137:../Core/Src/filters.c **** 	ft->y_ant[0] = y;
+ 375              		.loc 1 137 2 view .LVU120
+ 376              		.loc 1 137 4 is_stmt 0 view .LVU121
+ 377 00b6 D968     		ldr	r1, [r3, #12]
+ 378              		.loc 1 137 15 view .LVU122
+ 379 00b8 81ED000A 		vstr.32	s0, [r1]
+ 138:../Core/Src/filters.c **** 	// Add it to y
+ 139:../Core/Src/filters.c **** 	y += ft->y_coefs[i] * ft->y_ant[i];
+ 380              		.loc 1 139 2 is_stmt 1 view .LVU123
+ 381              		.loc 1 139 9 is_stmt 0 view .LVU124
+ 382 00bc 1969     		ldr	r1, [r3, #16]
+ 383              		.loc 1 139 18 view .LVU125
+ 384 00be 01EB8201 		add	r1, r1, r2, lsl #2
+ 385 00c2 D1ED007A 		vldr.32	s15, [r1]
+ 386              		.loc 1 139 26 view .LVU126
+ 387 00c6 D968     		ldr	r1, [r3, #12]
+ 388              		.loc 1 139 33 view .LVU127
+ 389 00c8 01EB8202 		add	r2, r1, r2, lsl #2
+ 390              	.LVL28:
+ 391              		.loc 1 139 33 view .LVU128
+ 392 00cc 92ED007A 		vldr.32	s14, [r2]
+ 393              		.loc 1 139 22 view .LVU129
+ 394 00d0 67EE877A 		vmul.f32	s15, s15, s14
+ 395              		.loc 1 139 4 view .LVU130
+ 396 00d4 77EE807A 		vadd.f32	s15, s15, s0
+ 397              	.LVL29:
+ 140:../Core/Src/filters.c **** 	
+ 141:../Core/Src/filters.c **** 	// add dc component
+ 142:../Core/Src/filters.c **** 	y += ft->dc;
+ 398              		.loc 1 142 2 is_stmt 1 view .LVU131
+ 399              		.loc 1 142 9 is_stmt 0 view .LVU132
+ 400 00d8 93ED060A 		vldr.32	s0, [r3, #24]	@ int
+ 401              		.loc 1 142 4 view .LVU133
+ 402 00dc B8EE400A 		vcvt.f32.u32	s0, s0
+ 403 00e0 30EE270A 		vadd.f32	s0, s0, s15
+ 404              	.LVL30:
+ 143:../Core/Src/filters.c **** 
+ 144:../Core/Src/filters.c **** 	// Return filtered (x) value
+ 145:../Core/Src/filters.c **** 	return y;
+ 405              		.loc 1 145 2 is_stmt 1 view .LVU134
+ 406              	.L16:
+ 146:../Core/Src/filters.c **** }
+ 407              		.loc 1 146 1 is_stmt 0 view .LVU135
+ 408 00e4 02B0     		add	sp, sp, #8
+ 409              	.LCFI5:
+ 410              		.cfi_remember_state
+ 411              		.cfi_def_cfa_offset 0
+ 412              	.LVL31:
+ 413              		.loc 1 146 1 view .LVU136
+ 414              		@ sp needed
+ 415 00e6 7047     		bx	lr
+ 416              	.LVL32:
+ 417              	.L22:
+ 418              	.LCFI6:
+ARM GAS  /tmp/ccnnnGkN.s 			page 11
+
+
+ 419              		.cfi_restore_state
+ 109:../Core/Src/filters.c **** 	
+ 420              		.loc 1 109 10 view .LVU137
+ 421 00e8 BFEE000A 		vmov.f32	s0, #-1.0e+0
+ 422 00ec FAE7     		b	.L16
+ 423              	.L23:
+ 109:../Core/Src/filters.c **** 	
+ 424              		.loc 1 109 10 view .LVU138
+ 425 00ee BFEE000A 		vmov.f32	s0, #-1.0e+0
+ 426 00f2 F7E7     		b	.L16
+ 427              	.L26:
+ 428              		.align	2
+ 429              	.L25:
+ 430 00f4 00000000 		.word	0
+ 431              		.cfi_endproc
+ 432              	.LFE2:
+ 434              		.text
+ 435              	.Letext0:
+ 436              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 437              		.file 3 "../Core/Inc/filters.h"
+ 438              		.file 4 "/usr/include/newlib/stdlib.h"
+ 439              		.file 5 "<built-in>"
+ARM GAS  /tmp/ccnnnGkN.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 filters.c
+     /tmp/ccnnnGkN.s:17     .text.filter_init:0000000000000000 $t
+     /tmp/ccnnnGkN.s:25     .text.filter_init:0000000000000000 filter_init
+     /tmp/ccnnnGkN.s:129    .text.filter_kill:0000000000000000 $t
+     /tmp/ccnnnGkN.s:136    .text.filter_kill:0000000000000000 filter_kill
+     /tmp/ccnnnGkN.s:227    .text.filter_calc:0000000000000000 $t
+     /tmp/ccnnnGkN.s:234    .text.filter_calc:0000000000000000 filter_calc
+     /tmp/ccnnnGkN.s:430    .text.filter_calc:00000000000000f4 $d
+
+UNDEFINED SYMBOLS
+malloc
+memset
+free

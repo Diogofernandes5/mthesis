@@ -50,7 +50,7 @@
 #define DT    0.25
 #define DJ    0.25
 #define S0    (2*DT)
-#define J     (7/DJ)
+#define J     5
 
 /* USER CODE END PD */
 
@@ -75,15 +75,19 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void print_vector(complex *x, int n)
+void print_vector(complex *x, int n, int j)
 {
-  for(int i = 0; i < n; i++)
+  for(int i = 0; i < j; i++)
   {
-    char str[16];
-    sprintf(str, " %5.2f,%5.2fj ", x[i].Re,x[i].Im);
-    UART_puts(str);
+    for(int k = 0; k < n; k++)
+    {
+      char str[24];
+      sprintf(str, " %3.2f,%3.2fj ", x[(i*n) + k].Re, x[(i*n) + k].Im);
+      UART_puts(str);      
+    }
+    UART_puts("\n\r");
   } 
-  putchar('\n');
+  UART_puts("\n\r");
 }
 
 /* USER CODE END 0 */
@@ -96,8 +100,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   char c;
-  char string[24];
-
+  
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -136,21 +139,20 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   complex y[N] = {{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0}};
-  complex y_cwt[N];
-  float period[(int)J];
-  float scale[(int)J];
-  float coi[N];
+  complex y_cwt[N * J] = {{0,0}};
+  float period[J] = {0};
+  float scale[J];
+  float coi[N] = {0};
 
   UART_puts("Original vector:");
-  print_vector(y, N);
+  print_vector(y, N, 1);
 
   cwt(y, N, DT, DJ, S0, J, MORLET, 6.0, y_cwt, period, scale, coi);
 
-  HAL_Delay(500);
-  UART_puts("Transformed vector:");
-  print_vector(y_cwt, N);
+  UART_puts("Transformed vector: ");
+  print_vector(y_cwt, N, J);
 
-  UART_putchar('>'); // print prompt
+  UART_puts("\n\r>"); // print prompt
   Rx_UART_init(); // set USART3 interrupt
 
   while (1)
