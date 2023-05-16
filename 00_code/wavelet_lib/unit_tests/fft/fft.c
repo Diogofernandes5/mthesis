@@ -10,7 +10,6 @@
 // #define N	(1<<q)		/* N-point FFT, iFFT */
 #define N 8    /* N-point FFT, iFFT */
 
-
 typedef float real;
 typedef struct{real Re; real Im;} complex;
 
@@ -18,23 +17,20 @@ typedef struct{real Re; real Im;} complex;
 # define PI	3.14159265358979323846264338327950288
 #endif
 
-int i = 0;
-
-
 /* Print a vector of complexes as ordered pairs. */
-static void
-print_vector(
-	     const char *title,
-	     complex *x,
-	     int n)
+static void print_vector(const char *title, complex *x, int n)
 {
   int i;
+  
   printf("%s (dim=%d):", title, n);
-  for(i=0; i<n; i++ ) printf(" %5.2f,%5.2fj ", x[i].Re,x[i].Im);
+  
+  for(i=0; i<n; i++ ) 
+    printf(" %5.2f,%5.2fj ", x[i].Re,x[i].Im);
+  
   putchar('\n');
+  
   return;
 }
-
 
 /* 
    fft(v,N):
@@ -49,34 +45,31 @@ print_vector(
    [8]   Let v[m] = ve[m] + w*vo[m]
    [9]   Let v[m+N/2] = ve[m] - w*vo[m]
  */
-void fft( complex *v, int n, complex *tmp )
+void fft(complex *v, int n, complex *tmp)
 {
-  // if(n>1) {			/* otherwise, do nothing and return */
+  if(n>1) {			/* otherwise, do nothing and return */
     int k,m;    
     complex z, w;
     complex *vo = NULL;
     complex *ve = NULL; 
 
-    ve = tmp; vo = tmp+n/2;
+    int half_n = n >> 1;
 
-    i++;
-    printf("this is the %d time that function is executed!\n\r", i);
+    ve = tmp; vo = tmp+half_n;
 
-    for(k=0; k<n/2; k++) 
+    for(k = 0; k < half_n; k++) 
     {  
-      ve[k] = v[2 * k];
-      vo[k] = v[2 * k + 1];
-      printf("ve[%d]=%5.2f,%5.2fj\n\r", k, ve[k].Re, ve[k].Im);
-      printf("vo[%d]=%5.2f,%5.2fj\n\r", k, vo[k].Re, vo[k].Im);
+      ve[k] = v[k << 1];
+      vo[k] = v[(k << 1) + 1];
     }
 
-    if((n/2) > 1)
-    {
-      fft( ve, n/2, v );    /* FFT on even-indexed elements of v[] */
-      fft( vo, n/2, v );    /* FFT on odd-indexed elements of v[] */
-    }  
+    // if(half_n > 1)
+    // {
+      fft(ve, half_n, v);    /* FFT on even-indexed elements of v[] */
+      fft(vo, half_n, v);    /* FFT on odd-indexed elements of v[] */
+    // }  
 
-    for(m=0; m<n/2; m++) 
+    for(m = 0; m < half_n; m++) 
     {
       w.Re = cos(2*PI*m/(double)n);
       w.Im = -sin(2*PI*m/(double)n);
@@ -87,14 +80,14 @@ void fft( complex *v, int n, complex *tmp )
       v[  m  ].Re = ve[m].Re + z.Re;
       v[  m  ].Im = ve[m].Im + z.Im;
 
-      v[m+n/2].Re = ve[m].Re - z.Re;
-      v[m+n/2].Im = ve[m].Im - z.Im;
+      v[m+half_n].Re = (ve[m].Re - z.Re);
+      v[m+half_n].Im = (ve[m].Im - z.Im);
     }
-  // }
+  }
 
   return;
 }
-
+
 /* 
    ifft(v,N):
    [0] If N==1 then return.
@@ -108,32 +101,51 @@ void fft( complex *v, int n, complex *tmp )
    [8]   Let v[m] = ve[m] + w*vo[m]
    [9]   Let v[m+N/2] = ve[m] - w*vo[m]
  */
-void
-ifft( complex *v, int n, complex *tmp )
+void ifft(complex *v, int n, complex *tmp, int dim)
 {
-  if(n>1) {			/* otherwise, do nothing and return */
-    int k,m;    complex z, w, *vo, *ve;
+  // if(n>1) 
+  // {			/* otherwise, do nothing and return */
+    int k,m;
+    complex z, w;
+    
+    complex *vo = NULL;
+    complex *ve = NULL; 
+
     ve = tmp; vo = tmp+n/2;
-    for(k=0; k<n/2; k++) {
-      ve[k] = v[2*k];
-      vo[k] = v[2*k+1];
+    
+    for(k = 0; k < (n/2); k++) 
+    {
+      ve[k].Re = v[2 * k].Re/2;
+      ve[k].Im = v[2 * k].Im/2;
+
+      vo[k].Re = v[2 * k + 1].Re/2;
+      vo[k].Im = v[2 * k + 1].Im/2;  
     }
-    ifft( ve, n/2, v );		/* FFT on even-indexed elements of v[] */
-    ifft( vo, n/2, v );		/* FFT on odd-indexed elements of v[] */
-    for(m=0; m<n/2; m++) {
+
+    if((n/2) > 1)
+    {
+      ifft(ve, (n/2), v, dim);   /* FFT on even-indexed elements of v[] */
+      ifft(vo, (n/2), v, dim);   /* FFT on odd-indexed elements of v[] */
+    }
+    
+    for(m = 0; m < (n/2); m++) 
+    {
       w.Re = cos(2*PI*m/(double)n);
       w.Im = sin(2*PI*m/(double)n);
+
       z.Re = w.Re*vo[m].Re - w.Im*vo[m].Im;	/* Re(w*vo[m]) */
       z.Im = w.Re*vo[m].Im + w.Im*vo[m].Re;	/* Im(w*vo[m]) */
-      v[  m  ].Re = ve[m].Re + z.Re;
-      v[  m  ].Im = ve[m].Im + z.Im;
-      v[m+n/2].Re = ve[m].Re - z.Re;
-      v[m+n/2].Im = ve[m].Im - z.Im;
+
+      v[  m  ].Re = (ve[m].Re + z.Re);
+      v[  m  ].Im = (ve[m].Im + z.Im);
+
+      v[m+n/2].Re = (ve[m].Re - z.Re);
+      v[m+n/2].Im = (ve[m].Im - z.Im);
     }
-  }
+  // }
+
   return;
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -152,9 +164,11 @@ int main(int argc, char *argv[])
     
   /* FFT, iFFT of v[]: */
   print_vector("Orig", v, N);
+
   fft( v, N, scratch );
   print_vector(" FFT", v, N);
-  ifft( v, N, scratch );
+
+  ifft( v, N, scratch, N);
   print_vector("iFFT", v, N);
 
   /* FFT, iFFT of v1[]: */
