@@ -1,1 +1,0 @@
-/home/fernandes/thesis/00_code/acc/no-OS/drivers/accel/adxl313/iio_adxl313.c

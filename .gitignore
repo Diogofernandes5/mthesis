@@ -46,4 +46,12 @@
 *.mod*
 *.cmd
 
-wavelet_lib/build
+# Binary files
+*.bin
+
+# Data list
+*.lst
+
+bin/
+build/
+Debug/

@@ -1,1 +1,0 @@
-/home/fernandes/thesis/00_code/acc/no-OS/drivers/platform/stm32/stm32_uart_stdio.h

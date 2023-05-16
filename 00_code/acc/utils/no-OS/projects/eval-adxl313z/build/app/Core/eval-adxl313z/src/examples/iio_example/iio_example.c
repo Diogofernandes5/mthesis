@@ -1,1 +1,0 @@
-/home/fernandes/thesis/00_code/acc/no-OS/projects/eval-adxl313z/src/examples/iio_example/iio_example.c
