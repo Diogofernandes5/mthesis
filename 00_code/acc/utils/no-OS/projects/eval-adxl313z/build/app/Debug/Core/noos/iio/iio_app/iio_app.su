@@ -1,8 +1,0 @@
-../Core/noos/iio/iio_app/iio_app.c:115:24:_calc_uart_xfer_time	24	static
-../Core/noos/iio/iio_app/iio_app.c:123:16:iio_print_uart_info_message	32	static
-../Core/noos/iio/iio_app/iio_app.c:146:16:print_uart_hello_message	600	static
-../Core/noos/iio/iio_app/iio_app.c:176:16:print_uart_error_message	544	static
-../Core/noos/iio/iio_app/iio_app.c:236:16:uart_setup	24	static
-../Core/noos/iio/iio_app/iio_app.c:291:16:irq_setup	40	static
-../Core/noos/iio/iio_app/iio_app.c:338:9:iio_app_run_with_trigs	80	static
-../Core/noos/iio/iio_app/iio_app.c:435:9:iio_app_run	48	static

@@ -1,7 +1,0 @@
-../Core/noos/util/no_os_lf256fifo.c:58:5:lf256fifo_init	24	static
-../Core/noos/util/no_os_lf256fifo.c:83:6:lf256fifo_is_full	16	static
-../Core/noos/util/no_os_lf256fifo.c:94:6:lf256fifo_is_empty	16	static
-../Core/noos/util/no_os_lf256fifo.c:105:5:lf256fifo_read	16	static
-../Core/noos/util/no_os_lf256fifo.c:122:5:lf256fifo_write	16	static
-../Core/noos/util/no_os_lf256fifo.c:138:6:lf256fifo_flush	16	static
-../Core/noos/util/no_os_lf256fifo.c:148:6:lf256fifo_remove	16	static
