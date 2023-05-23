@@ -35,11 +35,11 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 			enum adxl313_resolution resolution, uint16_t odr)
 {
 	adxl313_dev _dev;
-	spi_comm_desc _spi_desc = {.hspi = &hspi1,
+	spi_comm_desc _spi_desc = {.hspi = &hspi4,
 								.CS_port = GPIOE,
-								.CS_pin = GPIO_PIN_2 };
+								.CS_pin = GPIO_PIN_3 };
 
-	bool ret = checkPartId(&_spi_desc); // PE2
+	bool ret = checkPartId(&_spi_desc); // PE3
 	if(!ret)
 	{
 		UART_puts("ADXL313 device not found in SPI interface. Check connection and try again.\n\r");
@@ -55,6 +55,7 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 	_dev.spi_desc = &_spi_desc;
 	_dev.error_code = ADXL313_NO_ERROR;
 	_dev.status = ADXL313_OK;
+	_dev.data_ready = false;
 
 	dev = &_dev; 
 
@@ -74,10 +75,15 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
  **********************************************************/
 bool checkPartId( spi_comm_desc *_spi_desc) 
 {
-	uint8_t _b;
+	char _b = 0xFF;
 	
-	spi_read(_spi_desc, ADXL313_PARTID, 1, &_b);
-	if(_b == ADXL313_PARTID_RSP_EXPECTED)
+	spi_read(_spi_desc, ADXL313_DEVID_0, 1, &_b);
+
+	char str[24];
+	sprintf(str, "0x%X\n\r", _b);
+	UART_puts(str);
+
+	if(_b == ADXL313_DEVID_0_RSP_EXPECTED)
 		return (true);
 	
 	return (false);

@@ -112,12 +112,14 @@ int main(void)
   MX_DAC_Init();
   MX_TIM2_Init();
   MX_TIM6_Init();
-  MX_SPI1_Init();
+  MX_SPI4_Init();
   /* USER CODE BEGIN 2 */
   // print startup message
   ver_cb(1, NULL);
   UART_puts("\n\rType '?' for list of available commands\n\r");
   UART_puts("Type '? <cmd>' for more info on a given command\n\r");
+
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, (GPIO_PinState)GPIO_PIN_SET);
 
   /* USER CODE END 2 */
 
@@ -136,7 +138,7 @@ int main(void)
 
   UART_putchar('>'); // print prompt
   Rx_UART_init(); // set USART3 interrupt
-
+  
   while (1)
   {
     if(Rx_flag)
@@ -232,7 +234,7 @@ void SystemClock_Config(void)
 // EXTI Line9 External Interrupt ISR Handler CallBackFun
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    if(GPIO_Pin == GPIO_PIN_12) // If The INT Source Is EXTI Line12 (A12 Pin)
+    if(GPIO_Pin == GPIO_PIN_4) // If The INT Source Is EXTI Line12 (A12 Pin)
     {
       readAccel(acc_ptr, &x, &y, &z);
     }
