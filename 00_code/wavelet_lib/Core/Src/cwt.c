@@ -131,8 +131,7 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
             y_cwt_o[(j * N_i) + i].Im = complex_mul_im(y_i[i].Re, y_i[i].Im, daughter[i], 0);
         }
 
-        ret = ifft(&y_cwt_o[j], N_i, y_aux);
-
+        ret = ifft(&y_cwt_o[j * N_i], N_i, y_aux);
         if(ret)
         {
             UART_puts("It was not possible to compute the inverse fourier \

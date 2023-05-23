@@ -92,12 +92,15 @@ uint8_t ifft(complex *y_io, uint32_t N_i, complex *aux_i)
         for(int k = 0; k < half_N_i; k++) 
         {
             /* ve[k] = y_io[k * 2]; */
-            ve[k] = y_io[k << 1];
-            vo[k] = y_io[(k << 1) + 1];
+            ve[k].Re = y_io[k << 1].Re / 2;
+            ve[k].Im = y_io[k << 1].Im / 2;
+
+            vo[k].Re = y_io[(k << 1) + 1].Re / 2;
+            vo[k].Im = y_io[(k << 1) + 1].Im / 2;  
         }
 
-            ifft(ve, half_N_i, y_io);        /* FFT on even-indexed elements of y_io[] */
-            ifft(vo, half_N_i, y_io);        /* FFT on odd-indexed elements of y_io[] */
+        ifft(ve, half_N_i, y_io);        /* FFT on even-indexed elements of y_io[] */
+        ifft(vo, half_N_i, y_io);        /* FFT on odd-indexed elements of y_io[] */
 
         /* apply twiddle factor of this stage and 2-pt DFT*/
         for(int m = 0; m < half_N_i; m++) 

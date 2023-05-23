@@ -103,8 +103,8 @@ void fft(complex *v, int n, complex *tmp)
  */
 void ifft(complex *v, int n, complex *tmp, int dim)
 {
-  // if(n>1) 
-  // {			/* otherwise, do nothing and return */
+  if(n>1) 
+  {			/* otherwise, do nothing and return */
     int k,m;
     complex z, w;
     
@@ -122,11 +122,8 @@ void ifft(complex *v, int n, complex *tmp, int dim)
       vo[k].Im = v[2 * k + 1].Im/2;  
     }
 
-    if((n/2) > 1)
-    {
-      ifft(ve, (n/2), v, dim);   /* FFT on even-indexed elements of v[] */
-      ifft(vo, (n/2), v, dim);   /* FFT on odd-indexed elements of v[] */
-    }
+    ifft(ve, (n/2), v, dim);   /* FFT on even-indexed elements of v[] */
+    ifft(vo, (n/2), v, dim);   /* FFT on odd-indexed elements of v[] */
     
     for(m = 0; m < (n/2); m++) 
     {
@@ -142,7 +139,7 @@ void ifft(complex *v, int n, complex *tmp, int dim)
       v[m+n/2].Re = (ve[m].Re - z.Re);
       v[m+n/2].Im = (ve[m].Im - z.Im);
     }
-  // }
+  }
 
   return;
 }

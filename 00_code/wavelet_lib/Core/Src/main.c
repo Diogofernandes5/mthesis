@@ -37,6 +37,9 @@
 #include "cwt.h"
 #include "wavelet.h"
 
+
+#include "fft.h" /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -139,6 +142,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   complex y[N] = {{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0}};
+  complex aux[N];
   complex y_cwt[N * J] = {{0,0}};
   float period[J] = {0};
   float scale[J];
@@ -147,6 +151,17 @@ int main(void)
   UART_puts("Original vector:");
   print_vector(y, N, 1);
 
+  /* FFT */ 
+  
+  // fft(y, N, aux);
+  // UART_puts("FFT vector:");
+  // print_vector(y, N, 1);
+
+  // ifft(y, N, aux);
+  // UART_puts("IFFT vector:");
+  // print_vector(y, N, 1);
+
+  /* CWT */
   cwt(y, N, DT, DJ, S0, J, MORLET, 6.0, y_cwt, period, scale, coi);
 
   UART_puts("Transformed vector: ");
