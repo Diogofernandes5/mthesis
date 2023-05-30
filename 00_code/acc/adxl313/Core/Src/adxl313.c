@@ -6,16 +6,17 @@
 
 #define ADXL313_TO_READ (6)      // Number of Bytes Read - Two Bytes Per Axis
 
+// #define __DEBUG
 
 double gains[3] = { 0.00376390, 0.00376009, 0.00349265 };				// Counts to Gs
 
 /******************************************************************************/
 /************************ Functions Declarations ******************************/
 /******************************************************************************/
-bool check_part_id( spi_comm_desc *_spi_desc);
+bool check_part_id(spi_comm_desc *_spi_desc);
 
-void setRegisterBit( adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos, bool state);
-uint8_t getRegisterBit( adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos);
+void set_register_bit(adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos, bool state);
+uint8_t get_register_bit(adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos);
 
 static inline uint8_t mask_reg(uint8_t __reg, uint8_t __mask)
 {
@@ -29,22 +30,30 @@ static inline int constrain(int __val, int __min, int __max)
 
 /******************************************************************************/
 /************************ Functions Definitions *******************************/
-/******************************************************************************/
+
+/**
+ * @brief   Initializes the sensor and checks its part_id
+ * 
+ * @param   dev - device structure
+ * @param 	comm_type - type of comm (SPI/ I2C)
+ * @param 	range - range of the readings (0,5/ 1/ 2/ 4)
+ * @param 	resolution - number of bits resolution 
+ * @param 	odr - output data ratio
+ * 
+ * @retval	success
+ * */
 bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_range range, 
 			enum adxl313_resolution resolution, uint16_t odr)
 {
-	uint8_t data_format, int_enable, power_ctl;
-	char str[24];
-
-	bool ret = check_part_id(&spi4_comm_desc); // PE3
+	bool ret = check_part_id(&spi4_comm_desc);
 	if(!ret)
 	{
-		UART_puts("ADXL313 device not found in SPI interface. \
+		UART_puts("ADXL313 device not found in SPI interface.\n\r \
 						Check connection and try again.\n\r");
 		return (false);
 	}
 	else
-		UART_puts("ADXL313 device initialized using SPI interface!\n\r");
+		UART_puts("ADXL313 device initialized using SPI4 interface.\n\r");
 
 	dev->range = range;
 	dev->comm_type = comm_type;
@@ -58,16 +67,17 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 	/* Reset registers values */
 	soft_reset(dev);
 
+#ifdef __DEBUG
+	uint8_t data_format, int_enable, power_ctl;
+	char str[24];
+
 	spi_read(dev->spi_desc, ADXL313_DATA_FORMAT, 1, &data_format);
 	spi_read(dev->spi_desc, ADXL313_INT_ENABLE, 1, &int_enable);
 	spi_read(dev->spi_desc, ADXL313_POWER_CTL, 1, &power_ctl);
 
-	// standby(dev); 
-
-	// HAL_Delay(500);
-
 	sprintf(str, "0x%X;0x%X;0x%X\n\r", data_format, int_enable, power_ctl);
 	UART_puts(str);	
+#endif /*__DEBUG */
 
 	/* DATA_FORMAT */
 	set_data_format(dev, ADXL313_4G_RANGE);
@@ -78,6 +88,7 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 	/* Start mesuring - POWER_CTL*/
 	measure_mode_on(dev);
 
+#ifdef __DEBUG
 	spi_read(dev->spi_desc, ADXL313_DATA_FORMAT, 1, &data_format); /* 0x0B */
 	spi_read(dev->spi_desc, ADXL313_INT_ENABLE, 1, &int_enable); /* 0x80 */
 	spi_read(dev->spi_desc, ADXL313_POWER_CTL, 1, &power_ctl); /* 0x08 */
@@ -90,17 +101,18 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 
 	sprintf(str, "0x%X\n\r", _b);
 	UART_puts(str);	
+#endif /*__DEBUG */
 
 	return (true);
 }
 
-/**********************************************************
- * @brief Check Part ID from sensor 
+/**
+ * @brief 	Check Part ID from sensor 
  * 
- * @param _spi_desc - pointer to the spi descritor struct
+ * @param 	_spi_desc - pointer to the spi descritor struct
  * 
- * @return true if device's part ID register is correct
- **********************************************************/
+ * @return 	true if device's part ID register is correct
+ **/
 bool check_part_id(spi_comm_desc *_spi_desc) 
 {
 	uint8_t _b = 0xFF;
@@ -113,11 +125,23 @@ bool check_part_id(spi_comm_desc *_spi_desc)
 	return (false);
 }
 
+/**
+ * @brief   Checks if there are data to be read
+ * 
+ * @param   dev - device
+ * 
+ * @retval	true if there are data to be read
+ * */
 bool data_ready(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_INT_SOURCE, ADXL313_INT_DATA_READY_BIT);	// check the dataReady bit 
+	return get_register_bit(dev, ADXL313_INT_SOURCE, ADXL313_INT_DATA_READY_BIT);	// check the dataReady bit 
 }
 
+/**
+ * @brief   Update interrupt source status in program 
+ * 
+ * @param   dev - device
+ * */
 void update_int_source_status(adxl313_dev *dev) 
 {
 	uint8_t _b;
@@ -131,18 +155,33 @@ void update_int_source_status(adxl313_dev *dev)
 	dev->intSource.over_run = ((_b >> ADXL313_INT_OVERRUN_BIT) & 1);
 }
 
+/**
+ * @brief   Puts device in standby mode to write registers
+ * 
+ * @param   dev - device
+ * */
 void standby(adxl313_dev *dev) 
 {
 	/* clears the measure bit, putting device in standby mode, ready for configuration */
-	setRegisterBit(dev, ADXL313_POWER_CTL, ADXL313_MEASURE_BIT, false);
+	set_register_bit(dev, ADXL313_POWER_CTL, ADXL313_MEASURE_BIT, false);
 }
 
+/**
+ * @brief   Puts device in measure mode
+ * 
+ * @param   dev - device
+ * */
 void measure_mode_on(adxl313_dev *dev) 
 {
 	/* sets the measure bit, putting device in measure mode, ready for reading data */
-	setRegisterBit(dev, ADXL313_POWER_CTL, ADXL313_MEASURE_BIT, true);
+	set_register_bit(dev, ADXL313_POWER_CTL, ADXL313_MEASURE_BIT, true);
 }
 
+/**
+ * @brief   Does a SW reset to the device
+ * 
+ * @param   dev - device
+ * */
 void soft_reset(adxl313_dev *dev) 
 {
 	/* soft reset clears all settings, and puts it in standby mode */
@@ -162,43 +201,43 @@ void set_data_format(adxl313_dev *dev, enum adxl313_range range)
 	spi_write(dev->spi_desc, ADXL313_DATA_FORMAT, _b, 1);
 }
 
-/*********************** READING ACCELERATION ***********************/
-/*    Reads Acceleration into Three Class Variables:  x, y and z          */
-
-void readAccel(adxl313_dev *dev, volatile uint16_t *x, volatile uint16_t *y, volatile uint16_t *z) 
+/**
+ * @brief   Read accelerometer 3 axis
+ * 
+ * @param   dev - device
+ * */
+void read_accel(adxl313_dev *dev) 
 {
-	// spi_read(dev->spi_desc, ADXL313_DATA_X0, ADXL313_TO_READ, dev->comm_buff);
+	uint8_t comm_buff[6] = {0};
 
-	// // Each Axis @ All g Ranges: 10 Bit Resolution (2 Bytes)
-	// *x = (uint16_t)((dev->comm_buff[1] << 8) | dev->comm_buff[0]);
-	// *y = (uint16_t)((dev->comm_buff[3] << 8) | dev->comm_buff[2]);
-	// *z = (uint16_t)((dev->comm_buff[5] << 8) | dev->comm_buff[4]);
-
-	uint8_t comm_buff[4];
-	char str[24];
-
-	spi_read(dev->spi_desc, ADXL313_DATA_X0, 4, comm_buff);
+	/* Read x, y and z axis (6 bytes) */
+	spi_read(dev->spi_desc, ADXL313_DATA_X0, ADXL313_TO_READ, comm_buff);
 
 	// Each Axis @ All g Ranges: 10 Bit Resolution (2 Bytes)
-	*x = (uint16_t)((comm_buff[1] << 8) | comm_buff[0]);
-	//*y = (uint16_t)((comm_buff[3] << 8) | comm_buff[2]);
-
-	sprintf(str, "0x%4X;0x%4X\n\r", *x, *y);
-	UART_puts(str);	
-
-	// store last axis values 
-	dev->x = *x;
-	dev->y = *y;
-	dev->z = *z;
+	dev->x = (uint16_t)((comm_buff[1] << 8) | comm_buff[0]);
+	dev->y = (uint16_t)((comm_buff[3] << 8) | comm_buff[2]);
+	dev->z = (uint16_t)((comm_buff[5] << 8) | comm_buff[4]);
 
 	/* NOT HERE 
-		-> into the interrupt service routine of SPI_Receive()*/
+		-> into the interrupt service routine of SPI_Receive() if using isr*/
 	dev->data_ready = true;
+
+#ifdef __DEBUG
+	char str[24];
+	
+	sprintf(str, "0x%4X;0x%4X\n\r", *x, *y);
+	UART_puts(str);
+#endif /* __DEBUG */
 }
 
-/*************************** RANGE SETTING **************************/
-/*          	OPTIONS: 0.5g, 1g, 2g, 4g ~ GET & SET          		*/
-float getRange(adxl313_dev *dev) 
+/**
+ * @brief   Get device range
+ * 
+ * @param   dev - device
+ * 
+ * @retval 	Range in floating point number
+ * */
+float get_range(adxl313_dev *dev) 
 {
 	uint8_t _b;
 
@@ -223,7 +262,13 @@ float getRange(adxl313_dev *dev)
 	return range_val;
 }
 
-void setRange(adxl313_dev *dev, enum adxl313_range range) 
+/**
+ * @brief   Set device range
+ * 
+ * @param   dev - device
+ * @param 	range - range of the readings (0,5/ 1/ 2/ 4)
+ * */
+void set_range(adxl313_dev *dev, enum adxl313_range range) 
 {
 	uint8_t _s = 0;
 	uint8_t _b;
@@ -236,42 +281,33 @@ void setRange(adxl313_dev *dev, enum adxl313_range range)
 	spi_write(dev->spi_desc, ADXL313_DATA_FORMAT, _s, 1);
 }
 
-/****************************************************************
+/**
  * @brief Set a bit in register.
  * 
  * @param dev 		- The device structure.
  * @param regAdress - The register address in the device.
  * @param bitPos 	- The position of the bit one wants to set.
  * @param state 	- State to set (1 or 0)
- ****************************************************************/
-void setRegisterBit(adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos, bool state) 
+ * */
+void set_register_bit(adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos, bool state) 
 {
 	uint8_t _b;
 	spi_read(dev->spi_desc, regAdress, 1, &_b);
 
+ 	/* Forces nth Bit of _b to 1 : 0. Other Bits Unchanged. */
 	(state == true) ? (_b |= (1 << bitPos)) : (_b &= ~(1 << bitPos));
 	
-	// if (state) {
-	// 	_b |= (1 << bitPos);  // Forces nth Bit of _b to 1. Other Bits Unchanged.
-	// }
-	// else {
-	// 	_b &= ~(1 << bitPos); // Forces nth Bit of _b to 0. Other Bits Unchanged.
-	// }
-
-	// char str[24];
-	// sprintf(str, "setReg: 0x%X\n\r", _b);
-	// UART_puts(str);	
 	spi_write(dev->spi_desc, regAdress, _b, 1);
 }
 
-/****************************************************************
+/**
  * @brief Get a bit in register.
  * 
  * @param dev 		- The device structure.
  * @param regAdress - The register address in the device.
  * @param bitPos 	- The position of the bit one wants to get.
-****************************************************************/
-uint8_t getRegisterBit(adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos) 
+ * */
+uint8_t get_register_bit(adxl313_dev *dev, uint8_t regAdress, uint8_t bitPos) 
 {
 	uint8_t _b = 0;
 	spi_read(dev->spi_desc, regAdress, 1, &_b);
@@ -286,16 +322,16 @@ void autosleepOn(adxl313_dev *dev)
 	// note, prior to calling this, 
 	// you will need to set THRESH_INACT and TIME_INACT.
 	// set the link bit, to "link" activity and inactivity sensing
-	setRegisterBit(dev, ADXL313_POWER_CTL, ADXL313_LINK_BIT, true);
+	set_register_bit(dev, ADXL313_POWER_CTL, ADXL313_LINK_BIT, true);
 	
 	// set the autosleep
-	setRegisterBit(dev, ADXL313_POWER_CTL, ADXL313_AUTOSLEEP_BIT, true);
+	set_register_bit(dev, ADXL313_POWER_CTL, ADXL313_AUTOSLEEP_BIT, true);
 }
 
 void autosleepOff(adxl313_dev *dev) 
 {
 	// clears the autosleep bit
-	setRegisterBit(dev, ADXL313_POWER_CTL, ADXL313_AUTOSLEEP_BIT, false);
+	set_register_bit(dev, ADXL313_POWER_CTL, ADXL313_AUTOSLEEP_BIT, false);
 }
 
 /*************************** SELF_TEST BIT **************************/
@@ -303,7 +339,7 @@ void autosleepOff(adxl313_dev *dev)
 bool getSelfTestBit(adxl313_dev *dev) 
 
 {
-	return getRegisterBit(dev, ADXL313_DATA_FORMAT, 7);
+	return get_register_bit(dev, ADXL313_DATA_FORMAT, 7);
 }
 
 // If Set (1) Self-Test Applied. Electrostatic Force exerted on the sensor
@@ -311,42 +347,42 @@ bool getSelfTestBit(adxl313_dev *dev)
 // If Set (0) Self-Test Disabled.
 void setSelfTestBit(adxl313_dev *dev, bool selfTestBit) 
 {
-	setRegisterBit(dev, ADXL313_DATA_FORMAT, 7, selfTestBit);
+	set_register_bit(dev, ADXL313_DATA_FORMAT, 7, selfTestBit);
 }
 
 /*************************** SPI BIT STATE **************************/
 /*                           ~ GET & SET                            */
 bool getSpiBit(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_DATA_FORMAT, 6);
+	return get_register_bit(dev, ADXL313_DATA_FORMAT, 6);
 }
 
 // If Set (1) Puts Device in 3-wire Mode
 // If Set (0) Puts Device in 4-wire SPI Mode
 void setSpiBit(adxl313_dev *dev, bool spiBit) 
 {
-	setRegisterBit(dev, ADXL313_DATA_FORMAT, 6, spiBit);
+	set_register_bit(dev, ADXL313_DATA_FORMAT, 6, spiBit);
 }
 
 /*********************** INT_INVERT BIT STATE ***********************/
 /*                           ~ GET & SET                            */
 bool getInterruptLevelBit(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_DATA_FORMAT, 5);
+	return get_register_bit(dev, ADXL313_DATA_FORMAT, 5);
 }
 
 // If Set (0) Sets the Interrupts to Active HIGH
 // If Set (1) Sets the Interrupts to Active LOW
 void setInterruptLevelBit(adxl313_dev *dev, bool interruptLevelBit) 
 {
-	setRegisterBit(dev, ADXL313_DATA_FORMAT, 5, interruptLevelBit);
+	set_register_bit(dev, ADXL313_DATA_FORMAT, 5, interruptLevelBit);
 }
 
 /************************* FULL_RES BIT STATE ***********************/
 /*                           ~ GET & SET                            */
 bool getFullResBit(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_DATA_FORMAT, 3);
+	return get_register_bit(dev, ADXL313_DATA_FORMAT, 3);
 }
 
 // If Set (1) Device is in Full Resolution Mode: Output Resolution Increase with G Range
@@ -355,21 +391,21 @@ bool getFullResBit(adxl313_dev *dev)
 //  And Scale Factor
 void setFullResBit(adxl313_dev *dev, bool fullResBit) 
 {
-	setRegisterBit(dev, ADXL313_DATA_FORMAT, 3, fullResBit);
+	set_register_bit(dev, ADXL313_DATA_FORMAT, 3, fullResBit);
 }
 
 /*************************** JUSTIFY BIT STATE **************************/
 /*                           ~ GET & SET                            */
 bool getJustifyBit(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_DATA_FORMAT, 2);
+	return get_register_bit(dev, ADXL313_DATA_FORMAT, 2);
 }
 
 // If Set (1) Selects the Left Justified Mode
 // If Set (0) Selects Right Justified Mode with Sign Extension
 void setJustifyBit(adxl313_dev *dev, bool justifyBit) 
 {
-	setRegisterBit(dev, ADXL313_DATA_FORMAT, 2, justifyBit);
+	set_register_bit(dev, ADXL313_DATA_FORMAT, 2, justifyBit);
 }
 
 /****************** GAIN FOR EACH AXIS IN Gs / COUNT *****************/
@@ -488,13 +524,17 @@ int getTimeInactivity(adxl313_dev *dev)
 /*                                                                  */
 bool isLowPower(adxl313_dev *dev)
 {
-	return getRegisterBit(dev, ADXL313_BW_RATE, 4);
+	return get_register_bit(dev, ADXL313_BW_RATE, 4);
 }
-void lowPowerOn(adxl313_dev *dev) {
-	setRegisterBit(dev, ADXL313_BW_RATE, 4, true);
+
+void lowPowerOn(adxl313_dev *dev) 
+{
+	set_register_bit(dev, ADXL313_BW_RATE, 4, true);
 }
-void lowPowerOff(adxl313_dev *dev) {
-	setRegisterBit(dev, ADXL313_BW_RATE, 4, false);
+
+void lowPowerOff(adxl313_dev *dev) 
+{
+	set_register_bit(dev, ADXL313_BW_RATE, 4, false);
 }
 
 /*************************** RATE BITS ******************************/
@@ -561,12 +601,12 @@ uint8_t getInt_Source(adxl313_dev *dev)
 
 bool getInterruptSource(adxl313_dev *dev, uint8_t interruptBit) 
 {
-	return getRegisterBit(dev, ADXL313_INT_SOURCE, interruptBit);
+	return get_register_bit(dev, ADXL313_INT_SOURCE, interruptBit);
 }
 
 bool getInterruptMapping(adxl313_dev *dev, uint8_t interruptBit) 
 {
-	return getRegisterBit(dev, ADXL313_INT_MAP, interruptBit);
+	return get_register_bit(dev, ADXL313_INT_MAP, interruptBit);
 }
 
 // /*********************** INTERRUPT MAPPING **************************/
@@ -574,17 +614,17 @@ bool getInterruptMapping(adxl313_dev *dev, uint8_t interruptBit)
 // // eg: setInterruptMapping(ADXL313_INT_WATERMARK_BIT,ADXL313_INT2_PIN);
  void setInterruptMapping(adxl313_dev *dev, uint8_t interruptBit, bool interruptPin) 
  {
- 	setRegisterBit(dev, ADXL313_INT_MAP, interruptBit, interruptPin);
+ 	set_register_bit(dev, ADXL313_INT_MAP, interruptBit, interruptPin);
  }
 
 bool isInterruptEnabled(adxl313_dev *dev, uint8_t interruptBit) 
 {
-	return getRegisterBit(dev, ADXL313_INT_ENABLE,interruptBit);
+	return get_register_bit(dev, ADXL313_INT_ENABLE,interruptBit);
 }
 
 void setInterrupt(adxl313_dev *dev, uint8_t interruptBit, bool state) 
 {
-	setRegisterBit(dev, ADXL313_INT_ENABLE, interruptBit, state);
+	set_register_bit(dev, ADXL313_INT_ENABLE, interruptBit, state);
 }
 
 void ActivityINT(adxl313_dev *dev, bool status) 
@@ -752,40 +792,40 @@ void clearFifo(adxl313_dev *dev)
 /*                                                                  */
 bool isActivityXEnabled(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 6);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 6);
 }
 bool isActivityYEnabled(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 5);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 5);
 }
 bool isActivityZEnabled(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 4);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 4);
 }
 bool isInactivityXEnabled(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 2);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 2);
 }
 bool isInactivityYEnabled(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 1);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 1);
 }
 bool isInactivityZEnabled(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 0);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 0);
 }
 
 void setActivityX(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 6, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 6, state);
 }
 void setActivityY(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 5, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 5, state);
 }
 void setActivityZ(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 4, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 4, state);
 }
 void setActivityXYZ(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ) 
 {
@@ -795,15 +835,15 @@ void setActivityXYZ(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ)
 }
 void setInactivityX(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 2, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 2, state);
 }
 void setInactivityY(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 1, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 1, state);
 }
 void setInactivityZ(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 0, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 0, state);
 }
 void setInactivityXYZ(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ) 
 {
@@ -814,18 +854,18 @@ void setInactivityXYZ(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ)
 
 bool isActivityAc(adxl313_dev *dev) 
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 7);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 7);
 }
 bool isInactivityAc(adxl313_dev *dev)
 {
-	return getRegisterBit(dev, ADXL313_ACT_INACT_CTL, 3);
+	return get_register_bit(dev, ADXL313_ACT_INACT_CTL, 3);
 }
 
 void setActivityAc(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 7, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 7, state);
 }
 void setInactivityAc(adxl313_dev *dev, bool state) 
 {
-	setRegisterBit(dev, ADXL313_ACT_INACT_CTL, 3, state);
+	set_register_bit(dev, ADXL313_ACT_INACT_CTL, 3, state);
 }

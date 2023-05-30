@@ -155,8 +155,8 @@ typedef struct __adxl313_dev
 	/** Scale factor multiplier for data conversion to m/s^2 */
 	int64_t scale_factor_mult;
 
-	/** Buffer used for communication with ADXL313 */
-	volatile uint8_t comm_buff[8];
+	// /** Buffer used for communication with ADXL313 */
+	// volatile uint8_t comm_buff[8];
 
 	volatile int16_t x, y, z; // x, y, and z axis readings of the accelerometer
 
@@ -204,11 +204,7 @@ extern void soft_reset(adxl313_dev *dev);
  
 extern void standby(adxl313_dev *dev);
  
-// readAccel() -- Read the sensors output registers.
-// This function will read all six accelerometer output registers.
-// The readings are stored in the class' x, y, and z variables. Read
-// those _after_ calling readAccel().
-void readAccel(adxl313_dev *dev, volatile uint16_t *x, volatile uint16_t *y, volatile uint16_t *z);
+extern void read_accel(adxl313_dev *dev);
   
 extern void autosleepOn(adxl313_dev *dev);
 extern void autosleepOff(adxl313_dev *dev);

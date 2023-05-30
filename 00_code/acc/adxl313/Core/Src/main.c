@@ -82,7 +82,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   char c;
-  char str[24];
+  char str[64];
 
   adxl313_dev acc_dev; // accelerometer
 
@@ -126,9 +126,9 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  acc_ptr = &acc_dev;
-  // initialize accelerometer
+  /* Initialize accelerometer */
   begin(&acc_dev, ADXL313_SPI_COMM, ADXL313_4G_RANGE, ADXL313_13_BIT_RES, 3200);
+  acc_ptr = &acc_dev;   
 
   UART_putchar('>'); // print prompt
   Rx_UART_init(); // set USART3 interrupt
@@ -169,11 +169,10 @@ int main(void)
     // };
     if(HAL_GPIO_ReadPin(SPI4_INT1_GPIO_Port, SPI4_INT1_Pin))
     {
-      readAccel(acc_ptr, &x, &y, &z);
-      // UART_puts("interrupt! \t"); 
+      read_accel(acc_ptr);
       
-      // sprintf(str, "x:0x%X\ty:0x%X\tz:0x%X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
-      // UART_puts(str); 
+      sprintf(str, "x:0x%4X\ty:0x%4X\tz:0x%4X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
+      UART_puts(str); 
     };
     /* USER CODE END WHILE */
 
