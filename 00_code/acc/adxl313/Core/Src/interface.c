@@ -33,11 +33,8 @@ char ver_cb(uint8_t argc, char** argv)
 	if(argc != 1) // number of arguments invalid?
 		return (char)(-EINVARG);
 	
-	// 1.0 Interfacing with STM
-	// 1.1 Sampling using ADC
-	// 1.2 Digital filters (IIR/FIR)
-	UART_puts("Current version: 1.2\n\rUsing STM32F767ZI-NUCLEO.\n\n\r");
-	UART_puts("Developers:\n\r- Diogo Fernandes\n\r- Tomas Abreu\n\r@LPI-II Universidade do Minho, April 2021\n\r");
+	UART_puts("\n\rSTM32F767ZI program to test the accelerometer ADXL313.\n\n\r");
+	UART_puts("Developers:\n\r- Diogo Fernandes\n\r@Universidade do Minho, May 2023\n\rFPGA accelerated TFR generator\n\r\n");
 	return 0;
 }
 

@@ -189,6 +189,21 @@ clean:
 flash: $(BIN_DIR)/$(TARGET).bin
 	@echo "$(GREEN)Flashing $< to STM32 on $(SERIAL_DEVICE)$(RESET)"
 	@$(STF) write $< 0x8000000
+	
+#######################################
+# openocd
+#######################################	
+openocd:
+	#@openocd $(OPENOCD_FLAGS)
+	@openocd -f /usr/share/openocd/scripts/interface/stlink-v2.cfg -f /usr/share/openocd/scripts/target/stm32f7x.cfg
+
+#######################################
+# debug setting
+#######################################	
+debug:
+	#@$(CROSS_COMPILE)gdb -ex "target extended-remote :3333" $(BUILD)/firmware.elf
+	@gdb-multiarch -ex "target extended-remote localhost:3333" $(BIN_DIR)/$(TARGET).elf
+
 
 #######################################
 # dependencies

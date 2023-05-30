@@ -39,12 +39,14 @@ extern SPI_HandleTypeDef hspi4;
 
 typedef struct __spi_comm_desc
 {
-  SPI_HandleTypeDef *hspi;
+  SPI_HandleTypeDef* hspi;
 
   GPIO_TypeDef* CS_port;
   uint16_t CS_pin;
 
 } spi_comm_desc;
+
+extern spi_comm_desc spi4_comm_desc;
 
 //uint8_t dev_num = 0;
 
@@ -54,7 +56,7 @@ void MX_SPI4_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
-extern void spi_read(spi_comm_desc *hspi_desc, uint8_t __reg_address, int byte_num, volatile uint8_t *_buff);
+extern void spi_read(spi_comm_desc *hspi_desc, uint8_t __reg_address, int byte_num, uint8_t *_buff);
 extern void spi_write(spi_comm_desc *hspi_desc, uint8_t __reg_address, uint8_t __val, uint8_t __size); 
 
 /* USER CODE END Prototypes */

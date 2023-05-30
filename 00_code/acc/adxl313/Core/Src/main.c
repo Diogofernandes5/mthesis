@@ -59,7 +59,7 @@ char last_valid_cmd[RX_BUFF_LEN] = {0};
 
 adxl313_dev *acc_ptr;
 
-static uint16_t x = 0, y = 0, z = 0; 
+static volatile uint16_t x = 0, y = 0, z = 0; 
 
 /* USER CODE END PV */
 
@@ -82,7 +82,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   char c;
-  char string[24];
+  char str[24];
 
   adxl313_dev acc_dev; // accelerometer
 
@@ -119,22 +119,16 @@ int main(void)
   UART_puts("\n\rType '?' for list of available commands\n\r");
   UART_puts("Type '? <cmd>' for more info on a given command\n\r");
 
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, (GPIO_PinState)GPIO_PIN_SET);
+  HAL_GPIO_WritePin(SPI4_CS_GPIO_Port, SPI4_CS_Pin, (GPIO_PinState)GPIO_PIN_SET);
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  { // initialization commands
-    exec_cmd("MO 1 1");
-    exec_cmd("WG sin 32");
-    exec_cmd("SP ms 1");
-    exec_cmd("S");
-  }
 
   acc_ptr = &acc_dev;
   // initialize accelerometer
-  begin(acc_ptr, ADXL313_SPI_COMM, ADXL313_4G_RANGE, ADXL313_13_BIT_RES, 3200);
+  begin(&acc_dev, ADXL313_SPI_COMM, ADXL313_4G_RANGE, ADXL313_13_BIT_RES, 3200);
 
   UART_putchar('>'); // print prompt
   Rx_UART_init(); // set USART3 interrupt
@@ -162,12 +156,25 @@ int main(void)
       Rx_UART_init(); // ready to begin reception
     }
 
-    if(acc_ptr->data_ready)
+    // if(acc_ptr->data_ready)
+    // {
+    //   acc_ptr->data_ready = false;
+    //   sprintf(string, "x:0x%X\ty:0x%X\tz:0x%X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
+    //   UART_puts(string);
+    // }
+
+    // if(data_ready(acc_ptr))
+    // {
+    //   UART_puts("Data ready.\n\r");
+    // };
+    if(HAL_GPIO_ReadPin(SPI4_INT1_GPIO_Port, SPI4_INT1_Pin))
     {
-      acc_ptr->data_ready = false;
-      sprintf(string, "x:0x%X\ty:0x%X\tz:0x%X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
-      UART_puts(string);
-    }
+      readAccel(acc_ptr, &x, &y, &z);
+      // UART_puts("interrupt! \t"); 
+      
+      // sprintf(str, "x:0x%X\ty:0x%X\tz:0x%X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
+      // UART_puts(str); 
+    };
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -234,10 +241,12 @@ void SystemClock_Config(void)
 // EXTI Line9 External Interrupt ISR Handler CallBackFun
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    if(GPIO_Pin == GPIO_PIN_4) // If The INT Source Is EXTI Line12 (A12 Pin)
-    {
-      readAccel(acc_ptr, &x, &y, &z);
-    }
+    // if(GPIO_Pin == SPI4_INT1_Pin) // If The INT Source Is EXTI Line12 (A12 Pin)
+    // {
+    //   UART_puts("ISR callback!\n\r");
+
+    //   readAccel(acc_ptr, &x, &y, &z);
+    // }
 }
 
 /* USER CODE END 4 */

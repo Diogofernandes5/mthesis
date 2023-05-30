@@ -44,5 +44,15 @@
  ********************************************/
 #define ADXL313_SOFT_RESET_WRITE		0x52
 
+/********************************************
+ * ADXL313 BITS POS
+ ********************************************/
+
+/* DATA_FORMAT REGISTER */
+#define ADXL313_DATA_FORMAT_SELF_TEST_B 7
+#define ADXL313_DATA_FORMAT_SPI_B       6
+#define ADXL313_DATA_FORMAT_INT_INV_B   5
+#define ADXL313_DATA_FORMAT_FULL_RES_B  3
+#define ADXL313_DATA_FORMAT_JUSTIFY_B   2
 
 #endif

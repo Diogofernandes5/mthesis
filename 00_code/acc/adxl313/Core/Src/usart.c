@@ -342,8 +342,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 //}
 
 /******************************************************************************
-@brief	 	 Sends a char by UART - Polling (Waits for UART_Tx to transmitt 
-							queued data
+@brief	 	 Sends a char by UART - Interrupt but waits for UART 
+							to be in READY state
 @param  	 Char to be transmitted
 ******************************************************************************/
 void UART_putchar(char ch)
@@ -356,8 +356,8 @@ void UART_putchar(char ch)
 }
 
 /******************************************************************************
-@brief	 	 Sends a string by UART - Polling (Waits for UART_Tx to transmitt 
-							queued data
+@brief	 	 Sends a string by UART - Interrupt but waits for UART 
+							to be in READY state
 @param  	 String to be transmitted
 ******************************************************************************/
 void UART_puts(const char *s)
