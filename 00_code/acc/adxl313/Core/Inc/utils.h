@@ -23,6 +23,39 @@ Defines and Macros
 
 //typedef enum comm_operation {write = 0, read};
 
+typedef enum {false, true} bool; 
+
+
+/******************************************************************************
+Inline Functions Declaration
+******************************************************************************/
+
+/**
+ * @brief   Mask an 8-bit register with mask
+ * 
+ * @param   __reg - register to be masked
+ * @param 	__mask - the mask
+ * 
+ * @retval	Register maked
+ * */
+inline uint8_t mask_reg(uint8_t __reg, uint8_t __mask)
+{
+	return (uint8_t)(__reg & __mask);
+}
+
+/**
+ * @brief   Constraint the value of __val between __min and __max
+ * 
+ * @param   __reg - register to be masked
+ * @param 	__mask - the mask
+ * 
+ * @retval	__val constrainted
+ * */
+inline int constrain(int __val, int __min, int __max)
+{
+	return (int)((__val < __min) ? __min : ((__val > __max) ? __max : __val));
+}
+
 /******************************************************************************
 Function Prototypes
 ******************************************************************************/

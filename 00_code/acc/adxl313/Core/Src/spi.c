@@ -123,51 +123,57 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
 spi_comm_desc spi4_comm_desc = {  &hspi4,
                                   SPI4_CS_GPIO_Port,
                                   SPI4_CS_Pin };
-
                                   
-/************************** WRITE TO SPI **************************/
-/*         Point to Destination; Write Value; Turn Off              */
+/**
+ * @brief   Write using SPI interface
+ * 
+ * @param   hspi_desc - spi comm descriptor
+ * @param   __reg_address - register address of the device
+ * @param   __val - value to write 
+ * @param   __size - size of __val
+ * */
 void spi_write(spi_comm_desc *hspi_desc, uint8_t __reg_address, uint8_t __val, uint8_t __size) 
 {
   // write single byte
-  //hspi_desc->send_cmd_and_addr(__reg_address, write, single);
-  uint8_t tx_buff[2] = {__reg_address, __val};
+  // uint8_t tx_buff[2] = {__reg_address, __val};
 
-  // CS low
+  /* CS low */
   HAL_GPIO_WritePin(hspi_desc->CS_port, hspi_desc->CS_pin, (GPIO_PinState)GPIO_PIN_RESET);
   
-  // _spiPort->transfer(__reg_address);
   // HAL_SPI_Transmit(hspi_desc->hspi, tx_buff, 2, 10);
-
-  // _spiPort->transfer(__reg_address);
   HAL_SPI_Transmit(hspi_desc->hspi, &__reg_address, 1, 100);
 
-  // _spiPort->transfer(__val);
   HAL_SPI_Transmit(hspi_desc->hspi, &__val, 1, 100);
 
-  // CS high
+  /* CS high */
   HAL_GPIO_WritePin(hspi_desc->CS_port, hspi_desc->CS_pin, (GPIO_PinState)GPIO_PIN_SET);
 }
 
-/*************************** READ FROM SPI **************************/
-/*                                                                  */
+/**
+ * @brief   Read using SPI interface
+ * 
+ * @param   hspi_desc - spi comm descriptor
+ * @param   __reg_address - register address of the device
+ * @param   byte_num - number of bytes to read
+ * @param   _buff - empty buffer to read
+ * */
 void spi_read(spi_comm_desc *hspi_desc, uint8_t __reg_address, int byte_num, uint8_t *_buff) 
 {
-  // Read: Most Sig Bit of Reg Address Set
+  /* Read: Most Sig Bit of Reg Address Set */
   uint8_t _address = 0x80 | __reg_address;
 
-  // If Multi-Byte Read: Bit 6 Set
+  /* If Multi-Byte Read: Bit 6 Set */
   if(byte_num > 1) 
     _address |= 0x40;
 
-  // CS low
+  /* CS low */
   HAL_GPIO_WritePin(hspi_desc->CS_port, hspi_desc->CS_pin, (GPIO_PinState)GPIO_PIN_RESET);
   
   HAL_SPI_Transmit(hspi_desc->hspi, &_address, 1, 10);
 
   HAL_SPI_Receive(hspi_desc->hspi, _buff, byte_num, 10);
 
-  // CS high
+  /* CS high */
   HAL_GPIO_WritePin(hspi_desc->CS_port, hspi_desc->CS_pin, (GPIO_PinState)GPIO_PIN_SET);
 }
 
