@@ -215,9 +215,9 @@ void read_accel(adxl313_dev *dev)
 	dev->y = (uint16_t)((comm_buff[3] << 8) | comm_buff[2]);
 	dev->z = (uint16_t)((comm_buff[5] << 8) | comm_buff[4]);
 
-	/* NOT HERE 
-		-> into the interrupt service routine of SPI_Receive() if using isr*/
-	dev->data_ready = true;
+	// /* NOT HERE 
+	// 	-> into the interrupt service routine of SPI_Receive() if using isr*/
+	// dev->data_ready = true;
 
 #ifdef __DEBUG
 	char str[24];

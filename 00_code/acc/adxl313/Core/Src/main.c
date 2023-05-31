@@ -156,24 +156,23 @@ int main(void)
       Rx_UART_init(); // ready to begin reception
     }
 
-    // if(acc_ptr->data_ready)
-    // {
-    //   acc_ptr->data_ready = false;
-    //   sprintf(string, "x:0x%X\ty:0x%X\tz:0x%X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
-    //   UART_puts(string);
-    // }
-
-    // if(data_ready(acc_ptr))
-    // {
-    //   UART_puts("Data ready.\n\r");
-    // };
-    if(HAL_GPIO_ReadPin(SPI4_INT1_GPIO_Port, SPI4_INT1_Pin))
+    if(acc_ptr->data_ready)
     {
+      acc_ptr->data_ready = false;
+
       read_accel(acc_ptr);
       
       sprintf(str, "x:0x%4X\ty:0x%4X\tz:0x%4X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
       UART_puts(str); 
-    };
+    }
+
+    // if(HAL_GPIO_ReadPin(SPI4_INT1_GPIO_Port, SPI4_INT1_Pin))
+    // {
+    //   read_accel(acc_ptr);
+      
+    //   sprintf(str, "x:0x%4X\ty:0x%4X\tz:0x%4X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
+    //   UART_puts(str); 
+    // };
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -237,15 +236,13 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-// EXTI Line9 External Interrupt ISR Handler CallBackFun
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    // if(GPIO_Pin == SPI4_INT1_Pin) // If The INT Source Is EXTI Line12 (A12 Pin)
-    // {
-    //   UART_puts("ISR callback!\n\r");
-
-    //   readAccel(acc_ptr, &x, &y, &z);
-    // }
+    /* If The INT Source Is EXTI Line3 (PE3 Pin) */
+    if(GPIO_Pin == SPI4_INT1_Pin)
+    {
+      acc_ptr->data_ready = true;
+    }
 }
 
 /* USER CODE END 4 */
