@@ -44,14 +44,32 @@ Defines and macros
 #define ADXL313_ODR_MSK				0xF
 #define ADXL313_ODR_OFFSET 			0x6 		// offset ODR register
 
- /********************** FIFO MODE OPTIONS ***************************/
+/********************** FIFO MODE OPTIONS ***************************/
 #define ADXL313_FIFO_MODE_BYPASS	0x00
 #define ADXL313_FIFO_MODE_FIFO		0x01
 #define ADXL313_FIFO_MODE_STREAM	0x02
 #define ADXL313_FIFO_MODE_TRIGGER	0x03
 
+#define ADXL313_RANDOM_FACTOR		1
+
+/* Full Resolution any g range - 1024 LSB/g */
+#define ADXL313_FULL_RES_SCALE_FACTOR				(double)(0.000976562 * ADXL313_RANDOM_FACTOR)
+/* Full Resolution +/-0.5g range - 1024 LSB/g */
+#define ADXL313_10_BIT_05G_SCALE_FACTOR				(double)(0.000976562 * ADXL313_RANDOM_FACTOR)
+/* Full Resolution +/-1g range - 512 LSB/g */
+#define ADXL313_10_BIT_1G_SCALE_FACTOR				(double)(0.001953125 * ADXL313_RANDOM_FACTOR)
+/* Full Resolution +/-2g range - 256 LSB/g */
+#define ADXL313_10_BIT_2G_SCALE_FACTOR				(double)(0.00390625 * ADXL313_RANDOM_FACTOR)
+/* Full Resolution +/-4g range - 128 LSB/g */
+#define ADXL313_10_BIT_4G_SCALE_FACTOR				(double)(0.0078125 * ADXL313_RANDOM_FACTOR)
+
+#define ADXL313_10_BIT_RES_MASK		0x03FF
+#define ADXL313_11_BIT_RES_MASK		0x07FF
+#define ADXL313_12_BIT_RES_MASK		0x0FFF
+#define ADXL313_13_BIT_RES_MASK		0x1FFF
+
 /******************************************************************************
-Dsata structures
+Data structures
 ******************************************************************************/
 /**
  * @enum adxl313_status
@@ -78,7 +96,8 @@ enum adxl313_error
  * @enum adxl313_comm_type
  * @brief Enum for communication type.
  */
-enum adxl313_comm_type {
+enum adxl313_comm_type 
+{
 	ADXL313_SPI_COMM = 0,
 	ADXL313_I2C_COMM = 1
 };
@@ -87,7 +106,8 @@ enum adxl313_comm_type {
  * @enum adxl313_op_mode
  * @brief Enum for operating mode.
  */
-enum adxl313_op_mode {
+enum adxl313_op_mode 
+{
 	ADXL313_STDBY = 0,
 	ADXL313_MEAS = 1
 };
@@ -96,7 +116,8 @@ enum adxl313_op_mode {
  * @enum adxl313_range
  * @brief Enum for selecting range.
  */
-enum adxl313_range {
+enum adxl313_range 
+{
 	ADXL313_0_5G_RANGE = 0,
 	ADXL313_1G_RANGE = 1,
 	ADXL313_2G_RANGE = 2,
@@ -105,20 +126,26 @@ enum adxl313_range {
 
 /**
  * @enum adxl313_resolution
- * @brief Enum for specifying resolution.
+ * @brief Enum for specifying resolution:
+ * 			- (0) default resolution 10-bit
+ * 			- (1) full resolution:
+ * 				- 10-bit for 0.5g range
+ * 				- 11-bit for 1g range
+ * 				- 12-bit for 2g range
+ * 				- 13-bit for 4g range
  */
-enum adxl313_resolution {
-	ADXL313_10_BIT_RES = 0,
-	ADXL313_11_BIT_RES = 1,
-	ADXL313_12_BIT_RES = 2,
-	ADXL313_13_BIT_RES = 3
+enum adxl313_resolution 
+{
+	ADXL313_DEFAULT_RES = 0,
+	ADXL313_FULL_RES = 1
 };
 
 /**
  * @enum adxl313_axis
  * @brief Enum for accelerometer axis.
  */
-enum adxl313_axis {
+enum adxl313_axis 
+{
 	ADXL313_X_AXIS = 0,
 	ADXL313_Y_AXIS = 1,
 	ADXL313_Z_AXIS = 2
@@ -156,13 +183,15 @@ typedef struct __adxl313_dev
 	/** User-set offset adjustments  on the Z axis in twos complement
 	 * format with a scale factor depending on device */
 	uint8_t z_offset_raw;
-	/** Scale factor multiplier for data conversion to m/s^2 */
-	int64_t scale_factor_mult;
+
+	/** Scale factor multiplier for data conversion to g */
+	double scale_factor_mult;
 
 	// /** Buffer used for communication with ADXL313 */
 	// volatile uint8_t comm_buff[8];
 
-	volatile int16_t x, y, z; // x, y, and z axis readings of the accelerometer
+	/* x, y, and z axis readings of the accelerometer */
+	double x, y, z; 
 
 	/** Device Communication type: ADXL313_SPI_COMM, ADXL313_I2C_COMM */
 	enum adxl313_comm_type comm_type;
@@ -203,7 +232,7 @@ extern bool data_ready(adxl313_dev *dev);
 //			0 - Communication failure
 extern void update_int_source_status(adxl313_dev *dev);
 
-extern void set_data_format(adxl313_dev *dev, enum adxl313_range range);
+extern void set_data_format(adxl313_dev *dev, enum adxl313_range range, enum adxl313_resolution resolution);
  
 extern void measure_mode_on(adxl313_dev *dev);
  

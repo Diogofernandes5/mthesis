@@ -9,11 +9,25 @@
 Defines and macros
 ******************************************************************************/
 
-#define ADXL313_TO_READ (6)      // Number of Bytes Read - Two Bytes Per Axis
-
 // #define __DEBUG
+#define __DEBUG_CONFIG
+
+/* Number of Bytes Read - Two Bytes Per Axis */
+#define ADXL313_TO_READ (6)
 
 double gains[3] = {0.00376390, 0.00376009, 0.00349265};				// Counts to Gs
+
+/* Scale factors to convert from hexadecimal to g */
+double scale_factors[5] = {ADXL313_10_BIT_05G_SCALE_FACTOR, ADXL313_10_BIT_1G_SCALE_FACTOR,
+							ADXL313_10_BIT_2G_SCALE_FACTOR, ADXL313_10_BIT_4G_SCALE_FACTOR, 
+							ADXL313_FULL_RES_SCALE_FACTOR };
+
+/* Used to mask the raw value of the sensor - 10, 11, 12 and 13 bit */
+uint16_t reg_masks[4] = {ADXL313_10_BIT_RES_MASK, ADXL313_11_BIT_RES_MASK, 
+							ADXL313_12_BIT_RES_MASK, ADXL313_13_BIT_RES_MASK};
+
+/* n-Bits resolutions possibles */
+uint8_t resolutions[4] = {10, 11, 12, 13};
 
 /******************************************************************************
 Function Prototypes
@@ -34,7 +48,7 @@ Function Definitions
  * @param   dev - device structure
  * @param 	comm_type - type of comm (SPI/ I2C)
  * @param 	range - range of the readings (0,5/ 1/ 2/ 4)
- * @param 	resolution - number of bits resolution 
+ * @param 	resolution - default or full_res 
  * @param 	odr - output data ratio
  * 
  * @retval	success
@@ -57,6 +71,7 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 	dev->resolution = resolution;
 	dev->odr = odr;
 	dev->spi_desc = &spi4_comm_desc;
+	dev->scale_factor_mult = scale_factors[((1 << 2)*resolution) | ((~resolution & 0x1) * range)];
 	dev->error_code = ADXL313_NO_ERROR;
 	dev->status = ADXL313_OK;
 	dev->data_ready = false;
@@ -64,20 +79,28 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 	/* Reset registers values */
 	soft_reset(dev);
 
-#ifdef __DEBUG
+#ifdef __DEBUG_CONFIG
 	uint8_t data_format, int_enable, power_ctl;
-	char str[24];
+	char str[64];
+	uint8_t pos_aux = dev->resolution * dev->range;
+
+	sprintf(str, "scale_factor[%d] = %1.9f; reg_masks[%d] = %X \n\r", 
+		(uint8_t)((1 << 2)*resolution) | ((~resolution & 0x1) * range), 
+		scale_factors[((1 << 2)*resolution) | ((~resolution & 0x1) * range)],
+		pos_aux, reg_masks[pos_aux]);
+	UART_puts(str);	
 
 	spi_read(dev->spi_desc, ADXL313_DATA_FORMAT, 1, &data_format);
 	spi_read(dev->spi_desc, ADXL313_INT_ENABLE, 1, &int_enable);
 	spi_read(dev->spi_desc, ADXL313_POWER_CTL, 1, &power_ctl);
 
-	sprintf(str, "0x%X;0x%X;0x%X\n\r", data_format, int_enable, power_ctl);
+	sprintf(str, "data_format = 0x%X; int_enable = 0x%X; power_ctl = 0x%X\n\r", 
+		data_format, int_enable, power_ctl);
 	UART_puts(str);	
-#endif /*__DEBUG */
+#endif /*__DEBUG_CONFIG */
 
 	/* DATA_FORMAT */
-	set_data_format(dev, ADXL313_4G_RANGE);
+	set_data_format(dev, range, resolution);
 	
 	/* Set DATA_READY interrupt - INT_ENABLE*/
 	set_int(dev, ADXL313_INT_DATA_READY_BIT, true);
@@ -85,20 +108,21 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 	/* Start mesuring - POWER_CTL*/
 	measure_mode_on(dev);
 
-#ifdef __DEBUG
+#ifdef __DEBUG_CONFIG
 	spi_read(dev->spi_desc, ADXL313_DATA_FORMAT, 1, &data_format); /* 0x0B */
 	spi_read(dev->spi_desc, ADXL313_INT_ENABLE, 1, &int_enable); /* 0x80 */
 	spi_read(dev->spi_desc, ADXL313_POWER_CTL, 1, &power_ctl); /* 0x08 */
 
-	sprintf(str, "0x%X;0x%X;0x%X\n\r", data_format, int_enable, power_ctl);
+	sprintf(str, "data_format = 0x%X; int_enable = 0x%X; power_ctl = 0x%X\n\r", 
+		data_format, int_enable, power_ctl);
 	UART_puts(str);	
 
 	uint8_t _b;
 	spi_read(dev->spi_desc, ADXL313_PARTID, 1, &_b);
 
-	sprintf(str, "0x%X\n\r", _b);
+	sprintf(str, "part_id = 0x%X\n\r", _b);
 	UART_puts(str);	
-#endif /*__DEBUG */
+#endif /*__DEBUG_CONFIG */
 
 	return (true);
 }
@@ -188,13 +212,14 @@ void soft_reset(adxl313_dev *dev)
 /**
  * @brief   Set DATA_FORMAT (0x31) to 0x0B:
  * 				~self-test, 4-wire SPI mode,
- * 				interrupt active high, full res.
- * 				justify 0 (LSB), +/- 4g range 
+ * 				interrupt active high, ~default_res/full_res
+ * 				justify 0 (LSB) 
  * @param   dev - device to send	
  * */
-void set_data_format(adxl313_dev *dev, enum adxl313_range range)
+void set_data_format(adxl313_dev *dev, enum adxl313_range range, 
+						enum adxl313_resolution resolution)
 {/* CORRECT THIS -------------------------------------------------------------------------------*/
-	char _b = (1 << ADXL313_DATA_FORMAT_FULL_RES_B) | range; 
+	char _b = (resolution << ADXL313_DATA_FORMAT_FULL_RES_B) | range; 
 	spi_write(dev->spi_desc, ADXL313_DATA_FORMAT, _b, 1);
 }
 
@@ -206,23 +231,27 @@ void set_data_format(adxl313_dev *dev, enum adxl313_range range)
 void read_accel(adxl313_dev *dev) 
 {
 	uint8_t comm_buff[6] = {0};
+	uint8_t pos_aux = dev->resolution * dev->range;
+
+#ifdef __DEBUG
+	char str[80];
+	sprintf(str, "scale_factor = %lf\n\r reg_masks = %X\n\r resolutions = %d\n\r", dev->scale_factor_mult, reg_masks[pos_aux], resolutions[pos_aux]);
+	UART_puts(str);
+#endif
 
 	/* Read x, y and z axis (6 bytes) */
 	spi_read(dev->spi_desc, ADXL313_DATA_X0, ADXL313_TO_READ, comm_buff);
 
-	// Each Axis @ All g Ranges: 10 Bit Resolution (2 Bytes)
-	dev->x = (uint16_t)((comm_buff[1] << 8) | comm_buff[0]);
-	dev->y = (uint16_t)((comm_buff[3] << 8) | comm_buff[2]);
-	dev->z = (uint16_t)((comm_buff[5] << 8) | comm_buff[4]);
-
-	// /* NOT HERE 
-	// 	-> into the interrupt service routine of SPI_Receive() if using isr*/
-	// dev->data_ready = true;
+	/* Each Axis @ All g Ranges: 2 Bytes */
+	dev->x = (double)(twos_complement((uint16_t)((comm_buff[1] << 8) | comm_buff[0]) & reg_masks[pos_aux], 
+					resolutions[pos_aux]) * dev->scale_factor_mult);
+	dev->y = (double)(twos_complement((uint16_t)((comm_buff[3] << 8) | comm_buff[2]) & reg_masks[pos_aux], 
+				resolutions[pos_aux]) * dev->scale_factor_mult);
+	dev->z = (double)(twos_complement((uint16_t)((comm_buff[5] << 8) | comm_buff[4]) & reg_masks[pos_aux], 
+				resolutions[pos_aux]) * dev->scale_factor_mult);
 
 #ifdef __DEBUG
-	char str[24];
-	
-	sprintf(str, "0x%4X;0x%4X\n\r", *x, *y);
+	sprintf(str, "0x%2.4f;0x%2.4f;0x%2.4f\n\r", dev->x, dev->y, dev->z);
 	UART_puts(str);
 #endif /* __DEBUG */
 }

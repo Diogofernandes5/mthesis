@@ -21,3 +21,13 @@ int my_atoi(const char *str)
 	}
 	return (int)strtol(str, NULL, 16); // convert string str (representing a hexadecimal value) into an integer number - 16 (hexadecimal)
 }
+
+int twos_complement(uint16_t value, int bits)
+{
+    int val = (int) value;
+
+    if (val & (1 << (bits-1)))
+        val -= 1 << bits;
+
+    return val;
+}

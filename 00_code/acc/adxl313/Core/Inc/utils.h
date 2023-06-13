@@ -59,4 +59,7 @@ Function Prototypes
 
 extern int my_atoi(const char *str);
 
+extern int twos_complement(uint16_t value, int bits);
+
+
 #endif // !__UTILS_H__
