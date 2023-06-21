@@ -96,7 +96,9 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 
 	sprintf(str, "data_format = 0x%X; int_enable = 0x%X; power_ctl = 0x%X\n\r", 
 		data_format, int_enable, power_ctl);
-	UART_puts(str);	
+
+	UART_puts(str);		
+	
 #endif /*__DEBUG_CONFIG */
 
 	/* DATA_FORMAT */
@@ -119,9 +121,14 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 
 	uint8_t _b;
 	spi_read(dev->spi_desc, ADXL313_PARTID, 1, &_b);
-
 	sprintf(str, "part_id = 0x%X\n\r", _b);
 	UART_puts(str);	
+
+	uint8_t x,y,z;
+	get_axis_offset(dev, &x,&y,&z);
+	sprintf(str, "get_axis_offset: x:0x%X z:0x%X\n\r", x,z);
+	UART_puts(str);
+
 #endif /*__DEBUG_CONFIG */
 
 	return (true);
@@ -515,16 +522,22 @@ void get_axis_gains(adxl313_dev *dev, double *_gains)
 
 /**
  * @brief   Set axis offset for each axis in 2-complement format
- * 				Scale Factor of 15.6mg/LSB
+ * 				3.9 mg/LSB
  * 
  * @param   dev - device
- * @param 	x, y, z - offset for each axis
+ * @param 	x, y, z - offset for each axis in ug
  * */
-void set_axis_offset(adxl313_dev *dev, const uint8_t x, const uint8_t y, const uint8_t z) 
+void set_axis_offset(adxl313_dev *dev, const int x_ug, const int y_ug, const int z_ug) 
 {
-	spi_write(dev->spi_desc, ADXL313_OFSX, (uint8_t)x, 1);
-	spi_write(dev->spi_desc, ADXL313_OFSY, (uint8_t)y, 1);
-	spi_write(dev->spi_desc, ADXL313_OFSZ, (uint8_t)z, 1);
+	int32_t offset_x = 0, offset_y = 0, offset_z = 0;
+
+	offset_x = (x_ug / ADXL313_OFFSET_SCALE_FACTOR);
+	offset_y = (y_ug / ADXL313_OFFSET_SCALE_FACTOR);
+	offset_z = (z_ug / ADXL313_OFFSET_SCALE_FACTOR);
+
+	spi_write(dev->spi_desc, ADXL313_OFSX, (uint8_t) offset_x, 1);
+	spi_write(dev->spi_desc, ADXL313_OFSY, (uint8_t) offset_y, 1);
+	spi_write(dev->spi_desc, ADXL313_OFSZ, (uint8_t) offset_z, 1);
 }
 
 /**

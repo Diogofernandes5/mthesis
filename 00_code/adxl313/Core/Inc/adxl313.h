@@ -8,49 +8,49 @@
 /******************************************************************************
 Defines and macros
 ******************************************************************************/
-#define ADXL313_I2C_ADDRESS_DEFAULT 		0x1D
-#define ADXL313_I2C_ADDRESS_ALT 			0x53
+#define ADXL313_I2C_ADDRESS_DEFAULT 				0x1D
+#define ADXL313_I2C_ADDRESS_ALT 					0x53
 
  /************************** INTERRUPT PINS **************************/ 
-#define ADXL313_INT1_PIN		0x00		//INT1: 0
-#define ADXL313_INT2_PIN		0x01		//INT2: 1
+#define ADXL313_INT1_PIN							0x00
+#define ADXL313_INT2_PIN							0x01
 
  /********************** INTERRUPT BIT POSITION **********************/
-#define ADXL313_INT_DATA_READY_BIT			0x07
-#define ADXL313_INT_ACTIVITY_BIT			0x04
-#define ADXL313_INT_INACTIVITY_BIT			0x03
-#define ADXL313_INT_WATERMARK_BIT			0x01
-#define ADXL313_INT_OVERRUN_BIT				0x00
+#define ADXL313_INT_DATA_READY_BIT					0x07
+#define ADXL313_INT_ACTIVITY_BIT					0x04
+#define ADXL313_INT_INACTIVITY_BIT					0x03
+#define ADXL313_INT_WATERMARK_BIT					0x01
+#define ADXL313_INT_OVERRUN_BIT						0x00
 
  /********************** POWER_CTL BIT POSITION **********************/
-#define ADXL313_I2C_DISABLE_BIT			0x06
-#define ADXL313_LINK_BIT				0x05
-#define ADXL313_AUTOSLEEP_BIT			0x04
-#define ADXL313_MEASURE_BIT				0x03
-#define ADXL313_SLEEP_BIT				0x02
+#define ADXL313_I2C_DISABLE_BIT						0x06
+#define ADXL313_LINK_BIT							0x05
+#define ADXL313_AUTOSLEEP_BIT						0x04
+#define ADXL313_MEASURE_BIT							0x03
+#define ADXL313_SLEEP_BIT							0x02
 
  /********************** OUTPUT DATA RATIO (HZ) *******************/
-#define ADXL313_ODR_3200			0xF			// 1111		IDD = 170uA
-#define ADXL313_ODR_1600			0xE			// 1110		IDD = 115uA
-#define ADXL313_ODR_800				0xD			// 1101		IDD = 170uA
-#define ADXL313_ODR_400				0xC			// 1100		IDD = 170uA (115 low power)
-#define ADXL313_ODR_200				0xB			// 1011		IDD = 170uA (82 low power)
-#define ADXL313_ODR_100				0xA			// 1010		IDD = 170uA (64 in low power)
-#define ADXL313_ODR_50				0x9			// 1001		IDD = 115uA (57 in low power)
-#define ADXL313_ODR_25			  	0x8			// 1000		IDD = 82uA (50 in low power)
-#define ADXL313_ODR_12_5			0x7			// 0111		IDD = 65uA (43 in low power)
-#define ADXL313_ODR_6_25			0x6			// 0110		IDD = 57uA
+#define ADXL313_ODR_3200							0xF			// IDD = 170uA
+#define ADXL313_ODR_1600							0xE			// IDD = 115uA
+#define ADXL313_ODR_800								0xD			// IDD = 170uA
+#define ADXL313_ODR_400								0xC			// IDD = 170uA (115 low power)
+#define ADXL313_ODR_200								0xB			// IDD = 170uA (82 low power)
+#define ADXL313_ODR_100								0xA			// IDD = 170uA (64 in low power)
+#define ADXL313_ODR_50								0x9			// IDD = 115uA (57 in low power)
+#define ADXL313_ODR_25			  					0x8			// IDD = 82uA (50 in low power)
+#define ADXL313_ODR_12_5							0x7			// IDD = 65uA (43 in low power)
+#define ADXL313_ODR_6_25							0x6			// IDD = 57uA
 
-#define ADXL313_ODR_MSK				0xF
-#define ADXL313_ODR_OFFSET 			0x6 		// offset ODR register
+#define ADXL313_ODR_MSK								0xF
+#define ADXL313_ODR_OFFSET 							0x6 
 
 /********************** FIFO MODE OPTIONS ***************************/
-#define ADXL313_FIFO_MODE_BYPASS	0x00
-#define ADXL313_FIFO_MODE_FIFO		0x01
-#define ADXL313_FIFO_MODE_STREAM	0x02
-#define ADXL313_FIFO_MODE_TRIGGER	0x03
+#define ADXL313_FIFO_MODE_BYPASS					0x00
+#define ADXL313_FIFO_MODE_FIFO						0x01
+#define ADXL313_FIFO_MODE_STREAM					0x02
+#define ADXL313_FIFO_MODE_TRIGGER					0x03
 
-#define ADXL313_RANDOM_FACTOR		1
+#define ADXL313_RANDOM_FACTOR						1
 
 /* Full Resolution any g range - 1024 LSB/g */
 #define ADXL313_FULL_RES_SCALE_FACTOR				(double)(0.000976562 * ADXL313_RANDOM_FACTOR)
@@ -63,10 +63,12 @@ Defines and macros
 /* Full Resolution +/-4g range - 128 LSB/g */
 #define ADXL313_10_BIT_4G_SCALE_FACTOR				(double)(0.0078125 * ADXL313_RANDOM_FACTOR)
 
-#define ADXL313_10_BIT_RES_MASK		0x03FF
-#define ADXL313_11_BIT_RES_MASK		0x07FF
-#define ADXL313_12_BIT_RES_MASK		0x0FFF
-#define ADXL313_13_BIT_RES_MASK		0x1FFF
+#define ADXL313_10_BIT_RES_MASK						0x03FF
+#define ADXL313_11_BIT_RES_MASK						0x07FF
+#define ADXL313_12_BIT_RES_MASK						0x0FFF
+#define ADXL313_13_BIT_RES_MASK						0x1FFF
+
+#define ADXL313_OFFSET_SCALE_FACTOR					3930
 
 /******************************************************************************
 Data structures
@@ -77,8 +79,8 @@ Data structures
  */
 enum adxl313_status
 {
-	ADXL313_ERROR = 0,		// Error Exists
-	ADXL313_OK = 1				// No Error
+	ADXL313_ERROR = 0,	
+	ADXL313_OK = 1
 };
 
 /**
@@ -217,19 +219,8 @@ extern bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type,
  									enum adxl313_range range, enum adxl313_resolution resolution, 
  									uint16_t odr);
 
-// dataReady() -- REads the entire INT_Source register, and checks the DATA_READY bit
-// to see if new data is available.
-// **Note, this will also clear any other INT source bits.
-// If you need to know the other int source bits, then use updateIntSourceStatuses()
-// Output:	1 - New data available
-//					0 - No new data available
 extern bool data_ready(adxl313_dev *dev);
 
-// updateIntSourceStatuses() -- Reads the entire INT_Source register, 
-// and stores all of the int statuses in class variables.
-// note, this will clear all INT source bits.
-// Output:	1 - function completed
-//			0 - Communication failure
 extern void update_int_source_status(adxl313_dev *dev);
 
 extern void set_data_format(adxl313_dev *dev, enum adxl313_range range, enum adxl313_resolution resolution);
@@ -279,7 +270,7 @@ extern void clear_fifo(adxl313_dev *dev);
  
 extern void set_axis_gains(adxl313_dev *dev, const double *_gains);
 extern void get_axis_gains(adxl313_dev *dev, double *_gains);
-extern void set_axis_offset(adxl313_dev *dev, const uint8_t x, const uint8_t y, const uint8_t z);
+extern void set_axis_offset(adxl313_dev *dev, const int x, const int y, const int z);
 extern void get_axis_offset(adxl313_dev *dev, uint8_t* x, uint8_t* y, uint8_t*z);
 extern void set_activity_threshold(adxl313_dev *dev, int activityThreshold);
 extern uint8_t get_activity_threshold(adxl313_dev *dev);

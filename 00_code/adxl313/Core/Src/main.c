@@ -57,9 +57,7 @@
 /* USER CODE BEGIN PV */
 char last_valid_cmd[RX_BUFF_LEN] = {0};
 
-adxl313_dev *acc_ptr;
-
-static volatile uint16_t x = 0, y = 0, z = 0; 
+static adxl313_dev *acc_ptr;
 
 /* USER CODE END PV */
 
@@ -127,14 +125,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
   /* Initialize accelerometer */
-  begin(&acc_dev, ADXL313_SPI_COMM, ADXL313_2G_RANGE, ADXL313_FULL_RES, 3200);
+  begin(&acc_dev, ADXL313_SPI_COMM, ADXL313_4G_RANGE, ADXL313_FULL_RES, 3200);
   acc_ptr = &acc_dev;   
 
   UART_putchar('>'); // print prompt
   Rx_UART_init(); // set USART3 interrupt
-
-  // int64_t scale_factor = (double)(ADXL313_ACC_SCALE_FACTOR_MUL_FULL_RES / ADXL313_ACC_SCALE_FACTOR_MUL_DIVIDER);
-  // double final_factor = 2 * (scale_factor) / (ADXL313_ACC_SCALE_FACTOR_DIV * 9.98);
   
   while (1)
   {
@@ -165,21 +160,10 @@ int main(void)
 
       read_accel(acc_ptr);
       
-      // sprintf(str, "x:0x%4X\ty:0x%4X\tz:0x%4X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
-      sprintf(str, "x:%f \t y:%f \t z:%f \n\r", twos_complement(acc_ptr->x,13)*0.001953125, twos_complement(acc_ptr->y,13)*0.001953125, acc_ptr->z*ADXL313_FULL_RES_SCALE_FACTOR);
-      // sprintf(str, "x:%f \t y:%f \t z:%f \n\r", acc_ptr->x*0.001953125, acc_ptr->y*0.001953125, acc_ptr->z*0.000976562*2);
-
       sprintf(str, "x:%1.4f \t y:%1.4f \t z:%1.4f \n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
       UART_puts(str); 
     }
 
-    // if(HAL_GPIO_ReadPin(SPI4_INT1_GPIO_Port, SPI4_INT1_Pin))
-    // {
-    //   read_accel(acc_ptr);
-      
-    //   sprintf(str, "x:0x%4X\ty:0x%4X\tz:0x%4X\n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
-    //   UART_puts(str); 
-    // };
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
