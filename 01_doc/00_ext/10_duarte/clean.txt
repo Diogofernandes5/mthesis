@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TO_BE_DEL="$1"
+IFS=""
+
+while read -r file ; do
+  rm -rf $file
+done < ".gitignore"

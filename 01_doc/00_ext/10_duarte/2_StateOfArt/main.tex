@@ -1,0 +1,76 @@
+%!TEX root = ../main.tex
+
+\chapter{State of the Art} % (fold)
+\label{cha:state_of_the_art}
+
+%************************************
+% 1.1 Performance Metrics
+% 1.2 FPGA-based TDC Architectures
+%************************************
+
+This chapter presents a review of the state-of-the-art, of \gls{ToF} measurements using \gls{FPGA}-based platforms. Unlike \gls{ASIC} implementations, which do not have architectural limitations are imposed, \gls{FPGA} implementations are beforehand restricted by the available cells.
+
+In the literature, there is not a consistent \gls{FPGA}-based \gls{TDC} architecture categorization. Some publications use the circuit topology to classify the implemented \gls{TDC}, while others use the principle of operation. To address this lack of convention, \citet{machado_ov} proposed a standardized taxonomy. This taxonomy categorize \gls{TDC} architectures based on their characteristics and topologies. Whenever there are changes to the main architecture in a research work, subcategories were created. This taxonomy does not include gray code \gls{TDC} architecture, as it was not considered relevant at the time of publication. The proposed taxonomy with addiction of gray code architecture is illustrated in figure \ref{fig:taxonomy}. The coarse counters group includes all the systems that have resolutions defined by the system clock period. The phased clocks group includes architectures that use multiple clocks with phase relationships. The \gls{TDL} group includes all \gls{TDC} architectures that use the intrinsic propagation delay of the \gls{FPGA} cells as the interpolation element. The differential group includes all \gls{TDC} architectures where the resolution is given by the difference between two elements. The pulse shrinking group included architectures that use the \gls{FPGA} cells' rise and fall time discrepancies to build a delay-line loop that reduces the pulse duration at each loop cycle. Finally, the gray code group includes all \gls{TDC} architectures that implement a gray code sequence where there is only a single bit transition between two consecutive states.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{img/02_StateofArt/taxonomy.png}
+	\caption{FPGA-based TDC architectures (based in \citep{machado_ov}).}
+	\label{fig:taxonomy}
+\end{figure}
+
+This chapter is structured as follows: in section~\ref{sec:performance_metrics}, the main performance metrics used to evaluate \gls{TDC} devices are described. In section~\ref{sec:fpga_based_tdc_architectures}, the most popular \gls{FPGA}-based \gls{TDC} designs are presented, along with their principles of operation, advantages, and disadvantages. In section~\ref{sec:self_calibration_mechanisms}, self-calibration mechanisms that can be used to compensate for \gls{PVT} variations in both \gls{FPGA} and \gls{ASIC}-based platforms are discussed. Finally, in section~\ref{sec:conclusion}, gaps in the current state-of-the-art are identified and potential research directions are suggested.
+
+\section{Performance Metrics} % (fold)
+\label{sec:performance_metrics}
+
+\input{2_StateOfArt/metrics.tex}
+
+% section performance_metrics (end)
+
+\section{FPGA-based TDC Architectures} % (fold)
+\label{sec:fpga_based_tdc_architectures}
+
+\input{2_StateOfArt/architectures}
+
+% section fpga_based_tdc_architectures (end)
+
+\section{Self Calibration Mechanisms} % (fold)
+\label{sec:self_calibration_mechanisms}
+
+\input{2_StateOfArt/calibration}
+
+% section self_calibration_mechanisms (end)
+
+\section{Conclusion} % (fold)
+\label{sec:conclusion}
+
+\input{2_StateOfArt/conclusion}
+
+% section conclusion (end)
+
+% chapter state_of_the_art (end)
+
+
+
+
+
+% \begin{figure}[ht!]
+%     \centering
+%     \begin{minipage}[c]{.5\textwidth}
+%       \centering
+%       \includegraphics[width=0.7\textwidth]{img/02_StateofArt/gray_code_rui.png}
+%     \end{minipage}%
+%     \begin{minipage}[c]{.5\textwidth}
+%       \centering
+%       \includegraphics[width=\textwidth]{img/02_StateofArt/gray_code_rui_bd.png} \\
+%     \end{minipage}
+%     \begin{minipage}{.5\textwidth}
+%       \subcaption{\label{fig:gray_code_rui_datapath}}
+%     \end{minipage}%
+%     \begin{minipage}{.5\textwidth}
+%       \subcaption{\label{fig:gray_code_rui_bd}}%
+%     \end{minipage}
+%     \caption{Two images}%
+%     \label{fig:gray_code_rui}%
+% \end{figure}

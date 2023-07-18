@@ -22,6 +22,7 @@
 #include "adc.h"
 #include "dac.h"
 #include "dma.h"
+#include "i2s.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -33,8 +34,8 @@
 #include "commands.h"
 #include "interface.h" // print startup message
 #include "adxl313.h"
+#include "ics43434.h"
 
-//#include "adxl313.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,6 +71,25 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    /* If The INT Source Is EXTI Line3 (PE3 Pin) */
+    if(GPIO_Pin == SPI4_INT1_Pin)
+    {
+      acc_ptr->data_ready = true;
+    }
+}
+
+void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
+{
+  UART_puts("Half Full\n\r");
+}
+
+void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
+{
+  UART_puts("Completed \n\r");
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -81,8 +101,12 @@ int main(void)
   /* USER CODE BEGIN 1 */
   char c;
   char str[64];
+  int err;
 
-  adxl313_dev acc_dev; // accelerometer
+  adxl313_dev   acc_dev;  // accelerometer
+  ics43434_dev  mic_dev;  // microphone
+
+  // uint16_t i2s_dma_buff[I2S_DMA_BUF_LEN] = {0};
 
   /* USER CODE END 1 */
 
@@ -111,6 +135,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM6_Init();
   MX_SPI4_Init();
+  MX_I2S3_Init();
   /* USER CODE BEGIN 2 */
   // print startup message
   ver_cb(1, NULL);
@@ -125,12 +150,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
   /* Initialize accelerometer */
-  begin(&acc_dev, ADXL313_SPI_COMM, ADXL313_4G_RANGE, ADXL313_FULL_RES, 3200);
-  acc_ptr = &acc_dev;   
+  // adxl313_begin(&acc_dev, ADXL313_SPI_COMM, ADXL313_4G_RANGE, ADXL313_FULL_RES, 3200);
+  // acc_ptr = &acc_dev; 
 
   UART_putchar('>'); // print prompt
   Rx_UART_init(); // set USART3 interrupt
-  
+
+  err = ics43434_begin(&mic_dev, &hi2s3);
+  if(err)
+  {
+    UART_puts(hal_error_print[err++]);
+  }
+    
   while (1)
   {
     if(Rx_flag)
@@ -158,7 +189,7 @@ int main(void)
     {
       acc_ptr->data_ready = false;
 
-      read_accel(acc_ptr);
+      adxl313_read_accel(acc_ptr);
       
       sprintf(str, "x:%1.4f \t y:%1.4f \t z:%1.4f \n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
       UART_puts(str); 
@@ -227,14 +258,6 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-    /* If The INT Source Is EXTI Line3 (PE3 Pin) */
-    if(GPIO_Pin == SPI4_INT1_Pin)
-    {
-      acc_ptr->data_ready = true;
-    }
-}
 
 /* USER CODE END 4 */
 

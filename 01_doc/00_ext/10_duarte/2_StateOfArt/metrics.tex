@@ -1,0 +1,58 @@
+%!TEX root = ../main.tex
+
+Before analyzing and starting any discussion on the \gls{FPGA}-based \gls{TDC} state-of-the-art, it is crucial to identify and understand the key metrics used to characterize them, to properly evaluate their performance. These metrics will help to understand the advantages and disadvantages of the different \gls{TDC} architectures.
+
+\subsection{Dynamic Range} % (fold)
+\label{sub:dynamic_range}
+
+Dynamic range is a measure of a \gls{TDC}'s maximum time interval that can be accurately measured before it overflows or becomes unable to provide accurate results. This metric is particularly important for applications such as time-based accelerometers \citep{accelerometer} and LiDAR sensors used in avionics for geo-mapping \citep{airborne_lidar}, which require large measurement ranges and high resolution.
+
+% subsection dynamic_range (end)
+
+\subsection{Resolution} % (fold)
+\label{sub:resolution}
+
+The static input-output behavior of a \gls{TDC} is determined by its quantizer characteristic, which maps continuous time intervals at the \gls{TDC} input to discrete output values. This means that there is a range of time intervals that are mapped to the same output value \citep[Chap.~3]{henzler_book}. The resolution or \gls{LSB} of a \gls{TDC} is the minimum amount of time that can be distinguished by the device, or the minimum step increment in its transfer curve.
+
+% subsection resolution (end)
+
+\subsection{Precision} % (fold)
+\label{sub:precision}
+
+The precision of a \gls{TDC} is usually measured as a standard deviation and represents the error from the expect measurement. According to~\citep{cheng_ov}, the precision \gls{RMS} value of a \gls{TDC}, $\sigma$\textit{\textsubscript{TDCrms}}, can be calculated following equation \ref{eq:precision}, where $\sigma_{q}$ is the quantization error, $\sigma_{INL}$ is the \gls{TDC} \gls{INL} standard deviation, $\sigma_{clk}$ is the jitter of the system clock, and $\sigma_{extra}$ represents the contributions from the external sources of jitter.
+
+\begin{equation}
+\label{eq:precision}
+	\sigma_{TDCrms} = \sqrt{(\sigma_{q}^2 + \sigma_{INL}^2 + \sigma_{clk}^2 + \sigma_{extra}^2)}
+\end{equation}
+
+The classic dynamic measurement of a \gls{TDC} involves conducting a single shot experiment, where a fixed time interval is repeatedly applied to the \gls{TDC}. In the absence of noise, each measurement should yield the same result. However, the presence of noise causes variations in the measured values. The standard deviation of these measurement values is called single-shot precision. It describes how reproducible a \gls{TDC} measurement is in the presence of noise \citep[Chap.~3]{henzler_book}. Throughout this document, every time the term precision is used, it will be referring to the single-shot precision.
+
+% subsection precision (end)
+
+\subsection{Nonlinearities} % (fold)
+\label{sub:nonlinearities}
+
+Nonlinearities in a \gls{TDC} are defined as the deviations in quantization steps from its expected shape. \gls{PVT} conditions are one of the main causes of nonlinearities. Other sources of nonlinearities include delay errors of the delay elements, signal crosstalk and layout mismatch represent. The architecture and layout of a \gls{TDC} can greatly affect the extent of nonlinearities \citep{cheng_ov}.
+
+The most common metrics used to measure \gls{TDC} nonlinearities are \gls{DNL} and \acrlong{INL}. \Gls{DNL} describes the deviation of each step from its ideal value, while \gls{INL} describes the deviation of the overall converter characteristic from its ideal shape \citep[Chap.~3]{henzler_book}. \gls{DNL} provides a detailed view on the nonlinearities, while \gls{INL} offers a more general overview. Usually, both \gls{DNL} and \gls{INL} are normalized to one \gls{LSB}.
+
+% subsection nonlinearities (end)
+
+\subsection{Dead Time} % (fold)
+\label{sub:dead_time}
+
+The measurement of a time interval is not instantaneous. The dead time of a \gls{TDC} system is defined as the minimum time required to complete a conversion and be ready to perform a new measurement \citep{machado_ov}. This characteristic determines the maximum measurement rate that the \gls{TDC} can operate. The lower the \gls{TDC} dead time the higher the sample rate.
+
+To improve sampling rate, multiple \gls{TDC}s in an interleaved scheme can be used \citep{physics}. This allows the \glspl{TDC} to take measurements in parallel, effectively increasing the overall measurement rate. However, this approach also increases the complexity of the system and may not be feasible in all cases.
+
+% subsection dead_time (end)
+
+\subsection{Power Consumption and Resource Usage} % (fold)
+\label{sub:power_consumption_and_resource_usage}
+
+Power consumption of digital devices corresponds to the sum of dynamic power and static power. Dynamic power is associated with the clock operating system, while static power is related to the technology being used. In \gls{FPGA} platforms, it is usual to refer to the resource’s usage as a quantification factor of the amount of \gls{FPGA} resources’ utilization, which is tied to the \gls{FPGA}’s architecture being used.
+
+It is important to carefully consider power consumption when designing digital systems, as it can have a significant impact on the overall performance and efficiency of the system. By optimizing the \gls{FPGA} architecture and reducing resource usage, it is possible to reduce power consumption and improve the overall performance of the system.
+
+% subsection power_consumption_and_resource_usage (end)

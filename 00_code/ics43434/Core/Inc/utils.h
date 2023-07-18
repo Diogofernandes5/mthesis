@@ -21,7 +21,13 @@ Defines and Macros
 
 #define IS_DIG(__dig__)				(((uint8_t)(__dig__) > 0x00) && ((uint8_t)(__dig__) < 0x0A))	// Valid for [1 - 9]
 
+/******************************************************************************
+Data structures
+******************************************************************************/
+
 typedef enum {false, true} bool; 
+
+extern char *hal_error_print[];
 
 /******************************************************************************
 Inline Functions Declaration

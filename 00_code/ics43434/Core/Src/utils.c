@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+char *hal_error_print[] = {
+    "HAL_ERROR!\n\r",
+    "HAL_BUSY\n\r",
+    "HAL_TIMEOUT\n\r"
+};
+
 /******************************************************************************
 @brief	Converts string 'str' to int, verifying if its ASCII values are valid 
 					(0-9 || A-F)

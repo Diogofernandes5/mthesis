@@ -1,0 +1,56 @@
+%%-------- Capa --------%%
+
+%%%Change to yours!!
+%\includepdf[fitpaper=true,pages=1, offset=0cm 0cm, landscape=true]{Cover/cover.pdf} %insert cover pdf here
+
+
+%%-------- Folha de Rosto --------%%
+
+\pagenumbering{roman}
+\pagestyle{plain}
+
+%%%Change to yours!!
+%\includepdf[pages={1-}]{Cover/title_page.pdf} %insert pdf here
+
+
+%%--------Declaração Direitos de Autor-------%%
+
+
+%\input{0_Preface/AuthorDeclaration.tex}
+%\clearpage
+
+
+%%---------Agradecimentos--------------%%
+
+%\input{0_Preface/acknowledgements.tex}
+%\clearpage
+
+
+%%------Declaração Integridade-----------%%
+
+%\input{0_Preface/integrity.tex}
+%\clearpage
+
+
+%%----------Resumo-----------%%
+
+%\input{0_Preface/resumo.tex}
+%\addcontentsline{toc}{chapter}{Resumo}
+%\clearpage
+
+
+%%-----------Abstract-------------%%
+
+%\input{0_Preface/abstract.tex}
+%\addcontentsline{toc}{chapter}{Abstract}
+%\clearpage
+
+
+%%---------Índices e Listas-------------%%
+
+\input{utils/indexes.tex}
+\newpage
+
+\pagenumbering{arabic}
+\pagestyle{fancy}
+\setcounter{table}{0}

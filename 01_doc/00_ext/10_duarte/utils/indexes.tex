@@ -1,0 +1,20 @@
+%!TEX root = ../main.tex
+
+\tableofcontents % Prints the main table of contents
+
+% insert List of Figures if there is any figure
+\iftotalfigures
+  \listoffigures
+\fi
+
+% insert List of Tables if there is any table
+\iftotaltables
+  \listoftables
+\fi
+
+% insert List of Listings if there is any listing
+\iftotallstlistings
+  \lstlistoflistings
+\fi
+
+\printglossary[type=\acronymtype, title={List of Abbreviations}, style=adjustedlong, nonumberlist=true]

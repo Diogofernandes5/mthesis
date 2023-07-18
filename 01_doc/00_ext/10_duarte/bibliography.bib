@@ -1,0 +1,737 @@
+%==================================================
+%========== General Documents =====================
+%==================================================
+
+@article{machado_ov,
+   author = {Rui Machado and Jorge Cabral and Filipe Serra Alves},
+   doi = {10.1109/TIM.2019.2938436},
+   issn = {15579662},
+   issue = {11},
+   journal = {IEEE Transactions on Instrumentation and Measurement},
+   keywords = {Field-programmable gate arrays (FPGAs),survey,time-To-digital converter (TDC),time-interval measurement},
+   month = {11},
+   pages = {4205-4221},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {Recent Developments and Challenges in FPGA-Based Time-To-Digital Converters},
+   volume = {68},
+   year = {2019},
+}
+
+@ARTICLE{cheng_ov,
+   author={Cheng, Zeng and Zheng, Xiaoqing and Deen, M. Jamal and Peng, Hao},
+   journal={IEEE Transactions on Electron Devices},
+   title={Recent Developments and Design Challenges of    High-Performance Ring Oscillator CMOS Time-to-Digital Converters},
+   year={2016},
+   volume={63},
+   number={1},
+   pages={235-251},
+   doi={10.1109/TED.2015.2503718}
+}
+
+@article{mattada_ov,
+   doi = {10.1002/cta.2936},
+   issn = {1097007X},
+   issue = {3},
+   journal = {International Journal of Circuit Theory and Applications},
+   keywords = {GRO,SAR TDC,Vernier delay line,Vernier ring,counter TDC,delay line,flash TDC,multiphase clock,pipeline TDC,pulse shrinking,time counter,time interval measurement,time-to-digital converter},
+   month = {3},
+   pages = {778-800},
+   publisher = {John Wiley and Sons Ltd},
+   title = {Time-to-digital converters—A comprehensive review},
+   volume = {49},
+   year = {2021},
+}
+
+
+@book{henzler_book,
+   author = {Stephan Henzler},
+   city = {Dordrecht},
+   doi = {10.1007/978-90-481-8628-0},
+   isbn = {978-90-481-8627-3},
+   publisher = {Springer Netherlands},
+   title = {Time-to-Digital Converters},
+   volume = {29},
+   url = {http://link.springer.com/10.1007/978-90-481-8628-0},
+   year = {2010},
+}
+
+%==================================================
+%=============== Introduction =====================
+%==================================================
+
+@ARTICLE{pll,
+   author={Zanuso, Marco and Madoglio, Paolo and Levantino, Salvatore and Samori, Carlo and Lacaita, Andrea L.},
+   journal={IEEE Transactions on Circuits and Systems I: Regular Papers},
+   title={Time-to-Digital Converter for Frequency Synthesis Based on a Digital Bang-Bang DLL},
+   year={2010},
+   volume={57},
+   number={3},
+   pages={548-555},
+   doi={10.1109/TCSI.2009.2023945}
+}
+
+@article{physics,
+   author = {Mohammad Arkani},
+   doi = {10.1515/mms-2015-0048},
+   issn = {23001941},
+   issue = {4},
+   journal = {Metrology and Measurement Systems},
+   keywords = {Dead time effect,FPGA,Monte Carlo simulation,Stochastic process,TDC,Time interval spectrum},
+   month = {12},
+   pages = {601-619},
+   publisher = {Polish ACAD Sciences Committee Metrology and Res Equipment},
+   title = {A high performance digital time interval spectrometer: An embedded, FPGA-based system with reduced dead time behaviour},
+   volume = {22},
+   year = {2015},
+}
+
+@article{flim,
+   author = {David Tyndall and Bruce R. Rae and David Day Uei Li and Jochen Arlt and Abigail Johnston and Justin A. Richardson and Robert K. Henderson},
+   doi = {10.1109/TBCAS.2012.2222639},
+   issn = {19324545},
+   issue = {6},
+   journal = {IEEE Transactions on Biomedical Circuits and Systems},
+   keywords = {Biosensors,Silicon photomultipliers (SiPMs),Single photon avalanche diodes (SPADs),Time domain fluorescence lifetime,Time-correlated single photon counting (TCSPC)},
+   pages = {562-570},
+   pmid = {23853257},
+   title = {A high-throughput time-resolved mini-silicon photomultiplier with embedded fluorescence lifetime estimation in 0.13 μm CMOS},
+   volume = {6},
+   year = {2012},
+}
+
+@INPROCEEDINGS{space_sciences,
+   author={Karadamoglou, K. and Paschalidis, N. and Stamatopoulos, N. and Kottaras, G. and Paschalidis, V. and Sarris, E.},
+   booktitle={Proceedings of the 28th European Solid-State Circuits Conference},
+   title={A CMOS time to digital converter for space science instruments},
+   year={2002},
+   volume={},
+   number={},
+   pages={707-710},
+   doi={}
+}
+
+@ARTICLE{lidar,
+   author={Li, Yan and Yu, Hang and Liu, Shaohua and Huang, Xihua and Jiang, Lai},
+   journal={IEEE Communications Magazine},
+   title={A CMOS Time-to-Digital Converter for Real-Time Optical Time-of-Flight Sensing System},
+   year={2018},
+   volume={56},
+   number={8},
+   pages={113-119},
+   doi={10.1109/MCOM.2018.1700653}
+}
+
+@article{lidar_ov,
+   author = {Santiago Royo and Maria Ballesta-Garcia},
+   doi = {10.3390/app9194093},
+   issn = {20763417},
+   issue = {19},
+   journal = {Applied Sciences (Switzerland)},
+   keywords = {3D imaging,Autonomous vehicles,Ladar,Lasers,Lidar,MEMS,Photodetectors,Point cloud,Scanners,Self-driving car,Time of flight},
+   month = {10},
+   publisher = {MDPI AG},
+   title = {An overview of lidar imaging systems for autonomous vehicles},
+   volume = {9},
+   year = {2019},
+}
+
+ @misc{sae_av,
+   title={SAE levels of Driving Automation™ refined for clarity and international audience},
+   url={https://www.sae.org/blog/sae-j3016-update},
+   journal={SAE International},
+   year={2021},
+   month={May}
+}
+
+@article{fpga_asic,
+   author = {Haochang Chen and David Day and Uei Li},
+   doi = {10.1109/TIE.2018.2842787},
+   issue = {4},
+   journal = {IEEE Transactions on Industrial Electronics},
+   keywords = {Index Terms-Carry chains,field-programmable gate arrays (FPGA),multichannel TDCs,time-of-flight,time-to-digital converters (TDC)},
+   pages = {3265},
+   title = {Multichannel, Low Nonlinearity Time-to-Digital Converters Based on 20 and 28 nm FPGAs},
+   volume = {66},
+   url = {http://ieeexplore.ieee.org.},
+   year = {2019},
+}
+
+@article{fpga,
+   author = {R. Szplet and P. Kwiatkowski and K. Rózyc and Z. Jachna and T. Sondej},
+   doi = {10.1063/1.4997244},
+   issn = {1089-7623},
+   issue = {12},
+   journal = {The Review of scientific instruments},
+   keywords = {MEDLINE,NCBI,NIH,NLM,National Center for Biotechnology Information,National Institutes of Health,National Library of Medicine,P Kwiatkowski,PubMed Abstract,R Szplet,T Sondej,doi:10.1063/1.4997244,pmid:29289186},
+   month = {12},
+   pmid = {29289186},
+   publisher = {Rev Sci Instrum},
+   title = {Picosecond-precision multichannel autonomous time and frequency counter},
+   volume = {88},
+   url = {https://pubmed.ncbi.nlm.nih.gov/29289186/},
+   year = {2017},
+}
+
+%==================================================
+%=============== State of Art =====================
+%==================================================
+
+@ARTICLE{accelerometer,
+   author={Dias, Rosana Alves and Alves, Filipe Serra and Costa, Margaret and Fonseca, Helder and Cabral, Jorge and Gaspar, João and Rocha, Luis Alexandre},
+   journal={Journal of Microelectromechanical Systems},
+   title={Real-Time Operation and Characterization of a High-Performance Time-Based Accelerometer},
+   year={2015},
+   volume={24},
+   number={6},
+   pages={1703-1711},
+   doi={10.1109/JMEMS.2015.2487686}
+}
+
+@ARTICLE{airborne_lidar,
+   author={Cao, Ning and Lee, Hyongki and Zaugg, Evan and Shrestha, Ramesh and Carter, William and Glennie, Craig and Wang, Guoquan and Lu, Zhong and Fernandez-Diaz, Juan Carlos},
+   journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing},
+   title={Airborne DInSAR Results Using Time-Domain Backprojection Algorithm: A Case Study Over the Slumgullion Landslide in Colorado With Validation Using Spaceborne SAR, Airborne LiDAR, and Ground-Based Observations},
+   year={2017},
+   volume={10},
+   number={11},
+   pages={4987-5000},
+   doi={10.1109/JSTARS.2017.2737362}
+}
+
+%=============== Course Counter =====================
+
+@inproceedings{course_counter_td,
+   author = {Qingpeng Guo and Renjian Feng and Yinfeng Wu and Ning Yu},
+   doi = {10.1109/AUS.2016.7748018},
+   isbn = {9781509010875},
+   journal = {AUS 2016 - 2016 IEEE/CSAA International Conference on Aircraft Utility Systems},
+   month = {11},
+   pages = {45-49},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {Measurement of the AFDX switch latency based on FPGA},
+   year = {2016},
+}
+
+
+@ARTICLE{course_counter_710,
+   author={Liu, Chong and Wang, Yonggang},
+   journal={IEEE Transactions on Nuclear Science},
+   title={A 128-Channel, 710M Samples/Second, and Less Than 10ps RMS Resolution Time-to-Digital Converter Implemented in a Kintex-7 FPGA},
+   year={2015},
+   volume={62},
+   number={3},
+   pages={773-783},
+   doi={10.1109/TNS.2015.2421319}
+}
+
+%=============== Phased Clocks =====================
+
+@article{oversmapling,
+   author = {Zhenjie Li and Qiuju Li and Jinfan Chang and Yichao Ma and Peng Liu and Zheng Wang and Michael Y. Hu and Jiyong Zhao and E. E. Alp and Wei Xu and Ye Tao and Chaoqun Wu and Yangfan Zhou},
+   doi = {10.1016/j.nima.2017.05.021},
+   issn = {01689002},
+   journal = {Nuclear Instruments and Methods in Physics Research, Section A: Accelerators, Spectrometers, Detectors and Associated Equipment},
+   keywords = {APD,Fast amplifier,HEPS-TF,Nanosecond time resolution,TDC},
+   month = {10},
+   pages = {43-49},
+   publisher = {Elsevier B.V.},
+   title = {Development of an integrated four-channel fast avalanche-photodiode detector system with nanosecond time resolution},
+   volume = {870},
+   year = {2017},
+}
+
+@article{phase_det,
+   author = {Y. Sano and Y. Horii and M. Ikeno and O. Sasaki and M. Tomoto and T. Uchida},
+   doi = {10.1016/j.nima.2017.08.038},
+   issn = {01689002},
+   journal = {Nuclear Instruments and Methods in Physics Research, Section A: Accelerators, Spectrometers, Detectors and Associated Equipment},
+   keywords = {Field-programmable gate array,Time-to-digital converter},
+   month = {12},
+   pages = {50-56},
+   publisher = {Elsevier B.V.},
+   title = {Subnanosecond time-to-digital converter implemented in a Kintex-7 FPGA},
+   volume = {874},
+   year = {2017},
+}
+
+@article{phase_det_temp,
+   author = {Alessandro Balla and Matteo Mario Beretta and Paolo Ciambrone and Maurizio Gatta and Francesco Gonnella and Lorenzo Iafolla and Matteo Mascolo and Roberto Messi and Dario Moricciani and Domenico Riondino},
+   doi = {10.1016/j.nima.2013.12.033},
+   issn = {01689002},
+   journal = {Nuclear Instruments and Methods in Physics Research, Section A: Accelerators, Spectrometers, Detectors and Associated Equipment},
+   keywords = {DAQ,DAΦNE,FPGA,HEP,KLOE-2,TDC},
+   month = {3},
+   pages = {75-82},
+   title = {The characterization and application of a low resource FPGA-based time to digital converter},
+   volume = {739},
+   year = {2014},
+}
+
+
+%=============== Tapped Delay Lines =====================
+
+@INPROCEEDINGS{tdl_lut,
+   author={To, Hing Yan Thomas and Su, Changyi and Long, Sean and Wang, Juan and Na, Nanju and Klokotov, Dima and Wang, Yong},
+   booktitle={2016 IEEE 66th Electronic Components and Technology Conference (ECTC)},
+   title={A Novel Programmable On-chip Voltage Droop Detector for FPGA Applications},
+   year={2016},
+   volume={},
+   number={},
+   pages={2009-2015},
+   doi={10.1109/ECTC.2016.399}
+}
+
+@ARTICLE{tld_ff,
+   author={Chen, Yu-Chieh and Chang, Hsin-Chi and Chen, Hsin},
+   journal={IEEE Access},
+   title={Two-Dimensional Multiply-Accumulator for Classification of Neural Signals},
+   year={2018},
+   volume={6},
+   number={},
+   pages={19714-19725},
+   doi={10.1109/ACCESS.2018.2814625}
+}
+
+@article{bin_realigment,
+   author = {Yonggang Wang and Chong Liu},
+   doi = {10.1109/TNS.2015.2475630},
+   issn = {00189499},
+   issue = {5},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Bin decimation,DNL,FPGA,INL,RMS resolution,bin realignment,time-to-digital converter},
+   month = {10},
+   pages = {2003-2009},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A nonlinearity minimization-oriented resource-saving time-to-digital converter implemented in a 28 nm Xilinx FPGA},
+   volume = {62},
+   year = {2015},
+}
+
+@article{count_ones,
+   author = {Yonggang Wang and Jie Kuang and Chong Liu and Qiang Cao},
+   doi = {10.1109/TNS.2017.2746626},
+   issn = {00189499},
+   issue = {10},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Field programmable gate array (FPGA),measurement throughput,ones-counter encoder,time precision,time-to-digital converter (TDC)},
+   month = {10},
+   pages = {2713-2718},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A 3.9-ps RMS Precision Time-to-Digital Converter Using Ones-Counter Encoding Scheme in a Kintex-7 FPGA},
+   volume = {64},
+   year = {2017},
+}
+
+@article{tuned_line,
+   author = {Jun Yeon Won and Jae Sung Lee},
+   doi = {10.1109/TIM.2016.2534670},
+   issn = {00189456},
+   issue = {7},
+   journal = {IEEE Transactions on Instrumentation and Measurement},
+   keywords = {Bin width,carry chain,equivalent bin width,field-programmable gate array (FPGA),measurement uncertainty,nonlinearity,quantization error,tapped-delay line (TDL),time measurement,time-to-digital converter (TDC),tuning.},
+   month = {7},
+   pages = {1678-1689},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {Time-to-digital converter using a tuned-delay line evaluated in 28-, 40-, and 45-nm FPGAs},
+   volume = {65},
+   year = {2016},
+}
+
+@article{ultrascale_problems,
+   author = {Haochang Chen and David Day and Uei Li},
+   doi = {10.1109/TIE.2018.2842787},
+   issue = {4},
+   journal = {IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS},
+   keywords = {Index Terms-Carry chains,field-programmable gate arrays (FPGA),multichannel TDCs,time-of-flight,time-to-digital converters (TDC)},
+   pages = {3265},
+   title = {Multichannel, Low Nonlinearity Time-to-Digital Converters Based on 20 and 28 nm FPGAs},
+   volume = {66},
+   url = {http://ieeexplore.ieee.org.},
+   year = {2019},
+}
+
+@article{bin_by_bin_calibration,
+   author = {Haochang Chen and Yongliang Zhang and David Day Uei Li},
+   doi = {10.1109/TIM.2017.2663498},
+   issn = {00189456},
+   issue = {7},
+   journal = {IEEE Transactions on Instrumentation and Measurement},
+   keywords = {Carry chains,Code bin width,Field-programmable gate arrays (FPGA) multiphase clock,Time-of-flight,Time-to-digital converters (TDCs)},
+   month = {7},
+   pages = {1912-1921},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A low nonlinearity, missing-code free time-to-digital converter based on 28-nm FPGAS with embedded bin-width calibrations},
+   volume = {66},
+   year = {2017},
+}
+
+
+@article{bin_decimation,
+   author = {Yonggang Wang and Chong Liu},
+   doi = {10.1109/TNS.2016.2606627},
+   issn = {00189499},
+   issue = {5},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Bin decimation,FPGA,dual-sampling,tapped delay line,time resolution,time-to-digital converter,ultraScale FPGA},
+   month = {10},
+   pages = {2632-2638},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A 4.2 ps Time-Interval RMS Resolution Time-to-Digital Converter Using a Bin Decimation Method in an UltraScale FPGA},
+   volume = {63},
+   year = {2016},
+}
+
+@article{hw_linearization,
+   author = {Dariusz Chaberski and Robert Frankowski and Marek Zieliński and Łukasz Zaworski},
+   doi = {10.1016/j.measurement.2016.06.002},
+   issn = {02632241},
+   journal = {Measurement: Journal of the International Measurement Confederation},
+   keywords = {CLB,FPGA,FTTL,LUT,MTDL,Nonlinearity,QNM,TDL,TIMM,TTDL,Time-interval,Time-stamp,VHDL},
+   month = {10},
+   pages = {103-113},
+   publisher = {Elsevier B.V.},
+   title = {Multiple-tapped-delay-line hardware-linearisation technique based on wire load regulation},
+   volume = {92},
+   year = {2016},
+}
+
+%=============== Wave Union =====================
+
+@inproceedings{wu_brief_review,
+   author = {Pawel Kwiatkowski and Dominik Sondej and Ryszard Szplet},
+   doi = {10.1109/EBCCSP53293.2021.9502360},
+   isbn = {9781665436977},
+   journal = {EBCCSP 2021 - Proceedings: 2021 7th International Conference on Event-Based Control, Communication and Signal Processing},
+   keywords = {field-programmable gate array (FPGA),time-To-digital converter (TDC),wave union TDC,wave union encoder,wave union launcher},
+   month = {6},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A brief review of wave union TDCs},
+   year = {2021},
+}
+
+@inproceedings{wu_first,
+   author = {Jinyuan Wu and Zonghan Shi},
+   doi = {10.1109/NSSMIC.2008.4775079},
+   isbn = {9781424427154},
+   issn = {10957863},
+   journal = {IEEE Nuclear Science Symposium Conference Record},
+   keywords = {FPGA firmware,Front end electronics,TDC},
+   pages = {3440-3446},
+   title = {The 10-ps wave union TDC: Improving FPGA TDC resolution beyond its cell delay},
+   year = {2008},
+}
+
+@article{wu_ex,
+   author = {Yonggang Wang and Xiaoyu Zhou and Zhengqi Song and Jie Kuang and Qiang Cao},
+   doi = {10.1109/TNS.2019.2938571},
+   issn = {15581578},
+   issue = {10},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Bubble-proof,field-programmable gate array (FPGA),measurement throughput,multi-edge encoder,time precision,time-to-digital converter (TDC)},
+   month = {10},
+   pages = {2275-2281},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A 3.0-ps rms Precision 277-MSamples/s Throughput Time-to-Digital Converter Using Multi-Edge Encoding Scheme in a Kintex-7 FPGA},
+   volume = {66},
+   year = {2019},
+}
+
+@article{wu_not_suitable_ultrascalte,
+   author = {Yonggang Wang and Chong Liu},
+   doi = {10.1109/TNS.2016.2596305},
+   issue = {5},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Bin realignment,bubbles in thermometer code,dual-sampling method,time-to-digital converter},
+   title = {A 3.9 ps Time-Interval RMS Precision Time-to-Digital Converter Using a Dual-Sampling Method in an UltraScale FPGA},
+   volume = {63},
+   url = {http://www.ieee.org/publications_standards/publications/rights/index.html},
+   year = {2016},
+}
+
+@article{wu_novel_ultrascale,
+   author = {Wujun Xie and Haochang Chen and David Day Uei Li},
+   doi = {10.1109/TIE.2021.3053905},
+   issn = {15579948},
+   issue = {1},
+   journal = {IEEE Transactions on Industrial Electronics},
+   keywords = {Carry chains,field-programmable gate array (FPGA),time-of-flight (TOF),time-to-digital converter (TDC)},
+   month = {1},
+   pages = {1021-1031},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {Efficient Time-to-Digital Converters in 20 nm FPGAs with Wave Union Methods},
+   volume = {69},
+   year = {2022},
+}
+
+@article{pvt_offset,
+   author = {X. Qin and L. Wang and D. Liu and Y. Zhao and X. Rong and J. Du},
+   doi = {10.1109/TNS.2017.2768082},
+   issn = {00189499},
+   issue = {12},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Carry chain,field-programmable gate arrays (FPGA),offset correction,time-to-digital converter (TDC)},
+   month = {12},
+   pages = {2951-2957},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A 1.15-ps Bin Size and 3.5-ps Single-Shot Precision Time-to-Digital Converter with On-Board Offset Correction in an FPGA},
+   volume = {64},
+   year = {2017},
+}
+
+@article{pvt_ro,
+   author = {Mengdi Zhang and Ye Zhao and Zhengsheng Han and Fazhan Zhao},
+   doi = {10.3390/app12073649},
+   issn = {20763417},
+   issue = {7},
+   journal = {Applied Sciences (Switzerland)},
+   keywords = {FPGA,bubbles,online calibration,tapped delay line,time-to-digital converter},
+   month = {4},
+   publisher = {MDPI},
+   title = {A 19 ps Precision and 170 M Samples/s Time-to-Digital Converter Implemented in FPGA with Online Calibration},
+   volume = {12},
+   year = {2022},
+}
+
+@article{pvt_mc,
+   author = {Xiangyu Mao and Fei Yang and Fang Wei and Jiawen Shi and Jian Cai and Haiwen Cai},
+   doi = {10.3390/s22062306},
+   issn = {14248220},
+   issue = {6},
+   journal = {Sensors},
+   keywords = {Field programmable gate array (FPGA),Low temperature coefficient,Multichain segmentation,Time to digital converter (TDC)},
+   month = {3},
+   pmid = {35336481},
+   publisher = {MDPI},
+   title = {A Low Temperature Coefficient Time-to-Digital Converter with 1.3 ps Resolution Implemented in a 28 nm FPGA},
+   volume = {22},
+   year = {2022},
+}
+
+@article{tdl_hyb_1.9,
+   author = {R. Szplet and Z. Jachna and P. Kwiatkowski and K. Rozyc},
+   doi = {10.1088/0957-0233/24/3/035904},
+   issn = {13616501},
+   issue = {3},
+   journal = {Measurement Science and Technology},
+   keywords = {independent coding lines,time counter,time digitizer,time-to-digital converter,two-stage interpolation},
+   publisher = {Institute of Physics Publishing},
+   title = {A 2.9 ps equivalent resolution interpolating time counter based on multiple independent coding lines},
+   volume = {24},
+   year = {2013},
+}
+@article{tdl_hyb_2.9,
+   author = {Ryszard Szplet and Pawel Kwiatkowski and Zbigniew Jachna and Krzysztof Rozyc},
+   doi = {10.1109/TIM.2016.2564038},
+   issn = {00189456},
+   issue = {9},
+   journal = {IEEE Transactions on Instrumentation and Measurement},
+   keywords = {Equivalent coding line,time counter,time digitizer,time-to-digital converter (TDC),timestamps (TSs),two-stage interpolation},
+   month = {9},
+   pages = {2088-2100},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {An eight-channel 4.5-ps precision timestamps-based time interval counter in FPGA chip},
+   volume = {65},
+   year = {2016},
+}
+
+
+%=============== Differential Delay Lines =====================
+
+@article{ro_bi_interpolation,
+   author = {Guangbo Xu and Bingting Zha and Tuanjie Xia and Zhen Zheng and He Zhang},
+   doi = {10.3390/app12157674},
+   issn = {20763417},
+   issue = {15},
+   journal = {Applied Sciences (Switzerland)},
+   keywords = {FPGA,IP core,Vernier,high precision,high throughput,time-to-digital converter},
+   month = {8},
+   publisher = {MDPI},
+   title = {A High-Throughput Vernier Time-to-Digital Converter on FPGAs with Improved Resolution Using a Bi-Time Interpolation Scheme},
+   volume = {12},
+   year = {2022},
+}
+
+@book{ro_1_counter,
+   author = {Ke Cui and Zongkai Liu and Rihong Zhu and Xiangyu Li},
+   isbn = {9781538626566},
+   keywords = {[Electronic Manuscript]},
+   title = {FPGA-Based High-Performance Time-to-Digital Converters by Utilizing Multi-Channels Looped Carry Chains},
+   year = {2017},
+}
+
+@book{ro_2_counter,
+   author = {M. Maamoun and IAENG S. Arami and R. Beguenane and A. Benbelkacem and A. Meraghni},
+   isbn = {9789881404749},
+   journal = {Proceedings of the World Congress on Engineering},
+   pages = {7-11},
+   publisher = {Proceedings of the World Congress on Engineering},
+   title = {A 3 ps resolution time-to-digital converter in low-cost FPGA for laser rangefinder},
+   volume = {1},
+   year = {2017},
+}
+
+@article{2tdl_bd,
+   doi = {10.1109/TNS.2016.2632168},
+   issn = {00189499},
+   issue = {1},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Carry chain,Vernier delay line,field programmable gate array,high linearity,ring oscillator,time-to-digital converter},
+   month = {1},
+   pages = {697-704},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A High-Linearity, Ring-Oscillator-Based, Vernier Time-to-Digital Converter Utilizing Carry Chains in FPGAs},
+   volume = {64},
+   year = {2017},
+}
+
+@article{2tdl_ex,
+   author = {Hai Wang and Min Zhang and Qin Yao},
+   doi = {10.1109/TUFFC.2013.2764},
+   issn = {08853010},
+   issue = {9},
+   journal = {IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control},
+   pages = {1787-1795},
+   pmid = {24658711},
+   title = {A new realization of time-to-digital converters based on FPGA internal routing resources},
+   volume = {60},
+   year = {2013},
+}
+
+%=============== Pulse Shrinking =====================
+
+@article{pulse_shrinking,
+   author = {Li Xiang and Ping Yang and Tianjian Wu and Moke Zhou},
+   doi = {10.1016/j.measurement.2022.111874},
+   issn = {02632241},
+   journal = {Measurement: Journal of the International Measurement Confederation},
+   keywords = {FPGA,Pulse shrinking,Time to digital converter},
+   month = {11},
+   publisher = {Elsevier B.V.},
+   title = {Ultra compact pulse shrinking TDC on FPGA},
+   volume = {203},
+   year = {2022},
+}
+
+@article{pulse_shrinking_offset,
+   author = {Chun Chi Chen and Chorng Sii Hwang and Yi Lin and Guan Hong Chen},
+   doi = {10.1063/1.4947461},
+   issn = {10897623},
+   issue = {4},
+   journal = {Review of Scientific Instruments},
+   month = {4},
+   publisher = {American Institute of Physics Inc.},
+   title = {Note: All-digital pulse-shrinking time-to-digital converter with improved dynamic range},
+   volume = {87},
+   year = {2016},
+}
+
+%=============== Gray Code =====================
+
+@inproceedings{gray_code_machado,
+   author = {Rui Machado and Filipe Serra Alves and Jorge Cabral},
+   doi = {10.1109/EBCCSP51266.2020.9291359},
+   isbn = {9781728195810},
+   journal = {Proceedings - 6th International Conference on Event-Based Control, Communication and Signal Processing, EBCCSP 2020},
+   keywords = {Field-Programmable Gate Array (FPGA),Gray Code Oscillator,Time Interval Measurement,Time-to-Digital Converters (TDC)},
+   month = {9},s
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {Gray-code TDC with improved linearity and scalability for LiDAR applications},
+   year = {2020},
+}
+
+@inproceedings{gray_code_araujo,
+   author = {Simao Araujo and Rui Machado and Jorge Cabral},
+   doi = {10.1109/EBCCSP53293.2021.9502403},
+   isbn = {9781665436977},
+   journal = {EBCCSP 2021 - Proceedings: 2021 7th International Conference on Event-Based Control, Communication and Signal Processing},
+   keywords = {Field-Programmable Gate Array (FPGA),Light Detection and Ranging (LiDAR),Robotic Operating System (ROS),Time Interval Measurement,Time-To-Digital Converter (TDC)},
+   month = {6},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {Double-sampling Gray TDC with a ROS Interface for a LiDAR System},
+   year = {2021},
+}
+
+@book{gray_code_first,
+   author = {Jinyuan Wu and Jingjing Xu},
+   isbn = {9781728123226},
+   journal = {2019 5th International Conference on Event-Based Control, Communication, and Signal Processing (EBCCSP)},
+   keywords = {FPGA Applications,Gray Code Oscillator,Time to Digital Converter},
+   title = {A Novel TDC Scheme: Combinatorial Gray Code Oscillator Based TDC for Low Power and Low Resource Usage Applications; A Novel TDC Scheme: Combinatorial Gray Code Oscillator Based TDC for Low Power and Low Resource Usage Applications},
+   year = {2019},
+}
+
+%=============== DLL =====================
+
+@article{dll_2009,
+   author = {Jussi Pekka Jansson and Antti Mäntyniemi and Juha Kostamovaara},
+   doi = {10.1109/TCSI.2008.2010111},
+   issn = {15498328},
+   issue = {8},
+   journal = {IEEE Transactions on Circuits and Systems I: Regular Papers},
+   keywords = {Delay-line interpolation,Synchronization,Time-interval measurement,Time-to-digital converter (TDC)},
+   pages = {1622-1634},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {Synchronization in a multilevel CMOS time-to-digital converter},
+   volume = {56},
+   year = {2009},
+}
+
+@inproceedings{dll_2005,
+   author = {Jussi Jansson and Antti Mäntyniemi and Juha Kostamovaara},
+   doi = {10.1109/ISCAS.2005.1465574},
+   issn = {02714310},
+   journal = {Proceedings - IEEE International Symposium on Circuits and Systems},
+   pages = {4269-4272},
+   title = {A delay line based CMOS time digitizer IC with 13 ps single-shot precision},
+   year = {2005},
+}
+
+@article{addll_review,
+   author = {Muhammad Riaz Ur Rehman and Arash Hejazi and Imran Ali and Jae Jin Lee and Seong Jin Oh and Younggun Pu and Kang Yoon Lee},
+   doi = {10.1109/ACCESS.2020.2982180},
+   issn = {21693536},
+   journal = {IEEE Access},
+   keywords = {All digital delay locked loop (ADDLL),digital controller,jitter,light detection and ranging (LIDAR),time to digital converter (TDC)},
+   pages = {57722-57732},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A Design of 6.8 mW All Digital Delay Locked Loop with Digitally Controlled Dither Cancellation for TDC in Ranging Sensor},
+   volume = {8},
+   year = {2020},
+}
+@article{addll_res,
+   author = {Jiyun Tong and Sha Wang and Shuang Zhang and Mengdi Zhang and Ye Zhao and Fazhan Zhao},
+   doi = {10.3390/s22010284},
+   keywords = {All-Digital Delay-Locked Loop (ADDLL),Vernier TDC,dither-ing phenomenon,harmonic lock,low jitter,modified binary search},
+   title = {A Low-Jitter Harmonic-Free All-Digital Delay-Locked Loop for Multi-Channel Vernier TDC},
+   url = {https://doi.org/10.3390/s22010284},
+   year = {2021},
+}
+
+
+%=============== Self Calibration  =====================
+
+@article{temperature_coeffients,
+   author = {Weibin Pan and Guanghua Gong and Jianmin Li},
+   doi = {10.1109/TNS.2014.2320325},
+   issn = {00189499},
+   issue = {3},
+   journal = {IEEE Transactions on Nuclear Science},
+   keywords = {Field-programmable gate array (FPGA),Temperature correction,Time-to-digital converter},
+   pages = {1468-1473},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A 20-ps time-to-digital converter (TDC) implemented in field-programmable gate array (FPGA) with automatic temperature correction},
+   volume = {61},
+   year = {2014},
+}
+
+@article{bin_by_bin_calibration_neural_network,
+   author = {Yue Xu and Jie Xie and Zhiwei Xing and Wenqiang Yuan and Guanqun Yu and Zhongmin Zeng and Baoshun Zhang and Dongmin Wu},
+   doi = {10.1109/RCAR54675.2022.9872281},
+   isbn = {9781665469838},
+   journal = {2022 IEEE International Conference on Real-Time Computing and Robotics, RCAR 2022},
+   pages = {681-686},
+   publisher = {Institute of Electrical and Electronics Engineers Inc.},
+   title = {A Bin-by-Bin Calibration with Neural Network for FPGA-Based Tapped-Delay-Line Time-To-Digital Converter},
+   year = {2022},
+}
+

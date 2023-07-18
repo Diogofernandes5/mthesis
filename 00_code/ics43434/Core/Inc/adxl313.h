@@ -1,5 +1,14 @@
+/**
+ * @file   	adxl313.h
+ * @author 	Diogo Fernandes (diogo.cf20@gmail.com)
+ * */
+
 #ifndef __ADXL313_H__
 #define __ADXL313_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "adxl313_registers.h"
 #include "utils.h"
@@ -215,87 +224,91 @@ typedef struct __adxl313_dev
 Function Prototypes
 ******************************************************************************/
 
-extern bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, 
+extern bool adxl313_begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, 
  									enum adxl313_range range, enum adxl313_resolution resolution, 
  									uint16_t odr);
 
-extern bool data_ready(adxl313_dev *dev);
+extern bool adxl313_data_ready(adxl313_dev *dev);
 
-extern void update_int_source_status(adxl313_dev *dev);
+extern void adxl313_update_int_source_status(adxl313_dev *dev);
 
-extern void set_data_format(adxl313_dev *dev, enum adxl313_range range, enum adxl313_resolution resolution);
+extern void adxl313_set_data_format(adxl313_dev *dev, enum adxl313_range range, enum adxl313_resolution resolution);
  
-extern void measure_mode_on(adxl313_dev *dev);
+extern void adxl313_measure_mode_on(adxl313_dev *dev);
  
-extern void soft_reset(adxl313_dev *dev);
+extern void adxl313_soft_reset(adxl313_dev *dev);
  
-extern void standby(adxl313_dev *dev);
+extern void adxl313_standby(adxl313_dev *dev);
  
-extern void read_accel(adxl313_dev *dev);
+extern void adxl313_read_accel(adxl313_dev *dev);
   
-extern void auto_sleep_on(adxl313_dev *dev);
-extern void auto_sleep_off(adxl313_dev *dev);
+extern void adxl313_auto_sleep_on(adxl313_dev *dev);
+extern void adxl313_auto_sleep_off(adxl313_dev *dev);
 
-extern float get_range(adxl313_dev *dev);
-extern void set_range(adxl313_dev *dev, uint8_t range);
-extern bool get_self_test_bit(adxl313_dev *dev);
-extern void set_self_test_bit(adxl313_dev *dev, bool self_test_bit);
-extern bool get_spi_bit(adxl313_dev *dev);
-extern void set_spi_bit(adxl313_dev *dev, bool spi_bit);
-extern bool get_interrupt_level_bit(adxl313_dev *dev);
-extern void set_interrupt_level_bit(adxl313_dev *dev, bool interrupt_level_bit);
-extern bool get_full_res_bit(adxl313_dev *dev);
-extern void set_full_res_bit(adxl313_dev *dev, bool full_res_bit);
-extern bool get_justify_bit(adxl313_dev *dev);
-extern void set_justify_bit(adxl313_dev *dev, bool justify_bit);
+extern float adxl313_get_range(adxl313_dev *dev);
+extern void adxl313_set_range(adxl313_dev *dev, uint8_t range);
+extern bool adxl313_get_self_test_bit(adxl313_dev *dev);
+extern void adxl313_set_self_test_bit(adxl313_dev *dev, bool self_test_bit);
+extern bool adxl313_get_spi_bit(adxl313_dev *dev);
+extern void adxl313_set_spi_bit(adxl313_dev *dev, bool spi_bit);
+extern bool adxl313_get_interrupt_level_bit(adxl313_dev *dev);
+extern void adxl313_set_interrupt_level_bit(adxl313_dev *dev, bool interrupt_level_bit);
+extern bool adxl313_get_full_res_bit(adxl313_dev *dev);
+extern void adxl313_set_full_res_bit(adxl313_dev *dev, bool full_res_bit);
+extern bool adxl313_get_justify_bit(adxl313_dev *dev);
+extern void adxl313_set_justify_bit(adxl313_dev *dev, bool justify_bit);
 
-extern bool get_low_power_bit(adxl313_dev *dev);
-extern void set_low_power_bit(adxl313_dev *dev, bool low_power_bit);
-extern double get_rate(adxl313_dev *dev);
-extern void set_rate(adxl313_dev *dev, double rate);
+extern bool adxl313_get_low_power_bit(adxl313_dev *dev);
+extern void adxl313_set_low_power_bit(adxl313_dev *dev, bool low_power_bit);
+extern double adxl313_get_rate(adxl313_dev *dev);
+extern void adxl313_set_rate(adxl313_dev *dev, double rate);
  
-extern uint8_t get_int_source(adxl313_dev *dev);
-extern bool get_int_source_bit(adxl313_dev *dev, uint8_t interrupt_bit);
-extern bool get_int_mapping_bit(adxl313_dev *dev, uint8_t interrupt_bit);
-extern void set_int_mapping(adxl313_dev *dev, uint8_t interrupt_bit, bool interrupt_pin);
-extern bool get_int(adxl313_dev *dev, uint8_t interrupt_bit);
-extern void set_int(adxl313_dev *dev, uint8_t interrupt_bit, bool state);
+extern uint8_t adxl313_get_int_source(adxl313_dev *dev);
+extern bool adxl313_get_int_source_bit(adxl313_dev *dev, uint8_t interrupt_bit);
+extern bool adxl313_get_int_mapping_bit(adxl313_dev *dev, uint8_t interrupt_bit);
+extern void adxl313_set_int_mapping(adxl313_dev *dev, uint8_t interrupt_bit, bool interrupt_pin);
+extern bool adxl313_get_int(adxl313_dev *dev, uint8_t interrupt_bit);
+extern void adxl313_set_int(adxl313_dev *dev, uint8_t interrupt_bit, bool state);
 
-extern uint8_t get_fifo_mode(adxl313_dev *dev);
-extern void set_fifo_mode(adxl313_dev *dev, uint8_t mode);
-extern void set_fifo_famples_threshhold(adxl313_dev *dev, uint8_t samples);
-extern uint8_t get_fifo_famples_threshhold(adxl313_dev *dev);
-extern uint8_t get_fifo_entries_amount(adxl313_dev *dev);
-extern void clear_fifo(adxl313_dev *dev);
+extern uint8_t adxl313_get_fifo_mode(adxl313_dev *dev);
+extern void adxl313_set_fifo_mode(adxl313_dev *dev, uint8_t mode);
+extern void adxl313_set_fifo_famples_threshhold(adxl313_dev *dev, uint8_t samples);
+extern uint8_t adxl313_get_fifo_famples_threshhold(adxl313_dev *dev);
+extern uint8_t adxl313_get_fifo_entries_amount(adxl313_dev *dev);
+extern void adxl313_clear_fifo(adxl313_dev *dev);
  
-extern void set_axis_gains(adxl313_dev *dev, const double *_gains);
-extern void get_axis_gains(adxl313_dev *dev, double *_gains);
-extern void set_axis_offset(adxl313_dev *dev, const int x, const int y, const int z);
-extern void get_axis_offset(adxl313_dev *dev, uint8_t* x, uint8_t* y, uint8_t*z);
-extern void set_activity_threshold(adxl313_dev *dev, int activityThreshold);
-extern uint8_t get_activity_threshold(adxl313_dev *dev);
-extern void set_inactivity_threshold(adxl313_dev *dev, int inactivityThreshold);
-extern uint8_t get_inactivity_threshold(adxl313_dev *dev);
-extern void set_time_inactivity(adxl313_dev *dev, int timeInactivity);
-extern uint8_t get_time_inactivity(adxl313_dev *dev);
+extern void adxl313_set_axis_gains(adxl313_dev *dev, const double *_gains);
+extern void adxl313_get_axis_gains(adxl313_dev *dev, double *_gains);
+extern void adxl313_set_axis_offset(adxl313_dev *dev, const int x, const int y, const int z);
+extern void adxl313_get_axis_offset(adxl313_dev *dev, uint8_t* x, uint8_t* y, uint8_t*z);
+extern void adxl313_set_activity_threshold(adxl313_dev *dev, int activityThreshold);
+extern uint8_t adxl313_get_activity_threshold(adxl313_dev *dev);
+extern void adxl313_set_inactivity_threshold(adxl313_dev *dev, int inactivityThreshold);
+extern uint8_t adxl313_get_inactivity_threshold(adxl313_dev *dev);
+extern void adxl313_set_time_inactivity(adxl313_dev *dev, int timeInactivity);
+extern uint8_t adxl313_get_time_inactivity(adxl313_dev *dev);
  
-extern bool get_activity_X(adxl313_dev *dev);
-extern bool get_activity_Y(adxl313_dev *dev);
-extern bool get_activity_Z(adxl313_dev *dev);
-extern bool get_inactivity_X(adxl313_dev *dev);
-extern bool get_inactivity_Y(adxl313_dev *dev);
-extern bool get_inactivity_Z(adxl313_dev *dev);
-extern bool get_activity_ac_dc(adxl313_dev *dev);
-extern bool get_inactivity_ac_dc(adxl313_dev *dev);
-extern void set_activity_ac_dc(adxl313_dev *dev, bool state);
-extern void set_inactivity_ac_dc(adxl313_dev *dev, bool state);
-extern void set_activity_X(adxl313_dev *dev, bool state);
-extern void set_activity_Y(adxl313_dev *dev, bool state);
-extern void set_activity_Z(adxl313_dev *dev, bool state);
-extern void set_activity_X_Y_Z(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ);
-extern void set_inactivity_X(adxl313_dev *dev, bool state);
-extern void set_inactivity_Y(adxl313_dev *dev, bool state);
-extern void set_inactivity_Z(adxl313_dev *dev, bool state);
-extern void set_inactivity_X_Y_Z(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ);
+extern bool adxl313_get_activity_X(adxl313_dev *dev);
+extern bool adxl313_get_activity_Y(adxl313_dev *dev);
+extern bool adxl313_get_activity_Z(adxl313_dev *dev);
+extern bool adxl313_get_inactivity_X(adxl313_dev *dev);
+extern bool adxl313_get_inactivity_Y(adxl313_dev *dev);
+extern bool adxl313_get_inactivity_Z(adxl313_dev *dev);
+extern bool adxl313_get_activity_ac_dc(adxl313_dev *dev);
+extern bool adxl313_get_inactivity_ac_dc(adxl313_dev *dev);
+extern void adxl313_set_activity_ac_dc(adxl313_dev *dev, bool state);
+extern void adxl313_set_inactivity_ac_dc(adxl313_dev *dev, bool state);
+extern void adxl313_set_activity_X(adxl313_dev *dev, bool state);
+extern void adxl313_set_activity_Y(adxl313_dev *dev, bool state);
+extern void adxl313_set_activity_Z(adxl313_dev *dev, bool state);
+extern void adxl313_set_activity_X_Y_Z(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ);
+extern void adxl313_set_inactivity_X(adxl313_dev *dev, bool state);
+extern void adxl313_set_inactivity_Y(adxl313_dev *dev, bool state);
+extern void adxl313_set_inactivity_Z(adxl313_dev *dev, bool state);
+extern void adxl313_set_inactivity_X_Y_Z(adxl313_dev *dev, bool stateX, bool stateY, bool stateZ);
 
-#endif // _ADXL313_H_ //
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _ADXL313_H_ */
