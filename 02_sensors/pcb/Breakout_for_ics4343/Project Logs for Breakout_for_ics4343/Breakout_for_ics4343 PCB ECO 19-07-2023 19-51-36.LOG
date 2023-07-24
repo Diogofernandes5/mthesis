@@ -1,0 +1,53 @@
+Removed Pin From Net: NetName=NetJ1_1 Pin=J2-1
+Removed Pin From Net: NetName=NetJ1_2 Pin=J2-2
+Removed Pin From Net: NetName=NetJ1_3 Pin=J2-3
+Removed Pin From Net: NetName=NetJ1_4 Pin=J2-4
+Removed Pin From Net: NetName=NetJ1_5 Pin=J2-5
+Removed Pin From Net: NetName=NetJ1_6 Pin=J2-10
+Change Component Designator: OldDesignator=J2 NewDesignator=J4
+Added Component: Designator=J2(AMPHENOL_F31L-1A7H1-11006)
+Add component (AddParameter): Name = "Availability"; Value = "In Stock"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/F31L-1A7H1-11006/Amphenol+FCI/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Amphenol ICC (FCI)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "F31L-1A7H1-11006"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Purchase-URL"; Value = "https://pricing.snapeda.com/search?q=F31L-1A7H1-11006&ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/F31L-1A7H1-11006/Amphenol+FCI/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=J3(AMPHENOL_77311-402-07LF)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Amphenol ICC (FCI)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "77311-402-07LF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetJ1_1 Pin=J2-1
+Added Pin To Net: NetName=NetJ1_2 Pin=J2-2
+Added Pin To Net: NetName=NetJ1_3 Pin=J2-3
+Added Pin To Net: NetName=NetJ1_4 Pin=J2-4
+Added Pin To Net: NetName=NetJ1_5 Pin=J2-5
+Added Pin To Net: NetName=NetJ1_6 Pin=J2-6
+Added Pin To Net: NetName=NetJ3_01 Pin=J3-01
+Added Pin To Net: NetName=NetJ3_01 Pin=J4-9
+Added Net: Name=NetJ3_01
+Added Pin To Net: NetName=NetJ3_02 Pin=J3-02
+Added Pin To Net: NetName=NetJ3_02 Pin=J4-8
+Added Net: Name=NetJ3_02
+Added Pin To Net: NetName=NetJ3_03 Pin=J3-03
+Added Pin To Net: NetName=NetJ3_03 Pin=J4-6
+Added Net: Name=NetJ3_03
+Added Pin To Net: NetName=NetJ3_04 Pin=J3-04
+Added Pin To Net: NetName=NetJ3_04 Pin=J4-5
+Added Net: Name=NetJ3_04
+Added Pin To Net: NetName=NetJ3_05 Pin=J3-05
+Added Pin To Net: NetName=NetJ3_05 Pin=J4-4
+Added Net: Name=NetJ3_05
+Added Pin To Net: NetName=NetJ3_06 Pin=J3-06
+Added Pin To Net: NetName=NetJ3_06 Pin=J4-3
+Added Net: Name=NetJ3_06
+Added Pin To Net: NetName=NetJ3_07 Pin=J3-07
+Added Pin To Net: NetName=NetJ3_07 Pin=J4-2
+Added Net: Name=NetJ3_07
+Added Member To Class: ClassName=Breakout_for_ics4343 Member=Component J3 77311-402-07LF
+Added Member To Class: ClassName=Breakout_for_ics4343 Member=Component J4 F51L-1A7H1-11010

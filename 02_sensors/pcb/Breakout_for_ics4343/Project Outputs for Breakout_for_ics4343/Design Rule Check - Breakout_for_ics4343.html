@@ -1,0 +1,379 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : segoe ui;
+			color : black;
+			background-color : #EDE7D9;
+			padding: 0.3em;
+		}
+
+		h1 {
+			font-size: 1.2em;
+		}		
+
+		h2 {
+			font-size: 1.2em;
+		}
+
+		body {
+			font-family : segoe ui;
+		}
+
+		td, th {
+			padding: 0.5em;
+			text-align : left;
+			width: 10em;
+		}
+		th {
+			background-color : #EEEEEE;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+			font-size: 0.9em;
+		}
+
+		.DRC_summary_header {
+			padding-bottom : 0.1em;
+			border : 0px solid black;
+			width: 100%;
+			align: left;
+		}
+
+		.DRC_summary_header_col1,
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3 {
+			color : black;
+			font-size:100%;
+			padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2em;
+			border : 0px solid black;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.DRC_summary_header_col1 {
+			font-weight: bold;
+			width: 9em;
+		}
+
+		.DRC_summary_header_col2 {
+			width: 0.1em;
+		
+		}
+
+		.DRC_summary_header_col3 {
+			width : auto;
+		}
+
+		.header_holder {
+		    Width = 100%;
+		    border = 0px solid green;
+		    padding = 0;
+		}
+
+
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+		{
+			left : 0;
+			top : 0;
+			padding: 0em;
+			padding-top : 0.1em;
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.front_matter_column1 {
+			width : 8em;
+			font-weight: bold;
+		}
+
+		.front_matter_column2 {
+			width: 0.1em;
+		}
+
+		.front_matter_column3 {
+			width : auto;
+		}
+
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : left;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #white;
+		}
+		tr.onmouseout_even { 
+			background-color : #FAFAFA;
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : #EEEEEE;
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #21489e;
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\AD23\Templates\AD_logo.png
+		"><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td class="column1">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">24/07/2023</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">17:15:44</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">00:00:01</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3"><a href="file:///C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc" class="file"><acronym title="C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc">C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td class="column2">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Warnings:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3">0</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">13</td></tr>
+</table>
+</td>
+</table><a name="ID05HYXKXBSVDIC3IGAYDKHOSDEO3B3ITRW1H0HX2L5MXV1CQEESK"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">0</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID1YUE0HTRP4WT2JMID30CNXTDDSGZXDV1TQKQCKKYKSGKBZAA1VD">Clearance Constraint (Gap=7.874mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDII1VYMOWQOPHKMW04MCR3C4R2NJYO20NG014VNOLF1KECB4QFHYI">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDGHMB31GZYODXCFJJRFDYRJNCPEM3450E3MU0YPKVNBKKNTCSXJRG">Un-Routed Net Constraint ( (All) )</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDDETU2SBOACYLM0PKM5BUYE2MFFCDVDUZ15IHJTBMAIF22CI3KAB">Modified Polygon (Allow modified: No), (Allow shelved: No)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDLZOJ2DZZKYW3PA14YERQEJLIDEZADCJM3S3SU5YWBET5BE1Q1GB">Width Constraint (Min=3.937mil) (Max=59.055mil) (Preferred=10mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDNLUQOUEJOUM5ELAM2SENGG5G4PHIECKL3YQUWWKMDADXYRMKKP2O">Power Plane Connect Rule(Relief Connect )(Expansion=6.89mil) (Conductor Width=7.874mil) (Air Gap=7.874mil) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID214QDXP420CBO4NROMBIMZERUDWZ2KZTYODAQZDJYSJ43U0UHNQL">Minimum Annular Ring (Minimum=8mil) (((ObjectKind = 'Pad') OR (ObjectKind = 'Via')) And (Layer = 'MultiLayer') And (HoleDiameter &lt;= AsMM(0.45)))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDIIP5BCFCWYUPJLJNKQK11E1MUIOQOS42YG1JITO4Z3JHCFWBCHDI">Minimum Annular Ring (Minimum=16mil) (((ObjectKind = 'Pad') OR (ObjectKind = 'Via')) And (Layer = 'MultiLayer') And (HoleDiameter &gt; AsMM(0.45)))</a></td>
+<td class="column2">13</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID04TTUV5X44U3J41CGEIQLYZ21O3FHRIDS1ODCSNCWG4I21WEEEEM">Hole Size Constraint (Min=9.842mil) (Max=78.74mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDFHXN3BJVDOKMNNXGX5QIHQ1UNPNX0NHGFPFA3MR5JSRPFXXZD4O">Hole To Hole Clearance (Gap=13.78mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID1ERR00ZXO4MXK3CBVOFCKX5AUGZQA5N3XJLPP5JVC12PIDV0GVLD">Minimum Solder Mask Sliver (Gap=3.15mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDPJZEOJUQHBSFLCW1XSISHHS4ZCL044GWWLUK4KP4WIQC1ZYD2CTG">Silk To Solder Mask (Clearance=7.874mil) (IsText),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID05BTCJUUNHO1ILQCREWT4FWRXEGZP3FZDDJQU3EYDSFIYR0ZXLWL">Silk to Silk (Clearance=7.874mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDD5PWTND50A5TPTUZU2T0AZWD1OJYUFQTJBLIA3G4OSY4MCY4ULFL">Net Antennae (Tolerance=0mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDDNHMJJNZNYC5COBCFUDD2DE5TOLCFHSU2AU32DJXA3EDUMZZ1JFG">Board Clearance Constraint (Gap=0mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDXRKOWPCKLFUB2RAJO3MPCLD4F15EYLJBFNSBEGXPVRBLC3RGNAG">Height Constraint (Min=0mil) (Max=984.252mil) (Prefered=492.126mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">13</td>
+</tr>
+</table><br><a name="IDIIP5BCFCWYUPJLJNKQK11E1MUIOQOS42YG1JITO4Z3JHCFWBCHDI"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Minimum Annular Ring (Minimum=16mil) (((ObjectKind = 'Pad') OR (ObjectKind = 'Via')) And (Layer = 'MultiLayer') And (HoleDiameter &gt; AsMM(0.45)))</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1640.883mil|Location2.X=1658.133mil|Location1.Y=901.375mil|Location2.Y=918.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1640.883mil|Location2.X=1658.133mil|Location1.Y=901.375mil|Location2.Y=918.625mil|Absolute=True">Minimum Annular Ring: (10.826mil &lt; 16mil) Pad J1-1(1675mil,910mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=826.867mil|Location2.Y=844.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=826.867mil|Location2.Y=844.117mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J1-2(1675mil,810mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=726.867mil|Location2.Y=744.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=726.867mil|Location2.Y=744.117mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J1-3(1675mil,710mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=626.867mil|Location2.Y=644.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=626.867mil|Location2.Y=644.117mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J1-4(1675mil,610mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=526.867mil|Location2.Y=544.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=526.867mil|Location2.Y=544.117mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J1-5(1675mil,510mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=426.867mil|Location2.Y=444.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1666.375mil|Location2.X=1683.625mil|Location1.Y=426.867mil|Location2.Y=444.117mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J1-6(1675mil,410mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=719.308mil|Location2.X=736.558mil|Location1.Y=866.375mil|Location2.Y=883.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=719.308mil|Location2.X=736.558mil|Location1.Y=866.375mil|Location2.Y=883.625mil|Absolute=True">Minimum Annular Ring: (10.826mil &lt; 16mil) Pad J3-01(755mil,875mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=793.442mil|Location2.Y=810.692mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=793.442mil|Location2.Y=810.692mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J3-02(755mil,775mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=693.442mil|Location2.Y=710.692mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=693.442mil|Location2.Y=710.692mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J3-03(755mil,675mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=593.442mil|Location2.Y=610.692mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=593.442mil|Location2.Y=610.692mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J3-04(755mil,575mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=493.442mil|Location2.Y=510.692mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=493.442mil|Location2.Y=510.692mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J3-05(755mil,475mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=393.442mil|Location2.Y=410.692mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=393.442mil|Location2.Y=410.692mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J3-06(755mil,375mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=293.442mil|Location2.Y=310.692mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=746.375mil|Location2.X=763.625mil|Location1.Y=293.442mil|Location2.Y=310.692mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 16mil) Pad J3-07(755mil,275mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br></body>
+</html>
