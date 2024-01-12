@@ -1,39 +1,37 @@
 /**
- * @file   	complex.h
+ * @file   	complex.c
  * @author 	Diogo Fernandes (diogo.cf20@gmail.com)
  * */
 
-#ifndef _COMPLEX_H_
-#define _COMPLEX_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "complex.h"
 
 /******************************************************************************
 Defines and macros
 ******************************************************************************/
 
-#define complex_mul_re(a_re, a_im, b_re, b_im)  (a_re * b_re - a_im * b_im)
-#define complex_mul_im(a_re, a_im, b_re, b_im)  (a_re * b_im + a_im * b_re)
 
-/******************************************************************************
-Data structures
-******************************************************************************/
-
-typedef struct
-{ 
-	double Re; 
-	double Im;
-} complex;
 
 /******************************************************************************
 Function Prototypes
 ******************************************************************************/
-extern void print_complex_vector(complex *x, int n, int j);
 
-#ifdef __cplusplus
+
+
+/******************************************************************************
+Function Definitions
+******************************************************************************/
+
+void print_complex_vector(complex *x, int n, int j)
+{
+  for(int i = 0; i < j; i++)
+  {
+    for(int k = 0; k < n; k++)
+    {
+      char str[24];
+      sprintf(str, " %2.4f,%2.4fj ", x[(i*n) + k].Re, x[(i*n) + k].Im);
+      UART_puts(str);      
+    }
+    UART_puts("\n\r");
+  } 
+  UART_puts("\n\r");
 }
-#endif
-
-#endif /* _COMPLEX_H_ */

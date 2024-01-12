@@ -30,15 +30,17 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
+#include <stdlib.h>
+
 #include "commands.h"
 #include "interface.h" // print startup message
 
 #include "complex.h"
 #include "cwt.h"
-#include "wavelet.h"
 
+#include "signals.h"
 
-#include "fft.h" /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "fft.h" //_------------------------------------------------------
 
 /* USER CODE END Includes */
 
@@ -49,11 +51,19 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define N     8
-#define DT    0.25
-#define DJ    0.25
-#define S0    (2*DT)
-#define J     5
+//#define DT    0.25
+//#define DJ    0.25
+
+#define FS    1024
+#define S0    (0.1/FS)
+#define NO    2
+#define VPO   8
+#define J     (VPO*NO)
+
+#define FREQ      200
+#define DURATION  1
+#define N         (FS*DURATION)
+//#define N         8
 
 /* USER CODE END PD */
 
@@ -77,21 +87,6 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-void print_vector(complex *x, int n, int j)
-{
-  for(int i = 0; i < j; i++)
-  {
-    for(int k = 0; k < n; k++)
-    {
-      char str[24];
-      sprintf(str, " %3.2f,%3.2fj ", x[(i*n) + k].Re, x[(i*n) + k].Im);
-      UART_puts(str);      
-    }
-    UART_puts("\n\r");
-  } 
-  UART_puts("\n\r");
-}
 
 /* USER CODE END 0 */
 
@@ -141,31 +136,45 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  complex y[N] = {{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0}};
-  complex aux[N];
+
+  //complex y[N] = {{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0}};
+  
+  complex y[N] = {{0,0}}; 
+  //complex aux[N];
   complex y_cwt[N * J] = {{0,0}};
+
   float period[J] = {0};
   float scale[J];
-  float coi[N] = {0};
+  float coi[J][2] = {{0}, {0}};
+
+  sine_wave(FS, FREQ, 1, DURATION, y);
 
   UART_puts("Original vector:");
-  print_vector(y, N, 1);
+  print_complex_vector(y, N, 1);
+  /*int ret = write_to_file(y, N, "/original_vector.txt", "original_vector.txt");
+  if(!ret)
+   UART_puts("Original vector written!");*/
 
   /* FFT */ 
-  
-  // fft(y, N, aux);
-  // UART_puts("FFT vector:");
-  // print_vector(y, N, 1);
+  /*
+  fft(y, N, aux);
+  UART_puts("FFT vector:");
+  print_complex_vector(y, N, 1);
 
-  // ifft(y, N, aux);
-  // UART_puts("IFFT vector:");
-  // print_vector(y, N, 1);
-
+  ifft(y, N, aux);
+  UART_puts("IFFT vector:");
+  print_complex_vector(y, N, 1);
+  */
   /* CWT */
-  cwt(y, N, DT, DJ, S0, J, MORLET, 6.0, y_cwt, period, scale, coi);
+  cwt(y, N, FS, NO, VPO, S0, MORLET, 6.0, y_cwt, period, scale, coi);
 
-  UART_puts("Transformed vector: ");
-  print_vector(y_cwt, N, J);
+  /*ret = write_to_file(y, N, "/transformed_vector.txt", "transformed_vector.txt");
+  if(!ret)
+     UART_puts("Transformed vector written!");*/
+  UART_puts("Transformed vector:"); 
+  print_complex_vector(y_cwt, N, J);
+
+  print_coi(coi, J);
 
   UART_puts("\n\r>"); // print prompt
   Rx_UART_init(); // set USART3 interrupt

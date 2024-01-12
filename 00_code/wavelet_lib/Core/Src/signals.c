@@ -6,14 +6,14 @@
  */
 
 /* Includes ------------------------------------------------------------------*/
+#include "signals.h"
+
 #include <math.h>
 
 /* Private includes ----------------------------------------------------------*/
 #include "stm32f7xx_hal.h"
 #include "dac.h"
 #include "tim.h"
-
-#include "signals.h"
 
 /* Private variables ---------------------------------------------------------*/
 uint32_t signal_buff[100] = {0};

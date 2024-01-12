@@ -9,7 +9,9 @@
 #define INC_SIGNALS_H_
 
 #include "stm32f7xx_hal.h" // using HAL_StatusTypeDef
+
 #include <stdint.h> // using uint32_t
+#include <math.h>
 
 /* Public Structures----------------------------------------*/
 

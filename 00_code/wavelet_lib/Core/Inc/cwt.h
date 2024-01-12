@@ -17,9 +17,15 @@ extern "C" {
 
 #include <stdint.h>
 
-int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t J_i, 
+/*int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t J_i, 
             wavelet_funcs mother_i, float param_i,
-            complex *y_cwt_o, float *period_o, float *scale_o, float *coi_o);
+            complex *y_cwt_o, float *period_o, float *scale_o, float *coi_o);*/
+
+int cwt(complex *y_i, uint32_t N_i, uint32_t fs_i, uint8_t no_i, uint8_t vpo_i, float s0_i, 
+            wavelet_funcs mother_i, float param_i,
+            complex *y_cwt_o, float *period_o, float *scale_o, float coi_o[][2]);
+
+void print_coi(float coi[][2], int n);
 
 #ifdef __cplusplus
 }

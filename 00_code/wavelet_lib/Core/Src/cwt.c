@@ -38,9 +38,9 @@ extern int (*wave_bases[1])(float *wk_i, uint32_t N_i, float scale_i, float para
  * 
  * @retval  Success
  * */
-int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t J_i, 
+int cwt(complex *y_i, uint32_t N_i, uint32_t fs_i, uint8_t no_i, uint8_t vpo_i, float s0_i, 
             wavelet_funcs mother_i, float param_i,
-            complex *y_cwt_o, float *period_o, float *scale_o, float *coi_o)
+            complex *y_cwt_o, float *period_o, float *scale_o, float coi_o[][2])
 {
     uint8_t ret = 0;
     uint32_t k; /* iterator */
@@ -49,6 +49,9 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
     uint8_t dof_min = 0;
     // float *fourier_factor = (float*) malloc(sizeof(float));
     float fourier_factor = 0.0;
+
+    uint16_t J1 = no_i * vpo_i; // number of scales
+    
 
 	// verify power of 2 length
 	if(!is_powerof2((float) N_i))
@@ -73,7 +76,7 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
 
     ret = fft(y_i, N_i, y_aux);
     if(ret)
-    {
+    {   // error
         UART_puts("It was not possible to compute the FFT of time series array!\n\r");
         return _EXIT_FAILURE;
     }
@@ -83,12 +86,12 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
         where after half array, the wk is descending negatively */
     float *wk = (float*) calloc(N_i, sizeof(float));
     if(wk == NULL)
-    {
+    {   // error
         UART_puts("It was not possible to allocate 'wk' pointer!\n\r");
         return -ENOMEM;
     }
 
-    float multiplier_aux = (2 * M_PI) / (N_i * dt_i);
+    float multiplier_aux = (2 * M_PI * fs_i) / N_i;
 
     /* k <= N/2 */
     wk[0] = 0;
@@ -106,21 +109,27 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
 
     float *daughter = (float*) calloc(N_i, sizeof(float));
     if(daughter == NULL)
-    {
+    {   // error
         UART_puts("It was not possible to allocate 'daughter' pointer!\n\r");
         return -ENOMEM;
     }
 
     /* Loop through scales */
-    for(j = 0; j < J_i; j++)
+    for(j = 0; j < J1; j++)
     {
-        scale_o[j] = s0_i * pow(2, (j * dj_i));
+        // for coi
+        float e_folding_time = 0;
+        float e_folding = 0;        // e-folding time constant relative to wavelet -
+
+        //scale_o[j] = s0_i * pow(2, (j * dj_i));
+
+        scale_o[j] = s0_i * pow(2, (double)j / vpo_i);
 
         ret = wave_bases[mother_i](wk, N_i, scale_o[j], param_i, 
-            daughter, &fourier_factor, coi_o, &dof_min);
+            daughter, &fourier_factor, &e_folding, &dof_min);
 
         if(ret)
-        {
+        {   // Error
             UART_puts("It was not possible to compute scales wavelet!\n\r");
             return _EXIT_FAILURE;
         }
@@ -133,20 +142,37 @@ int cwt(complex *y_i, uint32_t N_i, float dt_i, float dj_i, float s0_i, uint32_t
 
         ret = ifft(&y_cwt_o[j * N_i], N_i, y_aux);
         if(ret)
-        {
+        {   // error
             UART_puts("It was not possible to compute the inverse fourier \
                 transform of the tranformed signal!\n\r");
             return _EXIT_FAILURE;
         }
 
         period_o[j] = fourier_factor * scale_o[j];
+
+        e_folding_time = e_folding * scale_o[j] * fs_i;
+        coi_o[j][0] = min((uint16_t)half_N_i, e_folding_time); // left side of coi
+        coi_o[j][1] = max((uint16_t)half_N_i + 0.5, N_i - e_folding_time); // right side of coi
     }
 
-    /* Free memory space */
+    /* Delete Dynamic memory*/
     free(y_aux);
 
     free(wk);
     free(daughter);
 
     return _EXIT_SUCCESS;
+}
+
+void print_coi(float coi[][2], int n)
+{
+  for(int i = 0; i < n; i++)
+  {
+    char str[24];
+    sprintf(str, "%2.4f, %2.4f", coi[i][0], coi[i][1]);
+    UART_puts(str);
+
+    UART_puts("\n\r");  
+  } 
+  UART_puts("\n\r");
 }

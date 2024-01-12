@@ -22,7 +22,7 @@
  * @retval  Success
  * */
 int morlet_base (float *wk_i, uint32_t N_i, float scale_i, float param_i, 
-    float *daughter_o, float *fourier_factor_o, float *coi_o, uint8_t *dof_min_o)
+    float *daughter_o, float *fourier_factor_o, float *e_folding, uint8_t *dof_min_o)
 {
 	float wk0 = (param_i == -1) ? 6.0 : param_i;
 	uint16_t half_N_i = N_i >> 1;
@@ -50,7 +50,7 @@ int morlet_base (float *wk_i, uint32_t N_i, float scale_i, float param_i,
 	free(expnt);
 	
 	*fourier_factor_o = (4 * M_PI) / (wk0 + sqrt(2 + pow(wk0, 2)));
-	*coi_o = *fourier_factor_o / sqrt(2);
+	*e_folding = sqrt(2);
 	*dof_min_o = 2;
  	
  	return _EXIT_SUCCESS;

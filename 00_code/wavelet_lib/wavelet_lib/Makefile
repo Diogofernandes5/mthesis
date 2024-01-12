@@ -96,7 +96,8 @@ C_INCLUDES =  \
 
 # compile gcc flags
 # optimization flag
-OPT = -Og
+#OPT = -Og
+OPT = -O0
 # debug flag
 DEBUG = -g -gdwarf-2
 
@@ -165,7 +166,7 @@ $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
 
 $(BIN_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 	@echo "$(BLUE)Linking $@...$(RESET)"
-	@$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+	@$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 	@$(SZ) $@
 
 $(BIN_DIR)/%.hex: $(BIN_DIR)/%.elf | $(BIN_DIR)
