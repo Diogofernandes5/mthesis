@@ -12,7 +12,7 @@ t1 = 2;
 %x = chirp(t,f0,t1,f1,'quadratic');
 x = cos(2*pi*t.*(f0 + (f1-f0)*t.^2/(3*t1^2)));
 
-[cfs,f] = cwt(x,fs);
+[cfs,f] = cwt(x,fs,'amor');
 psd_cfs = abs(cfs).^2;
 
 colormap jet;

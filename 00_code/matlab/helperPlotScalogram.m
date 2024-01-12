@@ -1,7 +1,7 @@
 function helperPlotScalogram(sig,Fs)
     % This function is only intended to support this wavelet example.
     % It may change or be removed in a future release.
-    [cfs,f] = cwt(sig,Fs);
+    [cfs,f] = cwt(sig,Fs, 'amor');
 
     sigLen = numel(sig);
     t = (0:sigLen-1)/Fs;

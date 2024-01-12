@@ -22,7 +22,7 @@ n = length(sst);
 dt = 0.25 ;
 time = [0:length(sst)-1]*dt + 1871.0 ;  % construct time array
 xlim = [1870,2000];  % plotting range
-pad = 1;      % pad the time series with zeroes (recommended)
+pad = 0;      % pad the time series with zeroes (recommended)
 dj = 0.25;    % this will do 4 sub-octaves per octave
 s0 = 2*dt;    % this says start at a scale of 6 months
 j1 = 7/dj;    % this says do 7 powers-of-two with dj sub-octaves each
@@ -70,6 +70,8 @@ levels = [0.0625,0.125,0.25,0.5,1,2,4,8,16] ;
 Yticks = 2.^(fix(log2(min(period))):fix(log2(max(period))));
 contour(time,log2(period),log2(power),log2(levels));  %*** or use 'contourfill'
 imagesc(time,log2(period),log2(power));  %*** uncomment for 'image' plot
+colormap jet;
+colorbar;
 xlabel('Time (year)')
 ylabel('Period (years)')
 title('b) NINO3 SST Wavelet Power Spectrum')

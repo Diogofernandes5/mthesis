@@ -1,0 +1,50 @@
+%% WAVETEST Example Matlab script for WAVELET, using NINO3 SST dataset
+%
+clear all; 
+
+load 'sst_nino3.dat'   % input SST time series
+v = sst_nino3;
+
+variance = std(v)^2;
+v = (v - mean(v))/sqrt(variance);
+
+%% Computation
+n = length(v);
+
+fs = 4;
+
+dt = 1/fs;
+pad = 0;                            % pad the time series with zeros (recommended)
+time = [0:length(v)-1]*dt + 1871.0 ;  % construct time array
+
+omega = 6;                          % wavelet parameter
+fc = omega/(2*pi);                  % central frequency of wavelet
+
+no = 7;                             % number of octaves
+vpo = 32;                            % voices per octave
+
+%s0 = fc/pi;
+s0 = 2*dt;                          % this says start at a scale of 6 months
+
+j1 = no*vpo;
+mother = 'Morlet';
+
+%% Wavelet transform:
+[wave,period,scale,freq, coi] = wavelet(v, fs, pad, no, vpo, s0, j1, mother, omega)
+
+%% Plot the scalogram
+figure;
+hp = pcolor(time, freq, abs(wave));   % plot graph
+
+hp.EdgeAlpha = 0;
+
+% colorbar
+colormap(jet);
+cl = colorbar;
+cl.Label.String = "Magnitude";
+
+title("Scalogram and Instantaneous Frequencies")
+xlabel("Time (Year)");
+ylabel("Period (Years)");
+
+%% End of code

@@ -27,15 +27,14 @@
 % 
 % *** Note *** setting any of the following to -1 will cause the default
 %               value to be used.
+%       
+%    NO = number of octaves.Each octave represents a specific frequency band 
+%           where the higher part of the octave has a frequency range that is 
+%           double that of the lower part. 
 %
-%    PAD = if set to 1 (default is 0), pad time series with enough zeroes to get
-%         N up to the next higher power of 2. This prevents wraparound
-%         from the end of the time series to the beginning, and also
-%         speeds up the FFT's used to do the wavelet transform.
-%         This will not eliminate all edge effects (see COI below).
-%
-%    DJ = the spacing between discrete scales. Default is 0.25.
-%         A smaller # will give better scale resolution, but be slower to plot.
+%    VPO = voices per octave - number of scales between each octave 
+%          (the spacing between discrete scales). Default is 4.
+%         A greater # will give better scale resolution, but be slower to plot.
 %
 %    S0 = the smallest scale of the wavelet.  Default is 2*DT.
 %
@@ -50,14 +49,21 @@
 %            For 'PAUL' this is m (order), default is 4.
 %            For 'DOG' this is m (m-th derivative), default is 2.
 %
+%    PAD = if set to 1 (default is 0), pad time series with enough zeroes to get
+%         N up to the next higher power of 2. This prevents wraparound
+%         from the end of the time series to the beginning, and also
+%         speeds up the FFT's used to do the wavelet transform.
+%         This will not eliminate all edge effects (see COI below).
 %
 % OPTIONAL OUTPUTS:
 %
 %    PERIOD = the vector of "Fourier" periods (in time units) that corresponds
 %           to the SCALEs.
 %
-%    SCALE = the vector of scale indices, given by S0*2^(j*DJ), j=0...J1
+%    SCALE = the vector of scale indices, given by S0*2^(J1*DJ), J1=0...J1
 %            where J1+1 is the total # of scales.
+%
+%    FREQ = The vector of "Fourier" frequencies (Hz) converted from scales
 %
 %    COI = if specified, then return the Cone-of-Influence, which is a vector
 %        of N points that contains the maximum period of useful information
@@ -69,57 +75,72 @@
 %              plot(time,log(coi),'k')
 %
 %----------------------------------------------------------------------------
-function [wave,period,scale,coi] = ...
-	wavelet(Y,dt,pad,dj,s0,J1,mother,param);
+function [wave,period,scale,freq,coi] = ...
+	wavelet(Y,fs,no,vpo,s0,mother,param,pad);
 
-if (nargin < 8), param = -1;, end
-if (nargin < 7), mother = -1;, end
-if (nargin < 6), J1 = -1;, end
+if (nargin < 8), pad = -1;, end
+if (nargin < 7), param = -1;, end
+if (nargin < 6), mother = -1;, end
 if (nargin < 5), s0 = -1;, end
-if (nargin < 4), dj = -1;, end
-if (nargin < 3), pad = 0;, end
+if (nargin < 4), vpo = -1;, end
+if (nargin < 3), no = -1;, end
 if (nargin < 2)
-	error('Must input a vector Y and sampling time DT')
+	error('Must input a vector Y and sampling frequency Fs')
 end
 
-n1 = length(Y);
+N = length(Y);
 
-if (s0 == -1), s0=2*dt;, end
-if (dj == -1), dj = 1./4.;, end
-if (J1 == -1), J1=fix((log(n1*dt/s0)/log(2))/dj);, end
+if (no == -1), no = 7;, end
+if (vpo == -1), vpo = 4;, end
+if (s0 == -1), s0=2/fs;, end
 if (mother == -1), mother = 'MORLET';, end
 
-%....construct time series to analyze, pad if necessary
-x(1:n1) = Y - mean(Y);
-if (pad == 1)
-	base2 = fix(log(n1)/log(2) + 0.4999);   % power of 2 nearest to N
-	x = [x,zeros(1,2^(base2+1)-n1)];
-end
+%% Construct time series to analyze, pad if necessary
+% x(1:n1) = Y - mean(Y);
+% if (pad == 1)
+% 	base2 = fix(log(n1)/log(2) + 0.4999);   % power of 2 nearest to N
+% 	x = [x,zeros(1,2^(base2+1)-n1)];
+% end
+
+%x(1:N) = Y - mean(Y);
+x(1:N) = Y;
 n = length(x);
 
-%....construct wavenumber array used in transform [Eqn(5)]
+%% Construct wavenumber array used in transform [Eqn(5)]
 k = [1:fix(n/2)];
-k = k.*((2.*pi)/(n*dt));
+multiplier = ((2.*(pi*fs))/n);
+k = k.*multiplier;
 k = [0., k, -k(fix((n-1)/2):-1:1)];
 
-%....compute FFT of the (padded) time series
+%% Compute FFT of the (padded) time series
 f = fft(x);    % [Eqn(3)]
 
-%....construct SCALE array & empty PERIOD & WAVE arrays
-scale = s0*2.^((0:J1)*dj);
+%% Construct SCALE array & empty PERIOD & WAVE arrays
+J1 = no*vpo;
+
+a0 = 2^(1/vpo);
+ind = 0:(J1-1);
+scale = s0*(a0.^ind);
+
 period = scale;
-wave = zeros(J1+1,n);  % define the wavelet array
+wave = zeros(J1-1,n);  % define the wavelet array
 wave = wave + i*wave;  % make it complex
 
-% loop through all scales and compute transform
-for a1 = 1:J1+1
-	[daughter,fourier_factor,coi,dofmin]=wave_bases(mother,k,scale(a1),param);	
+%% Loop through all scales and compute transform
+for a1 = 1:J1
+	[daughter,fourier_factor,e_folding,dofmin] = wave_bases(mother, k, scale(a1), param, fs);
 	wave(a1,:) = ifft(f.*daughter);  % wavelet transform[Eqn(4)]
 end
 
-period = fourier_factor*scale;
-coi = coi*dt*[1E-5,1:((n1+1)/2-1),fliplr((1:(n1/2-1))),1E-5];  % COI [Sec.3g]
-wave = wave(:,1:n1);  % get rid of padding before returning
+freq = 1./(fourier_factor.*scale);   % frequency conversion
+period = 1./freq;
+
+e_folding = e_folding*scale;         % COI [Sec.3g]
+L = min(floor(N/2), e_folding);
+R = max(ceil(N/2), N - e_folding);
+coi = [L(:), R(:)];
+
+%wave = wave(:,1:n1);  % get rid of padding before returning
 
 return
 
