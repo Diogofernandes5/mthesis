@@ -1,0 +1,14 @@
+@startuml
+
+[*] -right-> Idle
+Idle -right-> StoreInputs : Start
+StoreInputs --> CheckBFCounter : Counter == N
+CheckBFCounter -right-> ReadMemory : BFCounter != (N/2)
+ReadMemory -down-> BFOperation : MemoryRead
+BFOperation --> WriteMemory
+WriteMemory --> CheckBFCounter : MemoryWriten
+
+CheckBFCounter --> SendOutputs : BFCounter == (N/2)
+SendOutputs --> Idle : Counter == N
+
+@enduml
