@@ -1,0 +1,6 @@
+Added Pin To Net: NetName=WS Pin=J1-01
+Added Pin To Net: NetName=SD Pin=J1-02
+Added Pin To Net: NetName=SCK Pin=J1-03
+Added Pin To Net: NetName=GND Pin=J1-04
+Added Pin To Net: NetName=VDD Pin=J1-05
+Added Member To Class: ClassName=Breakout_for_ics4343 Member=Component J1 77311-101-05LF

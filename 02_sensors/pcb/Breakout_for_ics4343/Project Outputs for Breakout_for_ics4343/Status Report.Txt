@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : PCB Document [Breakout_for_ics4343.PcbDoc]
+   Generated File[Breakout_for_ics4343.TXT]
+   Generated File[Breakout_for_ics4343.LDP]
+   Generated File[Breakout_for_ics4343.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 12:31:37 On 26/09/2023

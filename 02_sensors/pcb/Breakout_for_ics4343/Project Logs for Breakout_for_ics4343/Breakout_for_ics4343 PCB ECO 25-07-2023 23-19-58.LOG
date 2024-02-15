@@ -1,0 +1,47 @@
+Removed Pin From Net: NetName=GND Pin=J1-6
+Removed Pin From Net: NetName=GND Pin=J3-03
+Removed Member From Class: ClassName=Breakout_for_ics4343 Member=J3
+Change Component Footprint: Designator=J1 Old Footprint=FP-22-28-4063-MFG New Footprint=AMPHENOL_77311-101-05LF
+Change Component Comment : Designator=J1 Old Comment=22-28-4063 New Comment=77311-101-05LF
+Change Managed Component Library Link : Designator=J1 Old VaultGUID=B7D15EC3-160A-466F-A46C-7801FE6295A7 New VaultGUID= Old ItemGUID=CF0269FE-CE69-41DC-8625-E87386A2FFE5 New ItemGUID= Old RevisionGUID=0246C17E-9A8B-4F0F-8FD3-FD386099E5EE New RevisionGUID=
+Change component parameters: Designator = "J1" ("J1"); Footprint = "FP-22-28-4063-MFG"; UniqueID = "\WZJPKGRB" ("\WZJPKGRB")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = "Amphenol"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "77311-101-05LF"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "J2" ("J2"); Footprint = "AMPHENOL_F31L-1A7H1-11006"; UniqueID = "\RLNFPFTQ" ("\RLNFPFTQ")
+Change component parameters (AddParameter): Name = "Availability"; Value = "In Stock"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/F31L-1A7H1-11006/Amphenol+FCI/view-part/?ref=eda"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = "Amphenol ICC (FCI)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "F31L-1A7H1-11006"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Purchase-URL"; Value = "https://pricing.snapeda.com/search?q=F31L-1A7H1-11006&ref=eda"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/F31L-1A7H1-11006/Amphenol+FCI/view-part/?ref=snap"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier"; Value = "Mouser"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number"; Value = "538-22-28-4063"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=J1-04
+Added Pin To Net: NetName=CONFIG Pin=J4-9
+Added Net: Name=CONFIG
+Added Pin To Net: NetName=LR Pin=J2-1
+Added Pin To Net: NetName=LR Pin=J4-5
+Added Net: Name=LR
+Added Pin To Net: NetName=SCK Pin=J1-03
+Added Pin To Net: NetName=SCK Pin=J2-4
+Added Pin To Net: NetName=SCK Pin=J4-3
+Added Net: Name=SCK
+Added Pin To Net: NetName=SD Pin=J1-01
+Added Pin To Net: NetName=SD Pin=J2-3
+Added Pin To Net: NetName=SD Pin=J4-2
+Added Net: Name=SD
+Added Pin To Net: NetName=VDD Pin=J1-05
+Added Pin To Net: NetName=VDD Pin=J2-5
+Added Pin To Net: NetName=VDD Pin=J4-7
+Added Net: Name=VDD
+Added Pin To Net: NetName=WS Pin=J1-02
+Added Pin To Net: NetName=WS Pin=J2-2
+Added Pin To Net: NetName=WS Pin=J4-4
+Added Net: Name=WS

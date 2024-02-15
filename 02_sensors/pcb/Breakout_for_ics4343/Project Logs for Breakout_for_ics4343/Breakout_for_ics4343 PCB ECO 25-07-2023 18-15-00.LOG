@@ -1,0 +1,30 @@
+Removed Pin From Net: NetName=NetJ3_02 Pin=J4-8
+Change Component Footprint: Designator=J1 Old Footprint=FP-22-28-4060-MFG New Footprint=AMPHENOL_77311-101-06LF
+Change Component Comment : Designator=J1 Old Comment=22-28-4060 New Comment=77311-101-06LF
+Change Managed Component Library Link : Designator=J1 Old VaultGUID=B7D15EC3-160A-466F-A46C-7801FE6295A7 New VaultGUID= Old ItemGUID=69C58887-C266-46F3-9AED-85D183B9E544 New ItemGUID= Old RevisionGUID=2B0F046C-33BA-4464-B9A2-00C1000812D9 New RevisionGUID=
+Change component parameters: Designator = "J1" ("J1"); Footprint = "FP-22-28-4060-MFG"; UniqueID = "\IFHFHFQO" ("\IFHFHFQO")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = "Amphenol"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "77311-101-06LF"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetJ3_02 Pin=J4-7
+Added Pin To Net: NetName=NetJ1_01 Pin=J1-01
+Added Pin To Net: NetName=NetJ1_01 Pin=J2-6
+Added Net: Name=NetJ1_01
+Added Pin To Net: NetName=NetJ1_02 Pin=J1-02
+Added Pin To Net: NetName=NetJ1_02 Pin=J2-5
+Added Net: Name=NetJ1_02
+Added Pin To Net: NetName=NetJ1_03 Pin=J1-03
+Added Pin To Net: NetName=NetJ1_03 Pin=J2-4
+Added Net: Name=NetJ1_03
+Added Pin To Net: NetName=NetJ1_04 Pin=J1-04
+Added Pin To Net: NetName=NetJ1_04 Pin=J2-3
+Added Net: Name=NetJ1_04
+Added Pin To Net: NetName=NetJ1_05 Pin=J1-05
+Added Pin To Net: NetName=NetJ1_05 Pin=J2-2
+Added Net: Name=NetJ1_05
+Added Pin To Net: NetName=NetJ1_06 Pin=J1-06
+Added Pin To Net: NetName=NetJ1_06 Pin=J2-1
+Added Net: Name=NetJ1_06

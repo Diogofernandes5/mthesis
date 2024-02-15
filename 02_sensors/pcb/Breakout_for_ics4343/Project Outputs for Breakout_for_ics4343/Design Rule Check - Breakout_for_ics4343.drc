@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : C:\Users\diogo\Documents\thesis\02_sensors\pcb\Breakout_for_ics4343\Breakout_for_ics4343.PcbDoc
-Date     : 24/07/2023
-Time     : 17:15:44
+Date     : 28/07/2023
+Time     : 16:35:44
 
 Processing Rule : Clearance Constraint (Gap=7.874mil) (All),(All)
 Rule Violations :0
@@ -23,22 +23,6 @@ Rule Violations :0
 
 Processing Rule : Minimum Annular Ring (Minimum=8mil) (((ObjectKind = 'Pad') OR (ObjectKind = 'Via')) And (Layer = 'MultiLayer') And (HoleDiameter <= AsMM(0.45)))
 Rule Violations :0
-
-Processing Rule : Minimum Annular Ring (Minimum=16mil) (((ObjectKind = 'Pad') OR (ObjectKind = 'Via')) And (Layer = 'MultiLayer') And (HoleDiameter > AsMM(0.45)))
-   Violation between Minimum Annular Ring: (10.826mil < 16mil) Pad J1-1(1675mil,910mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J1-2(1675mil,810mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J1-3(1675mil,710mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J1-4(1675mil,610mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J1-5(1675mil,510mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J1-6(1675mil,410mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.826mil < 16mil) Pad J3-01(755mil,875mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J3-02(755mil,775mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J3-03(755mil,675mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J3-04(755mil,575mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J3-05(755mil,475mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J3-06(755mil,375mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-   Violation between Minimum Annular Ring: (10.827mil < 16mil) Pad J3-07(755mil,275mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
-Rule Violations :13
 
 Processing Rule : Hole Size Constraint (Min=9.842mil) (Max=78.74mil) (All)
 Rule Violations :0
@@ -65,6 +49,6 @@ Processing Rule : Height Constraint (Min=0mil) (Max=984.252mil) (Prefered=492.12
 Rule Violations :0
 
 
-Violations Detected : 13
+Violations Detected : 0
 Waived Violations : 0
 Time Elapsed        : 00:00:01
