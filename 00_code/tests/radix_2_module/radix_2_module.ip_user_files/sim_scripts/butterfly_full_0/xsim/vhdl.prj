@@ -1,0 +1,4 @@
+vhdl xil_defaultlib  \
+"../../../../radix_2_module.gen/sources_1/ip/butterfly_full_0/src/multiplier/sim/multiplier.vhd" \
+
+nosort

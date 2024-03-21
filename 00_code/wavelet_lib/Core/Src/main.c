@@ -62,8 +62,8 @@
 
 #define FREQ      200
 #define DURATION  1
-#define N         (FS*DURATION)
-//#define N         8
+// #define N         (FS*DURATION)
+#define N         8
 
 /* USER CODE END PD */
 
@@ -137,17 +137,18 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  //complex y[N] = {{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0}};
+  complex y[N] = {{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0}};
+  complex aux[N];
   
-  complex y[N] = {{0,0}}; 
+  // complex y[N] = {{0,0}}; 
   //complex aux[N];
-  complex y_cwt[N * J] = {{0,0}};
+  //complex y_cwt[N * J] = {{0,0}};
 
-  float period[J] = {0};
-  float scale[J];
-  float coi[J][2] = {{0}, {0}};
+  // float period[J] = {0};
+  // float scale[J];
+  // float coi[J][2] = {{0}, {0}};
 
-  sine_wave(FS, FREQ, 1, DURATION, y);
+  // sine_wave(FS, FREQ, 1, DURATION, y);
 
   UART_puts("Original vector:");
   print_complex_vector(y, N, 1);
@@ -156,7 +157,6 @@ int main(void)
    UART_puts("Original vector written!");*/
 
   /* FFT */ 
-  /*
   fft(y, N, aux);
   UART_puts("FFT vector:");
   print_complex_vector(y, N, 1);
@@ -164,17 +164,18 @@ int main(void)
   ifft(y, N, aux);
   UART_puts("IFFT vector:");
   print_complex_vector(y, N, 1);
-  */
+
+
   /* CWT */
-  cwt(y, N, FS, NO, VPO, S0, MORLET, 6.0, y_cwt, period, scale, coi);
+  // cwt(y, N, FS, NO, VPO, S0, MORLET, 6.0, y_cwt, period, scale, coi);
 
-  /*ret = write_to_file(y, N, "/transformed_vector.txt", "transformed_vector.txt");
-  if(!ret)
-     UART_puts("Transformed vector written!");*/
-  UART_puts("Transformed vector:"); 
-  print_complex_vector(y_cwt, N, J);
+  // /*ret = write_to_file(y, N, "/transformed_vector.txt", "transformed_vector.txt");
+  // if(!ret)
+  //    UART_puts("Transformed vector written!");*/
+  // UART_puts("Transformed vector:"); 
+  // print_complex_vector(y_cwt, N, J);
 
-  print_coi(coi, J);
+  // print_coi(coi, J);
 
   UART_puts("\n\r>"); // print prompt
   Rx_UART_init(); // set USART3 interrupt

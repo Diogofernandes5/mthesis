@@ -23,12 +23,12 @@ uint8_t fft(complex *y_io, uint32_t N_i, complex *aux_i)
     if(N_i > 1)     /* not last stage? */
     {
         complex z, w;
-        uint32_t half_N_i = (N_i >> 1);         /* N_i/2 */
+        uint16_t half_N_i = (N_i >> 1);         /* N_i/2 */
 
         complex *ve = aux_i;                    /* even array points to first position */ 
         complex *vo = aux_i + half_N_i;         /* odd  array points to middle position */
 
-        for(int k = 0; k < half_N_i; k++) 
+        for(uint16_t k = 0; k < half_N_i; k++) 
         {
             /* ve[k] = y_io[k * 2]; */
             ve[k] = y_io[k << 1];
@@ -52,11 +52,11 @@ uint8_t fft(complex *y_io, uint32_t N_i, complex *aux_i)
             z.Re = complex_mul_re(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Re(w*vo[m]) */
             z.Im = complex_mul_im(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Im(w*vo[m]) */
 
-            /* out1 = ve + w(m)*vo */ 
+            /* X0 = ve + w(m)*vo */ 
             y_io[m].Re = ve[m].Re + z.Re;
             y_io[m].Im = ve[m].Im + z.Im;
 
-            /* out2 = ve - w(m+(N_i/2))*vo */ 
+            /* X1 = ve - w(m+(N_i/2))*vo */ 
             y_io[m + half_N_i].Re = ve[m].Re - z.Re;
             y_io[m + half_N_i].Im = ve[m].Im - z.Im;
         }

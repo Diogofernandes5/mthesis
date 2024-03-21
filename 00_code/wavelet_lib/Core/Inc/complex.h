@@ -30,7 +30,7 @@ typedef struct
 /******************************************************************************
 Function Prototypes
 ******************************************************************************/
-extern void print_complex_vector(complex *x, int n, int j);
+extern void print_complex_vector(complex *x, unsigned short int n, unsigned short int j);
 
 #ifdef __cplusplus
 }

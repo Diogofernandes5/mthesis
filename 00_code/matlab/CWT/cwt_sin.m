@@ -28,7 +28,7 @@ pad = 0;                            % pad the time series with zeros (recommende
 omega = 6;                          % wavelet parameter
 %fc = omega/(2*pi);                  % central frequency of wavelet
 
-no = 2;                             % number of octaves - defines the "zoom". if fs
+no = 8;                             % number of octaves - defines the "zoom". if fs
                                         % with a bigger fs, "no" needs to be greater to 
                                         % include all frequencys                                   
 vpo = 8;                           % voices per octave - defines the resolution

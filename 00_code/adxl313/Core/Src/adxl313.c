@@ -43,6 +43,40 @@ Function Definitions
 ******************************************************************************/
 
 /**
+ * @brief   Read accelerometer 3 axis
+ * 
+ * @param   dev - device
+ * */
+void read_accel(adxl313_dev *dev) 
+{
+	uint8_t comm_buff[6] = {0};
+	uint8_t pos_aux = dev->resolution * dev->range;
+
+#ifdef __DEBUG
+	char str[80];
+	sprintf(str, "scale_factor = %lf\n\r reg_masks = %X\n\r resolutions = %d\n\r", dev->scale_factor_mult, reg_masks[pos_aux], resolutions[pos_aux]);
+	UART_puts(str);
+#endif
+
+	/* Read x, y and z axis (6 bytes) */
+	spi_read(dev->spi_desc, ADXL313_DATA_X0, ADXL313_TO_READ, comm_buff);
+
+	/* Each Axis @ All g Ranges: 2 Bytes */
+	dev->x = (double)(twos_complement((uint16_t)((comm_buff[1] << 8) | comm_buff[0]) & reg_masks[pos_aux], resolutions[pos_aux]) 
+		* dev->scale_factor_mult);
+	dev->y = (double)(twos_complement((uint16_t)((comm_buff[3] << 8) | comm_buff[2]) & reg_masks[pos_aux], resolutions[pos_aux]) 
+		* dev->scale_factor_mult);
+	dev->z = (double)(twos_complement((uint16_t)((comm_buff[5] << 8) | comm_buff[4]) & reg_masks[pos_aux], resolutions[pos_aux]) 
+		* dev->scale_factor_mult);
+
+#ifdef __DEBUG
+	sprintf(str, "0x%2.4f;0x%2.4f;0x%2.4f\n\r", dev->x, dev->y, dev->z);
+	UART_puts(str);
+#endif /* __DEBUG */
+}
+
+
+/**
  * @brief   Initializes the sensor and checks its part_id
  * 
  * @param   dev - device structure
@@ -109,6 +143,9 @@ bool begin(adxl313_dev *dev, enum adxl313_comm_type comm_type, enum adxl313_rang
 
 	/* Start mesuring - POWER_CTL*/
 	measure_mode_on(dev);
+
+	/* Set ODR ------------------------------------------------------------------------------------------------------*/
+	set_rate(dev, odr);
 
 #ifdef __DEBUG_CONFIG
 	spi_read(dev->spi_desc, ADXL313_DATA_FORMAT, 1, &data_format); /* 0x0B */
@@ -228,39 +265,6 @@ void set_data_format(adxl313_dev *dev, enum adxl313_range range,
 {/* CORRECT THIS -------------------------------------------------------------------------------*/
 	char _b = (resolution << ADXL313_DATA_FORMAT_FULL_RES_B) | range; 
 	spi_write(dev->spi_desc, ADXL313_DATA_FORMAT, _b, 1);
-}
-
-/**
- * @brief   Read accelerometer 3 axis
- * 
- * @param   dev - device
- * */
-void read_accel(adxl313_dev *dev) 
-{
-	uint8_t comm_buff[6] = {0};
-	uint8_t pos_aux = dev->resolution * dev->range;
-
-#ifdef __DEBUG
-	char str[80];
-	sprintf(str, "scale_factor = %lf\n\r reg_masks = %X\n\r resolutions = %d\n\r", dev->scale_factor_mult, reg_masks[pos_aux], resolutions[pos_aux]);
-	UART_puts(str);
-#endif
-
-	/* Read x, y and z axis (6 bytes) */
-	spi_read(dev->spi_desc, ADXL313_DATA_X0, ADXL313_TO_READ, comm_buff);
-
-	/* Each Axis @ All g Ranges: 2 Bytes */
-	dev->x = (double)(twos_complement((uint16_t)((comm_buff[1] << 8) | comm_buff[0]) & reg_masks[pos_aux], 
-					resolutions[pos_aux]) * dev->scale_factor_mult);
-	dev->y = (double)(twos_complement((uint16_t)((comm_buff[3] << 8) | comm_buff[2]) & reg_masks[pos_aux], 
-				resolutions[pos_aux]) * dev->scale_factor_mult);
-	dev->z = (double)(twos_complement((uint16_t)((comm_buff[5] << 8) | comm_buff[4]) & reg_masks[pos_aux], 
-				resolutions[pos_aux]) * dev->scale_factor_mult);
-
-#ifdef __DEBUG
-	sprintf(str, "0x%2.4f;0x%2.4f;0x%2.4f\n\r", dev->x, dev->y, dev->z);
-	UART_puts(str);
-#endif /* __DEBUG */
 }
 
 /**
