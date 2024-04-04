@@ -1,0 +1,12 @@
+verilog xil_defaultlib  \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/src/mux2_0/src/mux2.v" \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/src/mux2_0/sim/mux2_0.v" \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/src/adder_subtracter32_ip/src/full_adder.v" \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/src/adder_subtracter32_ip/src/adder_subtracter32.v" \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/src/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/src/butterfly_full.v" \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/sim/butterfly_full_0.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+nosort

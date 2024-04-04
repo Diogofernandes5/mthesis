@@ -1,6 +1,0 @@
-verilog xil_defaultlib  \
-"../../../../radix_2_module.gen/sources_1/ip/bram_results/sim/bram_results.v" \
-
-verilog xil_defaultlib "glbl.v"
-
-nosort

@@ -49,8 +49,8 @@ uint8_t fft(complex *y_io, uint32_t N_i, complex *aux_i)
             w.Im = -sin((2 * PI * m) / (double)N_i);
 
             /* w * vo[m] */
-            z.Re = complex_mul_re(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Re(w*vo[m]) */
-            z.Im = complex_mul_im(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* Im(w*vo[m]) */
+            z.Re = complex_mul_re(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* z_re = Re(w*vo[m]) */
+            z.Im = complex_mul_im(w.Re, w.Im, vo[m].Re, vo[m].Im);   /* z_im = Im(w*vo[m]) */
 
             /* X0 = ve + w(m)*vo */ 
             y_io[m].Re = ve[m].Re + z.Re;

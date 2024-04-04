@@ -1,2 +1,0 @@
-rom_stage1_twiddle_im.v,verilog,xil_defaultlib,../../../../radix_2_module.gen/sources_1/ip/rom_stage1_twiddle_im/sim/rom_stage1_twiddle_im.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

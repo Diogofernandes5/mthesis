@@ -1,0 +1,2 @@
+stage5_dist_mem.v,verilog,xil_defaultlib,../../../../radix_2_module.gen/sources_1/ip/stage5_dist_mem/sim/stage5_dist_mem.v,
+glbl.v,Verilog,xil_defaultlib,glbl.v

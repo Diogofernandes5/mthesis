@@ -1,0 +1,4 @@
+vhdl xil_defaultlib  \
+"../../../../data_path.gen/sources_1/ip/butterfly_full_0/src/multiplier/sim/multiplier.vhd" \
+
+nosort
