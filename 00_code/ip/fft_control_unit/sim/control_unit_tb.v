@@ -17,7 +17,7 @@ module control_unit_tb(
     wire [8:0] twiddle_addr;
 
     //---------------
-//    wire [2:0] state;
+    wire [2:0] state;
 //    wire [9:0] data_counter;
 //    wire data_counter_comp;
 

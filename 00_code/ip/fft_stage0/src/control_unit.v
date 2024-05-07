@@ -10,7 +10,10 @@ module control_unit(
     output reg bram_we_o,
     output reg bf_ce_o,
 
-    output reg [8:0] bram_addr_o
+    output reg [8:0] bram_addr_o,
+    
+    //*****************
+    output reg [2:0] state
 
     // output reg [8:0] twiddle_addr_o
 );
@@ -30,7 +33,7 @@ localparam BRAM_SIZE = 10'd512;
 //localparam BRAM_SIZE = 10'd4;
 
 // state and nextstate registers
-reg [2:0] state;
+//reg [2:0] state;
 reg [2:0] nstate;
 
 // counters registers

@@ -13,13 +13,18 @@ module stage1_wrap(
     output wire [31:0] X1_re_o,
     output wire [31:0] X1_im_o,
 
-    output wire fft_ready_o
+    output wire fft_ready_o,
+    
+    output wire src_sel,
+    output wire bram_we,
+    output wire bf_ce,
+    output wire [8:0] bram_addr
     );
 
-wire src_sel;
-wire bram_we;
-wire bf_ce;
-wire bram_addr;
+// wire src_sel;
+// wire bram_we;
+// wire bf_ce;
+// wire [8:0] bram_addr;
 
 wire [8:0] twiddle_addr_o;
 wire [27:0] w;

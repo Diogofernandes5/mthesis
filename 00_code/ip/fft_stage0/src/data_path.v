@@ -46,8 +46,8 @@ wire [31:0] X1_re;
 wire [31:0] X1_im;
 
 /* ----- twiddle factor -----*/
-// w_re for stage0 is always 1 (4094 in fixed-point Q2.12)
-reg [31:0] w_re = 32'd4096;
+// w_re for stage0 is always 1 (4096 in fixed-point Q2.12)
+reg [31:0] w_re = 32'd67108864;
 
 /* --------------- Source select -------------- */
 mux2_0 x0_re_mux (
@@ -118,28 +118,28 @@ bram_results x1_im_bram (
 /* --------------- FFT ready demux -------------- */
 demux2_0 x0_re_demux (
     .d(x0_re_ram),
-    .s(fft_ready_i),
+    .s(!fft_ready_i),
     .y0(x0_re_o),
     .y1(x0_re)
 );
 
 demux2_0 x0_im_demux (
     .d(x0_im_ram),
-    .s(fft_ready_i),
+    .s(!fft_ready_i),
     .y0(x0_im_o),
     .y1(x0_im)
 );
 
 demux2_0 x1_re_demux (
     .d(x1_re_ram),
-    .s(fft_ready_i),
+    .s(!fft_ready_i),
     .y0(x1_re_o),
     .y1(x1_re)
 );
 
 demux2_0 x1_im_demux (
     .d(x1_im_ram),
-    .s(fft_ready_i),
+    .s(!fft_ready_i),
     .y0(x1_im_o),
     .y1(x1_im)
 );
@@ -149,17 +149,17 @@ butterfly_stage0 butterfly_unit (
     .clk(clk),
     .CE(bf_ce_i),
 
-    .x0_im_i(x0_im_i),
-    .x1_re_i(x1_re_i),
-    .x1_im_i(x1_im_i),
-    .x0_re_i(x0_re_i),
-
+    .x0_re_i(x0_re),
+    .x0_im_i(x0_im),
+    .x1_re_i(x1_re),
+    .x1_im_i(x1_im),
+    
     .w_re_i(w_re),  
     
     .X0_re_o(X0_re),
     .X0_im_o(X0_im),
-    .X1_re_o(X0_re),
-    .X1_im_o(X0_im) 
+    .X1_re_o(X1_re),
+    .X1_im_o(X1_im) 
 );
 
 endmodule

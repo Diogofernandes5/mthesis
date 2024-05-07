@@ -11,6 +11,6 @@
   "../../../ipstatic/hdl/mult_gen_v12_0_vh_rfs.vhd" \
 -endlib
 -makelib ies_lib/xil_defaultlib \
-  "../../../../butterfly.gen/sources_1/ip/multiplier/sim/multiplier.vhd" \
+  "../../../../../radix_2_module/radix_2_module.tmp/butterfly_full_v1_0_project/butterfly_full_v1_0_project.gen/sources_1/ip/multiplier/sim/multiplier.vhd" \
 -endlib
 

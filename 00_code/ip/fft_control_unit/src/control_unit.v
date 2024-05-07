@@ -24,10 +24,10 @@ localparam S_BF_OPERATION = 3'b100;
 localparam S_WRITE_BACK = 3'b101;
 localparam S_SEND_RESULTS = 3'b110;
 
-localparam BRAM_SIZE = 10'd512;
+//localparam BRAM_SIZE = 10'd512;
 
 // for tests
-//localparam BRAM_SIZE = 10'd4;
+localparam BRAM_SIZE = 10'd4;
 
 // state and nextstate registers
 reg [2:0] state;
@@ -71,7 +71,6 @@ always @(*) begin
         nstate = S_BF_OPERATION;
 
     S_BF_OPERATION: begin
-        bf_ce_o = 1'b1;
         if(cycle_counter == 1'd1)
             nstate = S_WRITE_BACK;
     end
@@ -104,15 +103,20 @@ always @(*) begin
 
     S_CHECK_BF_COUNTER: begin
         src_sel_o = 1'b1;
-        data_counter = {10{1'b0}}; // reset data_counter    
+        data_counter = {10{1'b0}}; // reset data_counter 
+        bram_addr_o = data_counter;
         bram_we_o = 1'b0; // disable writing to memmory
     end 
+    
     S_READ_MEMORY: begin
         bram_addr_o = bf_counter;
         twiddle_addr_o = bf_counter;
     end
-    // S_BF_OPERATION: 
+    S_BF_OPERATION: begin
+        bf_ce_o = 1'b1;
+    end
     S_WRITE_BACK: begin
+        bf_ce_o = 1'b0;
         bram_we_o = 1'b1;
         cycle_counter = {2{1'b0}};        
     end
@@ -134,6 +138,7 @@ always @(posedge clk or negedge rstn) begin
         bf_counter = {10{1'b0}};
         cycle_counter = {2{1'b0}};
         bram_we_o = 1'b0;
+        bf_ce_o = 1'b0;
     end
     else if(state == S_STORE_INPUTS || state == S_SEND_RESULTS)  // receiving or sending data
         data_counter = data_counter + 1; // increase data_counter

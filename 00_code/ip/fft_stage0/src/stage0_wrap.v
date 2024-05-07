@@ -13,13 +13,21 @@ module stage0_wrap(
     output wire [31:0] X1_re_o,
     output wire [31:0] X1_im_o,
 
-    output wire fft_ready_o
+    output wire fft_ready_o,
+    
+    //************
+    output wire [2:0] state,
+    
+    output wire src_sel,
+    output wire bram_we,
+    output wire bf_ce,
+    output wire [8:0] bram_addr
     );
 
-wire src_sel;
-wire bram_we;
-wire bf_ce;
-wire bram_addr;
+//wire src_sel;
+//wire bram_we;
+//wire bf_ce;
+//wire bram_addr;
 
 control_unit fft_control_unit (
     .clk(clk),
@@ -29,7 +37,9 @@ control_unit fft_control_unit (
     .fft_ready_o(fft_ready_o),
     .bram_we_o(bram_we),
     .bf_ce_o(bf_ce),
-    .bram_addr_o(bram_addr)
+    .bram_addr_o(bram_addr),
+    
+    .state(state)
     );
 
 data_path fft_data_path (

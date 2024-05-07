@@ -1,13 +1,16 @@
 module data_path(
 	input wire clk,
-	input wire rstn,
+	input rstn,
 	
 	input wire [31:0] x0_re_i,
 	input wire [31:0] x0_im_i,
 	input wire [31:0] x1_re_i,
 	input wire [31:0] x1_im_i,
 	
-    input wire [8:0] bram_addr_i,
+    input wire [8:0] x0_re_addr,
+    input wire [8:0] x0_im_addr,
+    input wire [8:0] x1_re_addr,
+    input wire [8:0] x1_im_addr,
 
     //input wire [8:0] twiddle_addr_i,
     // input wire [8:0] twiddle_addr_im_i,
@@ -17,8 +20,8 @@ module data_path(
 	input wire fft_ready_i,
 	input wire start_i,
 
-    input wire bram_we_i,
-    input wire bf_ce_i,
+    input wire bram_we,
+    input wire bf_ce,
 
     output wire [31:0] x0_re_o,
     output wire [31:0] x0_im_o,
@@ -90,8 +93,8 @@ mux2_0 x1_im_mux (
 bram_results x0_re_bram (
     .clka(clk),
     .rsta(rstn),         
-    .wea(bram_we_i),      
-    .addra(bram_addr_i),
+    .wea(bram_we),      
+    .addra(x0_re_addr),
     .dina(x0_re_sel),  
     .douta(x0_re_ram) 
 );
@@ -99,8 +102,8 @@ bram_results x0_re_bram (
 bram_results x0_im_bram (
     .clka(clk),
     .rsta(rstn),     
-    .wea(bram_we_i),        
-    .addra(bram_addr_i), 
+    .wea(bram_we),        
+    .addra(x0_im_addr), 
     .dina(x0_im_sel),  
     .douta(x0_im_ram)    
 );
@@ -108,8 +111,8 @@ bram_results x0_im_bram (
 bram_results x1_re_bram (
     .clka(clk),
     .rsta(rstn),    
-    .wea(bram_we_i),       
-    .addra(bram_addr_i), 
+    .wea(bram_we),       
+    .addra(x1_re_addr), 
     .dina(x1_re_sel),     
     .douta(x1_re_ram)         
 );
@@ -117,8 +120,8 @@ bram_results x1_re_bram (
 bram_results x1_im_bram (
     .clka(clk),
     .rsta(rstn),           
-    .wea(bram_we_i),        
-    .addra(bram_addr_i), 
+    .wea(bram_we),        
+    .addra(x1_im_addr), 
     .dina(x1_im_sel),    
     .douta(x1_im_ram)     
 );
@@ -153,9 +156,9 @@ demux2_0 x1_im_demux (
 );
 
 /* --------- butterfly unit --------- */
-butterfly_full_0 butterfly_unit (
+butterfly_full_ip_0 butterfly_unit (
     .clk(clk),
-    .CE(bf_ce_i),
+    .CE(bf_ce),
 
     .x0_im_i(x0_im_i),
     .x1_re_i(x1_re_i),

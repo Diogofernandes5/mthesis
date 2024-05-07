@@ -1,7 +1,7 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Thu Apr  4 14:44:29 2024
+-- Date        : Wed Apr 10 15:42:54 2024
 -- Host        : fernandes420 running 64-bit Ubuntu 22.04.4 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/fernandes/thesis/00_code/ip/fft/stage1/stage1.gen/sources_1/ip/fft_control_unit/fft_control_unit_sim_netlist.vhdl
@@ -40,7 +40,6 @@ end fft_control_unit;
 
 architecture STRUCTURE of fft_control_unit is
   signal \<const0>\ : STD_LOGIC;
-  signal \<const1>\ : STD_LOGIC;
   attribute X_INTERFACE_INFO : string;
   attribute X_INTERFACE_INFO of clk : signal is "xilinx.com:signal:clock:1.0 clk CLK";
   attribute X_INTERFACE_PARAMETER : string;
@@ -48,7 +47,7 @@ architecture STRUCTURE of fft_control_unit is
   attribute X_INTERFACE_INFO of rstn : signal is "xilinx.com:signal:reset:1.0 rstn RST";
   attribute X_INTERFACE_PARAMETER of rstn : signal is "XIL_INTERFACENAME rstn, POLARITY ACTIVE_LOW, INSERT_VIP 0";
 begin
-  bf_ce_o <= \<const1>\;
+  bf_ce_o <= \<const0>\;
   bram_addr_o(8) <= \<const0>\;
   bram_addr_o(7) <= \<const0>\;
   bram_addr_o(6) <= \<const0>\;
@@ -73,9 +72,5 @@ begin
 GND: unisim.vcomponents.GND
      port map (
       G => \<const0>\
-    );
-VCC: unisim.vcomponents.VCC
-     port map (
-      P => \<const1>\
     );
 end STRUCTURE;

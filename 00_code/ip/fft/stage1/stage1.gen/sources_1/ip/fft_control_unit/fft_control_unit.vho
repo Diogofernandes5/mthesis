@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:fft_control_unit:1.0
--- IP Revision: 2
+-- IP Revision: 5
 
 -- The following code must appear in the VHDL architecture header.
 

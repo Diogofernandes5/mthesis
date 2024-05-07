@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Thu Apr  4 14:44:29 2024
+// Date        : Wed Apr 10 15:42:54 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.4 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/fernandes/thesis/00_code/ip/fft/stage1/stage1.gen/sources_1/ip/fft_control_unit/fft_control_unit_sim_netlist.v
@@ -36,9 +36,8 @@ module fft_control_unit
   output [8:0]twiddle_addr_o;
 
   wire \<const0> ;
-  wire \<const1> ;
 
-  assign bf_ce_o = \<const1> ;
+  assign bf_ce_o = \<const0> ;
   assign bram_addr_o[8] = \<const0> ;
   assign bram_addr_o[7] = \<const0> ;
   assign bram_addr_o[6] = \<const0> ;
@@ -62,8 +61,6 @@ module fft_control_unit
   assign twiddle_addr_o[0] = \<const0> ;
   GND GND
        (.G(\<const0> ));
-  VCC VCC
-       (.P(\<const1> ));
 endmodule
 `ifndef GLBL
 `define GLBL

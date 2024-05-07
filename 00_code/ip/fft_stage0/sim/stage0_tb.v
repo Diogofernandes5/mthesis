@@ -18,14 +18,20 @@ module stage0_tb(
 
     wire fft_ready;
 
+    wire [2:0] state;
+    
+    wire bram_we;
+    wire bf_ce;
+    wire [8:0] bram_addr;
+    
     initial begin
         rstn <= 0;
         #(5)
             ;
         rstn <= 1;
         
-        #(800);
-        rstn <= 0;
+//        #(800);
+//        rstn <= 0;
     end
 
     always begin
@@ -52,7 +58,13 @@ module stage0_tb(
         .X1_re_o(X1_re),
         .X1_im_o(X1_im),
 
-        .fft_ready_o(fft_ready)
+        .fft_ready_o(fft_ready),
+        
+        .state(state),
+        .src_sel(src_sel),
+        .bram_we(bram_we),
+        .bf_ce(bf_ce),
+        .bram_addr(bram_addr)
     );
 
     initial begin
@@ -63,15 +75,15 @@ module stage0_tb(
         #(30);
         start = 0;
         
-        #(700);
-        start = 1;
+//        #(700);
+//        start = 1;
     end
     
     initial begin
-        x0_re = 1;
-        x0_im = 1;
-        x1_re = 1;
-        x1_im = 1;
+        x0_re = 32'h000000FF;
+        x0_im = 32'h00000000;
+        x1_re = 32'h0000000F;
+        x1_im = 32'h00000000;
     end
 
 endmodule

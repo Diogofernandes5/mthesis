@@ -71,7 +71,6 @@ always @(*) begin
         nstate = S_BF_OPERATION;
 
     S_BF_OPERATION: begin
-        bf_ce_o = 1'b1;
         if(cycle_counter == 1'd1)
             nstate = S_WRITE_BACK;
     end
@@ -111,8 +110,11 @@ always @(*) begin
         bram_addr_o = bf_counter;
         twiddle_addr_o = bf_counter;
     end
-    // S_BF_OPERATION: 
+    S_BF_OPERATION: begin
+        bf_ce_o = 1'b1;
+    end
     S_WRITE_BACK: begin
+        bf_ce_o = 1'b0;
         bram_we_o = 1'b1;
         cycle_counter = {2{1'b0}};        
     end
@@ -134,6 +136,7 @@ always @(posedge clk or negedge rstn) begin
         bf_counter = {10{1'b0}};
         cycle_counter = {2{1'b0}};
         bram_we_o = 1'b0;
+        bf_ce_o = 1'b0;
     end
     else if(state == S_STORE_INPUTS || state == S_SEND_RESULTS)  // receiving or sending data
         data_counter = data_counter + 1; // increase data_counter

@@ -26,6 +26,6 @@ vcom -work mult_gen_v12_0_17 -93 \
 "../../../ipstatic/hdl/mult_gen_v12_0_vh_rfs.vhd" \
 
 vcom -work xil_defaultlib -93 \
-"../../../../butterfly.gen/sources_1/ip/multiplier/sim/multiplier.vhd" \
+"../../../../../radix_2_module/radix_2_module.tmp/butterfly_full_v1_0_project/butterfly_full_v1_0_project.gen/sources_1/ip/multiplier/sim/multiplier.vhd" \
 
 

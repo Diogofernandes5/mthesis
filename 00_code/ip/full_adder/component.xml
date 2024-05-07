@@ -18,7 +18,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a917441d</spirit:value>
+            <spirit:value>3b557562</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -34,7 +34,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a917441d</spirit:value>
+            <spirit:value>3b557562</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -49,7 +49,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>b6de38ed</spirit:value>
+            <spirit:value>76fbf797</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -159,17 +159,8 @@
       <spirit:file>
         <spirit:name>src/adder_subtracter32.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_71aaf705</spirit:userFileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../tests/full_adder/src/full_adder.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../tests/full_adder/src/adder_subtracter32.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>CHECKSUM_e4643e68</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -184,14 +175,6 @@
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
-      <spirit:file>
-        <spirit:name>../../tests/full_adder/src/full_adder.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../tests/full_adder/src/adder_subtracter32.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-      </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_testbench_view_fileset</spirit:name>
@@ -199,16 +182,8 @@
         <spirit:name>src/adder_subtracter32_tb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
         <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../tests/full_adder/sim/adder_subtracter32_tb.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+        <spirit:userFileType>USED_IN_testbench</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -254,8 +229,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>adder_subtracter32</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>6</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2024-02-27T14:07:20Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>7</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2024-04-23T16:38:06Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@55eaf4d3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@73afb0be_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
@@ -302,12 +277,23 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@1612d24c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7d072429_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@6d640c99_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6ee6f4c0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@10353a1a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7dbf39c1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5209eed7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@13751ef0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e940d1e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@68129d8c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@702d29f8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ce93784_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@669c4df_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@a545449_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="b0911f40"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="03acacac"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="461cc6aa"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="002fc285"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="76d40d4a"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
