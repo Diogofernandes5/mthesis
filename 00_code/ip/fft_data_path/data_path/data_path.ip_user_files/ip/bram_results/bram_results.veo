@@ -59,7 +59,7 @@ bram_results your_instance_name (
   .rsta(rsta),            // input wire rsta
   .ena(ena),              // input wire ena
   .wea(wea),              // input wire [0 : 0] wea
-  .addra(addra),          // input wire [8 : 0] addra
+  .addra(addra),          // input wire [1 : 0] addra
   .dina(dina),            // input wire [31 : 0] dina
   .douta(douta),          // output wire [31 : 0] douta
   .rsta_busy(rsta_busy)  // output wire rsta_busy

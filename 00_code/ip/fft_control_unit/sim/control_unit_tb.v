@@ -1,74 +1,66 @@
 `timescale 1ns / 1ps
 
-module control_unit_tb(
+module control_unit_tb();
 
-    );
+// clock period in nanoseconds
+`define CLK_PERIOD 10
 
-    reg clk, rstn;
-    reg start;
+reg clk, rstn;
+reg start;
 
-    wire src_sel;
-    wire fft_ready;
+wire src_sel;
+wire fft_ready;
 
-    wire bram_we;
+wire bram_we;
+wire bram_en;
+wire bf_ce;
 
-    wire [8:0] bram_addr;
+wire [10:0] bram_addr;
 
-    wire [8:0] twiddle_addr;
+wire [10:0] twiddle_addr;
 
-    //---------------
-    wire [2:0] state;
+localparam BRAM_SIZE = 10'd512;
+
+//---------------
+wire [2:0] state;
 //    wire [9:0] data_counter;
 //    wire data_counter_comp;
 
-    initial begin
-        rstn <= 0;
-        #(5)
-            ;
-        rstn <= 1;
+always #(`CLK_PERIOD/2) clk = ~clk;
+ 
+initial begin
+    clk <= 1;
+    rstn <= 0;
         
-        #(1000000);
-        rstn <= 0;
-    end
+    #(`CLK_PERIOD*2) rstn <= 1;
+end
 
-    always begin
-        clk <= 0;
-        #(10)
-            ;
-        clk <= 1;
-        #(10)
-            ;
-    end
+control_unit dut(
+    .clk(clk),
+    .rstn(rstn),
+    .start_i(start),
+    .src_sel_o(src_sel),
+    .fft_ready_o(fft_ready),
+    .bram_we_o(bram_we),
+    .bram_en_o(bram_en),
+    .bf_ce_o(bf_ce),
+    .bram_addr_o(bram_addr),
+    .twiddle_addr_o(twiddle_addr)
+);
 
-    control_unit dut(
-        .clk(clk),
-        .rstn(rstn),
-        .start_i(start),
-        .src_sel_o(src_sel),
-        .fft_ready_o(fft_ready),
-        .bram_we_o(bram_we),
-        .bram_addr_o(bram_addr),
-        .twiddle_addr_o(twiddle_addr)
-    );
+initial begin
+    start = 0;
+    #(`CLK_PERIOD*3);
+    start = 1;
 
-    initial begin
-        #(30);
-        start = 1;
-        
-        #(30);
-        start = 0;
-    end
+    #(`CLK_PERIOD*BRAM_SIZE);
+    start = 0;
+    
+    #(`CLK_PERIOD*300);
+    start = 1;
 
-    always @(*) begin
-        if(fft_ready) begin
-            #(10500);
-            start = 1;
-        end
-        if(start)begin
-            #(50);
-            start = 1;
-        end
-
-    end
+    #(`CLK_PERIOD*BRAM_SIZE);
+    start = 0;
+end
 
 endmodule

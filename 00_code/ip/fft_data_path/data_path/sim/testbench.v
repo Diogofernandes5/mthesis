@@ -3,7 +3,7 @@
 module testbench ();
 
 // clock period in nanoseconds
-`define CLK_PERIOD 10
+`define CLK_PERIOD 50
 
 reg clk;
 reg rstn;
@@ -36,15 +36,15 @@ wire [31:0] X1_re;
 wire [31:0] X1_im;
 
 // input vectors
-localparam INPUT_FILENAME = "../../../../../../../matlab/golden_vectors/input.txt";
+localparam INPUT_FILENAME = "../../../../../../../../matlab/golden_vectors/input.txt";
 
-localparam GOLDEN_RE_FILENAME = "../../../../../../../matlab/golden_vectors/golden_re.txt";
-localparam GOLDEN_IM_FILENAME = "../../../../../../../matlab/golden_vectors/golden_im.txt";
+localparam GOLDEN_RE_FILENAME = "../../../../../../../../matlab/golden_vectors/golden_re.txt";
+localparam GOLDEN_IM_FILENAME = "../../../../../../../../matlab/golden_vectors/golden_im.txt";
 
-localparam OUTPUT_RE_FILENAME = "../../../../../../../matlab/golden_vectors/output_re.txt";
-localparam OUTPUT_IM_FILENAME = "../../../../../../../matlab/golden_vectors/output_im.txt";
+localparam OUTPUT_RE_FILENAME = "../../../../../../../../matlab/golden_vectors/output_re.txt";
+localparam OUTPUT_IM_FILENAME = "../../../../../../../../matlab/golden_vectors/output_im.txt";
 
-localparam FFT_SIZE = 12'd1024;
+localparam FFT_SIZE = 12'd8;
 
 /* --------------------------------*/
 

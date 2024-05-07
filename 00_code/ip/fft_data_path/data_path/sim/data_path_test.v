@@ -222,7 +222,7 @@ module data_path_test ();
                 src_sel = 1'b1;
                 data_counter = {10{1'b0}}; // reset data_counter 
                 //bram_addr = data_counter;   
-                bram_addr = bf_counter[1:0];
+                bram_addr = bf_counter;
                 bram_we = 1'b0; // disable writing to memmory 
                 bram_en = 1'b1;
                 //        write_counter = 1'b0;    

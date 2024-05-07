@@ -22,9 +22,9 @@ module data_path_tb (
     reg bram_en;
     reg bf_ce;
     
-    reg [8:0] bram_addr;
+    reg [10:0] bram_addr;
     
-    reg [8:0] twiddle_addr;
+    reg [10:0] twiddle_addr;
     
     
     wire [31:0] X0_re_bf;
@@ -46,10 +46,10 @@ module data_path_tb (
     localparam S_WRITE_BACK = 3'b101;
     localparam S_SEND_RESULTS = 3'b110;
     
-    localparam BRAM_SIZE = 11'd512;
+//    localparam BRAM_SIZE = 11'd512;
     
     // for tests
-//    localparam BRAM_SIZE = 10'd4;
+    localparam BRAM_SIZE = 10'd4;
     
     // state and nextstate registers
     reg [2:0] state;
@@ -160,8 +160,8 @@ module data_path_tb (
                 start_sending = 1'b0;
                 src_sel = 1'b0;
                 data_counter = {11{1'b0}};
-                bram_addr = {9{1'b0}};
-                twiddle_addr = {9{1'b0}};
+                bram_addr = {11{1'b0}};
+                twiddle_addr = {11{1'b0}};
                 bram_en = 1'b1;
                 bram_we = 1'b0;
             end

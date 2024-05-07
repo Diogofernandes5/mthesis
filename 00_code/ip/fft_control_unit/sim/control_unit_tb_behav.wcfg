@@ -11,15 +11,19 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="34.400 ns"></ZoomStartTime>
-      <ZoomEndTime time="386.901 ns"></ZoomEndTime>
-      <Cursor1Time time="190.000 ns"></Cursor1Time>
+      <ZoomStartTime time="8,138.184 ns"></ZoomStartTime>
+      <ZoomEndTime time="8,209.085 ns"></ZoomEndTime>
+      <Cursor1Time time="8,150.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="211"></NameColumnWidth>
-      <ValueColumnWidth column_width="83"></ValueColumnWidth>
+      <ValueColumnWidth column_width="79"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="9" />
+   <wave_markers>
+      <marker label="" time="8150000" />
+      <marker label="" time="8140000" />
+   </wave_markers>
    <wvobject type="logic" fp_name="/control_unit_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -45,12 +49,13 @@
       <obj_property name="ObjectShortName">bram_we</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/control_unit_tb/bram_addr">
-      <obj_property name="ElementShortName">bram_addr[8:0]</obj_property>
-      <obj_property name="ObjectShortName">bram_addr[8:0]</obj_property>
+      <obj_property name="ElementShortName">bram_addr[10:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_addr[10:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/control_unit_tb/twiddle_addr">
-      <obj_property name="ElementShortName">twiddle_addr[8:0]</obj_property>
-      <obj_property name="ObjectShortName">twiddle_addr[8:0]</obj_property>
+      <obj_property name="ElementShortName">twiddle_addr[10:0]</obj_property>
+      <obj_property name="ObjectShortName">twiddle_addr[10:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/control_unit_tb/state">
       <obj_property name="ElementShortName">state[2:0]</obj_property>
