@@ -98,7 +98,7 @@ initial begin
     
     w_re_i <= 32'h1;
     w_im_i <= 32'h2;
-    #(`CLK_PERIOD*2) CE <= 1;
+    #(`CLK_PERIOD*4) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     
@@ -111,7 +111,7 @@ initial begin
     w_re_i <= 32'h333;
     w_im_i <= 32'h333;
     
-    #(`CLK_PERIOD*2) CE <= 1;
+    #(`CLK_PERIOD*4) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     
@@ -124,7 +124,7 @@ initial begin
     w_re_i <= 32'h333;      // 0.2
     w_im_i <= 32'hFFFFFCCD; // -0.2
     
-    #(`CLK_PERIOD*2) CE <= 1;
+    #(`CLK_PERIOD*4) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     
@@ -136,7 +136,23 @@ initial begin
   
     w_re_i <= 32'h334;      
     w_im_i <= 32'hFFFFFCCE; 
-
+    
+    #(`CLK_PERIOD*4) CE <= 1;
+    
+    #(`CLK_PERIOD*1) CE <= 0;
+    
+    x0_re_i <= 32'h1;
+    x0_im_i <= 32'h2;
+    
+    x1_re_i <= 32'h1;
+    x1_im_i <= 32'h2;
+    
+    w_re_i <= 32'h1;
+    w_im_i <= 32'h2;
+    
+    #(`CLK_PERIOD*4) CE <= 1;
+    
+    #(`CLK_PERIOD*1) CE <= 0;
 end
      
 endmodule

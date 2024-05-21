@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:butterfly_full_ip:1.0
--- IP Revision: 13
+-- IP Revision: 17
 
 -- The following code must appear in the VHDL architecture header.
 

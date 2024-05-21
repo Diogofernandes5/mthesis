@@ -16,17 +16,6 @@ module data_path_tb (
     output wire [31:0] X1_im
     );
 
-    /* ----------- Variables ------------*/
-    reg src_sel;
-    reg bram_we;
-    reg bram_en;
-    reg bf_ce;
-    
-    reg [10:0] bram_addr;
-    
-    reg [10:0] twiddle_addr;
-    
-    
     wire [31:0] X0_re_bf;
     wire [31:0] X0_im_bf;
     wire [31:0] X1_re_bf;
@@ -35,33 +24,6 @@ module data_path_tb (
     wire [31:0] x0_im_ram;
     wire [31:0] x1_re_ram;
     wire [31:0] x1_im_ram;
-    
-    
-    // define states
-    localparam S_IDLE = 3'b000;
-    localparam S_STORE_INPUTS = 3'b001;
-    localparam S_CHECK_BF_COUNTER = 3'b010;
-    localparam S_READ_MEMORY = 3'b011;
-    localparam S_BF_OPERATION = 3'b100;
-    localparam S_WRITE_BACK = 3'b101;
-    localparam S_SEND_RESULTS = 3'b110;
-    
-//    localparam BRAM_SIZE = 11'd512;
-    
-    // for tests
-    localparam BRAM_SIZE = 10'd4;
-    
-    // state and nextstate registers
-    reg [2:0] state;
-    reg [2:0] nstate;
-    
-    // counters registers
-    reg [10:0] data_counter;
-    reg [10:0] bf_counter;
-    reg [1:0] cycle_counter;
-    reg cycle_delay;
-    
-    reg start_sending;
     
     data_path dut(
         .clk(clk),
@@ -100,146 +62,255 @@ module data_path_tb (
         .x1_im_ram(x1_im_ram)
     );
     
+    /* ----------- Control unit ------------*/
+        // define states
+    localparam S_IDLE = 3'b000;
+    localparam S_STORE_INPUTS = 3'b001;
+    localparam S_CHECK_BF_COUNTER = 3'b010;
+    localparam S_READ_MEMORY = 3'b011;
+    localparam S_BF_OPERATION = 3'b100;
+    localparam S_WRITE_BACK = 3'b101;
+    localparam S_SEND_RESULTS = 3'b110;
+
+    localparam BRAM_SIZE = 10'd512;
+
+    // for tests
+//    localparam BRAM_SIZE = 3'd4;
+
+    reg [10:0] bram_addr;
+    reg [10:0] twiddle_addr;
+    
+    reg src_sel;
+
+    reg bram_we;
+    reg bram_en;
+    reg bf_ce;
+
+    // state and nextstate registers
+    reg [2:0] state;
+    reg [2:0] nstate;
+
+    // counters registers
+    reg [10:0] data_counter;
+    reg [10:0] bf_counter;
+    reg [2:0] cycle_counter;
+    reg cycle_delay;
+    
+    reg start_sending;
+
     // state register
     always @(posedge clk or negedge rstn) begin
         if(~rstn)begin
             state <= S_IDLE;
-            nstate <= S_IDLE;
+            // nstate <= S_IDLE;
         end
         else begin
             state <= nstate;
         end
     end
-    
+
     // nextstate logic
     always @(*) begin
         case(state)
             S_IDLE:
                 if(start)
                     nstate = S_STORE_INPUTS;
-        
+                else 
+                    nstate = S_IDLE;
+
             S_STORE_INPUTS:
                 if(data_counter == BRAM_SIZE-1) // data_counter == N/2 (512)
                     nstate = S_CHECK_BF_COUNTER;
-    
+                else 
+                    nstate = S_STORE_INPUTS;
+
             S_CHECK_BF_COUNTER: begin
                 if(bf_counter == BRAM_SIZE) begin
-                    if(cycle_delay == 1'h1) begin
-                        cycle_delay = 1'b0;
+                    if(cycle_delay == 1'h1)
                         nstate = S_SEND_RESULTS;
-                    end 
+                    else
+                        nstate = S_CHECK_BF_COUNTER;
                 end                    
                 
                 else
                     nstate = S_READ_MEMORY;
             end
-    
+
             S_READ_MEMORY:
                 nstate = S_BF_OPERATION;
-    
+
             S_BF_OPERATION: begin
-                if(cycle_counter == 2'd2)
+                if(cycle_counter == 3'd4)
                     nstate = S_WRITE_BACK;
+
+                else 
+                    nstate = S_BF_OPERATION;
             end
-    
+
             S_WRITE_BACK:
-                //        if(write_counter == 1'b1)
                 nstate = S_CHECK_BF_COUNTER;
-                //    end
-    
-            S_SEND_RESULTS:
+
+            S_SEND_RESULTS: begin
                 if(data_counter == (BRAM_SIZE-1)+1) // data_counter == N/2 (512)
                     nstate = S_IDLE;
+                else 
+                    nstate = S_SEND_RESULTS;
+            end
+
+            default: nstate = S_IDLE;
         endcase
     end
-    
+
     // output logic
     always @(*) begin
         case(state)
             S_IDLE: begin
                 start_sending = 1'b0;
                 src_sel = 1'b0;
-                data_counter = {11{1'b0}};
                 bram_addr = {11{1'b0}};
                 twiddle_addr = {11{1'b0}};
                 bram_en = 1'b1;
                 bram_we = 1'b0;
+                bf_ce = 1'b0;
             end
-    
+
             S_STORE_INPUTS: begin
+                start_sending = 1'b0;
                 src_sel = 1'b0;
                 bram_addr = data_counter;
+                twiddle_addr = {11{1'b0}};
+                bram_en = 1'b1;
                 bram_we = 1'b1;
-                bram_en = 1'b1;
+                bf_ce = 1'b0;
             end
-    
+
             S_CHECK_BF_COUNTER: begin
+                start_sending = 1'b0;
                 src_sel = 1'b1;
-                data_counter = {11{1'b0}}; // reset data_counter 
-                //bram_addr = data_counter;   
                 bram_addr = bf_counter;
-                bram_we = 1'b0; // disable writing to memmory 
-                bram_en = 1'b1;
-                //        write_counter = 1'b0;    
-            end
-    
-            S_READ_MEMORY: begin
-    //                bram_addr = bf_counter;
                 twiddle_addr = bf_counter;
                 bram_en = 1'b1;
-            end
-    
-            S_BF_OPERATION: begin
-                bram_en = 1'b1;
-                if(cycle_counter == 2'd2)
-                    bf_ce = 1'b1;
-            end
-    
-            S_WRITE_BACK: begin
+                bram_we = 1'b0; // disable writing to memmory 
                 bf_ce = 1'b0;
-                bram_we = 1'b1;
-                bram_en = 1'b1;
-                cycle_counter = {2{1'b0}};
             end
-    
-            S_SEND_RESULTS: begin
-                bf_counter = {11{1'b0}}; // reset bf_counter
-                start_sending = 1'b1;
-                bram_addr = data_counter;
+
+            S_READ_MEMORY: begin
+                start_sending = 1'b0;
+                src_sel = 1'b1;
+                bram_addr = bf_counter;
+                twiddle_addr = bf_counter;
                 bram_en = 1'b1;
+                bram_we = 1'b0; // disable writing to memmory 
+                bf_ce = 1'b0;
+            end
+
+            S_BF_OPERATION: begin
+                start_sending = 1'b0;
+                src_sel = 1'b1;
+                bram_addr = bf_counter;
+                twiddle_addr = bf_counter;
+                bram_en = 1'b1;
+                bram_we = 1'b0; // disable writing to memmory 
+
+                if(cycle_counter == 3'd4)
+                    bf_ce = 1'b1;
+                else 
+                    bf_ce = 1'b0;
+            end
+
+            S_WRITE_BACK: begin
+                start_sending = 1'b0;
+                src_sel = 1'b1;
+                bram_addr = bf_counter;
+                twiddle_addr = bf_counter;
+                bram_en = 1'b1;
+                bram_we = 1'b1; // disable writing to memmory 
+                bf_ce = 1'b0;
+            end
+
+            S_SEND_RESULTS: begin
+                start_sending = 1'b1;
+                src_sel = 1'b1;
+                bram_addr = data_counter;
+                twiddle_addr = {11{1'b0}};
+                bram_en = 1'b1;
+                bram_we = 1'b1; // disable writing to memmory 
+                bf_ce = 1'b0;
+            end
+            default: begin
+                start_sending = 1'b0;
+                src_sel = 1'b0;
+                bram_addr = {11{1'b0}};
+                twiddle_addr = {11{1'b0}};
+                bram_en = 1'b1;
+                bram_we = 1'b0;
+                bf_ce = 1'b0;
             end
         endcase
     end
-    
+
     //--------------------------------------
-    
+
     always @(posedge clk or negedge rstn) begin
         if(~rstn) begin
             data_counter = {11{1'b0}};
             bf_counter = {11{1'b0}};
-            cycle_counter = {2{1'b0}};
-    //            bram_we = 1'b0;
-            bf_ce = 1'b0;
-    //            bram_en = 1'b0;
+            cycle_counter = {3{1'b0}};
             cycle_delay = 1'b0;
-            //        write_counter = 1'b0;
-            fft_ready = 1'b0;
         end
-        else if(state == S_STORE_INPUTS || state == S_SEND_RESULTS) // receiving or sending data
-            data_counter = data_counter + 1; // increase data_counter
+        else
+            case(state)
+                S_IDLE: begin
+                    data_counter = {11{1'b0}};
+                    bf_counter = {11{1'b0}};
+                    cycle_counter = {3{1'b0}};
+                    cycle_delay = 1'b0;
+                end
+                
+                S_CHECK_BF_COUNTER: begin
+                    cycle_delay = cycle_delay + 1;
+                    data_counter = {11{1'b0}}; // reset data_counter 
+                end
     
-        else if(state == S_WRITE_BACK) begin
-            bf_counter = bf_counter + 1;
-            //        write_counter = write_counter + 1;
-        end
+                S_BF_OPERATION:
+                    cycle_counter = cycle_counter + 1;
     
-        else if(state == S_BF_OPERATION)
-            cycle_counter = cycle_counter + 1;
+                S_WRITE_BACK: begin
+                    bf_counter = bf_counter + 1;
+                    cycle_counter = {3{1'b0}};
+                end
+    
+                S_STORE_INPUTS: 
+                    data_counter = data_counter + 1; // increase data_counter
+                    
+                S_SEND_RESULTS: begin
+                    data_counter = data_counter + 1; // increase data_counter
+                    cycle_delay = 1'b0;
+                end
+                
+//                default: begin
+//                    data_counter = {11{1'b0}};
+//                    bf_counter = {11{1'b0}};
+//                    cycle_counter = {3{1'b0}};
+//                    cycle_delay = 1'b0;
+//                end
+            endcase
+ 
+//        if(state == S_STORE_INPUTS || state == S_SEND_RESULTS) // receiving or sending data
+//            data_counter = data_counter + 1; // increase data_counter
+
+//        else if(state == S_WRITE_BACK) begin
+//            bf_counter = bf_counter + 1;
+//            //        write_counter = write_counter + 1;
+//        end
+
+//        else if(state == S_BF_OPERATION)
+//            cycle_counter = cycle_counter + 1;
             
-        else if(state == S_CHECK_BF_COUNTER) begin
-            cycle_delay = cycle_delay + 1;
-        end
-    
+//        else if(state == S_CHECK_BF_COUNTER) begin
+//            cycle_delay = cycle_delay + 1;
+//        end
+
     end
     
     always @(negedge clk) begin

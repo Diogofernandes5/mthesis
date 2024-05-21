@@ -3,8 +3,8 @@
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
 // Date        : Tue Apr 23 17:59:15 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.4 LTS
-// Command     : write_verilog -force -mode funcsim
-//               /home/fernandes/thesis/00_code/ip/fft_data_path/data_path/data_path.gen/sources_1/ip/mux2_twiddle/mux2_twiddle_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim -rename_top mux2_twiddle -prefix
+//               mux2_twiddle_ mux2_twiddle_sim_netlist.v
 // Design      : mux2_twiddle
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -12,32 +12,6 @@
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
-(* CHECK_LICENSE_TYPE = "mux2_twiddle,mux2,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "package_project" *) 
-(* X_CORE_INFO = "mux2,Vivado 2021.1" *) 
-(* NotValidForBitStream *)
-module mux2_twiddle
-   (d0,
-    d1,
-    s,
-    y);
-  input [17:0]d0;
-  input [17:0]d1;
-  input s;
-  output [17:0]y;
-
-  wire [17:0]d0;
-  wire [17:0]d1;
-  wire s;
-  wire [17:0]y;
-
-  mux2_twiddle_mux2 inst
-       (.d0(d0),
-        .d1(d1),
-        .s(s),
-        .y(y));
-endmodule
-
-(* ORIG_REF_NAME = "mux2" *) 
 module mux2_twiddle_mux2
    (y,
     d1,
@@ -197,6 +171,31 @@ module mux2_twiddle_mux2
         .I1(d0[9]),
         .I2(s),
         .O(y[9]));
+endmodule
+
+(* CHECK_LICENSE_TYPE = "mux2_twiddle,mux2,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "package_project" *) 
+(* X_CORE_INFO = "mux2,Vivado 2021.1" *) 
+(* NotValidForBitStream *)
+module mux2_twiddle
+   (d0,
+    d1,
+    s,
+    y);
+  input [17:0]d0;
+  input [17:0]d1;
+  input s;
+  output [17:0]y;
+
+  wire [17:0]d0;
+  wire [17:0]d1;
+  wire s;
+  wire [17:0]y;
+
+  mux2_twiddle_mux2 inst
+       (.d0(d0),
+        .d1(d1),
+        .s(s),
+        .y(y));
 endmodule
 `ifndef GLBL
 `define GLBL

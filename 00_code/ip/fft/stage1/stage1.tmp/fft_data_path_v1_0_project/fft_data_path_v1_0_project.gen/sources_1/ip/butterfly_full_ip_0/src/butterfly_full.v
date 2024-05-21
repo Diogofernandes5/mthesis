@@ -10,6 +10,7 @@ module butterfly_full(
     input [31:0] x0_im_i,
     input [31:0] x1_re_i,
     input [31:0] x1_im_i,
+    
     input [31:0] w_re_i,
     input [31:0] w_im_i,
     
@@ -37,6 +38,14 @@ module butterfly_full(
     // z
     wire [31:0] z_re;
     wire [31:0] z_im;
+    
+    reg [31:0] z_re_r;
+    reg [31:0] z_im_r;
+    
+    reg [31:0] x0_re_r;
+    reg [31:0] x0_im_r;
+    reg [31:0] x1_re_r;
+    reg [31:0] x1_im_r;
     
     // auxliary variables
     wire [31:0] x1_re;
@@ -82,7 +91,7 @@ module butterfly_full(
         X0_re_o = 32'd0;
         X0_im_o = 32'd0;
         X1_re_o = 32'd0;
-        X1_im_o = 32'd0;    
+        X1_im_o = 32'd0;  
       end
       else if(CE) begin
         X0_re_o = X0_re;
@@ -91,10 +100,33 @@ module butterfly_full(
         X1_im_o = X1_im;
       end
     end
+    
+    always @(posedge clk or negedge rstn) begin
+      if(!rstn) begin
+        z_re_r = 32'd0;
+        z_im_r = 32'd0;   
+        
+        x0_re_r = 32'd0;
+        x0_im_r = 32'd0;
+        x1_re_r = 32'd0;
+        x1_im_r = 32'd0;
+      end
+      else begin
+        z_re_r = z_re;
+        z_im_r = z_im;
+        
+        x0_re_r = x0_re_i;
+        x0_im_r = x0_im_i;
+        // inverted if necessary
+        x1_re_r = x1_re;
+        x1_im_r = x1_im;
+      end
+      
+    end    
 
     adder_subtracter32_ip X0_re_add(
-      .x(x0_re_i),      
-      .y(z_re),            
+      .x(x0_re_r),      
+      .y(z_re_r),            
       .c_in(1'b0),                 
       // .c_out(X0_re_co), 
       .v(X0_re_add_v), 
@@ -102,8 +134,8 @@ module butterfly_full(
     );
 
     adder_subtracter32_ip X0_im_add(
-      .x(x0_im_i),      
-      .y(z_im),         
+      .x(x0_im_r),      
+      .y(z_im_r),         
       .c_in(1'b0),   
       // .c_out(X0_im_co), 
       .v(X0_im_add_v), 
@@ -111,8 +143,8 @@ module butterfly_full(
     );
     
     adder_subtracter32_ip X1_re_sub(
-      .x(x0_re_i),    
-      .y(z_re),        
+      .x(x0_re_r),    
+      .y(z_re_r),        
       .c_in(1'b1),        
       // .c_out(X1_re_co),
       .v(X1_re_sub_v), 
@@ -120,8 +152,8 @@ module butterfly_full(
     );
         
     adder_subtracter32_ip X1_im_sub(
-      .x(x0_im_i),    
-      .y(z_im),             
+      .x(x0_im_r),    
+      .y(z_im_r),             
       .c_in(1'b1),            
       // .c_out(X1_im_co),
       .v(X1_im_sub_v),
@@ -180,7 +212,7 @@ module butterfly_full(
         
     multiplier x1_re_w_re_mul(
       .CLK(clk),  
-      .A(x1_re),     
+      .A(x1_re_r),     
       .B(w_re),     
 //      .CE(CE),
       .P(x1_re_x_w_re_m)    
@@ -188,7 +220,7 @@ module butterfly_full(
     
     multiplier x1_im_w_im_mul(
       .CLK(clk), 
-      .A(x1_im),   
+      .A(x1_im_r),   
       .B(w_im),   
 //      .CE(CE),    
       .P(x1_im_x_w_im_m)      
@@ -196,7 +228,7 @@ module butterfly_full(
     
     multiplier x1_re_w_im_mul(
       .CLK(clk), 
-      .A(x1_re),    
+      .A(x1_re_r),    
       .B(w_im),      
 //      .CE(CE),
       .P(x1_re_x_w_im_m)    
@@ -204,7 +236,7 @@ module butterfly_full(
     
     multiplier x1_im_w_re_mul(
       .CLK(clk),  
-      .A(x1_im),     
+      .A(x1_im_r),     
       .B(w_re),     
 //      .CE(CE), 
       .P(x1_im_x_w_re_m)   
@@ -215,28 +247,28 @@ module butterfly_full(
     mux2_0 x1_re_w_re_mux ( 
       .d0(x1_re_x_w_re_m),  
       .d1(~x1_re_x_w_re_m + 1'b1),
-      .s(x1_re_i[31] ^ w_re_i[31]),
+      .s(x1_re_r[31] ^ w_re_i[31]),
       .y(x1_re_x_w_re)
     );
     
     mux2_0 x1_im_w_im_mux ( 
       .d0(x1_im_x_w_im_m),  
       .d1(~x1_im_x_w_im_m + 1'b1),
-      .s(x1_im_i[31] ^ w_im_i[31]),
+      .s(x1_im_r[31] ^ w_im_i[31]),
       .y(x1_im_x_w_im)
     );
     
     mux2_0 x1_re_w_im_mux ( 
       .d0(x1_re_x_w_im_m),  
       .d1(~x1_re_x_w_im_m + 1'b1),
-      .s(x1_re_i[31] ^ w_im_i[31]),
+      .s(x1_re_r[31] ^ w_im_i[31]),
       .y(x1_re_x_w_im)
     );
     
     mux2_0 x1_im_w_re ( 
       .d0(x1_im_x_w_re_m),  
       .d1(~x1_im_x_w_re_m + 1'b1),
-      .s(x1_im_i[31] ^ w_re_i[31]),
+      .s(x1_im_r[31] ^ w_re_i[31]),
       .y(x1_im_x_w_re)
     );
       

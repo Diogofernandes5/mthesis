@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Tue Apr 23 17:59:16 2024
+-- Date        : Tue Apr 23 17:59:15 2024
 -- Host        : fernandes420 running 64-bit Ubuntu 22.04.4 LTS
--- Command     : write_vhdl -force -mode funcsim
---               /home/fernandes/thesis/00_code/ip/fft_data_path/data_path/data_path.gen/sources_1/ip/mux2_twiddle/mux2_twiddle_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim -rename_top mux2_twiddle -prefix
+--               mux2_twiddle_ mux2_twiddle_sim_netlist.vhdl
 -- Design      : mux2_twiddle
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -21,8 +21,6 @@ entity mux2_twiddle_mux2 is
     d0 : in STD_LOGIC_VECTOR ( 17 downto 0 );
     s : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of mux2_twiddle_mux2 : entity is "mux2";
 end mux2_twiddle_mux2;
 
 architecture STRUCTURE of mux2_twiddle_mux2 is

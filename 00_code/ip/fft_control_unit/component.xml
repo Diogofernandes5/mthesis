@@ -64,7 +64,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a3d8fcee</spirit:value>
+            <spirit:value>e31cbbb1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -80,7 +80,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a3d8fcee</spirit:value>
+            <spirit:value>0223c824</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -95,7 +95,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>6f987747</spirit:value>
+            <spirit:value>3aff47f7</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -194,6 +194,19 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
+        <spirit:name>bram_en_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
         <spirit:name>bf_ce_o</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
@@ -211,7 +224,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">8</spirit:left>
+            <spirit:left spirit:format="long">10</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -228,7 +241,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">8</spirit:left>
+            <spirit:left spirit:format="long">10</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -253,9 +266,13 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
+        <spirit:name>constr/Zybo-Z7-Master.xdc</spirit:name>
+        <spirit:userFileType>xdc</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/control_unit.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_a3d8fcee</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_0223c824</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -323,8 +340,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>fft_control_unit</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>6</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2024-04-12T14:04:14Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>8</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2024-05-21T11:10:20Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@55b0271f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@4dddbf76_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
@@ -377,13 +394,34 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@5c6f78e1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@5d7b73ae_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@27c22900_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e0652d6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@611e151a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b40b802_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56b8474_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41bc1c7a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6424b537_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73156395_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1e2bace4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@693d43eb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2ddf857c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2d8017b8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2812d694_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3083b478_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@424879e4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ace973c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@43d0c5c6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7be80507_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@54d1048_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5de3186a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5544c8b7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@36ab02c7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dbc0055f"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="db3fec45"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="9ce00a3f"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="86db3ed5"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="9c84f4d0"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="12c19991"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
