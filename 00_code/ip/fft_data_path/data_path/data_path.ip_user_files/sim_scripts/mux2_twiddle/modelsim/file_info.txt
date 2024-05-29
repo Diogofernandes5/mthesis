@@ -1,5 +1,0 @@
-xpm_memory.sv,systemverilog,xpm,../../../../../../../../../../../tools/Xilinx/Vivado/2021.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv,
-xpm_VCOMP.vhd,vhdl,xpm,../../../../../../../../../../../tools/Xilinx/Vivado/2021.1/data/ip/xpm/xpm_VCOMP.vhd,
-mux2.v,verilog,xil_defaultlib,../../../../data_path.gen/sources_1/ip/mux2_twiddle/src/mux2.v,
-mux2_twiddle.v,verilog,xil_defaultlib,../../../../data_path.gen/sources_1/ip/mux2_twiddle/sim/mux2_twiddle.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

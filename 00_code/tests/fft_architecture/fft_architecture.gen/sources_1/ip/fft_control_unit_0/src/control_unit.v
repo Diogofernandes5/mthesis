@@ -11,9 +11,12 @@ module control_unit(
     output reg bram_en_o,
     output reg bf_ce_o,
 
-    output reg [10:0] bram_addr_o,
+    output reg [9:0] bram_addr_o,
 
-    output reg [10:0] twiddle_addr_o
+    output reg [9:0] twiddle_addr_o,
+    
+    
+    output reg [2:0] state
 );
 
         // define states
@@ -31,7 +34,7 @@ module control_unit(
 //    localparam BRAM_SIZE = 3'd4;
 
     // state and nextstate registers
-    reg [2:0] state;
+//    reg [2:0] state;
     reg [2:0] nstate;
 
     // counters registers
@@ -243,10 +246,10 @@ module control_unit(
 
     always @(negedge clk) begin
         if(start_sending && bram_addr_o > 1'b0)
-            fft_ready_o = 1'b1;
+            fft_ready_o <= 1'b1;
             
         else 
-            fft_ready_o = 1'b0;
+            fft_ready_o <= 1'b0;
     end
     
 endmodule

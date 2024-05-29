@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="testbench_with_CU_func_synth.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="testbench_with_CU" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="231,168.100 ns"></ZoomStartTime>
+      <ZoomEndTime time="231,517.601 ns"></ZoomEndTime>
+      <Cursor1Time time="231,375.100 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="176"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="41" />
+   <wvobject type="logic" fp_name="/testbench_with_CU/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench_with_CU/rstn">
+      <obj_property name="ElementShortName">rstn</obj_property>
+      <obj_property name="ObjectShortName">rstn</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x0_re">
+      <obj_property name="ElementShortName">x0_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_re[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x0_im">
+      <obj_property name="ElementShortName">x0_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_im[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x1_re">
+      <obj_property name="ElementShortName">x1_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_re[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x1_im">
+      <obj_property name="ElementShortName">x1_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_im[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench_with_CU/start">
+      <obj_property name="ElementShortName">start</obj_property>
+      <obj_property name="ObjectShortName">start</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench_with_CU/fft_ready">
+      <obj_property name="ElementShortName">fft_ready</obj_property>
+      <obj_property name="ObjectShortName">fft_ready</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X0_re">
+      <obj_property name="ElementShortName">X0_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X0_im">
+      <obj_property name="ElementShortName">X0_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X1_re">
+      <obj_property name="ElementShortName">X1_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X1_im">
+      <obj_property name="ElementShortName">X1_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/state">
+      <obj_property name="ElementShortName">state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">state[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/bram_addr">
+      <obj_property name="ElementShortName">bram_addr[8:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_addr[8:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench_with_CU/bram_we">
+      <obj_property name="ElementShortName">bram_we</obj_property>
+      <obj_property name="ObjectShortName">bram_we</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench_with_CU/bram_en">
+      <obj_property name="ElementShortName">bram_en</obj_property>
+      <obj_property name="ObjectShortName">bram_en</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench_with_CU/bf_ce">
+      <obj_property name="ElementShortName">bf_ce</obj_property>
+      <obj_property name="ObjectShortName">bf_ce</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X0_re_bf">
+      <obj_property name="ElementShortName">X0_re_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_re_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X0_im_bf">
+      <obj_property name="ElementShortName">X0_im_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_im_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X1_re_bf">
+      <obj_property name="ElementShortName">X1_re_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_re_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/X1_im_bf">
+      <obj_property name="ElementShortName">X1_im_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_im_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x0_re_ram">
+      <obj_property name="ElementShortName">x0_re_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_re_ram[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x0_im_ram">
+      <obj_property name="ElementShortName">x0_im_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_im_ram[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x1_re_ram">
+      <obj_property name="ElementShortName">x1_re_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_re_ram[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/x1_im_ram">
+      <obj_property name="ElementShortName">x1_im_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_im_ram[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/input_buf">
+      <obj_property name="ElementShortName">input_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ObjectShortName">input_buf[0:1023][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/golden_re_buf">
+      <obj_property name="ElementShortName">golden_re_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ObjectShortName">golden_re_buf[0:1023][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/golden_im_buf">
+      <obj_property name="ElementShortName">golden_im_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ObjectShortName">golden_im_buf[0:1023][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/output_re_buf">
+      <obj_property name="ElementShortName">output_re_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ObjectShortName">output_re_buf[0:1023][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/output_im_buf">
+      <obj_property name="ElementShortName">output_im_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ObjectShortName">output_im_buf[0:1023][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/fp">
+      <obj_property name="ElementShortName">fp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fp[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/j">
+      <obj_property name="ElementShortName">j[31:0]</obj_property>
+      <obj_property name="ObjectShortName">j[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/i_in">
+      <obj_property name="ElementShortName">i_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/i_out">
+      <obj_property name="ElementShortName">i_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/num_errors">
+      <obj_property name="ElementShortName">num_errors[31:0]</obj_property>
+      <obj_property name="ObjectShortName">num_errors[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/INPUT_FILENAME">
+      <obj_property name="ElementShortName">INPUT_FILENAME[439:0]</obj_property>
+      <obj_property name="ObjectShortName">INPUT_FILENAME[439:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/GOLDEN_RE_FILENAME">
+      <obj_property name="ElementShortName">GOLDEN_RE_FILENAME[471:0]</obj_property>
+      <obj_property name="ObjectShortName">GOLDEN_RE_FILENAME[471:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/GOLDEN_IM_FILENAME">
+      <obj_property name="ElementShortName">GOLDEN_IM_FILENAME[471:0]</obj_property>
+      <obj_property name="ObjectShortName">GOLDEN_IM_FILENAME[471:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/OUTPUT_RE_FILENAME">
+      <obj_property name="ElementShortName">OUTPUT_RE_FILENAME[471:0]</obj_property>
+      <obj_property name="ObjectShortName">OUTPUT_RE_FILENAME[471:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/OUTPUT_IM_FILENAME">
+      <obj_property name="ElementShortName">OUTPUT_IM_FILENAME[471:0]</obj_property>
+      <obj_property name="ObjectShortName">OUTPUT_IM_FILENAME[471:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench_with_CU/FFT_SIZE">
+      <obj_property name="ElementShortName">FFT_SIZE[11:0]</obj_property>
+      <obj_property name="ObjectShortName">FFT_SIZE[11:0]</obj_property>
+   </wvobject>
+</wave_config>

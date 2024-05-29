@@ -34,16 +34,16 @@ vcom -work mult_gen_v12_0_17 -93 \
 "../../../ipstatic/hdl/mult_gen_v12_0_vh_rfs.vhd" \
 
 vcom -work xil_defaultlib -93 \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
 
 vlog -work xil_defaultlib  -v2k5 \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/src/mux2.v" \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/full_adder.v" \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v" \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/src/butterfly_full.v" \
-"../../../../../../fft/stage1/stage1.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/sim/butterfly_full_ip_0.v" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/src/mux2.v" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/full_adder.v" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/src/butterfly_full.v" \
+"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/butterfly_full_ip_0/sim/butterfly_full_ip_0.v" \
 
 vlog -work xil_defaultlib \
 "glbl.v"

@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_data_path:1.0
-// IP Revision: 7
+// IP Revision: 10
 
 `timescale 1ns/1ps
 
@@ -92,7 +92,7 @@ input wire [31 : 0] x0_re_i;
 input wire [31 : 0] x0_im_i;
 input wire [31 : 0] x1_re_i;
 input wire [31 : 0] x1_im_i;
-input wire [9 : 0] bram_addr_i;
+input wire [10 : 0] bram_addr_i;
 input wire [27 : 0] w;
 input wire src_sel_i;
 input wire fft_ready_i;

@@ -57,7 +57,7 @@
 w_im_bram your_instance_name (
   .clka(clka),    // input wire clka
   .addra(addra),  // input wire [8 : 0] addra
-  .douta(douta)  // output wire [31 : 0] douta
+  .douta(douta)  // output wire [13 : 0] douta
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:fft_data_path:1.0
--- IP Revision: 7
+-- IP Revision: 10
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -60,7 +60,7 @@ COMPONENT fft_data_path_0
     x0_im_i : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     x1_re_i : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     x1_im_i : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    bram_addr_i : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+    bram_addr_i : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
     w : IN STD_LOGIC_VECTOR(27 DOWNTO 0);
     src_sel_i : IN STD_LOGIC;
     fft_ready_i : IN STD_LOGIC;

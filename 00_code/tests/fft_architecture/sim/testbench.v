@@ -3,7 +3,7 @@
 module testbench ();
 
 // clock period in nanoseconds
-`define CLK_PERIOD 50
+`define CLK_PERIOD 12
 
 reg clk;
 reg rstn;
@@ -36,13 +36,13 @@ wire [31:0] X1_re;
 wire [31:0] X1_im;
 
 // input vectors
-localparam INPUT_FILENAME = "../../../../../../matlab/golden_vectors/input.txt";
+localparam INPUT_FILENAME = "../../../../../../../matlab/golden_vectors/input.txt";
 
-localparam GOLDEN_RE_FILENAME = "../../../../../../matlab/golden_vectors/golden_re.txt";
-localparam GOLDEN_IM_FILENAME = "../../../../../../matlab/golden_vectors/golden_im.txt";
+localparam GOLDEN_RE_FILENAME = "../../../../../../../matlab/golden_vectors/golden_re.txt";
+localparam GOLDEN_IM_FILENAME = "../../../../../../../matlab/golden_vectors/golden_im.txt";
 
-localparam OUTPUT_RE_FILENAME = "../../../../../../matlab/golden_vectors/output_re.txt";
-localparam OUTPUT_IM_FILENAME = "../../../../../../matlab/golden_vectors/output_im.txt";
+localparam OUTPUT_RE_FILENAME = "../../../../../../../matlab/golden_vectors/output_re.txt";
+localparam OUTPUT_IM_FILENAME = "../../../../../../../matlab/golden_vectors/output_im.txt";
 
 localparam FFT_SIZE = 12'd1024;
 
@@ -56,7 +56,7 @@ initial begin
     x1_re = 32'd0;
     x1_im = 32'd0;
 
-    #(`CLK_PERIOD*3); // 3 clk cycles
+    #(`CLK_PERIOD*5); // 3 clk cycles
     start = 1;
     
     #(`CLK_PERIOD*(FFT_SIZE/2)); // 3 clk cycles
@@ -79,7 +79,6 @@ integer i_in;  // num iterations
 integer i_out;  // num iterations
 //reg [0:3] i;
 integer num_errors;
-wire sim_done;
 
 /* -------------- open input re values -----------------*/
 always @(negedge rstn) begin
@@ -172,7 +171,7 @@ always @(posedge fft_ready) begin
         $fscanf(fp, "%d\n", golden_im_buf[j]);
 
         if(output_im_buf[j] != golden_im_buf[j]) begin
-            $display("ERROR at input[%2d]: Output values differ output=%5d, golden=%5d", j, output_im_buf[j], golden_im_buf[j]);
+//            $display("ERROR at input[%2d]: Output values differ output=%5d, golden=%5d", j, output_im_buf[j], golden_im_buf[j]);
             num_errors = num_errors + 1;
         end
     end
@@ -211,6 +210,8 @@ always @(posedge clk or negedge rstn) begin
         i_in = 0;
 
     else if(start) begin
+        #(`CLK_PERIOD*1); // if you give inputs immed/ after the start is asserted,
+        // the inputs passed to the dut are not correct 
         x0_re <= input_buf[i_in];
         x0_im <= 32'h0;
         x1_re <= input_buf[i_in+(FFT_SIZE/2)];

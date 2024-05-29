@@ -3,7 +3,7 @@
 module control_unit_tb();
 
 // clock period in nanoseconds
-`define CLK_PERIOD 10
+`define CLK_PERIOD 20
 
 reg clk, rstn;
 reg start;
@@ -15,9 +15,9 @@ wire bram_we;
 wire bram_en;
 wire bf_ce;
 
-wire [10:0] bram_addr;
+wire [9:0] bram_addr;
 
-wire [10:0] twiddle_addr;
+wire [9:0] twiddle_addr;
 
 localparam BRAM_SIZE = 10'd512;
 
@@ -45,12 +45,14 @@ control_unit dut(
     .bram_en_o(bram_en),
     .bf_ce_o(bf_ce),
     .bram_addr_o(bram_addr),
-    .twiddle_addr_o(twiddle_addr)
+    .twiddle_addr_o(twiddle_addr),
+    
+    .state(state)
 );
 
 initial begin
     start = 0;
-    #(`CLK_PERIOD*3);
+    #(`CLK_PERIOD*5);
     start = 1;
 
     #(`CLK_PERIOD*BRAM_SIZE);

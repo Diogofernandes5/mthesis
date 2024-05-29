@@ -14,17 +14,18 @@ module data_path(
     input wire [27:0] w,
 	
     input wire src_sel_i,
-	input wire fft_ready_i,
+    input wire fft_ready_i,
 
     input wire bram_we_i,
     input wire bram_en_i,
     input wire bf_ce_i,
+    
+    input wire start_i,
 
     output wire [31:0] x0_re_o,
     output wire [31:0] x0_im_o,
     output wire [31:0] x1_re_o,
     output wire [31:0] x1_im_o,
-    
     
     
     output wire [31:0] X0_re_bf,

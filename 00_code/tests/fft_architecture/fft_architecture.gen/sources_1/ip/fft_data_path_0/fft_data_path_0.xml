@@ -126,11 +126,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue May 21 11:23:28 UTC 2024</spirit:value>
+            <spirit:value>Fri May 24 12:49:12 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7ab8d65c</spirit:value>
+            <spirit:value>9:8286bd8e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -145,11 +145,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue May 21 11:23:30 UTC 2024</spirit:value>
+            <spirit:value>Fri May 24 12:49:17 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7ab8d65c</spirit:value>
+            <spirit:value>9:8286bd8e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -160,7 +160,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7ab8d65c</spirit:value>
+            <spirit:value>9:8286bd8e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -176,11 +176,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue May 21 11:23:30 UTC 2024</spirit:value>
+            <spirit:value>Fri May 24 12:49:17 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7ab8d65c</spirit:value>
+            <spirit:value>9:8286bd8e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -195,11 +195,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue May 21 11:23:30 UTC 2024</spirit:value>
+            <spirit:value>Fri May 24 12:49:17 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:215db131</spirit:value>
+            <spirit:value>9:3a53e87d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -215,11 +215,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue May 21 11:23:30 UTC 2024</spirit:value>
+            <spirit:value>Fri May 24 12:49:17 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:215db131</spirit:value>
+            <spirit:value>9:3a53e87d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -227,35 +227,18 @@
         <spirit:name>xilinx_testbench</spirit:name>
         <spirit:displayName>Test Bench</spirit:displayName>
         <spirit:envIdentifier>:vivado.xilinx.com:simulation.testbench</spirit:envIdentifier>
+        <spirit:modelName>data_path_test</spirit:modelName>
         <spirit:fileSetRef>
           <spirit:localName>xilinx_testbench_view_fileset</spirit:localName>
         </spirit:fileSetRef>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue May 21 11:23:30 UTC 2024</spirit:value>
+            <spirit:value>Fri May 24 12:49:17 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7ab8d65c</spirit:value>
-          </spirit:parameter>
-        </spirit:parameters>
-      </spirit:view>
-      <spirit:view>
-        <spirit:name>xilinx_externalfiles</spirit:name>
-        <spirit:displayName>External Files</spirit:displayName>
-        <spirit:envIdentifier>:vivado.xilinx.com:external.files</spirit:envIdentifier>
-        <spirit:fileSetRef>
-          <spirit:localName>xilinx_externalfiles_view_fileset</spirit:localName>
-        </spirit:fileSetRef>
-        <spirit:parameters>
-          <spirit:parameter>
-            <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue May 21 11:24:46 UTC 2024</spirit:value>
-          </spirit:parameter>
-          <spirit:parameter>
-            <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7ab8d65c</spirit:value>
+            <spirit:value>9:8286bd8e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -360,7 +343,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">9</spirit:left>
+            <spirit:left spirit:format="long">10</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -682,12 +665,9 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>constr/Zybo-Z7-Master.xdc</spirit:name>
-        <spirit:userFileType>xdc</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>data_path/data_path.srcs/sources_1/ip/mux2_twiddle/mux2_twiddle.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_twiddle_re</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full_ip_0.xci</spirit:name>
@@ -727,6 +707,7 @@
       <spirit:file>
         <spirit:name>data_path/data_path.srcs/sources_1/ip/mux2_twiddle/mux2_twiddle.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_twiddle_re</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full_ip_0.xci</spirit:name>
@@ -766,50 +747,14 @@
       <spirit:file>
         <spirit:name>data_path/sim/data_path_test.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
         <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+        <spirit:userFileType>USED_IN_testbench</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>data_path/data_path_tb_behav.wcfg</spirit:name>
         <spirit:fileType>unknown</spirit:fileType>
         <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-      </spirit:file>
-    </spirit:fileSet>
-    <spirit:fileSet>
-      <spirit:name>xilinx_externalfiles_view_fileset</spirit:name>
-      <spirit:file>
-        <spirit:name>fft_data_path_0.dcp</spirit:name>
-        <spirit:userFileType>dcp</spirit:userFileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>fft_data_path_0_stub.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>fft_data_path_0_stub.vhdl</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>fft_data_path_0_sim_netlist.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>fft_data_path_0_sim_netlist.vhdl</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+        <spirit:userFileType>USED_IN_testbench</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
   </spirit:fileSets>
@@ -827,7 +772,7 @@
       <xilinx:xpmLibraries>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>7</xilinx:coreRevision>
+      <xilinx:coreRevision>10</xilinx:coreRevision>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@9b5931a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@31766f70_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
@@ -894,13 +839,39 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@33066595_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@5f9989c9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@74011707_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ae95709_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7cd2407c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@a84073a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6fb8576c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3cabbdbb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@c6b9319_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2008a644_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@22f3ae62_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@12b6f431_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4c2aaf85_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@54e99afb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7c3f3361_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ae06385_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49abd43_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a53368b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@241eb72d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@27810392_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ce24c8a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@88ca3d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@8cda648_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a88e7ca_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6a54193b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5ae9040_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a2d4135_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@44cbc3ea_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@48d45af4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_data_path</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dbc0055f"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="77b1b538"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="45215b68"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="aa49f698"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="c5e6b8d1"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="5ff130c5"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>

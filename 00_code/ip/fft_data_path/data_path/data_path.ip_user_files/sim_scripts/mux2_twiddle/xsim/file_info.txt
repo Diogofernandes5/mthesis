@@ -1,3 +1,0 @@
-mux2.v,verilog,xil_defaultlib,../../../../data_path.gen/sources_1/ip/mux2_twiddle/src/mux2.v,
-mux2_twiddle.v,verilog,xil_defaultlib,../../../../data_path.gen/sources_1/ip/mux2_twiddle/sim/mux2_twiddle.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v
