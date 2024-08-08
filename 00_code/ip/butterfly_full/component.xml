@@ -73,7 +73,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>76ff1449</spirit:value>
+            <spirit:value>210085f0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -98,7 +98,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>c56192ce</spirit:value>
+            <spirit:value>34b541d6</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -113,7 +113,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>60ac4035</spirit:value>
+            <spirit:value>040e6440</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -342,6 +342,108 @@
           </spirit:wireTypeDefs>
         </spirit:wire>
       </spirit:port>
+      <spirit:port>
+        <spirit:name>x1_re_x_w_re_r</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x1_im_x_w_im_r</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x1_re_x_w_im_r</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x1_im_x_w_re_r</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>z_re_r</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>z_im_r</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
     </spirit:ports>
   </spirit:model>
   <spirit:choices>
@@ -363,11 +465,6 @@
         <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>butterfly_full.srcs/sources_1/ip/mux2_0/mux2_0.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_x1_re_mux</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/adder_subtracter32_ip.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>CELL_NAME_X0_re_add</spirit:userFileType>
@@ -375,7 +472,7 @@
       <spirit:file>
         <spirit:name>src/butterfly_full.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_2dc15495</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_9efdee7b</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -413,11 +510,6 @@
       <spirit:file>
         <spirit:name>butterfly_full.srcs/sources_1/ip/multiplier/multiplier.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>butterfly_full.srcs/sources_1/ip/mux2_0/mux2_0.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_x1_re_mux</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/adder_subtracter32_ip.xci</spirit:name>
@@ -501,8 +593,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>butterfly_full</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>17</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2024-05-08T16:11:13Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>20</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2024-08-08T14:39:31Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@25115f42_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@3dc10184_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
@@ -689,13 +781,40 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@12b6c15a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@6f8365a1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@664e27a5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@64031d8b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5238fa1d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73249a52_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56e1e0b4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@11fe12e4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1117ca64_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@37e119a7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@94893d1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@52f3b3c8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2f300a2b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@34849c64_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1a85f891_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@52457740_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6f3ffae5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e66c0e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5f49e4a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3a44422e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@60019f51_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58d7ce65_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6793c7d4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@101f143_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@65c288e7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5b13ccd4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@774be445_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@48fe7529_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@34167974_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@409d1d85_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="8b6bf9f6"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="587b57ff"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="6fa50521"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="faf942d2"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="ce2219e5"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="3db86c29"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>

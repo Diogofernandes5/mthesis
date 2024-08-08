@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:butterfly_full_ip:1.0
-// IP Revision: 17
+// IP Revision: 20
 
 `timescale 1ns/1ps
 
@@ -67,7 +67,13 @@ module butterfly_full_ip_0 (
   X0_re_o,
   X0_im_o,
   X1_re_o,
-  X1_im_o
+  X1_im_o,
+  x1_re_x_w_re_r,
+  x1_im_x_w_im_r,
+  x1_re_x_w_im_r,
+  x1_im_x_w_re_r,
+  z_re_r,
+  z_im_r
 );
 
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME clk, ASSOCIATED_RESET rstn, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, INSERT_VIP 0" *)
@@ -87,6 +93,12 @@ output wire [31 : 0] X0_re_o;
 output wire [31 : 0] X0_im_o;
 output wire [31 : 0] X1_re_o;
 output wire [31 : 0] X1_im_o;
+output wire [31 : 0] x1_re_x_w_re_r;
+output wire [31 : 0] x1_im_x_w_im_r;
+output wire [31 : 0] x1_re_x_w_im_r;
+output wire [31 : 0] x1_im_x_w_re_r;
+output wire [31 : 0] z_re_r;
+output wire [31 : 0] z_im_r;
 
   butterfly_full inst (
     .clk(clk),
@@ -101,6 +113,12 @@ output wire [31 : 0] X1_im_o;
     .X0_re_o(X0_re_o),
     .X0_im_o(X0_im_o),
     .X1_re_o(X1_re_o),
-    .X1_im_o(X1_im_o)
+    .X1_im_o(X1_im_o),
+    .x1_re_x_w_re_r(x1_re_x_w_re_r),
+    .x1_im_x_w_im_r(x1_im_x_w_im_r),
+    .x1_re_x_w_im_r(x1_re_x_w_im_r),
+    .x1_im_x_w_re_r(x1_im_x_w_re_r),
+    .z_re_r(z_re_r),
+    .z_im_r(z_im_r)
   );
 endmodule

@@ -17,15 +17,15 @@ module butterfly_full(
     output reg [31:0] X0_re_o,
     output reg [31:0] X0_im_o,
     output reg [31:0] X1_re_o,
-    output reg [31:0] X1_im_o
+    output reg [31:0] X1_im_o,
     
-    // output wire [31:0] x1_re_x_w_re,
-    // output wire [31:0] x1_im_x_w_im,
-    // output wire [31:0] x1_re_x_w_im,
-    // output wire [31:0] x1_im_x_w_re,
+     output reg [31:0] x1_re_x_w_re_r,
+     output reg [31:0] x1_im_x_w_im_r,
+     output reg [31:0] x1_re_x_w_im_r,
+     output reg [31:0] x1_im_x_w_re_r,
     
-    // output wire [31:0] z_re,
-    // output wire [31:0] z_im
+     output reg [31:0] z_re_r,
+     output reg [31:0] z_im_r
     
 //    output wire X0_re_add_v,
 //    output wire X0_im_add_v,
@@ -39,8 +39,8 @@ module butterfly_full(
     wire [31:0] z_re;
     wire [31:0] z_im;
     
-    reg [31:0] z_re_r;
-    reg [31:0] z_im_r;
+//    reg [31:0] z_re_r;
+//    reg [31:0] z_im_r;
     
     reg [31:0] x0_re_r;
     reg [31:0] x0_im_r;
@@ -69,6 +69,12 @@ module butterfly_full(
     wire [31:0] x1_im_x_w_im;
     wire [31:0] x1_re_x_w_im;
     wire [31:0] x1_im_x_w_re;
+    
+    // registering
+//    reg [31:0] x1_re_x_w_re_r;
+//    reg [31:0] x1_re_x_w_im_r;
+//    reg [31:0] x1_im_x_w_im_r;   
+//    reg [31:0] x1_im_x_w_re_r;
 
     // carry out
 //    wire X0_re_co;
@@ -117,9 +123,10 @@ module butterfly_full(
         
         x0_re_r = x0_re_i;
         x0_im_r = x0_im_i;
+        
         // inverted if necessary
-        x1_re_r = x1_re;
-        x1_im_r = x1_im;
+        x1_re_r = x1_re_i;
+        x1_im_r = x1_im_i;
       end
       
     end    
@@ -161,8 +168,8 @@ module butterfly_full(
     );
     
     adder_subtracter32_ip z_re_sub(
-      .x(x1_re_x_w_re),     
-      .y(x1_im_x_w_im),
+      .x(x1_re_x_w_re_r),     
+      .y(x1_im_x_w_im_r),
       .c_in(1'b1),   
       // .c_out(z_re_co),
       .v(z_re_sub_v), 
@@ -170,8 +177,8 @@ module butterfly_full(
     );
     
     adder_subtracter32_ip z_im_add(
-      .x(x1_re_x_w_im),   
-      .y(x1_im_x_w_re),          
+      .x(x1_re_x_w_im_r),   
+      .y(x1_im_x_w_re_r),          
       .c_in(1'b0),    
       // .c_out(z_im_co), 
       .v(z_im_add_v), 
@@ -181,16 +188,16 @@ module butterfly_full(
     // ----------- Logic to invert number if it is negative to make multiplication -----------
     
     mux2_0 x1_re_mux ( // if number is negative, invert the number to make the multiplication
-      .d0(x1_re_i),  
-      .d1(~x1_re_i + 1'b1),
-      .s(x1_re_i[31]),
+      .d0(x1_re_r),  
+      .d1(~x1_re_r + 1'b1),
+      .s(x1_re_r[31]),
       .y(x1_re)
     );
     
     mux2_0 x1_im_mux ( // if number is negative, invert the number to make the multiplication
-      .d0(x1_im_i),  
-      .d1(~x1_im_i + 1'b1),
-      .s(x1_im_i[31]),
+      .d0(x1_im_r),  
+      .d1(~x1_im_r + 1'b1),
+      .s(x1_im_r[31]),
       .y(x1_im)
     );
     
@@ -212,7 +219,7 @@ module butterfly_full(
         
     multiplier x1_re_w_re_mul(
       .CLK(clk),  
-      .A(x1_re_r),     
+      .A(x1_re),     
       .B(w_re),     
 //      .CE(CE),
       .P(x1_re_x_w_re_m)    
@@ -220,7 +227,7 @@ module butterfly_full(
     
     multiplier x1_im_w_im_mul(
       .CLK(clk), 
-      .A(x1_im_r),   
+      .A(x1_im),   
       .B(w_im),   
 //      .CE(CE),    
       .P(x1_im_x_w_im_m)      
@@ -228,7 +235,7 @@ module butterfly_full(
     
     multiplier x1_re_w_im_mul(
       .CLK(clk), 
-      .A(x1_re_r),    
+      .A(x1_re),    
       .B(w_im),      
 //      .CE(CE),
       .P(x1_re_x_w_im_m)    
@@ -236,7 +243,7 @@ module butterfly_full(
     
     multiplier x1_im_w_re_mul(
       .CLK(clk),  
-      .A(x1_im_r),     
+      .A(x1_im),     
       .B(w_re),     
 //      .CE(CE), 
       .P(x1_im_x_w_re_m)   
@@ -247,29 +254,45 @@ module butterfly_full(
     mux2_0 x1_re_w_re_mux ( 
       .d0(x1_re_x_w_re_m),  
       .d1(~x1_re_x_w_re_m + 1'b1),
-      .s(x1_re_r[31] ^ w_re_i[31]),
+      .s(x1_re[31] ^ w_re_i[31]),
       .y(x1_re_x_w_re)
     );
     
     mux2_0 x1_im_w_im_mux ( 
       .d0(x1_im_x_w_im_m),  
       .d1(~x1_im_x_w_im_m + 1'b1),
-      .s(x1_im_r[31] ^ w_im_i[31]),
+      .s(x1_im[31] ^ w_im_i[31]),
       .y(x1_im_x_w_im)
     );
     
     mux2_0 x1_re_w_im_mux ( 
       .d0(x1_re_x_w_im_m),  
       .d1(~x1_re_x_w_im_m + 1'b1),
-      .s(x1_re_r[31] ^ w_im_i[31]),
+      .s(x1_re[31] ^ w_im_i[31]),
       .y(x1_re_x_w_im)
     );
     
     mux2_0 x1_im_w_re ( 
       .d0(x1_im_x_w_re_m),  
       .d1(~x1_im_x_w_re_m + 1'b1),
-      .s(x1_im_r[31] ^ w_re_i[31]),
+      .s(x1_im[31] ^ w_re_i[31]),
       .y(x1_im_x_w_re)
     );
+    
+    always @(posedge clk or negedge rstn) begin
+      if(!rstn) begin
+        x1_re_x_w_re_r = 32'd0;
+        x1_re_x_w_im_r = 32'd0;
+        x1_im_x_w_im_r = 32'd0;   
+        x1_im_x_w_re_r = 32'd0;
+      end
+      else begin
+        x1_re_x_w_re_r = x1_re_x_w_re;
+        x1_re_x_w_im_r = x1_re_x_w_im;
+        x1_im_x_w_im_r = x1_im_x_w_im;   
+        x1_im_x_w_re_r = x1_im_x_w_re;
+      end
+      
+    end   
       
 endmodule

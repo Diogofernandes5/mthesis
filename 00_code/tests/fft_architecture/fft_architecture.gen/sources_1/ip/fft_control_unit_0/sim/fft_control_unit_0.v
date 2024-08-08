@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_control_unit:1.0
-// IP Revision: 15
+// IP Revision: 18
 
 `timescale 1ns/1ps
 

@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_control_unit:1.0
-// IP Revision: 15
+// IP Revision: 18
 
 (* X_CORE_INFO = "control_unit,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "fft_control_unit_0,control_unit,{}" *)

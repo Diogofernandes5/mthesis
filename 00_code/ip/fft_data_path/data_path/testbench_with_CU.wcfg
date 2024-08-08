@@ -11,12 +11,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="231,168.100 ns"></ZoomStartTime>
-      <ZoomEndTime time="231,517.601 ns"></ZoomEndTime>
-      <Cursor1Time time="231,375.100 ns"></Cursor1Time>
+      <ZoomStartTime time="106.855 ns"></ZoomStartTime>
+      <ZoomEndTime time="487.356 ns"></ZoomEndTime>
+      <Cursor1Time time="310.100 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="176"></NameColumnWidth>
+      <NameColumnWidth column_width="172"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="41" />
@@ -31,18 +31,22 @@
    <wvobject type="array" fp_name="/testbench_with_CU/x0_re">
       <obj_property name="ElementShortName">x0_re[31:0]</obj_property>
       <obj_property name="ObjectShortName">x0_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/x0_im">
       <obj_property name="ElementShortName">x0_im[31:0]</obj_property>
       <obj_property name="ObjectShortName">x0_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/x1_re">
       <obj_property name="ElementShortName">x1_re[31:0]</obj_property>
       <obj_property name="ObjectShortName">x1_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/x1_im">
       <obj_property name="ElementShortName">x1_im[31:0]</obj_property>
       <obj_property name="ObjectShortName">x1_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/testbench_with_CU/start">
       <obj_property name="ElementShortName">start</obj_property>
@@ -95,54 +99,62 @@
    <wvobject type="array" fp_name="/testbench_with_CU/X0_re_bf">
       <obj_property name="ElementShortName">X0_re_bf[31:0]</obj_property>
       <obj_property name="ObjectShortName">X0_re_bf[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/X0_im_bf">
       <obj_property name="ElementShortName">X0_im_bf[31:0]</obj_property>
       <obj_property name="ObjectShortName">X0_im_bf[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/X1_re_bf">
       <obj_property name="ElementShortName">X1_re_bf[31:0]</obj_property>
       <obj_property name="ObjectShortName">X1_re_bf[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/X1_im_bf">
       <obj_property name="ElementShortName">X1_im_bf[31:0]</obj_property>
       <obj_property name="ObjectShortName">X1_im_bf[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/x0_re_ram">
       <obj_property name="ElementShortName">x0_re_ram[31:0]</obj_property>
       <obj_property name="ObjectShortName">x0_re_ram[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/x0_im_ram">
       <obj_property name="ElementShortName">x0_im_ram[31:0]</obj_property>
       <obj_property name="ObjectShortName">x0_im_ram[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/x1_re_ram">
       <obj_property name="ElementShortName">x1_re_ram[31:0]</obj_property>
       <obj_property name="ObjectShortName">x1_re_ram[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/x1_im_ram">
       <obj_property name="ElementShortName">x1_im_ram[31:0]</obj_property>
       <obj_property name="ObjectShortName">x1_im_ram[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/input_buf">
-      <obj_property name="ElementShortName">input_buf[0:1023][31:0]</obj_property>
-      <obj_property name="ObjectShortName">input_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ElementShortName">input_buf[0:7][31:0]</obj_property>
+      <obj_property name="ObjectShortName">input_buf[0:7][31:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/golden_re_buf">
-      <obj_property name="ElementShortName">golden_re_buf[0:1023][31:0]</obj_property>
-      <obj_property name="ObjectShortName">golden_re_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ElementShortName">golden_re_buf[0:7][31:0]</obj_property>
+      <obj_property name="ObjectShortName">golden_re_buf[0:7][31:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/golden_im_buf">
-      <obj_property name="ElementShortName">golden_im_buf[0:1023][31:0]</obj_property>
-      <obj_property name="ObjectShortName">golden_im_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ElementShortName">golden_im_buf[0:7][31:0]</obj_property>
+      <obj_property name="ObjectShortName">golden_im_buf[0:7][31:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/output_re_buf">
-      <obj_property name="ElementShortName">output_re_buf[0:1023][31:0]</obj_property>
-      <obj_property name="ObjectShortName">output_re_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ElementShortName">output_re_buf[0:7][31:0]</obj_property>
+      <obj_property name="ObjectShortName">output_re_buf[0:7][31:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/output_im_buf">
-      <obj_property name="ElementShortName">output_im_buf[0:1023][31:0]</obj_property>
-      <obj_property name="ObjectShortName">output_im_buf[0:1023][31:0]</obj_property>
+      <obj_property name="ElementShortName">output_im_buf[0:7][31:0]</obj_property>
+      <obj_property name="ObjectShortName">output_im_buf[0:7][31:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/testbench_with_CU/fp">
       <obj_property name="ElementShortName">fp[31:0]</obj_property>

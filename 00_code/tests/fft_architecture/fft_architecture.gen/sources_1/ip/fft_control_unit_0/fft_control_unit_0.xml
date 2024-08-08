@@ -126,11 +126,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri May 24 12:42:16 UTC 2024</spirit:value>
+            <spirit:value>Wed Aug 07 11:15:10 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c0c58908</spirit:value>
+            <spirit:value>9:c0ddad3f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -145,11 +145,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri May 24 12:42:16 UTC 2024</spirit:value>
+            <spirit:value>Wed Aug 07 11:15:13 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c0c58908</spirit:value>
+            <spirit:value>9:c0ddad3f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -160,7 +160,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c0c58908</spirit:value>
+            <spirit:value>9:c0ddad3f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -176,11 +176,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri May 24 12:42:16 UTC 2024</spirit:value>
+            <spirit:value>Wed Aug 07 11:15:13 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c0c58908</spirit:value>
+            <spirit:value>9:c0ddad3f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -195,11 +195,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri May 24 12:42:16 UTC 2024</spirit:value>
+            <spirit:value>Wed Aug 07 11:15:13 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:cfbef570</spirit:value>
+            <spirit:value>9:cfa6d147</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -215,11 +215,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri May 24 12:42:16 UTC 2024</spirit:value>
+            <spirit:value>Wed Aug 07 11:15:13 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:cfbef570</spirit:value>
+            <spirit:value>9:cfa6d147</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -234,11 +234,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri May 24 12:42:16 UTC 2024</spirit:value>
+            <spirit:value>Wed Aug 07 11:15:13 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c0c58908</spirit:value>
+            <spirit:value>9:c0ddad3f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -477,7 +477,7 @@
     <xilinx:coreExtensions>
       <xilinx:displayName>fft_control_unit</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>15</xilinx:coreRevision>
+      <xilinx:coreRevision>18</xilinx:coreRevision>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@55b0271f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@4dddbf76_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
@@ -625,12 +625,44 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@5746d17b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@99b77d1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@407c21a0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@437b4fa9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5f7f254e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@497a5352_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e54879b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@106b68ba_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@711928c5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4b83985d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@42d65274_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a6dda1b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49018c48_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4dc859f3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3efb447e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@743a30e1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1134bf10_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72b13b5a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@100bca2b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5710ed73_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ff4f30e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3d0ad61f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f1b8387_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@53e73491_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e3d9f0d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@27f46403_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1729fdfe_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@12bcc9c5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3aac80c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1c1be8b7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@79c1aed5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b997764_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41fb452e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6b9aba72_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@77ffe5b1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_control_unit</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dbc0055f"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="94968944"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="431b56a6"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="c8218fb6"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="12c19991"/>
     </xilinx:packagingInfo>

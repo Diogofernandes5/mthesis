@@ -3,7 +3,7 @@
 module testbench_with_CU ();
 
 // clock period in nanoseconds
-`define CLK_PERIOD 12
+`define CLK_PERIOD 10
 
 reg clk;
 reg rstn;
@@ -64,6 +64,7 @@ localparam GOLDEN_IM_FILENAME = "../../../../../../../../matlab/golden_vectors/g
 localparam OUTPUT_RE_FILENAME = "../../../../../../../../matlab/golden_vectors/output_re.txt";
 localparam OUTPUT_IM_FILENAME = "../../../../../../../../matlab/golden_vectors/output_im.txt";
 
+//localparam FFT_SIZE = 12'd8;
 localparam FFT_SIZE = 12'd1024;
 
 /* --------------------------------*/

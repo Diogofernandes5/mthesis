@@ -5,6 +5,13 @@ N = 1024;
 x_re = fix(8*rand(1,N));
 x_im = zeros(1,N);
 
+fs = 1024;
+duration = 1;
+t = 0:1/fs:(duration-(1/fs));
+f1 = 10;
+x_re = fix(8*sin(2*pi*f1*t));
+%plot(t,x_re);
+
 % x_re = 10:10:10240;
 
 % convert to fixed-point
@@ -40,8 +47,8 @@ w_im_nround = w_im * 2.^fractional_part;
 w_re = round(w_re_nround); 
 w_im = round(w_im_nround);
 
-w_re = zeros(1,N) + 1;
-w_im = zeros(1,N) + 1;
+% w_re = zeros(1,N) + 1;
+% w_im = zeros(1,N) + 1;
 
 %% FFT operation
 % x_fft = fft(x_re);

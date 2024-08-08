@@ -3,7 +3,7 @@
 module testbench ();
 
 // clock period in nanoseconds
-`define CLK_PERIOD 12
+`define CLK_PERIOD 10
 
 reg clk;
 reg rstn;
@@ -45,6 +45,7 @@ localparam OUTPUT_RE_FILENAME = "../../../../../../../matlab/golden_vectors/outp
 localparam OUTPUT_IM_FILENAME = "../../../../../../../matlab/golden_vectors/output_im.txt";
 
 localparam FFT_SIZE = 12'd1024;
+//localparam FFT_SIZE = 12'd4;
 
 /* --------------------------------*/
 
@@ -56,7 +57,7 @@ initial begin
     x1_re = 32'd0;
     x1_im = 32'd0;
 
-    #(`CLK_PERIOD*5); // 3 clk cycles
+    #(`CLK_PERIOD*15); // 3 clk cycles
     start = 1;
     
     #(`CLK_PERIOD*(FFT_SIZE/2)); // 3 clk cycles

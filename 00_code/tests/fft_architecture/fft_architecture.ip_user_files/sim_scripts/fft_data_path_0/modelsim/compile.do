@@ -43,7 +43,6 @@ vcom -work xil_defaultlib -64 -93 \
 "../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
 
 vlog -work xil_defaultlib -64 -incr -mfcu \
-"../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
 "../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/full_adder.v" \
 "../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v" \
 "../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
@@ -57,6 +56,7 @@ vlog -work blk_mem_gen_v8_4_4 -64 -incr -mfcu \
 
 vlog -work xil_defaultlib -64 -incr -mfcu \
 "../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/bram_results/sim/bram_results.v" \
+"../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
 "../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/data_path/src/data_path.v" \
 "../../../../fft_architecture.gen/sources_1/ip/fft_data_path_0/sim/fft_data_path_0.v" \
 

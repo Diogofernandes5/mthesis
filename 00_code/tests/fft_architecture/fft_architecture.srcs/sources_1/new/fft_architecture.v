@@ -58,7 +58,7 @@ fft_data_path_0 data_path (
   .x1_re_i(x1_re_i),          // input wire [31 : 0] x1_re_i
   .x1_im_i(x1_im_i),          // input wire [31 : 0] x1_im_i
   .bram_addr_i(bram_addr),  // input wire [9 : 0] bram_addr_i
-  .w(28'h4001),                      // input wire [27 : 0] w
+  .w(w),                      // input wire [27 : 0] w
   .src_sel_i(src_sel),      // input wire src_sel_i
   .fft_ready_i(fft_ready_o),  // input wire fft_ready_i
   .bram_we_i(bram_we),      // input wire bram_we_i
@@ -78,18 +78,18 @@ fft_data_path_0 data_path (
   .x1_im_ram(x1_im_ram)      // output wire [31 : 0] x1_im_ram
 );
 
-//w_re_bram twiddle_re (
-//  .clka(clk),    // input wire clka
-//  .addra(twiddle_addr),  // input wire [8 : 0] addra
-//  .douta(w_re)  // output wire [31 : 0] douta
-//);
+w_re_bram twiddle_re (
+  .clka(clk),    // input wire clka
+  .addra(twiddle_addr),  // input wire [8 : 0] addra
+  .douta(w_re)  // output wire [31 : 0] douta
+);
 
-//w_im_bram twiddle_im (
-//  .clka(clk),    // input wire clka
-//  .addra(twiddle_addr),  // input wire [8 : 0] addra
-//  .douta(w_im)  // output wire [31 : 0] douta
-//);
+w_im_bram twiddle_im (
+  .clka(clk),    // input wire clka
+  .addra(twiddle_addr),  // input wire [8 : 0] addra
+  .douta(w_im)  // output wire [31 : 0] douta
+);
 
-//assign w = {w_re,w_im};
+assign w = {w_re,w_im};
 
 endmodule

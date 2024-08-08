@@ -40,7 +40,7 @@ module control_unit(
     // counters registers
     reg [10:0] data_counter;
     reg [10:0] bf_counter;
-    reg [2:0] cycle_counter;
+    reg [3:0] cycle_counter;
     reg cycle_delay;
     //reg write_counter;
     
@@ -87,7 +87,7 @@ module control_unit(
                 nstate = S_BF_OPERATION;
 
             S_BF_OPERATION: begin
-                if(cycle_counter == 3'd4)
+                if(cycle_counter == 4'd8)
                     nstate = S_WRITE_BACK;
                 else 
                     nstate = S_BF_OPERATION;
@@ -158,7 +158,7 @@ module control_unit(
                 bram_en_o = 1'b1;
                 bram_we_o = 1'b0; // disable writing to memmory 
 
-                if(cycle_counter == 3'd4)
+                if(cycle_counter == 4'd8)
                     bf_ce_o = 1'b1;
                 else 
                     bf_ce_o = 1'b0;
