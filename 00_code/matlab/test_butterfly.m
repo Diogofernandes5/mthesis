@@ -8,15 +8,19 @@ x_im = zeros(1,N);
 fs = 1024;
 duration = 1;
 t = 0:1/fs:(duration-(1/fs));
-f1 = 10;
+f1 = 50;
 x_re = fix(8*sin(2*pi*f1*t));
 %plot(t,x_re);
 
-% x_re = 10:10:10240;
+y = fft(x_re);
+
+k = 0:N/2;
+freq = k*fs/N;
+stem(freq, abs(y(1:(N/2)+1)));
 
 % convert to fixed-point
-% x_re = x_re * 2^10;
-% x_re = fix(x_re);
+x_re = x_re * 2^10;
+x_re = fix(x_re);
 
 % write to file the input vector
 input_filename = "./golden_vectors/input.txt";
