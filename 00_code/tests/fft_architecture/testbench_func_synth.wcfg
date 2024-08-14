@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="testbench_func_synth.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="testbench" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="55,402.646 ns"></ZoomStartTime>
+      <ZoomEndTime time="55,546.847 ns"></ZoomEndTime>
+      <Cursor1Time time="55,446.100 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="172"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="12" />
+   <wvobject type="logic" fp_name="/testbench/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench/rstn">
+      <obj_property name="ElementShortName">rstn</obj_property>
+      <obj_property name="ObjectShortName">rstn</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/x0_re">
+      <obj_property name="ElementShortName">x0_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/x0_im">
+      <obj_property name="ElementShortName">x0_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/x1_re">
+      <obj_property name="ElementShortName">x1_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/x1_im">
+      <obj_property name="ElementShortName">x1_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench/start">
+      <obj_property name="ElementShortName">start</obj_property>
+      <obj_property name="ObjectShortName">start</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/testbench/fft_ready">
+      <obj_property name="ElementShortName">fft_ready</obj_property>
+      <obj_property name="ObjectShortName">fft_ready</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/X0_re">
+      <obj_property name="ElementShortName">X0_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/X0_im">
+      <obj_property name="ElementShortName">X0_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/X1_re">
+      <obj_property name="ElementShortName">X1_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/testbench/X1_im">
+      <obj_property name="ElementShortName">X1_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

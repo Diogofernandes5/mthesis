@@ -48,7 +48,7 @@
     <Option Name="SimulatorGccVersionRiviera" Val="6.2.0"/>
     <Option Name="SimulatorGccVersionActiveHdl" Val="6.2.0"/>
     <Option Name="BoardPart" Val="digilentinc.com:zybo-z7-10:part0:1.1"/>
-    <Option Name="ActiveSimSet" Val="sim"/>
+    <Option Name="ActiveSimSet" Val="testbenches"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="ProjectType" Val="Default"/>
     <Option Name="IPRepoPath" Val="$PPRDIR/../../../../00_code"/>
@@ -62,20 +62,20 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSABoardId" Val="zybo-z7-10"/>
-    <Option Name="WTXSimLaunchSim" Val="567"/>
+    <Option Name="WTXSimLaunchSim" Val="806"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="53"/>
-    <Option Name="WTModelSimExportSim" Val="53"/>
-    <Option Name="WTQuestaExportSim" Val="53"/>
-    <Option Name="WTIesExportSim" Val="53"/>
-    <Option Name="WTVcsExportSim" Val="53"/>
-    <Option Name="WTRivieraExportSim" Val="53"/>
-    <Option Name="WTActivehdlExportSim" Val="53"/>
+    <Option Name="WTXSimExportSim" Val="85"/>
+    <Option Name="WTModelSimExportSim" Val="85"/>
+    <Option Name="WTQuestaExportSim" Val="85"/>
+    <Option Name="WTIesExportSim" Val="85"/>
+    <Option Name="WTVcsExportSim" Val="85"/>
+    <Option Name="WTRivieraExportSim" Val="85"/>
+    <Option Name="WTActivehdlExportSim" Val="85"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -92,6 +92,20 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
+      <File Path="$PSRCDIR/sources_1/ip/fft_control_unit_0/fft_control_unit_0.xci">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/mux2_twiddle_1/mux2_twiddle.xci">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/ip/butterfly_full_ip_0/butterfly_full_ip_0.xci">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -127,13 +141,19 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/src/data_path_with_CU.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/../component.xml">
         <FileInfo SFType="IPXACT"/>
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="data_path"/>
-        <Option Name="TopAutoSet" Val="TRUE"/>
+        <Option Name="TopModule" Val="data_path_with_CU"/>
       </Config>
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
@@ -150,23 +170,24 @@
     </FileSet>
     <FileSet Name="sim" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim" RelGenDir="$PGENDIR/sim">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sim/imports/sim/data_path_tb.v">
+      <File Path="$PSRCDIR/sim/imports/sim/data_path_test.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/sim/data_path_tb.v"/>
-          <Attr Name="ImportTime" Val="1713376456"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/sim/data_path_test.v"/>
+          <Attr Name="ImportTime" Val="1715903660"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/sim/testbench.v">
+      <File Path="$PPRDIR/src/data_path_with_CU.v">
         <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/sim/data_path_test.v">
+      <File Path="$PPRDIR/sim/data_path_with_CU_tb.v">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -189,7 +210,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="testbench"/>
+        <Option Name="TopModule" Val="data_path_test"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
@@ -205,19 +226,6 @@
         <Option Name="NLNetlistMode" Val="funcsim"/>
       </Config>
     </FileSet>
-    <FileSet Name="mux2_twiddle" Type="BlockSrcs" RelSrcDir="$PSRCDIR/mux2_twiddle" RelGenDir="$PGENDIR/mux2_twiddle">
-      <File Path="$PSRCDIR/sources_1/ip/mux2_twiddle/mux2_twiddle.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <Config>
-        <Option Name="TopModule" Val="mux2_twiddle"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-      </Config>
-    </FileSet>
     <FileSet Name="contr" Type="Constrs" RelSrcDir="$PSRCDIR/contr" RelGenDir="$PGENDIR/contr">
       <File Path="$PPRDIR/../constr/Zybo-Z7-Master.xdc">
         <FileInfo>
@@ -228,6 +236,54 @@
       <Config>
         <Option Name="TargetConstrsFile" Val="$PPRDIR/../constr/Zybo-Z7-Master.xdc"/>
         <Option Name="ConstrsType" Val="XDC"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="testbenches" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/testbenches" RelGenDir="$PGENDIR/testbenches">
+      <Filter Type="Srcs"/>
+      <File Path="$PPRDIR/testbenches/testbench_with_CU.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/testbenches/data_path_tb.v">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/testbenches/testbench.v">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/testbench_with_CU.wcfg">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <Config>
+        <Option Name="DesignMode" Val="RTL"/>
+        <Option Name="TopModule" Val="testbench_with_CU"/>
+        <Option Name="TopLib" Val="xil_defaultlib"/>
+        <Option Name="TransportPathDelay" Val="0"/>
+        <Option Name="TransportIntDelay" Val="0"/>
+        <Option Name="SelectedSimModel" Val="rtl"/>
+        <Option Name="SimMode" Val="post-synthesis"/>
+        <Option Name="PamDesignTestbench" Val=""/>
+        <Option Name="PamDutBypassFile" Val="xil_dut_bypass"/>
+        <Option Name="PamSignalDriverFile" Val="xil_bypass_driver"/>
+        <Option Name="PamPseudoTop" Val="pseudo_tb"/>
+        <Option Name="SrcSet" Val="sources_1"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/testbench_with_CU.wcfg"/>
+        <Option Name="xsim.simulate.runtime" Val="700ns"/>
+        <Option Name="NLNetlistMode" Val="funcsim"/>
       </Config>
     </FileSet>
   </FileSets>
@@ -283,16 +339,6 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="mux2_twiddle_synth_1" Type="Ft3:Synth" SrcSet="mux2_twiddle" Part="xc7z010clg400-1" ConstrsSet="mux2_twiddle" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/mux2_twiddle_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/mux2_twiddle_synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
     <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7z010clg400-1" ConstrsSet="contr" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PPRDIR/../../../fft/data_path/data_path.srcs/utils_1/imports/impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
@@ -310,24 +356,37 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="mux2_twiddle_impl_1" Type="Ft2:EntireDesign" Part="xc7z010clg400-1" ConstrsSet="mux2_twiddle" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="mux2_twiddle_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/mux2_twiddle_impl_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
   </Runs>
+  <MsgRule>
+    <MsgAttr Name="RuleType" Val="0"/>
+    <MsgAttr Name="Limit" Val="-1"/>
+    <MsgAttr Name="NewSeverity" Val="ANY"/>
+    <MsgAttr Name="Id" Val="USF-XSim-62"/>
+    <MsgAttr Name="Severity" Val="ANY"/>
+    <MsgAttr Name="ShowRule" Val="1"/>
+    <MsgAttr Name="RuleSource" Val="8"/>
+    <MsgAttr Name="StringIsRegExp" Val="0"/>
+    <MsgAttr Name="RuleId" Val="1"/>
+    <MsgAttr Name="Note" Val=""/>
+    <MsgAttr Name="Author" Val=""/>
+    <MsgAttr Name="CreatedTimestamp" Val=""/>
+    <MsgAttr Name="StringsToMatch" Val="ERROR: [USF-XSim-62] &apos;compile&apos; step failed with error(s). Please check the Tcl console output or &apos;/home/fernandes/thesis/00_code/ip/fft_control_unit/fft_control_unit.sim/sim/behav/xsim/xvlog.log&apos; file for more information."/>
+  </MsgRule>
+  <MsgRule>
+    <MsgAttr Name="RuleType" Val="0"/>
+    <MsgAttr Name="Limit" Val="-1"/>
+    <MsgAttr Name="NewSeverity" Val="ANY"/>
+    <MsgAttr Name="Id" Val="Vivado 12-4473"/>
+    <MsgAttr Name="Severity" Val="ANY"/>
+    <MsgAttr Name="ShowRule" Val="1"/>
+    <MsgAttr Name="RuleSource" Val="8"/>
+    <MsgAttr Name="StringIsRegExp" Val="0"/>
+    <MsgAttr Name="RuleId" Val="2"/>
+    <MsgAttr Name="Note" Val=""/>
+    <MsgAttr Name="Author" Val=""/>
+    <MsgAttr Name="CreatedTimestamp" Val=""/>
+    <MsgAttr Name="StringsToMatch" Val="ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation."/>
+  </MsgRule>
   <Board>
     <Jumpers/>
   </Board>

@@ -1,0 +1,3 @@
+control_unit.v,verilog,xil_defaultlib,../../../../fft_architecture.gen/sources_1/ip/fft_control_unit_0/src/control_unit.v,
+fft_control_unit_0.v,verilog,xil_defaultlib,../../../../fft_architecture.gen/sources_1/ip/fft_control_unit_0/sim/fft_control_unit_0.v,
+glbl.v,Verilog,xil_defaultlib,glbl.v

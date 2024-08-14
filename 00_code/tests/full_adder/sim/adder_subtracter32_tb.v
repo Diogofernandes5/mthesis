@@ -76,7 +76,27 @@ module adder_subtracter32_tb(
         x <= 32'h00000000;
         y <= 32'h00000000;
         c_in <= 1;
-
+        
+        #(10);
+        
+        // -1-1
+        x <= 32'hFFFFFFFF;
+        y <= 32'h00000001;
+        c_in <= 1;
+        
+        #(10);
+        
+        // -3+1
+        x <= 32'hFFFFFFFD;
+        y <= 32'h00000001;
+        c_in <= 0;
+        
+        #(10);
+        
+        // -3-1
+        x <= 32'hFFFFFFFD;
+        y <= 32'h00000001;
+        c_in <= 1;        
       end
       
 endmodule

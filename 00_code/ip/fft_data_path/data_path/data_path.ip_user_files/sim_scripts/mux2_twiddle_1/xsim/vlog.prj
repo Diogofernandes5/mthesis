@@ -1,0 +1,7 @@
+verilog xil_defaultlib  \
+"../../../../data_path.gen/sources_1/ip/mux2_twiddle_1/src/mux2.v" \
+"../../../../data_path.gen/sources_1/ip/mux2_twiddle_1/sim/mux2_twiddle.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+nosort
