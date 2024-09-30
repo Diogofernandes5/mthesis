@@ -1,22 +1,30 @@
 N = 1024;
+num_stages = 2;
 
 %% Generate random Inputs
 % generate numbers
 x_re = fix(8*rand(1,N));
 x_im = zeros(1,N);
 
-fs = 1*10^
-t = 0:
+fs = 1024;
+duration = 1;
+t = 0:1/fs:(duration-(1/fs));
 f1 = 50;
-x_re = fix(6*sin())
+x_re = fix(1*sin(2*pi*f1*t));
+%x_re = [1,2,3,4,5,6,7,8];
+%plot(t,x_re);
 
-% x_re = 10:10:10240;
+%% plot fft
+%y = fft(x_re);
+%k = 0:N/2;
+%freq = k*fs/N;
+%stem(freq, abs(y(1:(N/2)+1)));
 
 % convert to fixed-point
 % x_re = x_re * 2^10;
-% x_re = fix(x_re);
+x_re = fix(x_re);
 
-% write to file the input vector
+% write to file the input vector1
 input_filename = "./golden_vectors/input.txt";
 fp = fopen(input_filename,'w');
 fprintf(fp, "%s", regexprep(num2str(x_re),'\s+','\n'));
@@ -49,21 +57,13 @@ w_im = round(w_im_nround);
 % w_im = zeros(1,N) + 1;
 
 %% FFT operation
-% x_fft = fft(x_re);
-% fft_re = fix(real(x_fft));
-% fft_im = fix(imag(x_fft));
 fft_re = zeros(1,N);
 fft_im = zeros(1,N);
 
-half_N = N/2;
-
-for i = 1 : 1 : (N/2)
-    z_re = x_re(i+half_N)*w_re(i) - x_im(i+half_N)*w_im(i); % assuming w=1+1j
-    z_im = x_re(i+half_N)*w_im(i) + x_im(i+half_N)*w_re(i); % assuming w=1+1j
-    fft_re(i) =         fix(x_re(i) + z_re);
-    fft_im(i) =         fix(x_im(i) + z_im);
-    fft_re(i+half_N) =  fix(x_re(i) - z_re);
-    fft_im(i+half_N) =  fix(x_im(i) - z_im);
+for i = 1 : num_stages
+    [fft_re, fft_im] = bf_operation(N, w_re, w_im, x_re, x_im);
+    x_re = fft_re;
+    x_im = fft_im;
 end
 
 % write to file the results
