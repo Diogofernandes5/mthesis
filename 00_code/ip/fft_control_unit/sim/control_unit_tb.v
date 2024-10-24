@@ -1,9 +1,8 @@
 `timescale 1ns / 1ps
 
-module control_unit_tb();
+`define CLK_PERIOD 10   // nanoseconds
 
-// clock period in nanoseconds
-`define CLK_PERIOD 20
+module control_unit_tb();
 
 reg clk, rstn;
 reg start;
@@ -11,21 +10,41 @@ reg start;
 wire src_sel;
 wire fft_ready;
 
-wire bram_we;
+wire bram_x0_we;
+wire bram_x1_we;
 wire bram_en;
 wire bf_ce;
 
-wire [9:0] bram_addr;
+wire [10:0] bram_addr_x0;
+wire [10:0] bram_addr_x1;
 
-wire [9:0] twiddle_addr;
+wire [8:0] twiddle_addr;
 
-localparam BRAM_SIZE = 10'd512;
+localparam N = 11'd1024;
+localparam BRAM_SIZE = N/2;
 
-//---------------
-wire [2:0] state;
-//    wire [9:0] data_counter;
-//    wire data_counter_comp;
+localparam NUM_STAGES = 3'd3;
+localparam FIRST_STAGE = 10'd7;
 
+/**********************************/
+/************ FOR TESTS ***********/
+//wire [3:0] state;
+//wire [3:0] stage_counter;
+
+//wire [9:0] staged_half_N;
+
+//wire [9:0] stage_counter_lshif; 
+//wire start_div;
+
+//wire [9:0] group_start;
+//wire [10:0] bram_addr_x0_w;           
+//wire [10:0] bram_addr_x1_w;
+
+//wire [10:0] bf_counter;
+//wire [9:0] local_index;
+/**********************************/
+
+/************ CLK AND RSTN GEN ***********/
 always #(`CLK_PERIOD/2) clk = ~clk;
  
 initial begin
@@ -35,21 +54,43 @@ initial begin
     #(`CLK_PERIOD*2) rstn <= 1;
 end
 
-control_unit dut(
+/************ DUT ***********/
+control_unit #(.N(N),
+               .STAGES_NUM(NUM_STAGES), 
+               .FIRST_STAGE(FIRST_STAGE))  
+dut
+(
     .clk(clk),
     .rstn(rstn),
     .start_i(start),
+//    .stage_num_i(NUM_STAGES),
+
     .src_sel_o(src_sel),
     .fft_ready_o(fft_ready),
-    .bram_we_o(bram_we),
+    .bram_x0_we_o(bram_x0_we),
+    .bram_x1_we_o(bram_x1_we),
     .bram_en_o(bram_en),
     .bf_ce_o(bf_ce),
-    .bram_addr_o(bram_addr),
-    .twiddle_addr_o(twiddle_addr),
+    .bram_addr_x0_o(bram_addr_x0),
+    .bram_addr_x1_o(bram_addr_x1),
+    .twiddle_addr_o(twiddle_addr)
     
-    .state(state)
+    /********************************/
+//    .state(state),
+//    .stage_counter(stage_counter),
+//    .staged_half_N(staged_half_N),
+//    .group_size(stage_counter_lshif),
+//    .start_div(start_div),
+    
+//    .group_start(group_start),
+//    .bram_addr_x0(bram_addr_x0_w),           
+//    .bram_addr_x1(bram_addr_x1_w),        
+    
+//    .bf_counter(bf_counter)
+//    .local_index(local_index)  
 );
 
+/************ STIMULUS ***********/
 initial begin
     start = 0;
     #(`CLK_PERIOD*5);
@@ -63,6 +104,14 @@ initial begin
 
     #(`CLK_PERIOD*BRAM_SIZE);
     start = 0;
+end
+
+/************ STOP LOGIC ***********/
+always @* begin
+    //if(stage_counter == NUM_STAGES)
+    wait(fft_ready);
+    wait(~fft_ready);
+    $stop;
 end
 
 endmodule
