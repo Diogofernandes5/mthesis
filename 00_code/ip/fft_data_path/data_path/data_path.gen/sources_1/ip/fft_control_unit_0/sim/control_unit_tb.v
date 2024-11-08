@@ -21,8 +21,11 @@ wire [9:0] twiddle_addr;
 
 localparam BRAM_SIZE = 10'd512;
 
+localparam NUM_STAGES = 3'd3;
+
 //---------------
 wire [2:0] state;
+wire [2:0] stage_counter;
 //    wire [9:0] data_counter;
 //    wire data_counter_comp;
 
@@ -39,6 +42,8 @@ control_unit dut(
     .clk(clk),
     .rstn(rstn),
     .start_i(start),
+    .stage_num_i(NUM_STAGES),
+
     .src_sel_o(src_sel),
     .fft_ready_o(fft_ready),
     .bram_we_o(bram_we),
@@ -47,7 +52,8 @@ control_unit dut(
     .bram_addr_o(bram_addr),
     .twiddle_addr_o(twiddle_addr),
     
-    .state(state)
+    .state(state),
+    .stage_counter(stage_counter)
 );
 
 initial begin
@@ -63,6 +69,11 @@ initial begin
 
     #(`CLK_PERIOD*BRAM_SIZE);
     start = 0;
+end
+
+always @* begin
+    if(stage_counter)
+        $stop;
 end
 
 endmodule

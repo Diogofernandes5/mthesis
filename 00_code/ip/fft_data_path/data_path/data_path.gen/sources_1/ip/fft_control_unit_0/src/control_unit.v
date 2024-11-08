@@ -4,6 +4,8 @@ module control_unit(
     
     input wire start_i,
 
+    input wire [2:0] stage_num_i,
+
     output reg src_sel_o,
     output reg fft_ready_o,
 
@@ -15,8 +17,8 @@ module control_unit(
 
     output reg [9:0] twiddle_addr_o,
     
-    
-    output reg [2:0] state
+    output reg [2:0] state,
+    output reg [2:0] stage_counter
 );
 
         // define states
@@ -26,12 +28,13 @@ module control_unit(
     localparam S_READ_MEMORY = 3'b011;
     localparam S_BF_OPERATION = 3'b100;
     localparam S_WRITE_BACK = 3'b101;
-    localparam S_SEND_RESULTS = 3'b110;
+    localparam S_CHECK_STAGE = 3'b110;
+    localparam S_SEND_RESULTS = 3'b111;
 
-    localparam BRAM_SIZE = 10'd512;
+//    localparam BRAM_SIZE = 10'd512;
 
     // for tests
-//    localparam BRAM_SIZE = 3'd4;
+    localparam BRAM_SIZE = 3'd4;
 
     // state and nextstate registers
 //    reg [2:0] state;
@@ -41,6 +44,7 @@ module control_unit(
     reg [10:0] data_counter;
     reg [10:0] bf_counter;
     reg [3:0] cycle_counter;
+//    reg [2:0] stage_counter;
     reg cycle_delay;
     //reg write_counter;
     
@@ -74,7 +78,7 @@ module control_unit(
             S_CHECK_BF_COUNTER: begin
                 if(bf_counter == BRAM_SIZE) begin
                     if(cycle_delay == 1'h1)
-                        nstate = S_SEND_RESULTS;
+                        nstate = S_CHECK_STAGE;
                     else
                         nstate = S_CHECK_BF_COUNTER;
                 end                    
@@ -95,12 +99,24 @@ module control_unit(
 
             S_WRITE_BACK:
                 nstate = S_CHECK_BF_COUNTER;
+
+            S_CHECK_STAGE: begin
+                if(stage_counter == (stage_num_i - 1)) begin
+                    //if(cycle_delay == 1'h1)
+                    nstate = S_SEND_RESULTS;
+//                else
+//                    nstate = S_CHECK_STAGE;
+                    
+                end                    
+                else
+                    nstate = S_CHECK_BF_COUNTER;
+            end
            
             S_SEND_RESULTS: begin
-            if(data_counter == (BRAM_SIZE-1)+1) // data_counter == N/2 (512)
-                nstate = S_IDLE;
-            else 
-                nstate = S_SEND_RESULTS;
+                if(data_counter == (BRAM_SIZE-1)+1) // data_counter == N/2 (512)
+                    nstate = S_IDLE;
+                else 
+                    nstate = S_SEND_RESULTS;
             end
 
             default: nstate = S_IDLE;
@@ -156,7 +172,7 @@ module control_unit(
                 bram_addr_o = bf_counter;
                 twiddle_addr_o = bf_counter;
                 bram_en_o = 1'b1;
-                bram_we_o = 1'b0; // disable writing to memmory 
+                bram_we_o = 1'b0;
 
                 if(cycle_counter == 4'd8)
                     bf_ce_o = 1'b1;
@@ -170,7 +186,17 @@ module control_unit(
                 bram_addr_o = bf_counter;
                 twiddle_addr_o = bf_counter;
                 bram_en_o = 1'b1;
-                bram_we_o = 1'b1; // disable writing to memmory 
+                bram_we_o = 1'b1;  
+                bf_ce_o = 1'b0;
+            end
+
+            S_CHECK_STAGE: begin // does nothing
+                start_sending = 1'b0;
+                src_sel_o = 1'b1;
+                bram_addr_o = {11{1'b0}};
+                twiddle_addr_o = {11{1'b0}};
+                bram_en_o = 1'b0;
+                bram_we_o = 1'b0;
                 bf_ce_o = 1'b0;
             end
 
@@ -180,7 +206,7 @@ module control_unit(
                 bram_addr_o = data_counter;
                 twiddle_addr_o = {11{1'b0}};
                 bram_en_o = 1'b1;
-                bram_we_o = 1'b0; // disable writing to memmory 
+                bram_we_o = 1'b0;
                 bf_ce_o = 1'b0;
             end
             default: begin
@@ -203,6 +229,7 @@ module control_unit(
             bf_counter <= {11{1'b0}};
             cycle_counter <= {3{1'b0}};
             cycle_delay <= 1'b0;
+            stage_counter <= {2{1'b0}}; // reset stage_counter
         end
         else
             case(state)
@@ -211,6 +238,7 @@ module control_unit(
                     bf_counter <= {11{1'b0}};
                     cycle_counter <= {3{1'b0}};
                     cycle_delay <= 1'b0;
+                    stage_counter <= {2{1'b0}}; // reset stage_counter
                 end
                 
                 S_CHECK_BF_COUNTER: begin
@@ -227,12 +255,19 @@ module control_unit(
                 end
     
                 S_STORE_INPUTS: 
-                    data_counter <= data_counter + 1; // increase data_counter
+                    data_counter <= data_counter + 1; // increment data_counter
+
+                S_CHECK_STAGE: begin
+                    stage_counter <= stage_counter + 1; // increment stage_counter
+                    data_counter <= {11{1'b0}}; // reset data_counter 
+                    bf_counter <= {11{1'b0}};
+                end
                     
                 S_SEND_RESULTS: begin
-                    data_counter <= data_counter + 1; // increase data_counter
+                    data_counter <= data_counter + 1; // increment data_counter
                     bf_counter <= {11{1'b0}};
                     cycle_delay <= 1'b0;
+                    stage_counter <= {2{1'b0}}; // reset stage_counter
                 end
                 
 //                default: begin

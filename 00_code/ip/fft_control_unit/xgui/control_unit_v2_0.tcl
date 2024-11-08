@@ -4,7 +4,7 @@ proc init_gui { IPINST } {
   #Adding Page
   set Page_0 [ipgui::add_page $IPINST -name "Page 0"]
   ipgui::add_param $IPINST -name "FIRST_STAGE" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "N" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "N" -parent ${Page_0} -widget comboBox
   ipgui::add_param $IPINST -name "STAGES_NUM" -parent ${Page_0}
 
 

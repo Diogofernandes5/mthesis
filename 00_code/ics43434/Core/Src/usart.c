@@ -24,6 +24,7 @@
 char Rx_Buffer[RX_BUFF_LEN];
 char Tx_Buffer[TX_BUFF_LEN];
 volatile uint8_t Rx_index = 0;
+//uint16_t Tx_index = 0;
 
 //volatile uint8_t Tx_flag = 0;
 volatile uint8_t Rx_flag = 0;
@@ -54,6 +55,7 @@ static void dollar_key_cb(void);
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart3;
+DMA_HandleTypeDef hdma_usart3_tx;
 
 /* USART3 init function */
 
@@ -122,6 +124,25 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+    /* USART3 DMA Init */
+    /* USART3_TX Init */
+    hdma_usart3_tx.Instance = DMA1_Stream3;
+    hdma_usart3_tx.Init.Channel = DMA_CHANNEL_4;
+    hdma_usart3_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+    hdma_usart3_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_usart3_tx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_usart3_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_usart3_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_usart3_tx.Init.Mode = DMA_NORMAL;
+    hdma_usart3_tx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_usart3_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_usart3_tx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(uartHandle,hdmatx,hdma_usart3_tx);
+
     /* USART3 interrupt Init */
     HAL_NVIC_SetPriority(USART3_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(USART3_IRQn);
@@ -147,6 +168,9 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     PD9     ------> USART3_RX
     */
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_8|GPIO_PIN_9);
+
+    /* USART3 DMA DeInit */
+    HAL_DMA_DeInit(uartHandle->hdmatx);
 
     /* USART3 interrupt Deinit */
     HAL_NVIC_DisableIRQ(USART3_IRQn);
@@ -335,11 +359,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 }
 
 //implementation of UART ISR
-//void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart)
-//{
-//	if (huart->Instance == USART3) //current UART?
-//		Tx_flag = 1;
-//}
+/*void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart)
+{
+	if (huart->Instance == USART3) //current UART?
+		Tx_flag = 1;
+}*/
 
 /******************************************************************************
 @brief	 	 Sends a char by UART - Interrupt but waits for UART 
@@ -352,7 +376,7 @@ void UART_putchar(char ch)
 		;
 	
 	c = ch; // 'ch' cannot be used to transmitt since its local to this function. Content may be lost
-	HAL_UART_Transmit_IT(&huart3, (uint8_t*)&c, 1);
+	HAL_UART_Transmit_DMA(&huart3, (uint8_t*)&c, 1);
 }
 
 /******************************************************************************
@@ -364,17 +388,48 @@ void UART_puts(const char *s)
 {
 	if((s == NULL) || (s[0] == 0))	// string empty?
 		return;
-	
+
 	int len = strlen(s);
 	if(len > TX_BUFF_LEN)		// string size bigger than the max size of Tx_Buffer?
 		return;
 
 	while(huart3.gState == HAL_UART_STATE_BUSY_TX) // Waits for UART_Tx to transmitt queued data
 		;
-	
+
 	strcpy(Tx_Buffer, s);	// send string 'str' to 'TX_Buffer'
-	HAL_UART_Transmit_IT(&huart3, (uint8_t*)Tx_Buffer, len);
+	HAL_UART_Transmit_DMA(&huart3, (uint8_t*)Tx_Buffer, len);
 }
+
+/*void customStrncat(char* dest, const char* src, size_t n) {
+   size_t dest_len = strlen(dest);
+   size_t i;
+
+   for (i = 0; i < n && src[i] != '\0'; i++) {
+       dest[dest_len + i] = src[i];
+   }
+
+   // Null-terminate the result
+   dest[dest_len + i] = '\0';
+}
+
+void UART_puts(const char *s)
+{
+	if((s == NULL) || (s[0] == 0))	// string empty?
+		return;
+	
+	uint16_t len = strlen(s);
+	if(len > TX_BUFF_LEN)		// string size bigger than the max size of Tx_Buffer?
+		return;
+
+	// strcpy(Tx_Buffer, s);	// send string 'str' to 'TX_Buffer'
+	customStrncat(Tx_Buffer + Tx_index, s, len);
+
+	Tx_index += len;
+
+	Tx_index = Tx_index & (TX_BUFF_LEN-1);
+	//HAL_UART_Transmit_DMA(&huart3, (uint8_t*)Tx_Buffer, len);
+	HAL_UART_Transmit_DMA(&huart3, (uint8_t*)Tx_Buffer + Tx_index, len);
+}*/
 
 //void UART_puts(const char *s)
 //{

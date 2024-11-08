@@ -39,7 +39,7 @@ extern UART_HandleTypeDef huart3;
 /* USER CODE BEGIN Private defines */
 #define RX_BUFF_LEN 16
 //#define TX_BUFF_LEN 128
-#define TX_BUFF_LEN 256
+#define TX_BUFF_LEN 512
 
 #define ENTER_KEY 	0x0D
 #define BCKSP_KEY 	0x7F
@@ -54,7 +54,7 @@ extern UART_HandleTypeDef huart3;
 extern char Rx_Buffer[RX_BUFF_LEN];
 
 extern volatile uint8_t Rx_flag;
-//extern volatile uint8_t Tx_flag = 0;
+//extern volatile uint8_t Tx_flag;
 extern volatile uint8_t cmd_received;
 
 /* USER CODE END Private defines */
@@ -64,6 +64,7 @@ void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN Prototypes */
 
 extern void Rx_UART_init(void);
+extern void Tx_UART_init(void);
 extern char UART_Receive(void);
 
 extern void UART_puts(const char *s);

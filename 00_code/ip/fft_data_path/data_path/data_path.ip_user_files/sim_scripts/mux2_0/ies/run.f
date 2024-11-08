@@ -5,6 +5,10 @@
   "/tools/Xilinx/Vivado/2021.1/data/ip/xpm/xpm_VCOMP.vhd" \
 -endlib
 -makelib ies_lib/xil_defaultlib \
+  "../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/mux2_0/src/mux2.v" \
+  "../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/mux2_0/sim/mux2_0.v" \
+-endlib
+-makelib ies_lib/xil_defaultlib \
   glbl.v
 -endlib
 

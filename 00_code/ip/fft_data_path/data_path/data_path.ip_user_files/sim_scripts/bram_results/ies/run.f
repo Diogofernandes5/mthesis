@@ -8,7 +8,7 @@
   "../../../ipstatic/simulation/blk_mem_gen_v8_4.v" \
 -endlib
 -makelib ies_lib/xil_defaultlib \
-  "../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/bram_results/sim/bram_results.v" \
+  "../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/bram_results/sim/bram_results.v" \
 -endlib
 -makelib ies_lib/xil_defaultlib \
   glbl.v

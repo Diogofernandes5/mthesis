@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_control_unit:1.0
-// IP Revision: 18
+// IP Revision: 24
 
 `timescale 1ns/1ps
 
@@ -58,6 +58,7 @@ module fft_control_unit_0 (
   clk,
   rstn,
   start_i,
+  stage_num_i,
   src_sel_o,
   fft_ready_o,
   bram_we_o,
@@ -65,7 +66,8 @@ module fft_control_unit_0 (
   bf_ce_o,
   bram_addr_o,
   twiddle_addr_o,
-  state
+  state,
+  stage_counter
 );
 
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME clk, ASSOCIATED_RESET rstn, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, INSERT_VIP 0" *)
@@ -75,6 +77,7 @@ input wire clk;
 (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 rstn RST" *)
 input wire rstn;
 input wire start_i;
+input wire [2 : 0] stage_num_i;
 output wire src_sel_o;
 output wire fft_ready_o;
 output wire bram_we_o;
@@ -83,11 +86,13 @@ output wire bf_ce_o;
 output wire [9 : 0] bram_addr_o;
 output wire [9 : 0] twiddle_addr_o;
 output wire [2 : 0] state;
+output wire [2 : 0] stage_counter;
 
   control_unit inst (
     .clk(clk),
     .rstn(rstn),
     .start_i(start_i),
+    .stage_num_i(stage_num_i),
     .src_sel_o(src_sel_o),
     .fft_ready_o(fft_ready_o),
     .bram_we_o(bram_we_o),
@@ -95,6 +100,7 @@ output wire [2 : 0] state;
     .bf_ce_o(bf_ce_o),
     .bram_addr_o(bram_addr_o),
     .twiddle_addr_o(twiddle_addr_o),
-    .state(state)
+    .state(state),
+    .stage_counter(stage_counter)
   );
 endmodule

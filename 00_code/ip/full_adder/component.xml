@@ -229,8 +229,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>adder_subtracter32</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>7</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2024-04-23T16:38:06Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>8</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2024-09-04T16:48:32Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@55eaf4d3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@73afb0be_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
@@ -288,6 +288,11 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@1ce93784_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@669c4df_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@a545449_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26797000_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4fdaaa8a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@40d65d5b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@31d095d4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17ee10fa_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>

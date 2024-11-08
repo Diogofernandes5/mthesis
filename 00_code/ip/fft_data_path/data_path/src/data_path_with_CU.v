@@ -3,6 +3,7 @@ module data_path_with_CU(
 	input wire rstn,
 	
 	input wire start_i,
+	input wire [2:0] stage_num_i,
 	
 	input wire [31:0] x0_re_i,
 	input wire [31:0] x0_im_i,
@@ -33,7 +34,9 @@ module data_path_with_CU(
     output wire [31:0] x0_re_ram,
     output wire [31:0] x0_im_ram,
     output wire [31:0] x1_re_ram,
-    output wire [31:0] x1_im_ram
+    output wire [31:0] x1_im_ram,
+    
+    output wire [2:0] stage_counter
 );
 
 wire src_sel;
@@ -77,6 +80,8 @@ fft_control_unit_0 control_unit (
   .clk(clk),                        // input wire clk
   .rstn(rstn),                      // input wire rstn
   .start_i(start_i),                // input wire start_i
+  .stage_num_i(stage_num_i),        // input wire [2 : 0] stage_num_i
+  
   .src_sel_o(src_sel),            // output wire src_sel_o
   .fft_ready_o(fft_ready_o),        // output wire fft_ready_o
   .bram_we_o(bram_we),            // output wire bram_we_o
@@ -85,7 +90,8 @@ fft_control_unit_0 control_unit (
   .bram_addr_o(bram_addr),        // output wire [10 : 0] bram_addr_o
   .twiddle_addr_o(twiddle_addr),  // output wire [10 : 0] twiddle_addr_o
   
-  .state(state)
+  .state(state),
+  .stage_counter(stage_counter)    // output wire [2 : 0] stage_counter
 );
 
 endmodule

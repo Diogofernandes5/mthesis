@@ -45,6 +45,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+/* Length of the array - 256 (for 16 bits) 128 (for 32 bits - real)
+	Array is half full when sensor has completed 1024 readings */
+#define DMA_BUF_LEN   32
 
 /* USER CODE END PD */
 
@@ -58,7 +61,13 @@
 /* USER CODE BEGIN PV */
 char last_valid_cmd[RX_BUFF_LEN] = {0};
 
-static adxl313_dev *acc_ptr;
+//static adxl313_dev *acc_ptr;
+
+static volatile ics43434_dev *mic_ptr;  // microphone
+
+uint16_t i2s_dma_buffer[DMA_BUF_LEN] = {0};
+
+uint32_t counter = 0;
 
 /* USER CODE END PV */
 
@@ -76,18 +85,30 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     /* If The INT Source Is EXTI Line3 (PE3 Pin) */
     if(GPIO_Pin == SPI4_INT1_Pin)
     {
-      acc_ptr->data_ready = true;
+      //acc_ptr->data_ready = true;
     }
 }
 
-void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
+void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s)
 {
-  UART_puts("Half Full\n\r");
+	//UART_puts("Half Full\n\r");
+	mic_ptr->buffer_ptr = &i2s_dma_buffer[0];
+
+	mic_ptr->data_ready = 1;
+	//counter++;
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
-  UART_puts("Completed \n\r");
+	/*HAL_I2S_DMAPause(hi2s);
+	UART_puts("C \n\r");
+	HAL_I2S_DMAResume(hi2s);
+	return;*/
+	mic_ptr->buffer_ptr = (&i2s_dma_buffer[DMA_BUF_LEN/2]);
+
+	mic_ptr->data_ready = 1;
+
+	//counter++;
 }
 
 /* USER CODE END 0 */
@@ -100,10 +121,10 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   char c;
-  char str[64];
-  int err;
+  //char str[32];
+  int err = 0;
 
-  adxl313_dev   acc_dev;  // accelerometer
+  //adxl313_dev   acc_dev;  // accelerometer
   ics43434_dev  mic_dev;  // microphone
 
   // uint16_t i2s_dma_buff[I2S_DMA_BUF_LEN] = {0};
@@ -116,6 +137,11 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+
+  // activate pll_i2s on RCC register
+  RCC->CR|=RCC_CR_PLLI2SON;
+  // Wait until the clock is enabled
+  while(!(RCC->CR & RCC_CR_PLLI2SRDY));
 
   /* USER CODE END Init */
 
@@ -135,7 +161,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM6_Init();
   MX_SPI4_Init();
-  MX_I2S3_Init();
+  MX_I2S2_Init();
   /* USER CODE BEGIN 2 */
   // print startup message
   ver_cb(1, NULL);
@@ -156,12 +182,14 @@ int main(void)
   UART_putchar('>'); // print prompt
   Rx_UART_init(); // set USART3 interrupt
 
-  err = ics43434_begin(&mic_dev, &hi2s3);
+  err = ics43434_begin(&mic_dev, &hi2s2, i2s_dma_buffer, DMA_BUF_LEN);
   if(err)
   {
-    UART_puts(hal_error_print[err++]);
+    UART_puts(hal_error_print[err++]); // defined in utils.c
+    return -1;
   }
-    
+  mic_ptr = &mic_dev;
+
   while (1)
   {
     if(Rx_flag)
@@ -185,7 +213,18 @@ int main(void)
       Rx_UART_init(); // ready to begin reception
     }
 
-    if(acc_ptr->data_ready)
+    if(mic_ptr->data_ready)
+	{
+    	//sprintf(str, "Counter = %lu\n\r", counter);
+    	//UART_puts(str);
+    	//counter = 0;
+
+    	ics43434_process_data(mic_ptr);
+
+    	mic_ptr->data_ready = 0;
+	}
+
+    /*if(acc_ptr->data_ready)
     {
       acc_ptr->data_ready = false;
 
@@ -193,7 +232,7 @@ int main(void)
       
       sprintf(str, "x:%1.4f \t y:%1.4f \t z:%1.4f \n\r", acc_ptr->x, acc_ptr->y, acc_ptr->z);
       UART_puts(str); 
-    }
+    }*/
 
     /* USER CODE END WHILE */
 
@@ -257,7 +296,6 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
 
 /* USER CODE END 4 */
 

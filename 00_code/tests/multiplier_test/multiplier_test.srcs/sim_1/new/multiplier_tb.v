@@ -52,18 +52,25 @@ initial begin
     A = 32'd5;
     B = 32'd6;
     
-    #(`CLK_PERIOD*5); // 3 clk cycles
+    #(`CLK_PERIOD*7); // 3 clk cycles
     A = 32'd10;
     B = 32'd8;
     
-    #(`CLK_PERIOD*5); // 3 clk cycles
+    #(`CLK_PERIOD*7); // 3 clk cycles
     A = 32'd11;
     B = 32'd7;
     
-    #(`CLK_PERIOD*5); // 3 clk cycles
+    #(`CLK_PERIOD*7); // 3 clk cycles
     A = 32'd12;
-    B = 32'd5;
-
+    B = 32'd7;
+    
+    #(`CLK_PERIOD*7); // 3 clk cycles
+    A = -32'd8;
+    B = 32'd237;
+    
+    #(`CLK_PERIOD*7); // 3 clk cycles
+    A = 32'd19;
+    B = -32'd98;
 
 end
 

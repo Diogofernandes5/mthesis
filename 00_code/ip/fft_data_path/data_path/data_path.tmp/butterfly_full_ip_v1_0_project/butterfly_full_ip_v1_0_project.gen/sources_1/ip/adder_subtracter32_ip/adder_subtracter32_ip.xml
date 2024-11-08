@@ -17,11 +17,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Thu Aug 08 13:36:47 UTC 2024</spirit:value>
+            <spirit:value>Fri Nov 08 01:41:51 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:efb1ac42</spirit:value>
+            <spirit:value>9:40231847</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -37,11 +37,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Thu Aug 08 13:36:47 UTC 2024</spirit:value>
+            <spirit:value>Fri Nov 08 01:41:51 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:efb1ac42</spirit:value>
+            <spirit:value>9:40231847</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -153,7 +153,7 @@
     <xilinx:coreExtensions>
       <xilinx:displayName>adder_subtracter32</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>7</xilinx:coreRevision>
+      <xilinx:coreRevision>8</xilinx:coreRevision>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@55eaf4d3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@73afb0be_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
@@ -211,6 +211,11 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@1ce93784_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@669c4df_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@a545449_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26797000_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4fdaaa8a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@40d65d5b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@31d095d4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17ee10fa_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/full_adder</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>

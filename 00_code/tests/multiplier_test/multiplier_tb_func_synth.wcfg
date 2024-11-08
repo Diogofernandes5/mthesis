@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="multiplier_tb_func_synth.wdb" id="1">
+      <db_ref path="multiplier_tb_behav.wdb" id="1">
          <top_modules>
             <top_module name="glbl" />
             <top_module name="multiplier_tb" />
@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="88.740 ns"></ZoomStartTime>
-      <ZoomEndTime time="232.141 ns"></ZoomEndTime>
-      <Cursor1Time time="190.000 ns"></Cursor1Time>
+      <ZoomStartTime time="354.220 ns"></ZoomStartTime>
+      <ZoomEndTime time="706.221 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="211"></NameColumnWidth>
-      <ValueColumnWidth column_width="71"></ValueColumnWidth>
+      <ValueColumnWidth column_width="67"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="4" />
    <wvobject type="logic" fp_name="/multiplier_tb/clk">
