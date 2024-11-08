@@ -1,0 +1,1 @@
+vopt -64 +acc=npr -l elaborate.log -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -work xil_defaultlib xil_defaultlib.shift_right_fractional_len xil_defaultlib.glbl -o shift_right_fractional_len_opt
