@@ -137,10 +137,10 @@ module butterfly_full(
         x1_re_r = x1_re_i;
         x1_im_r = x1_im_i;
              
-        x1_re_x_w_re_r = x1_re_x_w_re_m;
-        x1_re_x_w_im_r = x1_re_x_w_im_m;
-        x1_im_x_w_im_r = x1_im_x_w_im_m;   
-        x1_im_x_w_re_r = x1_im_x_w_re_m;
+        x1_re_x_w_re_r = x1_re_x_w_re;
+        x1_re_x_w_im_r = x1_re_x_w_im;
+        x1_im_x_w_im_r = x1_im_x_w_im;   
+        x1_im_x_w_re_r = x1_im_x_w_re;
         
         z_re_r = z_re_shifted;
         z_im_r = z_im_shifted;
@@ -214,7 +214,7 @@ module butterfly_full(
     
     // ----------- Logic to invert number if it is negative to make multiplication -----------
     
-    /*mux2_0 x1_re_mux ( // if number is negative, invert the number to make the multiplication
+    mux2_0 x1_re_mux ( // if number is negative, invert the number to make the multiplication
       .d0(x1_re_r),  
       .d1(~x1_re_r + 1'b1),
       .s(x1_re_r[31]),
@@ -240,70 +240,70 @@ module butterfly_full(
       .d1(~w_im_i + 1'b1),
       .s(w_im_i[31]),
       .y(w_im)
-    );*/
+    );
     
     // ----------------------------- Multiplication to determine Z ---------------------------
         
     multiplier x1_re_w_re_mul(
       .CLK(clk),  
-      .A(x1_re_r),     
-      .B(w_re_i),     
+      .A(x1_re),     
+      .B(w_re),     
 //      .CE(CE),
       .P(x1_re_x_w_re_m)    
     ); 
     
     multiplier x1_im_w_im_mul(
       .CLK(clk), 
-      .A(x1_im_r),   
-      .B(w_im_i),   
+      .A(x1_im),   
+      .B(w_im),   
 //      .CE(CE),    
       .P(x1_im_x_w_im_m)      
     );
     
     multiplier x1_re_w_im_mul(
       .CLK(clk), 
-      .A(x1_re_r),    
-      .B(w_im_i),      
+      .A(x1_re),    
+      .B(w_im),      
 //      .CE(CE),
       .P(x1_re_x_w_im_m)    
     ); 
     
     multiplier x1_im_w_re_mul(
       .CLK(clk),  
-      .A(x1_im_r),     
-      .B(w_re_i),     
+      .A(x1_im),     
+      .B(w_re),     
 //      .CE(CE), 
       .P(x1_im_x_w_re_m)   
     );
     
     // ----------- Logic to invert number if multiplication result must be negative -----------
     
-    /*mux2_0 x1_re_w_re_mux ( 
+    mux2_0 x1_re_w_re_mux ( 
       .d0(x1_re_x_w_re_m),  
       .d1(~x1_re_x_w_re_m + 1'b1),
-      .s(x1_re[31] ^ w_re_i[31]),
+      .s(x1_re_r[31] ^ w_re_i[31]),
       .y(x1_re_x_w_re)
     );
     
     mux2_0 x1_im_w_im_mux ( 
       .d0(x1_im_x_w_im_m),  
       .d1(~x1_im_x_w_im_m + 1'b1),
-      .s(x1_im[31] ^ w_im_i[31]),
+      .s(x1_im_r[31] ^ w_im_i[31]),
       .y(x1_im_x_w_im)
     );
     
     mux2_0 x1_re_w_im_mux ( 
       .d0(x1_re_x_w_im_m),  
       .d1(~x1_re_x_w_im_m + 1'b1),
-      .s(x1_re[31] ^ w_im_i[31]),
+      .s(x1_re_r[31] ^ w_im_i[31]),
       .y(x1_re_x_w_im)
     );
     
     mux2_0 x1_im_w_re ( 
       .d0(x1_im_x_w_re_m),  
       .d1(~x1_im_x_w_re_m + 1'b1),
-      .s(x1_im[31] ^ w_re_i[31]),
+      .s(x1_im_r[31] ^ w_re_i[31]),
       .y(x1_im_x_w_re)
-    );*/
+    );
       
 endmodule

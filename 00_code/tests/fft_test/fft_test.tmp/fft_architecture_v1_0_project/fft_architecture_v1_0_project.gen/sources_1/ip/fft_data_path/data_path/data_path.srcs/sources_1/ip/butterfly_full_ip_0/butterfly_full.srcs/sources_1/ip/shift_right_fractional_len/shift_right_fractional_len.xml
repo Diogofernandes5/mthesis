@@ -17,11 +17,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Nov 08 01:10:24 UTC 2024</spirit:value>
+            <spirit:value>Sun Nov 10 01:50:21 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:1589df37</spirit:value>
+            <spirit:value>9:d5fa07f1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -32,7 +32,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:1589df37</spirit:value>
+            <spirit:value>9:d5fa07f1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -48,11 +48,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Nov 08 01:10:24 UTC 2024</spirit:value>
+            <spirit:value>Sun Nov 10 01:50:21 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:1589df37</spirit:value>
+            <spirit:value>9:d5fa07f1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -67,11 +67,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Nov 08 01:10:24 UTC 2024</spirit:value>
+            <spirit:value>Sun Nov 10 01:50:21 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:d31240a9</spirit:value>
+            <spirit:value>9:c28b222d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -87,11 +87,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Nov 08 01:10:24 UTC 2024</spirit:value>
+            <spirit:value>Sun Nov 10 01:50:21 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:d31240a9</spirit:value>
+            <spirit:value>9:c28b222d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -107,7 +107,7 @@
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:typeName>signed</spirit:typeName>
               <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
@@ -124,7 +124,7 @@
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:typeName>reg signed</spirit:typeName>
               <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
@@ -152,6 +152,10 @@
         <spirit:name>src/shift_r.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/shift_r_test/shift_r_test.srcs/sources_1/new/shift_r.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_verilogsynthesiswrapper_view_fileset</spirit:name>
@@ -165,6 +169,10 @@
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
         <spirit:name>src/shift_r.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/shift_r_test/shift_r_test.srcs/sources_1/new/shift_r.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
     </spirit:fileSet>
@@ -198,7 +206,7 @@
     <xilinx:coreExtensions>
       <xilinx:displayName>shift_right</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>7</xilinx:coreRevision>
+      <xilinx:coreRevision>10</xilinx:coreRevision>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7f649446_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@347726a5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
@@ -257,6 +265,37 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@4fe6aaeb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@5f29a1f7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@3cb980af_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@660bae52_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@75b4632b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4603209c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@594c3d5a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@760aebe6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@338c507e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f96dbbe_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@75b9fd7b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d0ae837_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@ea09f8d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72110746_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2e7964c7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@27d14268_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@39df4c83_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26ce1913_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@19131097_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a0ddac8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@265ead0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5c1aff95_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b250e79_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@676ee9d6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78b7e9e1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7cad7a14_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@38f8f819_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78adcb8f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29f79e90_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ccec90f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6534b64_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1881dbb9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@54732649_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67394239_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
       </xilinx:tags>
       <xilinx:configElementInfos>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.shift_num" xilinx:valueSource="user"/>
@@ -264,10 +303,10 @@
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="f303ec9a"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="6a18c7ef"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="771679ae"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="762fcea0"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="26b25694"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="4c0a6e92"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="55125de5"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="84e6b6af"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

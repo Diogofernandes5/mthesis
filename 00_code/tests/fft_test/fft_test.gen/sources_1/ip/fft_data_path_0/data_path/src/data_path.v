@@ -1,5 +1,5 @@
 module data_path #(
-    parameter N = 8
+    parameter N = 1024
 ) (
 	input wire clk,
 	input wire rstn,

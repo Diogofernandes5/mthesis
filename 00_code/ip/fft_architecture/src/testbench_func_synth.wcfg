@@ -11,27 +11,22 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2,131.210 ns"></ZoomStartTime>
-      <ZoomEndTime time="2,286.411 ns"></ZoomEndTime>
-      <Cursor1Time time="2,219.955 ns"></Cursor1Time>
+      <ZoomStartTime time="3,568.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="4,325.001 ns"></ZoomEndTime>
+      <Cursor1Time time="3,990.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="192"></NameColumnWidth>
+      <NameColumnWidth column_width="176"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="5" />
+   <WVObjectSize size="4" />
    <wvobject type="logic" fp_name="/testbench/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/testbench/rstn">
-      <obj_property name="ElementShortName">rstn</obj_property>
-      <obj_property name="ObjectShortName">rstn</obj_property>
-   </wvobject>
-   <wvobject type="group" fp_name="group96">
+   <wvobject type="group" fp_name="group181">
       <obj_property name="label">Inputs</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/testbench/x0_re">
          <obj_property name="ElementShortName">x0_re[31:0]</obj_property>
          <obj_property name="ObjectShortName">x0_re[31:0]</obj_property>
@@ -53,7 +48,7 @@
          <obj_property name="ObjectShortName">start</obj_property>
       </wvobject>
    </wvobject>
-   <wvobject type="group" fp_name="group63">
+   <wvobject type="group" fp_name="group187">
       <obj_property name="label">Outputs</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
@@ -82,61 +77,107 @@
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
    </wvobject>
-   <wvobject type="group" fp_name="group22">
+   <wvobject type="group" fp_name="group193">
       <obj_property name="label">Tests</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject type="array" fp_name="/testbench/X0_re_bf">
-         <obj_property name="ElementShortName">X0_re_bf[31:0]</obj_property>
-         <obj_property name="ObjectShortName">X0_re_bf[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/testbench/X0_im_bf">
-         <obj_property name="ElementShortName">X0_im_bf[31:0]</obj_property>
-         <obj_property name="ObjectShortName">X0_im_bf[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/testbench/X1_re_bf">
-         <obj_property name="ElementShortName">X1_re_bf[31:0]</obj_property>
-         <obj_property name="ObjectShortName">X1_re_bf[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/testbench/X1_im_bf">
-         <obj_property name="ElementShortName">X1_im_bf[31:0]</obj_property>
-         <obj_property name="ObjectShortName">X1_im_bf[31:0]</obj_property>
+      <wvobject type="array" fp_name="/testbench/reversed_address">
+         <obj_property name="ElementShortName">reversed_address[3:0]</obj_property>
+         <obj_property name="ObjectShortName">reversed_address[3:0]</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/testbench/bram_x0_en">
          <obj_property name="ElementShortName">bram_x0_en</obj_property>
          <obj_property name="ObjectShortName">bram_x0_en</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/testbench/bram_addr_x0_w">
-         <obj_property name="ElementShortName">bram_addr_x0_w[2:0]</obj_property>
-         <obj_property name="ObjectShortName">bram_addr_x0_w[2:0]</obj_property>
+         <obj_property name="ElementShortName">bram_addr_x0_w[3:0]</obj_property>
+         <obj_property name="ObjectShortName">bram_addr_x0_w[3:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/testbench/x0_re_ram">
          <obj_property name="ElementShortName">x0_re_ram[31:0]</obj_property>
          <obj_property name="ObjectShortName">x0_re_ram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/testbench/x0_im_ram">
          <obj_property name="ElementShortName">x0_im_ram[31:0]</obj_property>
          <obj_property name="ObjectShortName">x0_im_ram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/testbench/bram_x1_en">
          <obj_property name="ElementShortName">bram_x1_en</obj_property>
          <obj_property name="ObjectShortName">bram_x1_en</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/testbench/bram_addr_x1_w">
-         <obj_property name="ElementShortName">bram_addr_x1_w[2:0]</obj_property>
-         <obj_property name="ObjectShortName">bram_addr_x1_w[2:0]</obj_property>
+         <obj_property name="ElementShortName">bram_addr_x1_w[3:0]</obj_property>
+         <obj_property name="ObjectShortName">bram_addr_x1_w[3:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/testbench/x1_re_ram">
          <obj_property name="ElementShortName">x1_re_ram[31:0]</obj_property>
          <obj_property name="ObjectShortName">x1_re_ram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/testbench/x1_im_ram">
          <obj_property name="ElementShortName">x1_im_ram[31:0]</obj_property>
          <obj_property name="ObjectShortName">x1_im_ram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/testbench/reversed_address">
-         <obj_property name="ElementShortName">reversed_address[2:0]</obj_property>
-         <obj_property name="ObjectShortName">reversed_address[2:0]</obj_property>
+      <wvobject fp_name="divider241" type="divider">
+         <obj_property name="label">bf</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/X0_re_bf">
+         <obj_property name="ElementShortName">X0_re_bf[31:0]</obj_property>
+         <obj_property name="ObjectShortName">X0_re_bf[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/X0_im_bf">
+         <obj_property name="ElementShortName">X0_im_bf[31:0]</obj_property>
+         <obj_property name="ObjectShortName">X0_im_bf[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/X1_re_bf">
+         <obj_property name="ElementShortName">X1_re_bf[31:0]</obj_property>
+         <obj_property name="ObjectShortName">X1_re_bf[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/X1_im_bf">
+         <obj_property name="ElementShortName">X1_im_bf[31:0]</obj_property>
+         <obj_property name="ObjectShortName">X1_im_bf[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/w_re">
+         <obj_property name="ElementShortName">w_re[13:0]</obj_property>
+         <obj_property name="ObjectShortName">w_re[13:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/w_im">
+         <obj_property name="ElementShortName">w_im[13:0]</obj_property>
+         <obj_property name="ObjectShortName">w_im[13:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/twiddle_addr">
+         <obj_property name="ElementShortName">twiddle_addr[2:0]</obj_property>
+         <obj_property name="ObjectShortName">twiddle_addr[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/testbench/state">
+         <obj_property name="ElementShortName">state[3:0]</obj_property>
+         <obj_property name="ObjectShortName">state[3:0]</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

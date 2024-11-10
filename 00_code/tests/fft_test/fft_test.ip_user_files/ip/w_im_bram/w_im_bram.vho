@@ -55,7 +55,7 @@
 COMPONENT w_im_bram
   PORT (
     clka : IN STD_LOGIC;
-    addra : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+    addra : IN STD_LOGIC_VECTOR(8 DOWNTO 0);
     douta : OUT STD_LOGIC_VECTOR(13 DOWNTO 0)
   );
 END COMPONENT;

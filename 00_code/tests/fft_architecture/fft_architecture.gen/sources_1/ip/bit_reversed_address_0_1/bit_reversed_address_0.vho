@@ -54,8 +54,8 @@
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
 COMPONENT bit_reversed_address_0
   PORT (
-    index_i : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
-    reversed_o : OUT STD_LOGIC_VECTOR(4 DOWNTO 0)
+    index_i : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+    reversed_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------

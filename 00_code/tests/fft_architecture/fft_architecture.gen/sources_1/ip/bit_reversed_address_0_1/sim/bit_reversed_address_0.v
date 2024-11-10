@@ -59,11 +59,11 @@ module bit_reversed_address_0 (
   reversed_o
 );
 
-input wire [4 : 0] index_i;
-output wire [4 : 0] reversed_o;
+input wire [9 : 0] index_i;
+output wire [9 : 0] reversed_o;
 
   bit_reversed_address #(
-    .N(32)
+    .N(1024)
   ) inst (
     .index_i(index_i),
     .reversed_o(reversed_o)

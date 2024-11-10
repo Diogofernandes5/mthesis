@@ -1,4 +1,4 @@
-N = 16;
+N = 1024;
 
 fractional_len = 8;
 % this refer to the number of points compared to the number os stages:
@@ -14,9 +14,9 @@ x_im = zeros(1,N);
 fs = N;
 duration = 1;
 t = 0:1/fs:(duration-(1/fs));
-f1 = 5;
-% x_re = sin(2*pi*f1*t);
-% x_re = round(x_re * 2.^fractional_len);
+f1 = 50;
+x_re = 3*sin(2*pi*f1*t);
+x_re = round(x_re * 2.^fractional_len);
 
 % write to file the input vector1
 input_filename = "./golden_vectors/input.txt";

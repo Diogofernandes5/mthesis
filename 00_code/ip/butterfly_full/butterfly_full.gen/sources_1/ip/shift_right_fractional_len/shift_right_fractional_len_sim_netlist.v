@@ -1,109 +1,16 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Fri Nov  8 01:09:08 2024
+// Date        : Sun Nov 10 00:56:38 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
-// Command     : write_verilog -force -mode funcsim -rename_top shift_right_fractional_len -prefix
-//               shift_right_fractional_len_ shift_right_fractional_len_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim
+//               /home/fernandes/thesis/00_code/ip/butterfly_full/butterfly_full.gen/sources_1/ip/shift_right_fractional_len/shift_right_fractional_len_sim_netlist.v
 // Design      : shift_right_fractional_len
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7z010clg400-1
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
-
-module shift_right_fractional_len_shift_right
-   (data_out,
-    data_in);
-  output [24:0]data_out;
-  input [23:0]data_in;
-
-  wire [23:0]data_in;
-  wire [24:0]data_out;
-  wire \data_out[0]_INST_0_i_1_n_0 ;
-  wire \data_out[0]_INST_0_n_0 ;
-  wire \data_out[0]_INST_0_n_1 ;
-  wire \data_out[0]_INST_0_n_2 ;
-  wire \data_out[0]_INST_0_n_3 ;
-  wire \data_out[12]_INST_0_n_0 ;
-  wire \data_out[12]_INST_0_n_1 ;
-  wire \data_out[12]_INST_0_n_2 ;
-  wire \data_out[12]_INST_0_n_3 ;
-  wire \data_out[16]_INST_0_n_0 ;
-  wire \data_out[16]_INST_0_n_1 ;
-  wire \data_out[16]_INST_0_n_2 ;
-  wire \data_out[16]_INST_0_n_3 ;
-  wire \data_out[20]_INST_0_n_0 ;
-  wire \data_out[20]_INST_0_n_1 ;
-  wire \data_out[20]_INST_0_n_2 ;
-  wire \data_out[20]_INST_0_n_3 ;
-  wire \data_out[4]_INST_0_n_0 ;
-  wire \data_out[4]_INST_0_n_1 ;
-  wire \data_out[4]_INST_0_n_2 ;
-  wire \data_out[4]_INST_0_n_3 ;
-  wire \data_out[8]_INST_0_n_0 ;
-  wire \data_out[8]_INST_0_n_1 ;
-  wire \data_out[8]_INST_0_n_2 ;
-  wire \data_out[8]_INST_0_n_3 ;
-  wire [3:1]\NLW_data_out[24]_INST_0_CO_UNCONNECTED ;
-  wire [3:0]\NLW_data_out[24]_INST_0_O_UNCONNECTED ;
-
-  CARRY4 \data_out[0]_INST_0 
-       (.CI(1'b0),
-        .CO({\data_out[0]_INST_0_n_0 ,\data_out[0]_INST_0_n_1 ,\data_out[0]_INST_0_n_2 ,\data_out[0]_INST_0_n_3 }),
-        .CYINIT(1'b0),
-        .DI({1'b0,1'b0,1'b0,data_in[0]}),
-        .O(data_out[3:0]),
-        .S({data_in[3:1],\data_out[0]_INST_0_i_1_n_0 }));
-  LUT2 #(
-    .INIT(4'h6)) 
-    \data_out[0]_INST_0_i_1 
-       (.I0(data_in[0]),
-        .I1(data_in[23]),
-        .O(\data_out[0]_INST_0_i_1_n_0 ));
-  CARRY4 \data_out[12]_INST_0 
-       (.CI(\data_out[8]_INST_0_n_0 ),
-        .CO({\data_out[12]_INST_0_n_0 ,\data_out[12]_INST_0_n_1 ,\data_out[12]_INST_0_n_2 ,\data_out[12]_INST_0_n_3 }),
-        .CYINIT(1'b0),
-        .DI({1'b0,1'b0,1'b0,1'b0}),
-        .O(data_out[15:12]),
-        .S(data_in[15:12]));
-  CARRY4 \data_out[16]_INST_0 
-       (.CI(\data_out[12]_INST_0_n_0 ),
-        .CO({\data_out[16]_INST_0_n_0 ,\data_out[16]_INST_0_n_1 ,\data_out[16]_INST_0_n_2 ,\data_out[16]_INST_0_n_3 }),
-        .CYINIT(1'b0),
-        .DI({1'b0,1'b0,1'b0,1'b0}),
-        .O(data_out[19:16]),
-        .S(data_in[19:16]));
-  CARRY4 \data_out[20]_INST_0 
-       (.CI(\data_out[16]_INST_0_n_0 ),
-        .CO({\data_out[20]_INST_0_n_0 ,\data_out[20]_INST_0_n_1 ,\data_out[20]_INST_0_n_2 ,\data_out[20]_INST_0_n_3 }),
-        .CYINIT(1'b0),
-        .DI({1'b0,1'b0,1'b0,1'b0}),
-        .O(data_out[23:20]),
-        .S(data_in[23:20]));
-  CARRY4 \data_out[24]_INST_0 
-       (.CI(\data_out[20]_INST_0_n_0 ),
-        .CO({\NLW_data_out[24]_INST_0_CO_UNCONNECTED [3:1],data_out[24]}),
-        .CYINIT(1'b0),
-        .DI({1'b0,1'b0,1'b0,1'b0}),
-        .O(\NLW_data_out[24]_INST_0_O_UNCONNECTED [3:0]),
-        .S({1'b0,1'b0,1'b0,1'b1}));
-  CARRY4 \data_out[4]_INST_0 
-       (.CI(\data_out[0]_INST_0_n_0 ),
-        .CO({\data_out[4]_INST_0_n_0 ,\data_out[4]_INST_0_n_1 ,\data_out[4]_INST_0_n_2 ,\data_out[4]_INST_0_n_3 }),
-        .CYINIT(1'b0),
-        .DI({1'b0,1'b0,1'b0,1'b0}),
-        .O(data_out[7:4]),
-        .S(data_in[7:4]));
-  CARRY4 \data_out[8]_INST_0 
-       (.CI(\data_out[4]_INST_0_n_0 ),
-        .CO({\data_out[8]_INST_0_n_0 ,\data_out[8]_INST_0_n_1 ,\data_out[8]_INST_0_n_2 ,\data_out[8]_INST_0_n_3 }),
-        .CYINIT(1'b0),
-        .DI({1'b0,1'b0,1'b0,1'b0}),
-        .O(data_out[11:8]),
-        .S(data_in[11:8]));
-endmodule
 
 (* CHECK_LICENSE_TYPE = "shift_right_fractional_len,shift_right,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "package_project" *) 
 (* X_CORE_INFO = "shift_right,Vivado 2021.1" *) 
@@ -114,23 +21,135 @@ module shift_right_fractional_len
   input [31:0]data_in;
   output [31:0]data_out;
 
-  wire \<const0> ;
   wire [31:0]data_in;
-  wire [24:0]\^data_out ;
+  wire [31:0]\^data_out ;
 
-  assign data_out[31] = \<const0> ;
-  assign data_out[30] = \<const0> ;
-  assign data_out[29] = \<const0> ;
-  assign data_out[28] = \<const0> ;
-  assign data_out[27] = \<const0> ;
-  assign data_out[26] = \<const0> ;
-  assign data_out[25] = \<const0> ;
-  assign data_out[24:0] = \^data_out [24:0];
-  GND GND
-       (.G(\<const0> ));
+  assign data_out[31] = \^data_out [31];
+  assign data_out[30] = \^data_out [31];
+  assign data_out[29] = \^data_out [31];
+  assign data_out[28] = \^data_out [31];
+  assign data_out[27] = \^data_out [31];
+  assign data_out[26] = \^data_out [31];
+  assign data_out[25] = \^data_out [31];
+  assign data_out[24] = \^data_out [31];
+  assign data_out[23:0] = \^data_out [23:0];
   shift_right_fractional_len_shift_right inst
-       (.data_in(data_in[31:8]),
-        .data_out(\^data_out ));
+       (.data_in(data_in),
+        .data_out({\^data_out [31],\^data_out [23:0]}));
+endmodule
+
+(* ORIG_REF_NAME = "shift_right" *) 
+module shift_right_fractional_len_shift_right
+   (data_out,
+    data_in);
+  output [24:0]data_out;
+  input [31:0]data_in;
+
+  wire _carry__0_n_0;
+  wire _carry__0_n_1;
+  wire _carry__0_n_2;
+  wire _carry__0_n_3;
+  wire _carry__1_n_0;
+  wire _carry__1_n_1;
+  wire _carry__1_n_2;
+  wire _carry__1_n_3;
+  wire _carry__2_n_0;
+  wire _carry__2_n_1;
+  wire _carry__2_n_2;
+  wire _carry__2_n_3;
+  wire _carry__3_n_0;
+  wire _carry__3_n_1;
+  wire _carry__3_n_2;
+  wire _carry__3_n_3;
+  wire _carry__4_n_0;
+  wire _carry__4_n_1;
+  wire _carry__4_n_2;
+  wire _carry__4_n_3;
+  wire _carry_i_1_n_0;
+  wire _carry_i_2_n_0;
+  wire _carry_i_3_n_0;
+  wire _carry_n_0;
+  wire _carry_n_1;
+  wire _carry_n_2;
+  wire _carry_n_3;
+  wire [31:0]data_in;
+  wire [24:0]data_out;
+  wire [3:0]NLW__carry__5_CO_UNCONNECTED;
+  wire [3:1]NLW__carry__5_O_UNCONNECTED;
+
+  CARRY4 _carry
+       (.CI(1'b0),
+        .CO({_carry_n_0,_carry_n_1,_carry_n_2,_carry_n_3}),
+        .CYINIT(1'b0),
+        .DI({1'b0,1'b0,1'b0,data_in[8]}),
+        .O(data_out[3:0]),
+        .S({data_in[11:9],_carry_i_1_n_0}));
+  CARRY4 _carry__0
+       (.CI(_carry_n_0),
+        .CO({_carry__0_n_0,_carry__0_n_1,_carry__0_n_2,_carry__0_n_3}),
+        .CYINIT(1'b0),
+        .DI({1'b0,1'b0,1'b0,1'b0}),
+        .O(data_out[7:4]),
+        .S(data_in[15:12]));
+  CARRY4 _carry__1
+       (.CI(_carry__0_n_0),
+        .CO({_carry__1_n_0,_carry__1_n_1,_carry__1_n_2,_carry__1_n_3}),
+        .CYINIT(1'b0),
+        .DI({1'b0,1'b0,1'b0,1'b0}),
+        .O(data_out[11:8]),
+        .S(data_in[19:16]));
+  CARRY4 _carry__2
+       (.CI(_carry__1_n_0),
+        .CO({_carry__2_n_0,_carry__2_n_1,_carry__2_n_2,_carry__2_n_3}),
+        .CYINIT(1'b0),
+        .DI({1'b0,1'b0,1'b0,1'b0}),
+        .O(data_out[15:12]),
+        .S(data_in[23:20]));
+  CARRY4 _carry__3
+       (.CI(_carry__2_n_0),
+        .CO({_carry__3_n_0,_carry__3_n_1,_carry__3_n_2,_carry__3_n_3}),
+        .CYINIT(1'b0),
+        .DI({1'b0,1'b0,1'b0,1'b0}),
+        .O(data_out[19:16]),
+        .S(data_in[27:24]));
+  CARRY4 _carry__4
+       (.CI(_carry__3_n_0),
+        .CO({_carry__4_n_0,_carry__4_n_1,_carry__4_n_2,_carry__4_n_3}),
+        .CYINIT(1'b0),
+        .DI({1'b1,1'b0,1'b0,1'b0}),
+        .O(data_out[23:20]),
+        .S(data_in[31:28]));
+  CARRY4 _carry__5
+       (.CI(_carry__4_n_0),
+        .CO(NLW__carry__5_CO_UNCONNECTED[3:0]),
+        .CYINIT(1'b0),
+        .DI({1'b0,1'b0,1'b0,1'b0}),
+        .O({NLW__carry__5_O_UNCONNECTED[3:1],data_out[24]}),
+        .S({1'b0,1'b0,1'b0,1'b1}));
+  LUT4 #(
+    .INIT(16'h1FE0)) 
+    _carry_i_1
+       (.I0(_carry_i_2_n_0),
+        .I1(_carry_i_3_n_0),
+        .I2(data_in[31]),
+        .I3(data_in[8]),
+        .O(_carry_i_1_n_0));
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    _carry_i_2
+       (.I0(data_in[7]),
+        .I1(data_in[6]),
+        .I2(data_in[4]),
+        .I3(data_in[5]),
+        .O(_carry_i_2_n_0));
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    _carry_i_3
+       (.I0(data_in[2]),
+        .I1(data_in[3]),
+        .I2(data_in[0]),
+        .I3(data_in[1]),
+        .O(_carry_i_3_n_0));
 endmodule
 `ifndef GLBL
 `define GLBL

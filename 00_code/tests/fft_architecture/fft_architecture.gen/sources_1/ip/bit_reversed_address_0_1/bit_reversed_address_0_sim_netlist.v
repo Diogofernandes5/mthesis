@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Tue Nov  5 10:48:43 2024
+// Date        : Fri Nov  1 14:53:13 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
 // Command     : write_verilog -force -mode funcsim -rename_top bit_reversed_address_0 -prefix
 //               bit_reversed_address_0_ bit_reversed_address_0_sim_netlist.v
@@ -18,16 +18,21 @@
 module bit_reversed_address_0
    (index_i,
     reversed_o);
-  input [4:0]index_i;
-  output [4:0]reversed_o;
+  input [9:0]index_i;
+  output [9:0]reversed_o;
 
-  wire [4:0]index_i;
+  wire [9:0]index_i;
 
-  assign reversed_o[4] = index_i[0];
-  assign reversed_o[3] = index_i[1];
-  assign reversed_o[2] = index_i[2];
-  assign reversed_o[1] = index_i[3];
-  assign reversed_o[0] = index_i[4];
+  assign reversed_o[9] = index_i[0];
+  assign reversed_o[8] = index_i[1];
+  assign reversed_o[7] = index_i[2];
+  assign reversed_o[6] = index_i[3];
+  assign reversed_o[5] = index_i[4];
+  assign reversed_o[4] = index_i[5];
+  assign reversed_o[3] = index_i[6];
+  assign reversed_o[2] = index_i[7];
+  assign reversed_o[1] = index_i[8];
+  assign reversed_o[0] = index_i[9];
 endmodule
 `ifndef GLBL
 `define GLBL

@@ -55,8 +55,8 @@
 
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 bit_reversed_address_0 your_instance_name (
-  .index_i(index_i),        // input wire [4 : 0] index_i
-  .reversed_o(reversed_o)  // output wire [4 : 0] reversed_o
+  .index_i(index_i),        // input wire [9 : 0] index_i
+  .reversed_o(reversed_o)  // output wire [9 : 0] reversed_o
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

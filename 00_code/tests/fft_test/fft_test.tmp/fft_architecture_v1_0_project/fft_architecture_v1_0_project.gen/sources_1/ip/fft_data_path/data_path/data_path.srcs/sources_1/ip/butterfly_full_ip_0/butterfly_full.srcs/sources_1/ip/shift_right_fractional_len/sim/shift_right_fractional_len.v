@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:shift_right:1.0
-// IP Revision: 7
+// IP Revision: 10
 
 `timescale 1ns/1ps
 

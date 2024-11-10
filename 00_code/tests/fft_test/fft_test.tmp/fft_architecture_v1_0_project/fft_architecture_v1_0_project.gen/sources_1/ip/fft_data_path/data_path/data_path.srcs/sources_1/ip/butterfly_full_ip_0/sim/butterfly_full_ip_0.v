@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:butterfly_full_ip:1.0
-// IP Revision: 24
+// IP Revision: 27
 
 `timescale 1ns/1ps
 
@@ -75,7 +75,9 @@ module butterfly_full_ip_0 (
   z_re_r,
   z_im_r,
   z_re,
-  z_im
+  z_im,
+  z_re_shifted,
+  z_im_shifted
 );
 
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME clk, ASSOCIATED_RESET rstn, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, INSERT_VIP 0" *)
@@ -103,6 +105,8 @@ output wire [31 : 0] z_re_r;
 output wire [31 : 0] z_im_r;
 output wire [31 : 0] z_re;
 output wire [31 : 0] z_im;
+output wire [31 : 0] z_re_shifted;
+output wire [31 : 0] z_im_shifted;
 
   butterfly_full inst (
     .clk(clk),
@@ -125,6 +129,8 @@ output wire [31 : 0] z_im;
     .z_re_r(z_re_r),
     .z_im_r(z_im_r),
     .z_re(z_re),
-    .z_im(z_im)
+    .z_im(z_im),
+    .z_re_shifted(z_re_shifted),
+    .z_im_shifted(z_im_shifted)
   );
 endmodule

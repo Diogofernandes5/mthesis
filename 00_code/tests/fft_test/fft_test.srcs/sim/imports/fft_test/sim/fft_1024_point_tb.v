@@ -25,7 +25,7 @@ wire [31:0] X0_im;
 wire [31:0] X1_re;
 wire [31:0] X1_im;
 
-localparam N = 11'd64;
+localparam N = 11'd1024;
 
 wire [$clog2(N)-1:0] reversed_address;
 

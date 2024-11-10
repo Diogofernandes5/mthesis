@@ -60,15 +60,15 @@ COMPONENT fft_control_unit
     src_sel_o : OUT STD_LOGIC;
     fft_ready_o : OUT STD_LOGIC;
     bf_ce_o : OUT STD_LOGIC;
-    bram_addr_x0_o : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-    bram_addr_x1_o : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    bram_addr_x0_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+    bram_addr_x1_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
     bram_x0_we_o : OUT STD_LOGIC;
     bram_x1_we_o : OUT STD_LOGIC;
     bram_x0_en_o : OUT STD_LOGIC;
     bram_x1_en_o : OUT STD_LOGIC;
-    twiddle_addr_o : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    twiddle_addr_o : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
     state : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-    data_counter : OUT STD_LOGIC_VECTOR(4 DOWNTO 0)
+    data_counter : OUT STD_LOGIC_VECTOR(10 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------

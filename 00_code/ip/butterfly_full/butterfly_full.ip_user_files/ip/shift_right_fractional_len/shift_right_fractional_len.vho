@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:shift_right:1.0
--- IP Revision: 7
+-- IP Revision: 10
 
 -- The following code must appear in the VHDL architecture header.
 

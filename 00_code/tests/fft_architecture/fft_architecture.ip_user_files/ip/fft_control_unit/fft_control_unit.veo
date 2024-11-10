@@ -61,15 +61,15 @@ fft_control_unit your_instance_name (
   .src_sel_o(src_sel_o),            // output wire src_sel_o
   .fft_ready_o(fft_ready_o),        // output wire fft_ready_o
   .bf_ce_o(bf_ce_o),                // output wire bf_ce_o
-  .bram_addr_x0_o(bram_addr_x0_o),  // output wire [4 : 0] bram_addr_x0_o
-  .bram_addr_x1_o(bram_addr_x1_o),  // output wire [4 : 0] bram_addr_x1_o
+  .bram_addr_x0_o(bram_addr_x0_o),  // output wire [9 : 0] bram_addr_x0_o
+  .bram_addr_x1_o(bram_addr_x1_o),  // output wire [9 : 0] bram_addr_x1_o
   .bram_x0_we_o(bram_x0_we_o),      // output wire bram_x0_we_o
   .bram_x1_we_o(bram_x1_we_o),      // output wire bram_x1_we_o
   .bram_x0_en_o(bram_x0_en_o),      // output wire bram_x0_en_o
   .bram_x1_en_o(bram_x1_en_o),      // output wire bram_x1_en_o
-  .twiddle_addr_o(twiddle_addr_o),  // output wire [3 : 0] twiddle_addr_o
+  .twiddle_addr_o(twiddle_addr_o),  // output wire [8 : 0] twiddle_addr_o
   .state(state),                    // output wire [3 : 0] state
-  .data_counter(data_counter)      // output wire [5 : 0] data_counter
+  .data_counter(data_counter)      // output wire [10 : 0] data_counter
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

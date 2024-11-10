@@ -25,7 +25,7 @@ wire [31:0] X0_im;
 wire [31:0] X1_re;
 wire [31:0] X1_im;
 
-localparam N = 11'd16;
+localparam N = 11'd32;
 
 wire [$clog2(N)-1:0] reversed_address;
 
@@ -203,7 +203,7 @@ always @(posedge fft_ready) begin
     end
     $display("\nWriting re output results to %0s", OUTPUT_RE_FILENAME);
     for(j = 0; j < N; j = j + 1) begin
-        $fwrite(fp, "%0d\n", output_re_buf[j]);
+        $fwrite(fp, "%0d\n", $signed(output_re_buf[j]));
     end
 
     $fclose(fp);
@@ -216,7 +216,7 @@ always @(posedge fft_ready) begin
     end
     $display("\nWriting im output results to %0s", OUTPUT_IM_FILENAME);
     for(j = 0; j < N; j = j + 1) begin
-        $fwrite(fp, "%0d\n", output_im_buf[j]);
+        $fwrite(fp, "%0d\n", $signed(output_im_buf[j]));
     end
 
     $fclose(fp);
@@ -237,7 +237,7 @@ always @(posedge fft_ready) begin
         $fscanf(fp, "%d\n", golden_re_buf[j]);
 
         if(output_re_buf[j] != golden_re_buf[j]) begin
-            $display("ERROR at input[%2d]: Output values differ output=%5d, golden=%5d", j, output_re_buf[j], golden_re_buf[j]);
+            $display("ERROR at input[%2d]: Output values differ output=%5d, golden=%5d", j, $signed(output_re_buf[j]), $signed(golden_re_buf[j]));
             num_errors = num_errors + 1;
         end
     end
@@ -265,7 +265,7 @@ always @(posedge fft_ready) begin
         $fscanf(fp, "%d\n", golden_im_buf[j]);
 
         if(output_im_buf[j] != golden_im_buf[j]) begin
-            $display("ERROR at input[%2d]: Output values differ output=%5d, golden=%5d", j, output_im_buf[j], golden_im_buf[j]);
+            $display("ERROR at input[%2d]: Output values differ output=%5d, golden=%5d", j, $signed(output_im_buf[j]), $signed(golden_im_buf[j]));
             num_errors = num_errors + 1;
         end
     end

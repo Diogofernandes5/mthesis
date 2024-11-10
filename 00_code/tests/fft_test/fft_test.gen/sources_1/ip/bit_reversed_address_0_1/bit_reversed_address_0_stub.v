@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Mon Nov  4 15:09:40 2024
+// Date        : Fri Nov  1 14:53:13 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
 // Command     : write_verilog -force -mode synth_stub -rename_top bit_reversed_address_0 -prefix
 //               bit_reversed_address_0_ bit_reversed_address_0_stub.v
@@ -15,7 +15,7 @@
 // Please paste the declaration into a Verilog source file or add the file as an additional source.
 (* X_CORE_INFO = "bit_reversed_address,Vivado 2021.1" *)
 module bit_reversed_address_0(index_i, reversed_o)
-/* synthesis syn_black_box black_box_pad_pin="index_i[5:0],reversed_o[5:0]" */;
-  input [5:0]index_i;
-  output [5:0]reversed_o;
+/* synthesis syn_black_box black_box_pad_pin="index_i[9:0],reversed_o[9:0]" */;
+  input [9:0]index_i;
+  output [9:0]reversed_o;
 endmodule

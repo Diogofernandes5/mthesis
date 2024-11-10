@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:shift_right:1.0
-// IP Revision: 7
+// IP Revision: 10
 
 (* X_CORE_INFO = "shift_right,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "shift_right_fractional_len,shift_right,{}" *)
