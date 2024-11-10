@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Mon Nov  4 11:11:54 2024
+// Date        : Tue Nov  5 10:48:43 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
-// Command     : write_verilog -force -mode funcsim
-//               /home/fernandes/thesis/00_code/tests/fft_architecture/fft_architecture.gen/sources_1/ip/bit_reversed_address_0_1/bit_reversed_address_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim -rename_top bit_reversed_address_0 -prefix
+//               bit_reversed_address_0_ bit_reversed_address_0_sim_netlist.v
 // Design      : bit_reversed_address_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -18,15 +18,16 @@
 module bit_reversed_address_0
    (index_i,
     reversed_o);
-  input [3:0]index_i;
-  output [3:0]reversed_o;
+  input [4:0]index_i;
+  output [4:0]reversed_o;
 
-  wire [3:0]index_i;
+  wire [4:0]index_i;
 
-  assign reversed_o[3] = index_i[0];
-  assign reversed_o[2] = index_i[1];
-  assign reversed_o[1] = index_i[2];
-  assign reversed_o[0] = index_i[3];
+  assign reversed_o[4] = index_i[0];
+  assign reversed_o[3] = index_i[1];
+  assign reversed_o[2] = index_i[2];
+  assign reversed_o[1] = index_i[3];
+  assign reversed_o[0] = index_i[4];
 endmodule
 `ifndef GLBL
 `define GLBL
