@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_data_path:1.0
-// IP Revision: 55
+// IP Revision: 61
 
 `timescale 1ns/1ps
 
@@ -95,8 +95,8 @@ input wire [31 : 0] x0_re_i;
 input wire [31 : 0] x0_im_i;
 input wire [31 : 0] x1_re_i;
 input wire [31 : 0] x1_im_i;
-input wire [9 : 0] bram_addr_x0_i;
-input wire [9 : 0] bram_addr_x1_i;
+input wire [4 : 0] bram_addr_x0_i;
+input wire [4 : 0] bram_addr_x1_i;
 input wire bram_x0_en_i;
 input wire bram_x1_en_i;
 input wire bram_x0_we_i;
@@ -119,7 +119,7 @@ output wire [31 : 0] x1_re_ram;
 output wire [31 : 0] x1_im_ram;
 
   data_path #(
-    .N(1024)
+    .N(32)
   ) inst (
     .clk(clk),
     .rstn(rstn),

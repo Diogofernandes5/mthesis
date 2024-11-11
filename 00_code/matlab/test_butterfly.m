@@ -1,6 +1,6 @@
 N = 1024;
 
-fractional_len = 8;
+fractional_len = 10;
 % this refer to the number of points compared to the number os stages:
 % if you want half the stages you put half the points
 num_stages = N; 
@@ -15,7 +15,8 @@ fs = N;
 duration = 1;
 t = 0:1/fs:(duration-(1/fs));
 f1 = 50;
-x_re = 3*sin(2*pi*f1*t);
+f2 = 300;
+x_re = 3*sin(2*pi*f1*t) + sin(2*pi*f2*t);
 x_re = round(x_re * 2.^fractional_len);
 
 % write to file the input vector1
@@ -50,7 +51,7 @@ stem(freq, abs(y(1:(N/2)+1)));
 x_i = complex(x_re, zeros(1,N));
 
 % Calculate fft results using recursive function
-y_io = fft_recursive(x_i, N, num_stages);
+y_io = fft_recursive(x_i, N, num_stages, fractional_len);
 
 % Assign real and imaginary final values
 fft_re_r = real(y_io) / 2.^fractional_len;

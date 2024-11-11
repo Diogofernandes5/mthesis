@@ -8,7 +8,7 @@ wire [31:0] data_out;
 wire [width-1:0] aux;
 
 localparam width = 32;
-localparam shift_num = 8; 
+localparam shift_num = 10; 
 
 // Instantiate the shift_right module
 shift_right #(

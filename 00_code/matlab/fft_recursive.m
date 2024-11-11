@@ -1,8 +1,7 @@
-function y_io = fft_recursive(y_io, N, stages)
+function y_io = fft_recursive(y_io, N, stages, fractional_len)
     % Recursive FFT function
     if N > 1
         half_N = N / 2;
-        fractional_len = 8;
 
         stages = floor(stages/2);
         
@@ -15,8 +14,8 @@ function y_io = fft_recursive(y_io, N, stages)
         vo = y_io(2:2:N);   % Odd-indexed elements
 
         % Recursive calls for FFT on the two halves
-        ve = fft_recursive(ve, half_N, stages);
-        vo = fft_recursive(vo, half_N, stages);
+        ve = fft_recursive(ve, half_N, stages, fractional_len);
+        vo = fft_recursive(vo, half_N, stages, fractional_len);
 
         % Twiddle factor and combine
         for m = 1:half_N

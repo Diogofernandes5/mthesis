@@ -82,18 +82,18 @@ input wire start_i;
 output wire src_sel_o;
 output wire fft_ready_o;
 output wire bf_ce_o;
-output wire [9 : 0] bram_addr_x0_o;
-output wire [9 : 0] bram_addr_x1_o;
+output wire [4 : 0] bram_addr_x0_o;
+output wire [4 : 0] bram_addr_x1_o;
 output wire bram_x0_we_o;
 output wire bram_x1_we_o;
 output wire bram_x0_en_o;
 output wire bram_x1_en_o;
-output wire [8 : 0] twiddle_addr_o;
+output wire [3 : 0] twiddle_addr_o;
 output wire [3 : 0] state;
-output wire [10 : 0] data_counter;
+output wire [5 : 0] data_counter;
 
   control_unit #(
-    .N(1024),
+    .N(32),
     .STAGES_NUM(5),
     .FIRST_STAGE(0)
   ) inst (

@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:butterfly_full_ip:1.0
-// IP Revision: 27
+// IP Revision: 31
 
 `timescale 1ns/1ps
 

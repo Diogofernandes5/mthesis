@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:shift_right:1.0
-// IP Revision: 10
+// IP Revision: 12
 
 `timescale 1ns/1ps
 
@@ -63,7 +63,7 @@ input wire [31 : 0] data_in;
 output wire [31 : 0] data_out;
 
   shift_right #(
-    .shift_num(8),
+    .shift_num(10),
     .width(32)
   ) inst (
     .data_in(data_in),

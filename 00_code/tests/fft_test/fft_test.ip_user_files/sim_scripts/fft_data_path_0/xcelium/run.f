@@ -10,16 +10,16 @@
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
 -endlib
 -makelib xcelium_lib/xbip_utils_v3_0_10 \
-  "../../../ipstatic/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
+  "../../../ipstatic/multiplier/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/xbip_pipe_v3_0_6 \
-  "../../../ipstatic/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
+  "../../../ipstatic/multiplier/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/xbip_bram18k_v3_0_6 \
-  "../../../ipstatic/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_bram18k_v3_0_vh_rfs.vhd" \
+  "../../../ipstatic/multiplier/hdl/xbip_bram18k_v3_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/mult_gen_v12_0_17 \
-  "../../../ipstatic/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/mult_gen_v12_0_vh_rfs.vhd" \
+  "../../../ipstatic/multiplier/hdl/mult_gen_v12_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
@@ -36,7 +36,7 @@
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/demux2_0/sim/demux2_0.v" \
 -endlib
 -makelib xcelium_lib/blk_mem_gen_v8_4_4 \
-  "../../../ipstatic/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/bram_results/simulation/blk_mem_gen_v8_4.v" \
+  "../../../ipstatic/bram_results/simulation/blk_mem_gen_v8_4.v" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/bram_results/sim/bram_results.v" \

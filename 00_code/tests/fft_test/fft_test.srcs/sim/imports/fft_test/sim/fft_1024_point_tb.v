@@ -3,7 +3,7 @@
 module fft_1024_point_tb ();
 
 // clock period in nanoseconds
-`define CLK_PERIOD 50
+`define CLK_PERIOD 10
 
 /************** IO DECLARATION *************/
 // DUT inputs

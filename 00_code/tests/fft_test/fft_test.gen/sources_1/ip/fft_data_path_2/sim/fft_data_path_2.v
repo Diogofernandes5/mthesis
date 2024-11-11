@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_data_path:1.0
-// IP Revision: 55
+// IP Revision: 61
 
 `timescale 1ns/1ps
 

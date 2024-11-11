@@ -1,11 +1,11 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sun Nov 10 01:55:15 2024
+// Date        : Mon Nov 11 17:38:30 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
-// Command     : write_verilog -force -mode synth_stub
-//               /home/fernandes/thesis/00_code/tests/fft_test/fft_test.gen/sources_1/ip/fft_data_path_1_1/fft_data_path_1_stub.v
-// Design      : fft_data_path_1
+// Command     : write_verilog -force -mode synth_stub -rename_top fft_data_path_1 -prefix
+//               fft_data_path_1_ fft_data_path_0_stub.v
+// Design      : fft_data_path_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7z010clg400-1
 // --------------------------------------------------------------------------------

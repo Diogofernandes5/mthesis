@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_data_path:1.0
-// IP Revision: 55
+// IP Revision: 61
 
 (* X_CORE_INFO = "data_path,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "fft_data_path_1,data_path,{}" *)

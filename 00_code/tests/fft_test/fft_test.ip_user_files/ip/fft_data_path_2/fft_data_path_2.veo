@@ -47,7 +47,7 @@
 // DO NOT MODIFY THIS FILE.
 
 // IP VLNV: user.org:user:fft_data_path:1.0
-// IP Revision: 55
+// IP Revision: 61
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections

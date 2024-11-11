@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:shift_right:1.0
-// IP Revision: 10
+// IP Revision: 12
 
 (* X_CORE_INFO = "shift_right,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "shift_right_fractional_len,shift_right,{}" *)
@@ -63,7 +63,7 @@ input wire [31 : 0] data_in;
 output wire [31 : 0] data_out;
 
   shift_right #(
-    .shift_num(8),
+    .shift_num(10),
     .width(32)
   ) inst (
     .data_in(data_in),

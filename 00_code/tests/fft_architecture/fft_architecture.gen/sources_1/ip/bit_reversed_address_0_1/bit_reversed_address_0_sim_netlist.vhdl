@@ -1,7 +1,7 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Fri Nov  1 14:53:13 2024
+-- Date        : Tue Nov  5 10:48:43 2024
 -- Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
 -- Command     : write_vhdl -force -mode funcsim -rename_top bit_reversed_address_0 -prefix
 --               bit_reversed_address_0_ bit_reversed_address_0_sim_netlist.vhdl
@@ -16,8 +16,8 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity bit_reversed_address_0 is
   port (
-    index_i : in STD_LOGIC_VECTOR ( 9 downto 0 );
-    reversed_o : out STD_LOGIC_VECTOR ( 9 downto 0 )
+    index_i : in STD_LOGIC_VECTOR ( 4 downto 0 );
+    reversed_o : out STD_LOGIC_VECTOR ( 4 downto 0 )
   );
   attribute NotValidForBitStream : boolean;
   attribute NotValidForBitStream of bit_reversed_address_0 : entity is true;
@@ -32,17 +32,12 @@ entity bit_reversed_address_0 is
 end bit_reversed_address_0;
 
 architecture STRUCTURE of bit_reversed_address_0 is
-  signal \^index_i\ : STD_LOGIC_VECTOR ( 9 downto 0 );
+  signal \^index_i\ : STD_LOGIC_VECTOR ( 4 downto 0 );
 begin
-  \^index_i\(9 downto 0) <= index_i(9 downto 0);
-  reversed_o(9) <= \^index_i\(0);
-  reversed_o(8) <= \^index_i\(1);
-  reversed_o(7) <= \^index_i\(2);
-  reversed_o(6) <= \^index_i\(3);
-  reversed_o(5) <= \^index_i\(4);
-  reversed_o(4) <= \^index_i\(5);
-  reversed_o(3) <= \^index_i\(6);
-  reversed_o(2) <= \^index_i\(7);
-  reversed_o(1) <= \^index_i\(8);
-  reversed_o(0) <= \^index_i\(9);
+  \^index_i\(4 downto 0) <= index_i(4 downto 0);
+  reversed_o(4) <= \^index_i\(0);
+  reversed_o(3) <= \^index_i\(1);
+  reversed_o(2) <= \^index_i\(2);
+  reversed_o(1) <= \^index_i\(3);
+  reversed_o(0) <= \^index_i\(4);
 end STRUCTURE;

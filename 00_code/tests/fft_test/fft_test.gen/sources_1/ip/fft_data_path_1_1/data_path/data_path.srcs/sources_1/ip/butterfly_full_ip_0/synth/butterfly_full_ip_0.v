@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:butterfly_full_ip:1.0
-// IP Revision: 27
+// IP Revision: 31
 
 (* X_CORE_INFO = "butterfly_full,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "butterfly_full_ip_0,butterfly_full,{}" *)
