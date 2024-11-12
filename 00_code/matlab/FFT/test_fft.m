@@ -20,7 +20,7 @@ x_re = 3*sin(2*pi*f1*t) + sin(2*pi*f2*t);
 x_re = round(x_re * 2.^fractional_len);
 
 % write to file the input vector1
-input_filename = "./golden_vectors/input.txt";
+input_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/input.txt";
 fp = fopen(input_filename,'w');
 fprintf(fp, "%s", regexprep(num2str(x_re),'\s+','\n'));
 fclose(fp);
@@ -65,43 +65,43 @@ freq = k*fs/N;
 stem(freq, abs(fft_o(1:(N/2)+1)));
 
 %% Write to file the results
-output_filename = "./golden_vectors/golden_re.txt";
+output_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/golden_re.txt";
 fp = fopen(output_filename,'w');
 fprintf(fp, "%s", regexprep(num2str(real(y_io)),'\s+','\n'));
 fclose(fp);
 
-output_filename = "./golden_vectors/golden_im.txt";
+output_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/golden_im.txt";
 fp = fopen(output_filename,'w');
 fprintf(fp, "%s", regexprep(num2str(imag(y_io)),'\s+','\n'));
 fclose(fp);
 
 %% Write to file the twiddles
-output_filename = "./twiddle_factors/w_re_twiddles.txt";
+output_filename = "/home/fernandes/thesis/00_code/matlab/twiddle_factors/w_re_twiddles.txt";
 fp = fopen(output_filename,'w');
 fprintf(fp, "%s", regexprep(num2str(w_re),'\s+','\n'));
 fclose(fp);
 
-output_filename = "./twiddle_factors/w_im_twiddles.txt";
+output_filename = "/home/fernandes/thesis/00_code/matlab/twiddle_factors/w_im_twiddles.txt";
 fp = fopen(output_filename,'w');
 fprintf(fp, "%s", regexprep(num2str(w_im),'\s+','\n'));
 fclose(fp);
 
 % Convert to .COE file
-cd("twiddle_factors/");
+cd("/home/fernandes/thesis/00_code/matlab/twiddle_factors/");
 system("./coe_dump.sh w_re_twiddles.txt 10");
 system("./coe_dump.sh w_im_twiddles.txt 10");
 cd("..");
 
 %% Output data received from Tests
 x_re_output = zeros(1,N);
-output_filename = "./golden_vectors/output_re.txt";
+output_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/output_re.txt";
 fp = fopen(output_filename,'r');
 x_re_output = fscanf(fp, "%d");
 x_re_output = transpose(x_re_output);
 fclose(fp);
 
 x_im_output = zeros(1,N);
-output_filename = "./golden_vectors/output_im.txt";
+output_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/output_im.txt";
 fp = fopen(output_filename,'r');
 x_im_output = fscanf(fp, "%d");
 x_im_output = transpose(x_im_output);
