@@ -1,2 +1,0 @@
-w_im_bram.v,verilog,xil_defaultlib,../../../../../fft_test/fft_test.tmp/fft_architecture_v1_0_project/fft_architecture_v1_0_project.gen/sources_1/ip/w_im_bram/sim/w_im_bram.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v
