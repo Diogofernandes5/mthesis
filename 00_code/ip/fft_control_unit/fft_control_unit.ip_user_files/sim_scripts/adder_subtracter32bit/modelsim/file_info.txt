@@ -1,4 +1,4 @@
-full_adder.v,verilog,xil_defaultlib,../../../../../../tests/fft_architecture/fft_architecture.tmp/control_unit_v2_0_project/control_unit_v2_0_project.gen/sources_1/ip/adder_subtracter32bit/src/full_adder.v,
-adder_subtracter32.v,verilog,xil_defaultlib,../../../../../../tests/fft_architecture/fft_architecture.tmp/control_unit_v2_0_project/control_unit_v2_0_project.gen/sources_1/ip/adder_subtracter32bit/src/adder_subtracter32.v,
-adder_subtracter32bit.v,verilog,xil_defaultlib,../../../../../../tests/fft_architecture/fft_architecture.tmp/control_unit_v2_0_project/control_unit_v2_0_project.gen/sources_1/ip/adder_subtracter32bit/sim/adder_subtracter32bit.v,
+full_adder.v,verilog,xil_defaultlib,../../../../../../tests/fft_test/fft_test.tmp/control_unit_v2_0_project/control_unit_v2_0_project.gen/sources_1/ip/adder_subtracter32bit/src/full_adder.v,
+adder_subtracter32.v,verilog,xil_defaultlib,../../../../../../tests/fft_test/fft_test.tmp/control_unit_v2_0_project/control_unit_v2_0_project.gen/sources_1/ip/adder_subtracter32bit/src/adder_subtracter32.v,
+adder_subtracter32bit.v,verilog,xil_defaultlib,../../../../../../tests/fft_test/fft_test.tmp/control_unit_v2_0_project/control_unit_v2_0_project.gen/sources_1/ip/adder_subtracter32bit/sim/adder_subtracter32bit.v,
 glbl.v,Verilog,xil_defaultlib,glbl.v

@@ -24,43 +24,43 @@ vcom -work xpm -93 \
 "/tools/Xilinx/Vivado/2021.1/data/ip/xpm/xpm_VCOMP.vhd" \
 
 vlog -work xil_defaultlib  -v2k5 \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/mux2_twiddle_1/src/mux2.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/mux2_twiddle_1/sim/mux2_twiddle.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/mux2_twiddle_1/src/mux2.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/mux2_twiddle_1/sim/mux2_twiddle.v" \
 
 vcom -work xbip_utils_v3_0_10 -93 \
-"../../../ipstatic/multiplier/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
+"../../../ipstatic/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
 
 vcom -work xbip_pipe_v3_0_6 -93 \
-"../../../ipstatic/multiplier/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
+"../../../ipstatic/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
 
 vcom -work xbip_bram18k_v3_0_6 -93 \
-"../../../ipstatic/multiplier/hdl/xbip_bram18k_v3_0_vh_rfs.vhd" \
+"../../../ipstatic/hdl/xbip_bram18k_v3_0_vh_rfs.vhd" \
 
 vcom -work mult_gen_v12_0_17 -93 \
-"../../../ipstatic/multiplier/hdl/mult_gen_v12_0_vh_rfs.vhd" \
+"../../../ipstatic/hdl/mult_gen_v12_0_vh_rfs.vhd" \
 
 vcom -work xil_defaultlib -93 \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
 
 vlog -work xil_defaultlib  -v2k5 \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/full_adder.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/src/shift_r.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/sim/shift_right_fractional_len.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/src/butterfly_full.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/sim/butterfly_full_ip_0.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/demux2_0/src/demux2.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/demux2_0/sim/demux2_0.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/full_adder.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/src/shift_r.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/sim/shift_right_fractional_len.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/src/butterfly_full.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/sim/butterfly_full_ip_0.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/demux2_0/src/demux2.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/demux2_0/sim/demux2_0.v" \
 
 vlog -work blk_mem_gen_v8_4_4  -v2k5 \
-"../../../ipstatic/bram_results/simulation/blk_mem_gen_v8_4.v" \
+"../../../ipstatic/simulation/blk_mem_gen_v8_4.v" \
 
 vlog -work xil_defaultlib  -v2k5 \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/bram_results/sim/bram_results.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/data_path/src/data_path.v" \
-"../../../../fft_test.gen/sources_1/ip/fft_data_path_0/sim/fft_data_path_0.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/data_path.srcs/sources_1/ip/bram_results/sim/bram_results.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/data_path/src/data_path.v" \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/fft_data_path_0/sim/fft_data_path_0.v" \
 
 vlog -work xil_defaultlib \
 "glbl.v"

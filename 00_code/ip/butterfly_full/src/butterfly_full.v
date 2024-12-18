@@ -24,11 +24,11 @@ module butterfly_full(
     output reg [31:0] x1_re_x_w_im_r,
     output reg [31:0] x1_im_x_w_re_r,
     
-    output reg [31:0] z_re_r,
-    output reg [31:0] z_im_r,
-    
     output wire [31:0] z_re,
     output wire [31:0] z_im,
+    
+    output reg [31:0] z_re_add_r,
+    output reg [31:0] z_im_add_r,
     
     output wire [31:0] z_re_shifted,
     output wire [31:0] z_im_shifted
@@ -128,8 +128,11 @@ module butterfly_full(
         x1_im_x_w_im_r = 32'd0;   
         x1_im_x_w_re_r = 32'd0;
         
-        z_re_r = 32'd0;
-        z_im_r = 32'd0;
+        z_re_add_r = 32'd0;
+        z_im_add_r = 32'd0;
+        
+//        z_re_r = 32'd0;
+//        z_im_r = 32'd0;
       end
       else begin
         x0_re_r = x0_re_i;
@@ -142,15 +145,18 @@ module butterfly_full(
         x1_im_x_w_im_r = x1_im_x_w_im;   
         x1_im_x_w_re_r = x1_im_x_w_re;
         
-        z_re_r = z_re_shifted;
-        z_im_r = z_im_shifted;
+        z_re_add_r = z_re;
+        z_im_add_r = z_im;
+        
+//        z_re_r = z_re_shifted;
+//        z_im_r = z_im_shifted;
       end
       
     end    
 
     adder_subtracter32_ip X0_re_add(
       .x(x0_re_r),      
-      .y(z_re_r),            
+      .y(z_re_shifted),            
       .c_in(1'b0),                 
       // .c_out(X0_re_co), 
       .v(X0_re_add_v), 
@@ -159,7 +165,7 @@ module butterfly_full(
 
     adder_subtracter32_ip X0_im_add(
       .x(x0_im_r),      
-      .y(z_im_r),         
+      .y(z_im_shifted),         
       .c_in(1'b0),   
       // .c_out(X0_im_co), 
       .v(X0_im_add_v), 
@@ -168,7 +174,7 @@ module butterfly_full(
     
     adder_subtracter32_ip X1_re_sub(
       .x(x0_re_r),    
-      .y(z_re_r),        
+      .y(z_re_shifted),        
       .c_in(1'b1),        
       // .c_out(X1_re_co),
       .v(X1_re_sub_v), 
@@ -177,7 +183,7 @@ module butterfly_full(
         
     adder_subtracter32_ip X1_im_sub(
       .x(x0_im_r),    
-      .y(z_im_r),             
+      .y(z_im_shifted),             
       .c_in(1'b1),            
       // .c_out(X1_im_co),
       .v(X1_im_sub_v),
@@ -185,12 +191,16 @@ module butterfly_full(
     );
     
     shift_right_fractional_len shift_z_re (
-        .data_in(z_re),
+        .clk(clk),
+        .rstn(rstn),
+        .data_in(z_re_add_r),
         .data_out(z_re_shifted)
     );
     
     shift_right_fractional_len shift_z_im (
-        .data_in(z_im),
+        .clk(clk),
+        .rstn(rstn),
+        .data_in(z_im_add_r),
         .data_out(z_im_shifted)
     );
     

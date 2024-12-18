@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:control_unit:2.0
--- IP Revision: 33
+-- IP Revision: 47
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -57,8 +57,10 @@ COMPONENT fft_control_unit_2
     clk : IN STD_LOGIC;
     rstn : IN STD_LOGIC;
     start_i : IN STD_LOGIC;
+    dl_busy_i : IN STD_LOGIC;
     src_sel_o : OUT STD_LOGIC;
     fft_ready_o : OUT STD_LOGIC;
+    busy_o : OUT STD_LOGIC;
     bf_ce_o : OUT STD_LOGIC;
     bram_addr_x0_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
     bram_addr_x1_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -82,8 +84,10 @@ your_instance_name : fft_control_unit_2
     clk => clk,
     rstn => rstn,
     start_i => start_i,
+    dl_busy_i => dl_busy_i,
     src_sel_o => src_sel_o,
     fft_ready_o => fft_ready_o,
+    busy_o => busy_o,
     bf_ce_o => bf_ce_o,
     bram_addr_x0_o => bram_addr_x0_o,
     bram_addr_x1_o => bram_addr_x1_o,

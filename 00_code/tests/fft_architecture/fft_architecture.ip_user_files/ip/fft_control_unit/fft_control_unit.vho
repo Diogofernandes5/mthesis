@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:control_unit:2.0
--- IP Revision: 33
+-- IP Revision: 42
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -57,18 +57,20 @@ COMPONENT fft_control_unit
     clk : IN STD_LOGIC;
     rstn : IN STD_LOGIC;
     start_i : IN STD_LOGIC;
+    dl_busy_i : IN STD_LOGIC;
     src_sel_o : OUT STD_LOGIC;
     fft_ready_o : OUT STD_LOGIC;
+    busy_o : OUT STD_LOGIC;
     bf_ce_o : OUT STD_LOGIC;
-    bram_addr_x0_o : OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
-    bram_addr_x1_o : OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
+    bram_addr_x0_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+    bram_addr_x1_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
     bram_x0_we_o : OUT STD_LOGIC;
     bram_x1_we_o : OUT STD_LOGIC;
     bram_x0_en_o : OUT STD_LOGIC;
     bram_x1_en_o : OUT STD_LOGIC;
-    twiddle_addr_o : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    twiddle_addr_o : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
     state : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-    data_counter : OUT STD_LOGIC_VECTOR(5 DOWNTO 0)
+    data_counter : OUT STD_LOGIC_VECTOR(10 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -82,8 +84,10 @@ your_instance_name : fft_control_unit
     clk => clk,
     rstn => rstn,
     start_i => start_i,
+    dl_busy_i => dl_busy_i,
     src_sel_o => src_sel_o,
     fft_ready_o => fft_ready_o,
+    busy_o => busy_o,
     bf_ce_o => bf_ce_o,
     bram_addr_x0_o => bram_addr_x0_o,
     bram_addr_x1_o => bram_addr_x1_o,

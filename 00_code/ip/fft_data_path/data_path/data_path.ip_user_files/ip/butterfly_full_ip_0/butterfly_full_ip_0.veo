@@ -47,7 +47,7 @@
 // DO NOT MODIFY THIS FILE.
 
 // IP VLNV: user.org:user:butterfly_full_ip:1.0
-// IP Revision: 23
+// IP Revision: 38
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections
@@ -72,10 +72,12 @@ butterfly_full_ip_0 your_instance_name (
   .x1_im_x_w_im_r(x1_im_x_w_im_r),  // output wire [31 : 0] x1_im_x_w_im_r
   .x1_re_x_w_im_r(x1_re_x_w_im_r),  // output wire [31 : 0] x1_re_x_w_im_r
   .x1_im_x_w_re_r(x1_im_x_w_re_r),  // output wire [31 : 0] x1_im_x_w_re_r
-  .z_re_r(z_re_r),                  // output wire [31 : 0] z_re_r
-  .z_im_r(z_im_r),                  // output wire [31 : 0] z_im_r
   .z_re(z_re),                      // output wire [31 : 0] z_re
-  .z_im(z_im)                      // output wire [31 : 0] z_im
+  .z_im(z_im),                      // output wire [31 : 0] z_im
+  .z_re_add_r(z_re_add_r),          // output wire [31 : 0] z_re_add_r
+  .z_im_add_r(z_im_add_r),          // output wire [31 : 0] z_im_add_r
+  .z_re_shifted(z_re_shifted),      // output wire [31 : 0] z_re_shifted
+  .z_im_shifted(z_im_shifted)      // output wire [31 : 0] z_im_shifted
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

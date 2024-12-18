@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Mon Nov 11 18:10:14 2024
+-- Date        : Sat Dec  7 15:01:38 2024
 -- Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
--- Command     : write_vhdl -force -mode synth_stub
---               /home/fernandes/thesis/00_code/tests/fft_test/fft_test.gen/sources_1/ip/w_im_bram/w_im_bram_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top w_im_bram -prefix
+--               w_im_bram_ w_im_bram_stub.vhdl
 -- Design      : w_im_bram
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7z010clg400-1

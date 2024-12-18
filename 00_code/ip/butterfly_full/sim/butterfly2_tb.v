@@ -25,8 +25,8 @@ wire [31:0] x1_im_x_w_im;
 wire [31:0] x1_re_x_w_im;
 wire [31:0] x1_im_x_w_re;
 
-wire [31:0] z_re_r;
-wire [31:0] z_im_r;
+wire [31:0] z_re_add_r;
+wire [31:0] z_im_add_r;
 
 wire [31:0] z_re;
 wire [31:0] z_im;
@@ -71,8 +71,8 @@ butterfly_full dut (
     .x1_re_x_w_im_r(x1_re_x_w_im),
     .x1_im_x_w_re_r(x1_im_x_w_re),
 
-    .z_re_r(z_re_r),
-    .z_im_r(z_im_r),
+    .z_re_add_r(z_re_add_r),
+    .z_im_add_r(z_im_add_r),
     
     .z_re(z_re),
     .z_im(z_im),
@@ -112,7 +112,7 @@ initial begin
     w_re_i <= 32'h00000100;   // 1.0 in fixed-point (1.0 * 256)
     w_im_i <= 32'h00000200;   // 2.0 in fixed-point (2.0 * 256)
     
-    #(`CLK_PERIOD*8) CE <= 1;
+    #(`CLK_PERIOD*9) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     // Expected results:
@@ -130,7 +130,7 @@ initial begin
     w_re_i <= 32'h00000200;   // 2.0 in fixed-point (2.0 * 256)
     w_im_i <= 32'hFFFFFE00;   // -2.0 in fixed-point (-2.0 * 256)
     
-    #(`CLK_PERIOD*8) CE <= 1;
+    #(`CLK_PERIOD*9) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     // Expected results:
@@ -148,7 +148,7 @@ initial begin
     w_re_i <= 32'h00000180;   // 1.5 in fixed-point (1.5 * 256)
     w_im_i <= 32'hFFFFFD80;   // -1.5 in fixed-point (-1.5 * 256)
     
-    #(`CLK_PERIOD*8) CE <= 1;
+    #(`CLK_PERIOD*9) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     // Expected results:
@@ -166,7 +166,7 @@ initial begin
     w_re_i <= 32'h00000400;   // 4.0 in fixed-point (4.0 * 256)
     w_im_i <= 32'hFFFFFB00;   // -5.0 in fixed-point (-5.0 * 256)
     
-    #(`CLK_PERIOD*8) CE <= 1;
+    #(`CLK_PERIOD*9) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     // Expected results:
@@ -184,7 +184,7 @@ initial begin
     w_re_i <= 32'hFFFFFB00;   // -5.0 in fixed-point (-5.0 * 256)
     w_im_i <= 32'hFFFFFA00;   // -6.0 in fixed-point (-6.0 * 256)
     
-    #(`CLK_PERIOD*8) CE <= 1;
+    #(`CLK_PERIOD*9) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     // Expected results:
@@ -202,7 +202,7 @@ initial begin
     w_re_i <= 32'd237;   // -5.0 in fixed-point (-5.0 * 256)
     w_im_i <= -32'd98;   // -6.0 in fixed-point (-6.0 * 256)
     
-    #(`CLK_PERIOD*8) CE <= 1;
+    #(`CLK_PERIOD*9) CE <= 1;
     
     #(`CLK_PERIOD*1) CE <= 0;
     // Expected results:

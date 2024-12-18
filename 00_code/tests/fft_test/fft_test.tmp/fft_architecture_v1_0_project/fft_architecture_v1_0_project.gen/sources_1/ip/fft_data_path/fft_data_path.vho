@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:fft_data_path:1.0
--- IP Revision: 61
+-- IP Revision: 64
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -58,10 +58,8 @@ COMPONENT fft_data_path
     rstn : IN STD_LOGIC;
     x0_re_i : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     x0_im_i : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    x1_re_i : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    x1_im_i : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    bram_addr_x0_i : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
-    bram_addr_x1_i : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+    bram_addr_x0_i : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+    bram_addr_x1_i : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
     bram_x0_en_i : IN STD_LOGIC;
     bram_x1_en_i : IN STD_LOGIC;
     bram_x0_we_i : IN STD_LOGIC;
@@ -72,8 +70,6 @@ COMPONENT fft_data_path
     fft_ready_i : IN STD_LOGIC;
     x0_re_o : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     x0_im_o : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    x1_re_o : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    x1_im_o : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     X0_re_bf : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     X0_im_bf : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     X1_re_bf : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -96,8 +92,6 @@ your_instance_name : fft_data_path
     rstn => rstn,
     x0_re_i => x0_re_i,
     x0_im_i => x0_im_i,
-    x1_re_i => x1_re_i,
-    x1_im_i => x1_im_i,
     bram_addr_x0_i => bram_addr_x0_i,
     bram_addr_x1_i => bram_addr_x1_i,
     bram_x0_en_i => bram_x0_en_i,
@@ -110,8 +104,6 @@ your_instance_name : fft_data_path
     fft_ready_i => fft_ready_i,
     x0_re_o => x0_re_o,
     x0_im_o => x0_im_o,
-    x1_re_o => x1_re_o,
-    x1_im_o => x1_im_o,
     X0_re_bf => X0_re_bf,
     X0_im_bf => X0_im_bf,
     X1_re_bf => X1_re_bf,

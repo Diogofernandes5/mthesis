@@ -1,15 +1,18 @@
 module control_unit #(
     parameter N = 1024,
     parameter STAGES_NUM = 3,
-    parameter FIRST_STAGE = 0
+    parameter FIRST_STAGE = 0,
+    parameter BF_OP_CYCLES = 10
 ) (
     input wire clk, 
     input wire rstn,
     
     input wire start_i,
+    input wire dl_busy_i,         // data line busy to receive data
 
     output reg src_sel_o,
     output reg fft_ready_o,
+    output reg busy_o,
 
     output reg bf_ce_o,
 
@@ -51,17 +54,18 @@ localparam S_READ_MEMORY = 4'b0100;
 localparam S_BF_OPERATION = 4'b0101;
 localparam S_WRITE_BACK = 4'b0110;
 localparam S_CHECK_STAGE = 4'b0111;
-localparam S_SEND_RESULTS = 4'b1000;
+localparam S_WAIT_MS = 4'b1000;
+localparam S_SEND_RESULTS = 4'b1001;
 
 /****************** OTHER CONSTANTS ********************/
 localparam HALF_N = N/2;
 localparam BRAM_SIZE = N;
 
-localparam BF_OP_CYCLES = 4'd8;
+//localparam BF_OP_CYCLES = 4'd9;
 localparam DIV_CYCLES = 4'd11;
 
 /****************** STATE AND NSTATE ********************/
-reg [3:0] state;
+//reg [3:0] state;
 reg [3:0] nstate;
 
 /****************** COUNTER REGISTERS ********************/
@@ -72,6 +76,10 @@ reg [3:0] bf_cycle_counter;         // used for delay of the butterfly operation
 reg [3:0] div_bf_cycle_counter;     // used for delay of division controlled in S_CALC_STAGE_VARS
 reg [3:0] stage_counter;
 reg cycle_delay;
+
+wire [$clog2(N):0] data_counter_rev;       // data counter bit reversed for the store state
+
+wire [$clog2(N):0] data_counter_mux;
 
 /****************** ADDRESSING VARIABLES ********************/
 reg [$clog2(N)-1:0] group_size;
@@ -147,10 +155,18 @@ always @(*) begin
 
         S_CHECK_STAGE: begin
             if(stage_counter == (STAGES_NUM + FIRST_STAGE - 1)) begin
-                nstate = S_SEND_RESULTS;
+                nstate = S_WAIT_MS;
             end                    
             else
                 nstate = S_CALC_STAGE_VARS;
+        end
+        
+        S_WAIT_MS: begin
+            if(!dl_busy_i)
+                nstate = S_SEND_RESULTS;
+                
+            else 
+                nstate = S_WAIT_MS;
         end
        
         S_SEND_RESULTS: begin
@@ -166,6 +182,7 @@ end
 
 /*********** OUTPUT LOGIC ***********/
 always @(*) begin
+
     case(state)
         S_IDLE: begin
             start_sending = 1'b0;
@@ -178,12 +195,13 @@ always @(*) begin
             bram_x0_we_o = 1'b0;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;
+            busy_o = 1'b0;
         end
 
         S_STORE_INPUTS: begin
             start_sending = 1'b0;
             src_sel_o = 1'b0;
-            bram_addr_x0_o = data_counter;
+            bram_addr_x0_o = data_counter_mux;
             bram_addr_x1_o = {11{1'b0}};
             twiddle_addr_o = {11{1'b0}};
             bram_x0_en_o = 1'b1;
@@ -191,9 +209,10 @@ always @(*) begin
             bram_x0_we_o = 1'b1;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;
+            busy_o = 1'b1;
         end
         
-        S_CALC_STAGE_VARS:begin
+        S_CALC_STAGE_VARS: begin
             start_sending = 1'b0;
             src_sel_o = 1'b0;
             bram_addr_x0_o = {11{1'b0}};
@@ -204,19 +223,21 @@ always @(*) begin
             bram_x0_we_o = 1'b0;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;
+            busy_o = 1'b1;
         end            
         
         S_CHECK_BF_COUNTER: begin
             start_sending = 1'b0;
             src_sel_o = 1'b1;
-            bram_addr_x0_o = bram_addr_x0_o;
-            bram_addr_x1_o = bram_addr_x1_o;
+            bram_addr_x0_o = bram_addr_x0;
+            bram_addr_x1_o = bram_addr_x1;
             twiddle_addr_o = twiddle_addr_ad;
             bram_x0_en_o = 1'b0;
             bram_x1_en_o = 1'b0;
             bram_x0_we_o = 1'b0;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;  
+            busy_o = 1'b1;
         end
 
         S_READ_MEMORY: begin
@@ -224,20 +245,21 @@ always @(*) begin
             src_sel_o = 1'b1;
             bram_addr_x0_o = bram_addr_x0;
             bram_addr_x1_o = bram_addr_x1;
-            twiddle_addr_o = twiddle_addr_o;
+            twiddle_addr_o = twiddle_addr_ad;
             bram_x0_en_o = 1'b1;
             bram_x1_en_o = 1'b1;
             bram_x0_we_o = 1'b0;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;
+            busy_o = 1'b1;
         end
 
         S_BF_OPERATION: begin
             start_sending = 1'b0;
             src_sel_o = 1'b1;
-            bram_addr_x0_o = bram_addr_x0_o;
-            bram_addr_x1_o = bram_addr_x1_o;
-            twiddle_addr_o = twiddle_addr_o;
+            bram_addr_x0_o = bram_addr_x0;
+            bram_addr_x1_o = bram_addr_x1;
+            twiddle_addr_o = twiddle_addr_ad;
             bram_x0_en_o = 1'b1;
             bram_x1_en_o = 1'b1;
             bram_x0_we_o = 1'b0;
@@ -247,19 +269,22 @@ always @(*) begin
                 bf_ce_o = 1'b1;
             else 
                 bf_ce_o = 1'b0;
+                
+            busy_o = 1'b1;
         end
 
         S_WRITE_BACK: begin
             start_sending = 1'b0;
             src_sel_o = 1'b1;
-            bram_addr_x0_o = bram_addr_x0_o;
-            bram_addr_x1_o = bram_addr_x1_o;
-            twiddle_addr_o = twiddle_addr_o;
+            bram_addr_x0_o = bram_addr_x0;
+            bram_addr_x1_o = bram_addr_x1;
+            twiddle_addr_o = twiddle_addr_ad;
             bram_x0_en_o = 1'b1;
             bram_x1_en_o = 1'b1;
             bram_x0_we_o = 1'b1;
             bram_x1_we_o = 1'b1;  
             bf_ce_o = 1'b0;
+            busy_o = 1'b1;
         end
 
         S_CHECK_STAGE: begin // does nothing
@@ -273,6 +298,21 @@ always @(*) begin
             bram_x0_we_o = 1'b0;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;
+            busy_o = 1'b1;
+        end
+        
+        S_WAIT_MS: begin // does nothing
+            start_sending = 1'b0;
+            src_sel_o = 1'b1;
+            bram_addr_x0_o = {11{1'b0}};
+            bram_addr_x1_o = {11{1'b0}};
+            twiddle_addr_o = {11{1'b0}};
+            bram_x0_en_o = 1'b0;
+            bram_x1_en_o = 1'b0;
+            bram_x0_we_o = 1'b0;
+            bram_x1_we_o = 1'b0;
+            bf_ce_o = 1'b0;
+            busy_o = 1'b1;
         end
 
         S_SEND_RESULTS: begin
@@ -286,7 +326,9 @@ always @(*) begin
             bram_x0_we_o = 1'b0;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;
+            busy_o = 1'b1;
         end
+        
         default: begin
             start_sending = 1'b0;
             src_sel_o = 1'b0;
@@ -298,7 +340,9 @@ always @(*) begin
             bram_x0_we_o = 1'b0;
             bram_x1_we_o = 1'b0;
             bf_ce_o = 1'b0;
-        end            
+            busy_o = 1'b0;
+        end
+         
     endcase
 end
 
@@ -399,6 +443,20 @@ always @(posedge clk or negedge rstn) begin
         local_index <= bf_counter & ((1 << stage_counter) - 1);
     end
 end 
+
+/* bit reversed for when storing the data in the first stage */
+bram_bit_reversed_address bit_reversed_data_counter (
+  .index_i(data_counter),        // input wire [9 : 0] index_i
+  .reversed_o(data_counter_rev)  // output wire [9 : 0] reversed_o
+);
+
+/* only use bit reversed is stage is 0 */
+data_counter_mux2 data_counter_rev_mux (
+  .d0(data_counter_rev),  // input wire [9 : 0] d0
+  .d1(data_counter),  // input wire [9 : 0] d1
+  .s(stage_counter != 0),    // input wire s
+  .y(data_counter_mux)    // output wire [9 : 0] y
+);
 
 /* bram_addr_x0 = group_start + local_index */
 adder_subtracter32bit bram_addr_xo_adder (

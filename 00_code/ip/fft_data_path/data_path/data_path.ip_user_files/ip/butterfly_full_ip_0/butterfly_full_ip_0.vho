@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:butterfly_full_ip:1.0
--- IP Revision: 23
+-- IP Revision: 38
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -71,10 +71,12 @@ COMPONENT butterfly_full_ip_0
     x1_im_x_w_im_r : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     x1_re_x_w_im_r : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     x1_im_x_w_re_r : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    z_re_r : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    z_im_r : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
     z_re : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    z_im : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    z_im : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    z_re_add_r : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    z_im_add_r : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    z_re_shifted : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    z_im_shifted : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -102,10 +104,12 @@ your_instance_name : butterfly_full_ip_0
     x1_im_x_w_im_r => x1_im_x_w_im_r,
     x1_re_x_w_im_r => x1_re_x_w_im_r,
     x1_im_x_w_re_r => x1_im_x_w_re_r,
-    z_re_r => z_re_r,
-    z_im_r => z_im_r,
     z_re => z_re,
-    z_im => z_im
+    z_im => z_im,
+    z_re_add_r => z_re_add_r,
+    z_im_add_r => z_im_add_r,
+    z_re_shifted => z_re_shifted,
+    z_im_shifted => z_im_shifted
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 

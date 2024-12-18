@@ -47,7 +47,7 @@
 // DO NOT MODIFY THIS FILE.
 
 // IP VLNV: user.org:user:fft_data_path:1.0
-// IP Revision: 61
+// IP Revision: 64
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections
@@ -59,10 +59,8 @@ fft_data_path your_instance_name (
   .rstn(rstn),                      // input wire rstn
   .x0_re_i(x0_re_i),                // input wire [31 : 0] x0_re_i
   .x0_im_i(x0_im_i),                // input wire [31 : 0] x0_im_i
-  .x1_re_i(x1_re_i),                // input wire [31 : 0] x1_re_i
-  .x1_im_i(x1_im_i),                // input wire [31 : 0] x1_im_i
-  .bram_addr_x0_i(bram_addr_x0_i),  // input wire [4 : 0] bram_addr_x0_i
-  .bram_addr_x1_i(bram_addr_x1_i),  // input wire [4 : 0] bram_addr_x1_i
+  .bram_addr_x0_i(bram_addr_x0_i),  // input wire [9 : 0] bram_addr_x0_i
+  .bram_addr_x1_i(bram_addr_x1_i),  // input wire [9 : 0] bram_addr_x1_i
   .bram_x0_en_i(bram_x0_en_i),      // input wire bram_x0_en_i
   .bram_x1_en_i(bram_x1_en_i),      // input wire bram_x1_en_i
   .bram_x0_we_i(bram_x0_we_i),      // input wire bram_x0_we_i
@@ -73,8 +71,6 @@ fft_data_path your_instance_name (
   .fft_ready_i(fft_ready_i),        // input wire fft_ready_i
   .x0_re_o(x0_re_o),                // output wire [31 : 0] x0_re_o
   .x0_im_o(x0_im_o),                // output wire [31 : 0] x0_im_o
-  .x1_re_o(x1_re_o),                // output wire [31 : 0] x1_re_o
-  .x1_im_o(x1_im_o),                // output wire [31 : 0] x1_im_o
   .X0_re_bf(X0_re_bf),              // output wire [31 : 0] X0_re_bf
   .X0_im_bf(X0_im_bf),              // output wire [31 : 0] X0_im_bf
   .X1_re_bf(X1_re_bf),              // output wire [31 : 0] X1_re_bf

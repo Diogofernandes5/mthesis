@@ -47,13 +47,15 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:shift_right:1.0
--- IP Revision: 10
+-- IP Revision: 14
 
 -- The following code must appear in the VHDL architecture header.
 
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
 COMPONENT shift_right_fractional_len
   PORT (
+    clk : IN STD_LOGIC;
+    rstn : IN STD_LOGIC;
     data_in : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     data_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
   );
@@ -66,6 +68,8 @@ END COMPONENT;
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 your_instance_name : shift_right_fractional_len
   PORT MAP (
+    clk => clk,
+    rstn => rstn,
     data_in => data_in,
     data_out => data_out
   );

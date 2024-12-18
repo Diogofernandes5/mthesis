@@ -1,2 +1,2 @@
-w_re_bram.v,verilog,xil_defaultlib,../../../../fft_test.gen/sources_1/ip/w_re_bram/sim/w_re_bram.v,
+w_re_bram.v,verilog,xil_defaultlib,../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/w_re_bram/sim/w_re_bram.v,
 glbl.v,Verilog,xil_defaultlib,glbl.v

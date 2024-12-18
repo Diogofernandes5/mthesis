@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Mon Nov 11 18:10:14 2024
+// Date        : Sat Dec  7 15:01:10 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
-// Command     : write_verilog -force -mode synth_stub
-//               /home/fernandes/thesis/00_code/tests/fft_test/fft_test.gen/sources_1/ip/w_re_bram/w_re_bram_stub.v
+// Command     : write_verilog -force -mode synth_stub -rename_top w_re_bram -prefix
+//               w_re_bram_ w_re_bram_stub.v
 // Design      : w_re_bram
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7z010clg400-1

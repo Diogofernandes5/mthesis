@@ -47,7 +47,7 @@
 // DO NOT MODIFY THIS FILE.
 
 // IP VLNV: user.org:user:shift_right:1.0
-// IP Revision: 10
+// IP Revision: 14
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections
@@ -55,6 +55,8 @@
 
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 shift_right_fractional_len your_instance_name (
+  .clk(clk),            // input wire clk
+  .rstn(rstn),          // input wire rstn
   .data_in(data_in),    // input wire [31 : 0] data_in
   .data_out(data_out)  // output wire [31 : 0] data_out
 );

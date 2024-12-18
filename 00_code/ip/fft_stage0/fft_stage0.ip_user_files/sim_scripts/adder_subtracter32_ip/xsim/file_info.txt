@@ -1,4 +1,0 @@
-full_adder.v,verilog,xil_defaultlib,../../../../fft_stage0.gen/sources_1/ip/adder_subtracter32_ip/src/full_adder.v,
-adder_subtracter32.v,verilog,xil_defaultlib,../../../../fft_stage0.gen/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v,
-adder_subtracter32_ip.v,verilog,xil_defaultlib,../../../../fft_stage0.gen/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

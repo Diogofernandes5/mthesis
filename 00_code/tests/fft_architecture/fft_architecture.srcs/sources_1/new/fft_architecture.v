@@ -5,18 +5,21 @@ module fft_architecture #(
 ) (
     input clk,
     input rstn,
+    
     input start_i,
+    input dl_busy_i,
     
     input [31:0] x0_re_i,
     input [31:0] x0_im_i,
-    input [31:0] x1_re_i,
-    input [31:0] x1_im_i,
+//    input [31:0] x1_re_i,
+//    input [31:0] x1_im_i,
 
     output wire fft_ready_o,
+    output wire busy_o,
     output wire [31:0] x0_re_o,
     output wire [31:0] x0_im_o,
-    output wire [31:0] x1_re_o,
-    output wire [31:0] x1_im_o,
+//    output wire [31:0] x1_re_o,
+//    output wire [31:0] x1_im_o,
     
     /**************************************/ 
     output wire [31:0] x0_re_ram,
@@ -75,10 +78,13 @@ wire bf_ce;
 fft_control_unit control_unit (
     .clk(clk),                        // input wire clk
     .rstn(rstn),                      // input wire rstn
+    
     .start_i(start_i),                // input wire start_i
+    .dl_busy_i(dl_busy_i),
     
     .src_sel_o(src_sel),            // output wire src_sel_o
     .fft_ready_o(fft_ready_o),        // output wire fft_ready_o
+    .busy_o(busy_o),
     .bram_addr_x0_o(bram_addr_x0),  // output wire [10 : 0] bram_addr_x0_o
     .bram_addr_x1_o(bram_addr_x1),  // output wire [10 : 0] bram_addr_x1_o
     .bram_x0_we_o(bram_x0_we),      // output wire bram_x0_we_o
@@ -96,8 +102,8 @@ fft_data_path data_path (
     .rstn(rstn),                // input wire rstn
     .x0_re_i(x0_re_i),          // input wire [31 : 0] x0_re_i
     .x0_im_i(x0_im_i),          // input wire [31 : 0] x0_im_i
-    .x1_re_i(x1_re_i),          // input wire [31 : 0] x1_re_i
-    .x1_im_i(x1_im_i),          // input wire [31 : 0] x1_im_i
+//    .x1_re_i(x1_re_i),          // input wire [31 : 0] x1_re_i
+//    .x1_im_i(x1_im_i),          // input wire [31 : 0] x1_im_i
     .bram_addr_x0_i(bram_addr_x0),  // input wire [10 : 0] bram_addr_x0_i
     .bram_addr_x1_i(bram_addr_x1),  // input wire [10 : 0] bram_addr_x1_i
     .bram_x0_en_i(bram_x0_en),      // input wire bram_en_i
@@ -111,8 +117,8 @@ fft_data_path data_path (
     
     .x0_re_o(x0_re_o),          // output wire [31 : 0] x0_re_o
     .x0_im_o(x0_im_o),          // output wire [31 : 0] x0_im_o
-    .x1_re_o(x1_re_o),          // output wire [31 : 0] x1_re_o
-    .x1_im_o(x1_im_o),          // output wire [31 : 0] x1_im_o
+//    .x1_re_o(x1_re_o),          // output wire [31 : 0] x1_re_o
+//    .x1_im_o(x1_im_o),          // output wire [31 : 0] x1_im_o
     
     .X0_re_bf(X0_re_bf),        // output wire [31 : 0] X0_re_bf
     .X0_im_bf(X0_im_bf),        // output wire [31 : 0] X0_im_bf

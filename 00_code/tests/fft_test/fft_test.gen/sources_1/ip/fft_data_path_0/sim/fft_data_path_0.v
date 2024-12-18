@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:fft_data_path:1.0
-// IP Revision: 61
+// IP Revision: 70
 
 `timescale 1ns/1ps
 
@@ -59,8 +59,6 @@ module fft_data_path_0 (
   rstn,
   x0_re_i,
   x0_im_i,
-  x1_re_i,
-  x1_im_i,
   bram_addr_x0_i,
   bram_addr_x1_i,
   bram_x0_en_i,
@@ -73,8 +71,6 @@ module fft_data_path_0 (
   fft_ready_i,
   x0_re_o,
   x0_im_o,
-  x1_re_o,
-  x1_im_o,
   X0_re_bf,
   X0_im_bf,
   X1_re_bf,
@@ -93,8 +89,6 @@ input wire clk;
 input wire rstn;
 input wire [31 : 0] x0_re_i;
 input wire [31 : 0] x0_im_i;
-input wire [31 : 0] x1_re_i;
-input wire [31 : 0] x1_im_i;
 input wire [9 : 0] bram_addr_x0_i;
 input wire [9 : 0] bram_addr_x1_i;
 input wire bram_x0_en_i;
@@ -107,8 +101,6 @@ input wire [27 : 0] w;
 input wire fft_ready_i;
 output wire [31 : 0] x0_re_o;
 output wire [31 : 0] x0_im_o;
-output wire [31 : 0] x1_re_o;
-output wire [31 : 0] x1_im_o;
 output wire [31 : 0] X0_re_bf;
 output wire [31 : 0] X0_im_bf;
 output wire [31 : 0] X1_re_bf;
@@ -125,8 +117,6 @@ output wire [31 : 0] x1_im_ram;
     .rstn(rstn),
     .x0_re_i(x0_re_i),
     .x0_im_i(x0_im_i),
-    .x1_re_i(x1_re_i),
-    .x1_im_i(x1_im_i),
     .bram_addr_x0_i(bram_addr_x0_i),
     .bram_addr_x1_i(bram_addr_x1_i),
     .bram_x0_en_i(bram_x0_en_i),
@@ -139,8 +129,6 @@ output wire [31 : 0] x1_im_ram;
     .fft_ready_i(fft_ready_i),
     .x0_re_o(x0_re_o),
     .x0_im_o(x0_im_o),
-    .x1_re_o(x1_re_o),
-    .x1_im_o(x1_im_o),
     .X0_re_bf(X0_re_bf),
     .X0_im_bf(X0_im_bf),
     .X1_re_bf(X1_re_bf),

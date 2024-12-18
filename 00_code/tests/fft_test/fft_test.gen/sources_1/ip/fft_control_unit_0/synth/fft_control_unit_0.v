@@ -48,7 +48,7 @@
 
 
 // IP VLNV: user.org:user:control_unit:2.0
-// IP Revision: 33
+// IP Revision: 44
 
 (* X_CORE_INFO = "control_unit,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "fft_control_unit_0,control_unit,{}" *)
@@ -58,8 +58,10 @@ module fft_control_unit_0 (
   clk,
   rstn,
   start_i,
+  dl_busy_i,
   src_sel_o,
   fft_ready_o,
+  busy_o,
   bf_ce_o,
   bram_addr_x0_o,
   bram_addr_x1_o,
@@ -79,8 +81,10 @@ input wire clk;
 (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 rstn RST" *)
 input wire rstn;
 input wire start_i;
+input wire dl_busy_i;
 output wire src_sel_o;
 output wire fft_ready_o;
+output wire busy_o;
 output wire bf_ce_o;
 output wire [9 : 0] bram_addr_x0_o;
 output wire [9 : 0] bram_addr_x1_o;
@@ -95,13 +99,16 @@ output wire [10 : 0] data_counter;
   control_unit #(
     .N(1024),
     .STAGES_NUM(3),
-    .FIRST_STAGE(0)
+    .FIRST_STAGE(0),
+    .BF_OP_CYCLES(10)
   ) inst (
     .clk(clk),
     .rstn(rstn),
     .start_i(start_i),
+    .dl_busy_i(dl_busy_i),
     .src_sel_o(src_sel_o),
     .fft_ready_o(fft_ready_o),
+    .busy_o(busy_o),
     .bf_ce_o(bf_ce_o),
     .bram_addr_x0_o(bram_addr_x0_o),
     .bram_addr_x1_o(bram_addr_x1_o),

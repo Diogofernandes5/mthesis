@@ -6,8 +6,6 @@ module data_path #(
 	
 	input wire [31:0] x0_re_i,
 	input wire [31:0] x0_im_i,
-	input wire [31:0] x1_re_i,
-	input wire [31:0] x1_im_i,
 	
     input wire [$clog2(N)-1:0] bram_addr_x0_i,
     input wire [$clog2(N)-1:0] bram_addr_x1_i,
@@ -28,8 +26,6 @@ module data_path #(
     
     output wire [31:0] x0_re_o,
     output wire [31:0] x0_im_o,
-    output wire [31:0] x1_re_o,
-    output wire [31:0] x1_im_o,
     
     /************** TESTS *********************/
     output wire [31:0] X0_re_bf,
@@ -43,6 +39,13 @@ module data_path #(
     output wire [31:0] x1_im_ram
     /************** TESTS *********************/
 );
+
+wire [31:0] x1_re_i;
+wire [31:0] x1_im_i;
+
+wire [31:0] x1_re_o;
+wire [31:0] x1_im_o;
+	
 
 /* ------- mux output -------*/
 wire [31:0] x0_re_sel;

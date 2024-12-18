@@ -7,31 +7,31 @@
 -makelib xcelium_lib/xil_defaultlib \
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/mux2_twiddle_1/src/mux2.v" \
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/mux2_twiddle_1/sim/mux2_twiddle.v" \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/mux2_0/sim/mux2_0.v" \
 -endlib
 -makelib xcelium_lib/xbip_utils_v3_0_10 \
-  "../../../ipstatic/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
+  "../../../ipstatic/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/xbip_pipe_v3_0_6 \
-  "../../../ipstatic/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
+  "../../../ipstatic/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/xbip_bram18k_v3_0_6 \
-  "../../../ipstatic/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_bram18k_v3_0_vh_rfs.vhd" \
+  "../../../ipstatic/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/multiplier/hdl/xbip_bram18k_v3_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/mult_gen_v12_0_17 \
-  "../../../ipstatic/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/hdl/mult_gen_v12_0_vh_rfs.vhd" \
+  "../../../ipstatic/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/multiplier/hdl/mult_gen_v12_0_vh_rfs.vhd" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/multiplier/sim/multiplier.vhd" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/full_adder.v" \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v" \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/src/shift_r.v" \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/sim/shift_right_fractional_len.v" \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/src/butterfly_full.v" \
-  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/butterfly_full_ip_0/sim/butterfly_full_ip_0.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/full_adder.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/src/adder_subtracter32.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/adder_subtracter32_ip/sim/adder_subtracter32_ip.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/src/shift_r.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/butterfly_full.srcs/sources_1/ip/shift_right_fractional_len/sim/shift_right_fractional_len.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/src/butterfly_full.v" \
+  "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/src/butterfly_full_ip_0_1/sim/butterfly_full_ip_0.v" \
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/demux2_0/src/demux2.v" \
   "../../../../fft_test.gen/sources_1/ip/fft_data_path_1_1/data_path/data_path.srcs/sources_1/ip/demux2_0/sim/demux2_0.v" \
 -endlib

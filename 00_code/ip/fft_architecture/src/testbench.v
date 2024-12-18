@@ -12,20 +12,22 @@ reg rstn;
 
 reg [31:0] x0_re;
 reg [31:0] x0_im;
-reg [31:0] x1_re;
-reg [31:0] x1_im;
+//reg [31:0] x1_re;
+//reg [31:0] x1_im;
 
 reg start;
+reg dl_busy;
 
 // DUT outputs
 wire fft_ready;
+wire busy;
 
 wire [31:0] X0_re;
 wire [31:0] X0_im;
-wire [31:0] X1_re;
-wire [31:0] X1_im;
+//wire [31:0] X1_re;
+//wire [31:0] X1_im;
 
-localparam N = 11'd32;
+localparam N = 11'd1024;
 
 wire [$clog2(N)-1:0] reversed_address;
 
@@ -46,13 +48,13 @@ integer i_out;  // num iterations
 integer num_errors;
 
 /**************** FILENAMES ***************/
-localparam INPUT_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/input.txt";
+localparam INPUT_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/input.txt";
 
-localparam GOLDEN_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/golden_re.txt";
-localparam GOLDEN_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/golden_im.txt";
+localparam GOLDEN_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/golden_re.txt";
+localparam GOLDEN_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/golden_im.txt";
 
-localparam OUTPUT_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/output_re.txt";
-localparam OUTPUT_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/output_im.txt";
+localparam OUTPUT_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/output_re.txt";
+localparam OUTPUT_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/output_im.txt";
 
 /******************** TESTS *********************/
 wire [31:0] x0_re_ram;
@@ -82,15 +84,17 @@ fft_architecture #(N) dut(
     .rstn(rstn),
     .x0_re_i(x0_re),
     .x0_im_i(x0_im),
-    .x1_re_i(x1_re),
-    .x1_im_i(x1_im),
+//    .x1_re_i(x1_re),
+//    .x1_im_i(x1_im),
     .start_i(start),
+    .dl_busy_i(dl_busy),
     
     .fft_ready_o(fft_ready),
+    .busy_o(busy),
     .x0_re_o(X0_re),
     .x0_im_o(X0_im),
-    .x1_re_o(X1_re),
-    .x1_im_o(X1_im),
+//    .x1_re_o(X1_re),
+//    .x1_im_o(X1_im),
     
     .x0_re_ram(x0_re_ram),
     .x0_im_ram(x0_im_ram),
@@ -113,10 +117,10 @@ fft_architecture #(N) dut(
     .state(state)
 );
 
-bit_reversed_address_0 bit_reversal (
-  .index_i(i_in),        // input wire [9 : 0] index_i
-  .reversed_o(reversed_address)  // output wire [9 : 0] reversed_o
-);
+//bit_reversed_address_0 bit_reversal (
+//  .index_i(i_in),        // input wire [9 : 0] index_i
+//  .reversed_o(reversed_address)  // output wire [9 : 0] reversed_o
+//);
 
 /************** STIMULUS ************/
 always #(`CLK_PERIOD/2) clk = ~clk;
@@ -133,14 +137,16 @@ initial begin
 
     x0_re = 32'd0;
     x0_im = 32'd0;
-    x1_re = 32'd0;
-    x1_im = 32'd0;
+//    x1_re = 32'd0;
+//    x1_im = 32'd0;
 
     #(`CLK_PERIOD*15); // 3 clk cycles
     start = 1;
     
     #(`CLK_PERIOD * N); // 3 clk cycles
     start = 0;
+    
+    dl_busy = 0;
 end
 
 initial i_in <= 0;
@@ -171,7 +177,8 @@ always @(posedge clk or negedge rstn) begin
 //        #(`CLK_PERIOD*1); // if you give inputs immed/ after the start is asserted,
         // the inputs passed to the dut are not correct 
         
-        x0_re <= input_buf[reversed_address];
+//        x0_re <= input_buf[reversed_address];
+        x0_re <= input_buf[i_in];
         x0_im <= 32'h0;
 
         i_in = i_in + 1;

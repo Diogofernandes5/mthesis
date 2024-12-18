@@ -47,7 +47,7 @@
 // DO NOT MODIFY THIS FILE.
 
 // IP VLNV: user.org:user:control_unit:2.0
-// IP Revision: 33
+// IP Revision: 47
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections
@@ -58,8 +58,10 @@ fft_control_unit_2 your_instance_name (
   .clk(clk),                        // input wire clk
   .rstn(rstn),                      // input wire rstn
   .start_i(start_i),                // input wire start_i
+  .dl_busy_i(dl_busy_i),            // input wire dl_busy_i
   .src_sel_o(src_sel_o),            // output wire src_sel_o
   .fft_ready_o(fft_ready_o),        // output wire fft_ready_o
+  .busy_o(busy_o),                  // output wire busy_o
   .bf_ce_o(bf_ce_o),                // output wire bf_ce_o
   .bram_addr_x0_o(bram_addr_x0_o),  // output wire [9 : 0] bram_addr_x0_o
   .bram_addr_x1_o(bram_addr_x1_o),  // output wire [9 : 0] bram_addr_x1_o
