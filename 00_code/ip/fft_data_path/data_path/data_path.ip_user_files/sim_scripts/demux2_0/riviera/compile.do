@@ -14,8 +14,8 @@ vcom -work xpm -93 \
 "/tools/Xilinx/Vivado/2021.1/data/ip/xpm/xpm_VCOMP.vhd" \
 
 vlog -work xil_defaultlib  -v2k5 \
-"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/src/demux2.v" \
-"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/sim/demux2_0.v" \
+"../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/src/demux2.v" \
+"../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/sim/demux2_0.v" \
 
 vlog -work xil_defaultlib \
 "glbl.v"

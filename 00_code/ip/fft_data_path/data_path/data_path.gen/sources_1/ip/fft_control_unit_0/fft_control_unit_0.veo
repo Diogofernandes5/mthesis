@@ -47,7 +47,7 @@
 // DO NOT MODIFY THIS FILE.
 
 // IP VLNV: user.org:user:fft_control_unit:1.0
-// IP Revision: 18
+// IP Revision: 24
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections
@@ -58,6 +58,7 @@ fft_control_unit_0 your_instance_name (
   .clk(clk),                        // input wire clk
   .rstn(rstn),                      // input wire rstn
   .start_i(start_i),                // input wire start_i
+  .stage_num_i(stage_num_i),        // input wire [2 : 0] stage_num_i
   .src_sel_o(src_sel_o),            // output wire src_sel_o
   .fft_ready_o(fft_ready_o),        // output wire fft_ready_o
   .bram_we_o(bram_we_o),            // output wire bram_we_o
@@ -65,7 +66,8 @@ fft_control_unit_0 your_instance_name (
   .bf_ce_o(bf_ce_o),                // output wire bf_ce_o
   .bram_addr_o(bram_addr_o),        // output wire [9 : 0] bram_addr_o
   .twiddle_addr_o(twiddle_addr_o),  // output wire [9 : 0] twiddle_addr_o
-  .state(state)                    // output wire [2 : 0] state
+  .state(state),                    // output wire [2 : 0] state
+  .stage_counter(stage_counter)    // output wire [2 : 0] stage_counter
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

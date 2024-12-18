@@ -1,0 +1,1 @@
+vopt -64 +acc=npr -l elaborate.log -L xil_defaultlib -L xpm -L xbip_utils_v3_0_10 -L xbip_pipe_v3_0_6 -L xbip_bram18k_v3_0_6 -L mult_gen_v12_0_17 -L blk_mem_gen_v8_4_4 -L unisims_ver -L unimacro_ver -L secureip -work xil_defaultlib xil_defaultlib.fft_data_path_1 xil_defaultlib.glbl -o fft_data_path_1_opt

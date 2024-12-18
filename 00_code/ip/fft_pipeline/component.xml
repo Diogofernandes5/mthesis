@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>user.org</spirit:vendor>
+  <spirit:library>user</spirit:library>
+  <spirit:name>fft_pipeline</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:busInterfaces>
+    <spirit:busInterface>
+      <spirit:name>rstn</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rstn</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.RSTN.POLARITY" spirit:choiceRef="choice_list_9d8b0d81">ACTIVE_LOW</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>clk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>clk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.CLK.ASSOCIATED_RESET">rstn</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+  </spirit:busInterfaces>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagesynthesis</spirit:name>
+        <spirit:displayName>Synthesis</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:language>Verilog</spirit:language>
+        <spirit:modelName>fft_1024_point</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_xilinx_com_ip_blk_mem_gen_8_4__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_user_org_user_fft_data_path_1_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_user_org_user_control_unit_2_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>cf132abc</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagebehavioralsimulation</spirit:name>
+        <spirit:displayName>Simulation</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:language>Verilog</spirit:language>
+        <spirit:modelName>fft_1024_point</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_blk_mem_gen_8_4__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_user_org_user_fft_data_path_1_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_user_org_user_control_unit_2_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>cf132abc</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_testbench</spirit:name>
+        <spirit:displayName>Test Bench</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation.testbench</spirit:envIdentifier>
+        <spirit:modelName>fft_1024_point_tb</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_testbench_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>265ba642</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_xpgui</spirit:name>
+        <spirit:displayName>UI Layout</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:xgui.ui</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_xpgui_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>b6b96b1a</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>clk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rstn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>start_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dl_busy_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x0_re_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x0_im_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>fft_ready_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>busy_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x0_re_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x0_im_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>X0_re_1st</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>X0_im_1st</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>fft_ready_1st</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x0_re_ram</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x0_im_ram</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x1_re_ram</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>x1_im_ram</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>X0_re_bf</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>X0_im_bf</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>X1_re_bf</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>X1_im_bf</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>w_re</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">13</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>w_im</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">13</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>bram_addr_x0</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">9</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>bram_addr_x1</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">9</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>bram_x0_en</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>bram_x1_en</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>twiddle_addr</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,(spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)) / 2))) - 1)">8</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>state</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>busy_stage1</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+    <spirit:modelParameters>
+      <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
+        <spirit:name>N</spirit:name>
+        <spirit:displayName>N</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.N">1024</spirit:value>
+      </spirit:modelParameter>
+    </spirit:modelParameters>
+  </spirit:model>
+  <spirit:choices>
+    <spirit:choice>
+      <spirit:name>choice_list_9d8b0d81</spirit:name>
+      <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
+      <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
+    </spirit:choice>
+    <spirit:choice>
+      <spirit:name>choice_list_c41ee9ac</spirit:name>
+      <spirit:enumeration>1024</spirit:enumeration>
+      <spirit:enumeration>512</spirit:enumeration>
+      <spirit:enumeration>256</spirit:enumeration>
+      <spirit:enumeration>128</spirit:enumeration>
+      <spirit:enumeration>64</spirit:enumeration>
+      <spirit:enumeration>32</spirit:enumeration>
+      <spirit:enumeration>16</spirit:enumeration>
+      <spirit:enumeration>8</spirit:enumeration>
+    </spirit:choice>
+  </spirit:choices>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>src/fft_w_im_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_w_re_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_data_path_0/fft_data_path_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/w_im_bram/w_im_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_im/w_im_bram</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/w_re_bram/w_re_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_re/w_re_bram</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_control_unit_2/fft_control_unit_2.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_7_9/control_unit/fft_control_unit_2</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_control_unit_1/fft_control_unit_1.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_3_6/control_unit/fft_control_unit_1</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_control_unit_0/fft_control_unit_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/control_unit/fft_control_unit_0</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_architecture_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_architecture_1.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_architecture_2.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_1024_point.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_im_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_re_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_data_path_0/fft_data_path_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_control_unit_0_1/fft_control_unit_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_control_unit_1_2/fft_control_unit_1.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_control_unit_2_1/fft_control_unit_2.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/w_im_bram/w_im_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_im</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/w_re_bram/w_re_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_re</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/src/fft_architecture_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/src/fft_architecture_1.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/src/fft_architecture_2.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/imports/00_code/tests/fft_test/src/fft_1024_point.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_b8e99cb2</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_xilinx_com_ip_blk_mem_gen_8_4__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="blk_mem_gen" xilinx:version="8.4">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_user_org_user_fft_data_path_1_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="user.org" xilinx:library="user" xilinx:name="fft_data_path" xilinx:version="1.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_user_org_user_control_unit_2_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="user.org" xilinx:library="user" xilinx:name="control_unit" xilinx:version="2.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>src/fft_w_im_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_w_re_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_data_path_0/fft_data_path_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/w_im_bram/w_im_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_im/w_im_bram</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/w_re_bram/w_re_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_re/w_re_bram</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_control_unit_2/fft_control_unit_2.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_7_9/control_unit/fft_control_unit_2</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_control_unit_1/fft_control_unit_1.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_3_6/control_unit/fft_control_unit_1</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_control_unit_0/fft_control_unit_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/control_unit/fft_control_unit_0</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_architecture_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_architecture_1.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_architecture_2.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_1024_point.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_im_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_re_twiddles.COE</spirit:name>
+        <spirit:userFileType>coe</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_data_path_0/fft_data_path_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_control_unit_0_1/fft_control_unit_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_control_unit_1_2/fft_control_unit_1.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/fft_control_unit_2_1/fft_control_unit_2.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/w_im_bram/w_im_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_im</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/ip/w_re_bram/w_re_bram.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_stage_0_2/twiddle_re</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/src/fft_architecture_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/src/fft_architecture_1.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/src/fft_architecture_2.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sources_1/imports/00_code/tests/fft_test/src/fft_1024_point.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_blk_mem_gen_8_4__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="blk_mem_gen" xilinx:version="8.4">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_user_org_user_fft_data_path_1_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="user.org" xilinx:library="user" xilinx:name="fft_data_path" xilinx:version="1.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_user_org_user_control_unit_2_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="user.org" xilinx:library="user" xilinx:name="control_unit" xilinx:version="2.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_testbench_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>src/fft_1024_point_tb.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/fft_1024_point_tb_behav.wcfg</spirit:name>
+        <spirit:fileType>unknown</spirit:fileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sim/imports/fft_test/sim/fft_1024_point_tb.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/fft_test/fft_test.srcs/sim/imports/fft_test/fft_1024_point_tb_behav.wcfg</spirit:name>
+        <spirit:fileType>unknown</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>xgui/fft_pipeline_v1_0.tcl</spirit:name>
+        <spirit:fileType>tclSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_b6b96b1a</spirit:userFileType>
+        <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>Various FFT architectures pipelined in order to increase bandwidth</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>N</spirit:name>
+      <spirit:displayName>N</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.N" spirit:choiceRef="choice_list_c41ee9ac">1024</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">fft_1024_point_v1_0</spirit:value>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:supportedFamilies>
+        <xilinx:family xilinx:lifeCycle="Production">zynq</xilinx:family>
+      </xilinx:supportedFamilies>
+      <xilinx:taxonomies>
+        <xilinx:taxonomy>/UserIP</xilinx:taxonomy>
+      </xilinx:taxonomies>
+      <xilinx:displayName>FFT Pipeline</xilinx:displayName>
+      <xilinx:definitionSource>package_project</xilinx:definitionSource>
+      <xilinx:xpmLibraries>
+        <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
+      </xilinx:xpmLibraries>
+      <xilinx:vendorDisplayName>FFT Pipeline</xilinx:vendorDisplayName>
+      <xilinx:coreRevision>14</xilinx:coreRevision>
+      <xilinx:upgrades>
+        <xilinx:canUpgradeFrom>user.org:user:fft_1024_point:1.0</xilinx:canUpgradeFrom>
+      </xilinx:upgrades>
+      <xilinx:coreCreationDateTime>2024-12-18T00:23:43Z</xilinx:coreCreationDateTime>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@daddf48_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6920ffd5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7bb5c18c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4a3b882e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@45aff34_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@351d39b1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6392ed3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@39f158c4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@b2c7a64_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@463a6998_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@8ee35cf_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@63a8a5e3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@721a27b3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58301e6c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7decea9b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2f01c37f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a1bd149_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4aa0d73d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3c298573_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@79df68d9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1867170e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@211a0af1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e297143_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@352dc6eb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f6d4ba5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1f7e512b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72ea1310_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6891a60f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@65aac08c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@45d03d6b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@25edd6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3c112a3f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@33fb16f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@60e1ed36_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3c7f4ac8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4246921f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78828e09_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@51d68d0c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@192b1cad_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@312efe8b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3a2b954b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@257a013b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@539b0d05_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@43676295_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@626bfd74_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4cf6bef7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3be426a5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67b616d6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@ee59949_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3d6367c8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72df5971_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7eb9880f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@577c811d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1137d5ce_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5c4ec917_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@549e0db0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3711bf10_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@177315d3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5bbcf14_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5c1da6e4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6461b9e0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73e4e02f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@37c3dd1d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1beacdb2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f43cc3a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@c357b08_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2d6983b6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@19ae3401_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6535d2a4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1eca6a5b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1c5e0e2b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4590ff16_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@28ec35ab_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@98ed0c3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29c5dcc_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b52f2a2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@360ac250_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@13566ae5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@23943a00_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2865c55a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3fb3d0a8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@20745deb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@174e83db_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@132982a6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2e0e770b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29f0c511_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1d859bec_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ee8fd97_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4b250b36_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@282c7c12_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5aa84503_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7c006ec8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@117b9473_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1120ea39_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2b915304_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7c2e1d7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@44a8c98d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4513e765_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1127b066_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1d14e15_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41af7a38_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ec2c721_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@653b589c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5502702c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5f3f0f9c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3db29b45_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7efbb387_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6ee73b33_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@535c92b4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5d9cb8c8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@b906f0e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@d96a8c7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6ef0dd71_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f68df44_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4a60da2c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@15167edf_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26022d83_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e57d0ee_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5acad316_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2b1042c0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@298131b9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58c3b309_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3d70b4bd_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@111b7ab3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b585f83_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@25809b86_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@246a79d6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@13870202_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@359d9ff8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7150953c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ff25c2f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6b3596b0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17268c78_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@68fe2c4d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@65ee5c0f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@233cf031_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@495ea743_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@68c7d56c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@28767cd2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@114787f2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@284f6085_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5959388e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5f998266_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3707e9fe_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@c7c4dc8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2fda57b1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6f9adf04_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1db37531_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56a23f46_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b06cc6c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4259f689_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@9de6ca1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d73be3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1691f8b1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1e49c42d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@348ffd22_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@63868899_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29e55808_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6d00ddb9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@c0dc455_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5f0aaef2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@22e67242_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f7fa08f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2ef71d7b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7f7a37cb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ae24fa4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6261597d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7eb426f5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@39e25a9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f3ab123_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6fa1dcc1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@9284773_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@28f8d955_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@d5cacc8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@38d729aa_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1bd07bfc_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5713d84c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3f99311a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@774b9bf5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56baa896_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7062f102_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@10eb0aff_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@79d3ad53_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@642571d6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3c595e3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@701cb314_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@143d2232_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3a0f06f6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@315b042e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@798e6b8f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5899f1c7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@532b7a43_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5cbf6218_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@19ef863e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17ea6129_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3733f43c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26a55a07_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73c8cfdf_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4b0702ed_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4054d856_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@334c5178_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@174ca563_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5bb61f27_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26286673_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@25af7d88_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3231b131_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7b74b71a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2305022c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@18c30f0a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5fc268ec_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@207487a3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d4a0a87_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ccebe17_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1469e4f3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e20022_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@290449fe_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5b83ed31_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2cdef172_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ec50f89_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2e1d16d7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@141d1377_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6c0b5fd3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4b24c01d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/fft_pipeline</xilinx:tag>
+      </xilinx:tags>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dbc0055f"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="31339fba"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="fa188377"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="d842010d"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="7a95ff1b"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>

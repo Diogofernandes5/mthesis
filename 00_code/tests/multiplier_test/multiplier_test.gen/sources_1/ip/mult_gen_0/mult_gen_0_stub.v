@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Fri May 31 15:10:23 2024
+// Date        : Fri May 31 15:01:18 2024
 // Host        : fernandes420 running 64-bit Ubuntu 22.04.4 LTS
 // Command     : write_verilog -force -mode synth_stub -rename_top mult_gen_0 -prefix
 //               mult_gen_0_ mult_gen_0_stub.v

@@ -1,0 +1,30 @@
+digraph StateDiagram {
+    // General settings
+    rankdir=LR; // Left-to-right layout
+    node [shape=oval, style=filled, color=lightgray, fontname="~/.local/share/fonts/NewsGotTBold.ttf"];
+
+    // State declarations with positions
+    RESET            [label="", pos="0,0!", shape=point, color=black, size=3];
+    S_IDLE          [label="S_IDLE", pos="1,0!"];
+    S_FILL_MEM      [label="S_FILL_MEM", pos="2,0!"];
+    S_CHECK_J       [label="S_CHECK_J", pos="3,0!"];
+    S_CHECK_N       [label="S_CHECK_N", pos="5,0!"];
+    S_READ_MEM      [label="S_READ_MEM", pos="6,1!"];
+    S_MULTIPLY      [label="S_MULTIPLY", pos="5,2!"];
+    S_WRITE_MEM     [label="S_WRITE_MEM", pos="4,1!"];
+    S_S_IFFT        [label="S_S_IFFT", pos="3,1!"];
+
+    // Transitions between states
+    RESET           -> S_IDLE;
+    S_IDLE          -> S_FILL_MEM [label="fft_ready"];
+    S_FILL_MEM      -> S_CHECK_J     [label="data_counter = N"];
+    S_CHECK_J       -> S_CHECK_N     [label="counter_j ≠ J1"];
+    S_CHECK_N       -> S_READ_MEM  [label="counter_n ≠ N"];
+    S_READ_MEM      -> S_MULTIPLY;
+    S_MULTIPLY      -> S_WRITE_MEM [label = "cycle_counter = 5"];
+    S_WRITE_MEM     -> S_CHECK_N;
+
+    S_CHECK_N       -> S_S_IFFT [label="counter_n = N"];
+    S_S_IFFT        -> S_CHECK_J [label="data_counter = N"];
+    S_CHECK_J       -> S_IDLE [label="counter_j = J1"];   
+}

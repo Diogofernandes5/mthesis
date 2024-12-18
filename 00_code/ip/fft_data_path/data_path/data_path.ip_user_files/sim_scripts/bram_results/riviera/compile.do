@@ -19,7 +19,7 @@ vlog -work blk_mem_gen_v8_4_4  -v2k5 \
 "../../../ipstatic/simulation/blk_mem_gen_v8_4.v" \
 
 vlog -work xil_defaultlib  -v2k5 \
-"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/bram_results/sim/bram_results.v" \
+"../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/bram_results/sim/bram_results.v" \
 
 
 vlog -work xil_defaultlib \

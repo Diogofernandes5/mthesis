@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="fft_1024_point_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="fft_1024_point_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="6.038434 us"></ZoomStartTime>
+      <ZoomEndTime time="82.938435 us"></ZoomEndTime>
+      <Cursor1Time time="18.855100 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="164"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="25" />
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/rstn">
+      <obj_property name="ElementShortName">rstn</obj_property>
+      <obj_property name="ObjectShortName">rstn</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/x0_re">
+      <obj_property name="ElementShortName">x0_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/x0_im">
+      <obj_property name="ElementShortName">x0_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_im[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/start">
+      <obj_property name="ElementShortName">start</obj_property>
+      <obj_property name="ObjectShortName">start</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/fft_ready">
+      <obj_property name="ElementShortName">fft_ready</obj_property>
+      <obj_property name="ObjectShortName">fft_ready</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X0_re">
+      <obj_property name="ElementShortName">X0_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X0_im">
+      <obj_property name="ElementShortName">X0_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X0_re_1st">
+      <obj_property name="ElementShortName">X0_re_1st[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_re_1st[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X0_im_1st">
+      <obj_property name="ElementShortName">X0_im_1st[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_im_1st[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/fft_ready_1st">
+      <obj_property name="ElementShortName">fft_ready_1st</obj_property>
+      <obj_property name="ObjectShortName">fft_ready_1st</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/bram_x0_en">
+      <obj_property name="ElementShortName">bram_x0_en</obj_property>
+      <obj_property name="ObjectShortName">bram_x0_en</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/bram_x1_en">
+      <obj_property name="ElementShortName">bram_x1_en</obj_property>
+      <obj_property name="ObjectShortName">bram_x1_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/bram_addr_x0_w">
+      <obj_property name="ElementShortName">bram_addr_x0_w[9:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_addr_x0_w[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/bram_addr_x1_w">
+      <obj_property name="ElementShortName">bram_addr_x1_w[9:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_addr_x1_w[9:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/fft_1024_point_tb/busy_stage1">
+      <obj_property name="ElementShortName">busy_stage1</obj_property>
+      <obj_property name="ObjectShortName">busy_stage1</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/x0_re_ram">
+      <obj_property name="ElementShortName">x0_re_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_re_ram[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/x0_im_ram">
+      <obj_property name="ElementShortName">x0_im_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x0_im_ram[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/x1_re_ram">
+      <obj_property name="ElementShortName">x1_re_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_re_ram[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/x1_im_ram">
+      <obj_property name="ElementShortName">x1_im_ram[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x1_im_ram[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X0_re_bf">
+      <obj_property name="ElementShortName">X0_re_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_re_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X0_im_bf">
+      <obj_property name="ElementShortName">X0_im_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X0_im_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X1_re_bf">
+      <obj_property name="ElementShortName">X1_re_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_re_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/X1_im_bf">
+      <obj_property name="ElementShortName">X1_im_bf[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X1_im_bf[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/state">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+</wave_config>

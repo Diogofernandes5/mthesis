@@ -1,6 +1,6 @@
 verilog xil_defaultlib  \
-"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/src/demux2.v" \
-"../../../../../../../tests/fft_architecture/fft_architecture.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/sim/demux2_0.v" \
+"../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/src/demux2.v" \
+"../../../../../../../tests/fft_test/fft_test.tmp/fft_data_path_v1_0_project/fft_data_path_v1_0_project.gen/sources_1/ip/demux2_0/sim/demux2_0.v" \
 
 verilog xil_defaultlib "glbl.v"
 

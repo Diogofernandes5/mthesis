@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: user.org:user:fft_control_unit:1.0
--- IP Revision: 18
+-- IP Revision: 24
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -57,6 +57,7 @@ COMPONENT fft_control_unit_0
     clk : IN STD_LOGIC;
     rstn : IN STD_LOGIC;
     start_i : IN STD_LOGIC;
+    stage_num_i : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
     src_sel_o : OUT STD_LOGIC;
     fft_ready_o : OUT STD_LOGIC;
     bram_we_o : OUT STD_LOGIC;
@@ -64,7 +65,8 @@ COMPONENT fft_control_unit_0
     bf_ce_o : OUT STD_LOGIC;
     bram_addr_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
     twiddle_addr_o : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
-    state : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
+    state : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    stage_counter : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -78,6 +80,7 @@ your_instance_name : fft_control_unit_0
     clk => clk,
     rstn => rstn,
     start_i => start_i,
+    stage_num_i => stage_num_i,
     src_sel_o => src_sel_o,
     fft_ready_o => fft_ready_o,
     bram_we_o => bram_we_o,
@@ -85,7 +88,8 @@ your_instance_name : fft_control_unit_0
     bf_ce_o => bf_ce_o,
     bram_addr_o => bram_addr_o,
     twiddle_addr_o => twiddle_addr_o,
-    state => state
+    state => state,
+    stage_counter => stage_counter
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 

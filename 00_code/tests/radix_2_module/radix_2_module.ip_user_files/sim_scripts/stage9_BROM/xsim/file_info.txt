@@ -1,2 +1,0 @@
-stage9_BROM.v,verilog,xil_defaultlib,../../../../radix_2_module.gen/sources_1/ip/stage9_BROM/sim/stage9_BROM.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

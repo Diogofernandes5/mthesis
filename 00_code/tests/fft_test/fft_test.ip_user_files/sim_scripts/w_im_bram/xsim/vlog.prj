@@ -1,0 +1,6 @@
+verilog xil_defaultlib  \
+"../../../../../../cwt/cwt.tmp/fft_pipeline_v1_0_project/fft_pipeline_v1_0_project.gen/sources_1/ip/w_im_bram/sim/w_im_bram.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+nosort

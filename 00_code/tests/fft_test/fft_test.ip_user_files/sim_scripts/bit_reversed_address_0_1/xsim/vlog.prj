@@ -1,0 +1,7 @@
+verilog xil_defaultlib  \
+"../../../../fft_test.gen/sources_1/ip/bit_reversed_address_0_1/src/bit_reversal.v" \
+"../../../../fft_test.gen/sources_1/ip/bit_reversed_address_0_1/sim/bit_reversed_address_0.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+nosort
