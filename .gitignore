@@ -176,9 +176,9 @@ xelab.*
 xsim.*
 xvlog.*
 *.cache
-*.tmp
-*.gen
-*.ip_user_files
+*.tmp/
+*.gen/
+*.ip_user_files/
 *.sim
 *.runs
 *.hw
