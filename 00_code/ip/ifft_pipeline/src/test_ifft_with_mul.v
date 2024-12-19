@@ -92,7 +92,7 @@ ifft_pipeline ifft (
 	.clk(clk),            
 	.rstn(rstn),
 	.start_i(start_ifft),
-	.dl_busy_i(store_busy),   
+	.dl_busy_i(dl_busy_i),   
 	.x0_re_i(mul_re),
 	.x0_im_i(mul_im),
 	.ifft_ready_o(ifft_ready),  
