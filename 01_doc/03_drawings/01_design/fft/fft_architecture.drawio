@@ -1,21 +1,21 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0" version="25.0.3">
   <diagram name="Page-1" id="Juiqj6YkxCS37qnOwY-p">
-    <mxGraphModel dx="1366" dy="730" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1147" dy="613" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="6dm7ZZ2Ce49l9A71G7zG-19" value="clk" style="endArrow=none;html=1;rounded=0;align=right;fontFamily=NewsGotT;" parent="1" edge="1">
-          <mxGeometry x="-1" y="-10" width="50" height="50" relative="1" as="geometry">
+          <mxGeometry x="-1" y="-5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="90" y="40" as="sourcePoint" />
             <mxPoint x="400" y="40" as="targetPoint" />
-            <mxPoint x="-10" y="-10" as="offset" />
+            <mxPoint x="-5" y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="6dm7ZZ2Ce49l9A71G7zG-20" value="rstn" style="endArrow=none;html=1;rounded=0;align=right;labelBackgroundColor=none;fontFamily=NewsGotT;" parent="1" edge="1">
-          <mxGeometry x="-1" y="-10" width="50" height="50" relative="1" as="geometry">
+          <mxGeometry x="-1" y="-5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="90" y="50" as="sourcePoint" />
             <mxPoint x="390" y="50" as="targetPoint" />
-            <mxPoint x="-10" y="-10" as="offset" />
+            <mxPoint x="-5" y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="6dm7ZZ2Ce49l9A71G7zG-23" value="" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;startArrow=oval;startFill=1;startSize=3;entryX=0.004;entryY=0.607;entryDx=0;entryDy=0;entryPerimeter=0;endFill=1;" parent="1" target="GUa0Qi7QkAxoq6VWGlQY-3" edge="1">
@@ -258,25 +258,25 @@
           <mxGeometry x="644" y="296.5" width="65" height="20" as="geometry" />
         </mxCell>
         <mxCell id="GUa0Qi7QkAxoq6VWGlQY-64" value="fft_ready_o" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;startArrow=oval;startFill=1;startSize=3;endFill=1;align=left;fontFamily=NewsGotT;" parent="1" edge="1">
-          <mxGeometry x="1" width="50" height="50" relative="1" as="geometry">
+          <mxGeometry x="1" y="5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="460" y="188" as="sourcePoint" />
             <mxPoint x="760" y="80" as="targetPoint" />
             <Array as="points">
               <mxPoint x="460" y="80" />
               <mxPoint x="760" y="80" />
             </Array>
-            <mxPoint as="offset" />
+            <mxPoint x="4" y="5" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="GUa0Qi7QkAxoq6VWGlQY-65" value="busy_o" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;startArrow=oval;startFill=1;startSize=3;endFill=1;align=left;fontFamily=NewsGotT;" parent="1" edge="1">
-          <mxGeometry x="1" width="50" height="50" relative="1" as="geometry">
+          <mxGeometry x="1" y="5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="440" y="216" as="sourcePoint" />
             <mxPoint x="760" y="60" as="targetPoint" />
             <Array as="points">
               <mxPoint x="440" y="60" />
               <mxPoint x="740" y="60" />
             </Array>
-            <mxPoint as="offset" />
+            <mxPoint x="5" y="5" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="GUa0Qi7QkAxoq6VWGlQY-70" value="&lt;b&gt;(N/2)-point&lt;br&gt;BROM&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;verticalAlign=middle;" parent="1" vertex="1">
