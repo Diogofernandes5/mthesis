@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="6.038434 us"></ZoomStartTime>
-      <ZoomEndTime time="82.938435 us"></ZoomEndTime>
-      <Cursor1Time time="18.855100 us"></Cursor1Time>
+      <ZoomStartTime time="0.170100 us"></ZoomStartTime>
+      <ZoomEndTime time="154.770101 us"></ZoomEndTime>
+      <Cursor1Time time="77.370100 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="164"></NameColumnWidth>
+      <NameColumnWidth column_width="160"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="25" />
+   <WVObjectSize size="27" />
    <wvobject type="logic" fp_name="/fft_1024_point_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -105,6 +105,16 @@
    <wvobject type="array" fp_name="/fft_1024_point_tb/x1_im_ram">
       <obj_property name="ElementShortName">x1_im_ram[31:0]</obj_property>
       <obj_property name="ObjectShortName">x1_im_ram[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/w_re">
+      <obj_property name="ElementShortName">w_re[13:0]</obj_property>
+      <obj_property name="ObjectShortName">w_re[13:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/fft_1024_point_tb/w_im">
+      <obj_property name="ElementShortName">w_im[13:0]</obj_property>
+      <obj_property name="ObjectShortName">w_im[13:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/fft_1024_point_tb/X0_re_bf">
       <obj_property name="ElementShortName">X0_re_bf[31:0]</obj_property>
