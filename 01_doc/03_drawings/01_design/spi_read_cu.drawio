@@ -18,7 +18,7 @@
         </mxCell>
         <mxCell id="8ndJ4Dx7o7mWH3u_3wzX-16" value="config_done" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];strokeColor=default;fontFamily=NewsGotT;fontSize=12;fontColor=default;fillColor=default;fontSource=https%3A%2F%2Fdb.onlinewebfonts.com%2Ft%2F17e268efa7d01d3f0d6c6c4d95f4326c.ttf;" parent="8ndJ4Dx7o7mWH3u_3wzX-15" vertex="1" connectable="0">
           <mxGeometry x="0.0209" y="-2" relative="1" as="geometry">
-            <mxPoint y="-12" as="offset" />
+            <mxPoint x="-3" y="-12" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="8ndJ4Dx7o7mWH3u_3wzX-1" value="&lt;font data-font-src=&quot;https://db.onlinewebfonts.com/t/17e268efa7d01d3f0d6c6c4d95f4326c.ttf&quot;&gt;S_CONFIG&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="1" vertex="1">
@@ -109,7 +109,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="6wwWtKmI32zQq1PJsMcs-4" value="&lt;div&gt;data_counter =&lt;/div&gt;&lt;div&gt;(DATA_PNTS_NUM - 1)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontFamily=NewsGotT;" parent="6wwWtKmI32zQq1PJsMcs-1" vertex="1" connectable="0">
+        <mxCell id="6wwWtKmI32zQq1PJsMcs-4" value="&lt;div&gt;data_counter =&lt;/div&gt;&lt;div&gt;(DATA_PNTS_NUM - 1)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontFamily=NewsGotT;fontSize=12;" parent="6wwWtKmI32zQq1PJsMcs-1" vertex="1" connectable="0">
           <mxGeometry x="-0.6508" y="2" relative="1" as="geometry">
             <mxPoint x="-56" y="8" as="offset" />
           </mxGeometry>
