@@ -71,9 +71,9 @@
             <mxPoint x="498" y="205" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="YgOZqRcbV0A6ej-FN-YM-20" value="&lt;div&gt;data_counter =&lt;/div&gt;&lt;div&gt;(DATA_PNTS_NUM - 1)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];strokeColor=default;fontFamily=NewsGotT;fontSize=12;fontColor=default;fillColor=default;labelBackgroundColor=none;" parent="YgOZqRcbV0A6ej-FN-YM-18" vertex="1" connectable="0">
+        <mxCell id="YgOZqRcbV0A6ej-FN-YM-20" value="&lt;div&gt;data_counter =&lt;/div&gt;&lt;div&gt;(N - 1)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];strokeColor=default;fontFamily=NewsGotT;fontSize=12;fontColor=default;fillColor=default;labelBackgroundColor=none;" parent="YgOZqRcbV0A6ej-FN-YM-18" vertex="1" connectable="0">
           <mxGeometry x="0.4975" y="-4" relative="1" as="geometry">
-            <mxPoint x="46" y="19" as="offset" />
+            <mxPoint x="41" y="19" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="6wwWtKmI32zQq1PJsMcs-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="8ndJ4Dx7o7mWH3u_3wzX-12" target="8ndJ4Dx7o7mWH3u_3wzX-10" edge="1">
@@ -109,7 +109,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="6wwWtKmI32zQq1PJsMcs-4" value="&lt;div&gt;data_counter =&lt;/div&gt;&lt;div&gt;(DATA_PNTS_NUM - 1)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontFamily=NewsGotT;fontSize=12;" parent="6wwWtKmI32zQq1PJsMcs-1" vertex="1" connectable="0">
+        <mxCell id="6wwWtKmI32zQq1PJsMcs-4" value="&lt;div&gt;data_counter =&lt;/div&gt;&lt;div&gt;(N - 1)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontFamily=NewsGotT;fontSize=12;" parent="6wwWtKmI32zQq1PJsMcs-1" vertex="1" connectable="0">
           <mxGeometry x="-0.6508" y="2" relative="1" as="geometry">
             <mxPoint x="-56" y="8" as="offset" />
           </mxGeometry>
