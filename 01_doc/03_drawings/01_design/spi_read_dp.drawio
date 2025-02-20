@@ -1,0 +1,96 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.15">
+  <diagram name="Page-1" id="Juiqj6YkxCS37qnOwY-p">
+    <mxGraphModel dx="1434" dy="766" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="IA69UJasPgT3WPHsJti2-14" value="&lt;b&gt;N-point&lt;br&gt;BRAM&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1215" y="407" width="110" height="163" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-39" value="&lt;div&gt;&lt;span&gt;Butterfly&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Unit&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;verticalAlign=middle;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="1175" y="139" width="190" height="213" as="geometry" />
+        </mxCell>
+        <mxCell id="6dm7ZZ2Ce49l9A71G7zG-19" value="clk" style="endArrow=none;html=1;rounded=0;align=right;fontFamily=NewsGotT;" parent="1" edge="1">
+          <mxGeometry x="-1" y="-10" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="90" y="40" as="sourcePoint" />
+            <mxPoint x="665" y="40" as="targetPoint" />
+            <mxPoint x="-10" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6dm7ZZ2Ce49l9A71G7zG-20" value="rstn" style="endArrow=none;html=1;rounded=0;align=right;labelBackgroundColor=none;fontFamily=NewsGotT;" parent="1" edge="1">
+          <mxGeometry x="-1" y="-10" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="90" y="50" as="sourcePoint" />
+            <mxPoint x="655" y="50" as="targetPoint" />
+            <mxPoint x="-10" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-15" value="rsta" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1215" y="440" width="25" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-16" value="" style="triangle;whiteSpace=wrap;html=1;fontFamily=NewsGotT;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;container=0;points=[];" parent="1" vertex="1">
+          <mxGeometry x="1215" y="427" width="7.5" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-17" value="ena" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1215" y="464" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-18" value="wea" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1215" y="489" width="25" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-19" value="addra" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1215" y="513" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-20" value="dina" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1215" y="537" width="25" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-21" value="" style="triangle;whiteSpace=wrap;html=1;fontFamily=NewsGotT;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;container=0;points=[[0,0.5,0,0,0]];" parent="1" vertex="1">
+          <mxGeometry x="1215" y="427" width="7.5" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-22" value="douta" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingRight=3;spacingLeft=-9;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1295" y="482" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-40" value="rstn" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1175" y="172" width="25" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-41" value="" style="triangle;whiteSpace=wrap;html=1;fontFamily=NewsGotT;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;container=0;points=[];" parent="1" vertex="1">
+          <mxGeometry x="1175" y="159" width="7.5" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-42" value="x0_re_i[31:0]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1175" y="196" width="65" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-43" value="x0_im_i[31:0]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1175" y="221" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-44" value="x1_re_i[31:0]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1175" y="245" width="65" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-45" value="x1_im_i[31:0]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1175" y="269" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-46" value="" style="triangle;whiteSpace=wrap;html=1;fontFamily=NewsGotT;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;container=0;points=[[0,0.5,0,0,0]];" parent="1" vertex="1">
+          <mxGeometry x="1175" y="159" width="7.5" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-47" value="X0_re_o[31:0]" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingRight=3;spacingLeft=-9;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1295" y="192" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-48" value="w_re_i[31:0]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1175" y="294" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-49" value="w_im_i[31:0]" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1175" y="318" width="65" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-50" value="X1_im_o[31:0]" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingRight=3;spacingLeft=-9;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1290" y="292" width="75" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-51" value="X0_im_o[31:0]" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingRight=3;spacingLeft=-9;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1290" y="225" width="75" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-52" value="X1_re_o[31:0]" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingRight=3;spacingLeft=-9;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
+          <mxGeometry x="1295" y="259" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IA69UJasPgT3WPHsJti2-53" value="&lt;div&gt;&lt;span&gt;Butterfly&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;Unit&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;verticalAlign=middle;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="460" y="314" width="190" height="66" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
