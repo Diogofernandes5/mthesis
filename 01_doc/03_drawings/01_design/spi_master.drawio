@@ -344,9 +344,6 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="c9cJgYokBX9ZUptAvbR2-2" value="SPI_CS" style="shape=umlFrame;whiteSpace=wrap;html=1;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=NewsGotT;fontSize=12;align=center;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;width=70;height=30;" parent="1" vertex="1">
-          <mxGeometry x="40" y="50" width="360" height="220" as="geometry" />
-        </mxCell>
         <mxCell id="Ms3gGG7uMFidcv7oumdJ-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=1;exitX=0.827;exitY=0.504;exitDx=0;exitDy=0;exitPerimeter=0;fontFamily=NewsGotT;" parent="1" source="Ms3gGG7uMFidcv7oumdJ-3" target="Ms3gGG7uMFidcv7oumdJ-6" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
