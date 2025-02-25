@@ -245,7 +245,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="gen_MOSI" id="FGWfnBXD2xk0XfU0DvZj">
-    <mxGraphModel dx="683" dy="365" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="819" dy="438" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="MGjckKWtUcC9TWvVRbn3-0" />
         <mxCell id="MGjckKWtUcC9TWvVRbn3-1" parent="MGjckKWtUcC9TWvVRbn3-0" />
@@ -285,8 +285,10 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="k-y24zHJ9dBwwEzc2l2r-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="MGjckKWtUcC9TWvVRbn3-1" source="EVZVs84WL8PhdZthwsJN-0" target="k-y24zHJ9dBwwEzc2l2r-0" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="k-y24zHJ9dBwwEzc2l2r-1" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="MGjckKWtUcC9TWvVRbn3-1" source="EVZVs84WL8PhdZthwsJN-0" target="k-y24zHJ9dBwwEzc2l2r-0" edge="1">
+          <mxGeometry x="-0.75" y="-15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="EVZVs84WL8PhdZthwsJN-0" value="&lt;div&gt;(leading_edge &amp;amp; CPHA)&amp;nbsp;&lt;/div&gt;&lt;div&gt;| (trailing_edge &amp;amp; ~CPHA)&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="MGjckKWtUcC9TWvVRbn3-1" vertex="1">
           <mxGeometry x="267.5" y="290" width="195" height="90" as="geometry" />
