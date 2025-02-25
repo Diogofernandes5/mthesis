@@ -290,7 +290,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="EVZVs84WL8PhdZthwsJN-0" value="&lt;div&gt;(leading_edge &amp;amp; CPHA)&amp;nbsp;&lt;/div&gt;&lt;div&gt;| (trailing_edge &amp;amp; ~CPHA)&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="MGjckKWtUcC9TWvVRbn3-1" vertex="1">
+        <mxCell id="EVZVs84WL8PhdZthwsJN-0" value="&lt;div&gt;(leading_edge &amp;amp; CPHA)&amp;nbsp;&lt;/div&gt;&lt;div&gt;| (trailing_edge &amp;amp; ~CPHA)?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="MGjckKWtUcC9TWvVRbn3-1" vertex="1">
           <mxGeometry x="267.5" y="290" width="195" height="90" as="geometry" />
         </mxCell>
         <mxCell id="Nq2_ut0WSf8F-rVN5TmE-4" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="MGjckKWtUcC9TWvVRbn3-1" source="Nq2_ut0WSf8F-rVN5TmE-1" target="Nq2_ut0WSf8F-rVN5TmE-3" edge="1">
@@ -303,8 +303,8 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Nq2_ut0WSf8F-rVN5TmE-1" value="&lt;div&gt;Tx_DV &amp;amp;&lt;/div&gt;&lt;div&gt;~CPHA&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="MGjckKWtUcC9TWvVRbn3-1" vertex="1">
-          <mxGeometry x="332.5" y="205" width="65" height="60" as="geometry" />
+        <mxCell id="Nq2_ut0WSf8F-rVN5TmE-1" value="&lt;div&gt;Tx_DV &amp;amp;&lt;/div&gt;&lt;div&gt;~CPHA?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="MGjckKWtUcC9TWvVRbn3-1" vertex="1">
+          <mxGeometry x="331.25" y="205" width="67.5" height="60" as="geometry" />
         </mxCell>
         <mxCell id="k-y24zHJ9dBwwEzc2l2r-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="MGjckKWtUcC9TWvVRbn3-1" source="Nq2_ut0WSf8F-rVN5TmE-3" edge="1">
           <mxGeometry relative="1" as="geometry">
