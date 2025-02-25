@@ -203,7 +203,7 @@
         <mxCell id="IDuqStjXQ0M3vZJr6LwJ-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IDuqStjXQ0M3vZJr6LwJ-7" target="IDuqStjXQ0M3vZJr6LwJ-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="IDuqStjXQ0M3vZJr6LwJ-7" value="&lt;div&gt;Rx_byte[Rx_bcount] &amp;lt;- MISO&lt;/div&gt;&lt;div&gt;Rx_bcount &amp;lt;- Rx_bcount - 1;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="1" vertex="1">
+        <mxCell id="IDuqStjXQ0M3vZJr6LwJ-7" value="&lt;div&gt;Rx_byte[Rx_bcount] &amp;lt;- MISO&lt;/div&gt;&lt;div&gt;Rx_bcount &amp;lt;- Rx_bcount - 1&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;" parent="1" vertex="1">
           <mxGeometry x="280" y="355" width="170" height="40" as="geometry" />
         </mxCell>
         <mxCell id="IDuqStjXQ0M3vZJr6LwJ-16" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IDuqStjXQ0M3vZJr6LwJ-8" target="IDuqStjXQ0M3vZJr6LwJ-15" edge="1">
