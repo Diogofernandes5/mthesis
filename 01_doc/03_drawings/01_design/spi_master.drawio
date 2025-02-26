@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.16" pages="4">
   <diagram name="gen SPI_CLK" id="FUWGXgqJPIRXd2XzeKxu">
-    <mxGraphModel dx="1434" dy="766" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1195" dy="638" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="muzJTKmGvHxEAVn83E81-0" />
         <mxCell id="muzJTKmGvHxEAVn83E81-1" parent="muzJTKmGvHxEAVn83E81-0" />
@@ -245,7 +245,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="gen_MOSI" id="FGWfnBXD2xk0XfU0DvZj">
-    <mxGraphModel dx="819" dy="438" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="766" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="MGjckKWtUcC9TWvVRbn3-0" />
         <mxCell id="MGjckKWtUcC9TWvVRbn3-1" parent="MGjckKWtUcC9TWvVRbn3-0" />
