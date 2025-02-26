@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.15" pages="3">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.16" pages="3">
   <diagram name="data_path" id="Juiqj6YkxCS37qnOwY-p">
     <mxGraphModel dx="1434" dy="766" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -7,7 +7,7 @@
         <mxCell id="IA69UJasPgT3WPHsJti2-14" value="&lt;b&gt;N-point&lt;br&gt;BRAM&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;verticalAlign=middle;" parent="1" vertex="1">
           <mxGeometry x="625.0699999999999" y="380" width="110" height="143" as="geometry" />
         </mxCell>
-        <mxCell id="IA69UJasPgT3WPHsJti2-39" value="SPI &lt;br&gt;Controller" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;verticalAlign=middle;fontStyle=1" parent="1" vertex="1">
+        <mxCell id="IA69UJasPgT3WPHsJti2-39" value="&lt;div&gt;SPI&amp;nbsp;&lt;/div&gt;&lt;div&gt;Master&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=NewsGotT;verticalAlign=middle;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="625.0699999999999" y="120" width="175" height="213" as="geometry" />
         </mxCell>
         <mxCell id="6dm7ZZ2Ce49l9A71G7zG-19" value="clk" style="endArrow=none;html=1;rounded=0;align=right;fontFamily=NewsGotT;" parent="1" edge="1">
@@ -70,8 +70,8 @@
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="80" y="375" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="610" y="375" />
-              <mxPoint x="610" y="285" />
+              <mxPoint x="595" y="375" />
+              <mxPoint x="595" y="285" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -528,9 +528,6 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="c9cJgYokBX9ZUptAvbR2-2" value="&lt;font data-font-src=&quot;https://db.onlinewebfonts.com/t/17e268efa7d01d3f0d6c6c4d95f4326c.ttf&quot;&gt;spi_read_cu&lt;/font&gt;" style="shape=umlFrame;whiteSpace=wrap;html=1;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=NewsGotT;fontSize=12;align=center;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;width=70;height=30;" parent="1" vertex="1">
-          <mxGeometry x="40" y="50" width="700" height="220" as="geometry" />
-        </mxCell>
         <mxCell id="c9cJgYokBX9ZUptAvbR2-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.118;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" parent="1" source="c9cJgYokBX9ZUptAvbR2-4" target="c9cJgYokBX9ZUptAvbR2-7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
