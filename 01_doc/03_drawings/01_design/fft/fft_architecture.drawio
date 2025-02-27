@@ -1,17 +1,17 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.16">
   <diagram name="Page-1" id="Juiqj6YkxCS37qnOwY-p">
-    <mxGraphModel dx="2049" dy="1094" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="766" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="6dm7ZZ2Ce49l9A71G7zG-19" value="clk" style="endArrow=none;html=1;rounded=0;align=right;fontFamily=NewsGotT;" parent="1" edge="1">
+        <mxCell id="6dm7ZZ2Ce49l9A71G7zG-19" value="clk" style="endArrow=none;html=1;rounded=0;align=right;fontFamily=NewsGotT;fontSize=12;" parent="1" edge="1">
           <mxGeometry x="-1" y="-5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="90" y="45" as="sourcePoint" />
             <mxPoint x="400" y="45" as="targetPoint" />
             <mxPoint x="-5" y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="6dm7ZZ2Ce49l9A71G7zG-20" value="rstn" style="endArrow=none;html=1;rounded=0;align=right;labelBackgroundColor=none;fontFamily=NewsGotT;" parent="1" edge="1">
+        <mxCell id="6dm7ZZ2Ce49l9A71G7zG-20" value="rstn" style="endArrow=none;html=1;rounded=0;align=right;labelBackgroundColor=none;fontFamily=NewsGotT;fontSize=12;" parent="1" edge="1">
           <mxGeometry x="-1" y="-5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="90" y="55" as="sourcePoint" />
             <mxPoint x="390" y="55" as="targetPoint" />
@@ -33,7 +33,7 @@
         <mxCell id="GUa0Qi7QkAxoq6VWGlQY-3" value="rstn" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
           <mxGeometry x="140" y="174" width="30" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="T7aPddtq5qdxuaKfYRlW-1" value="start_i" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=right;verticalAlign=middle;fontFamily=NewsGotT;fontSize=14;fontColor=default;fontStyle=0;labelBackgroundColor=default;endArrow=classic;" parent="1" target="GUa0Qi7QkAxoq6VWGlQY-4" edge="1">
+        <mxCell id="T7aPddtq5qdxuaKfYRlW-1" value="start_i" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=right;verticalAlign=middle;fontFamily=NewsGotT;fontSize=12;fontColor=default;fontStyle=0;labelBackgroundColor=default;endArrow=classic;" parent="1" target="GUa0Qi7QkAxoq6VWGlQY-4" edge="1">
           <mxGeometry x="-1" y="-5" relative="1" as="geometry">
             <mxPoint x="90" y="278.5" as="sourcePoint" />
             <Array as="points">
@@ -45,7 +45,7 @@
         <mxCell id="GUa0Qi7QkAxoq6VWGlQY-4" value="start_i" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;spacing=0;fontFamily=NewsGotT;spacingLeft=3;spacingRight=-10;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
           <mxGeometry x="140" y="268.5" width="35" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="T7aPddtq5qdxuaKfYRlW-2" value="dl_busy_i" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=right;verticalAlign=middle;fontFamily=NewsGotT;fontSize=14;fontColor=default;fontStyle=0;labelBackgroundColor=default;endArrow=classic;" parent="1" target="GUa0Qi7QkAxoq6VWGlQY-5" edge="1">
+        <mxCell id="T7aPddtq5qdxuaKfYRlW-2" value="dl_busy_i" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=right;verticalAlign=middle;fontFamily=NewsGotT;fontSize=12;fontColor=default;fontStyle=0;labelBackgroundColor=default;endArrow=classic;" parent="1" target="GUa0Qi7QkAxoq6VWGlQY-5" edge="1">
           <mxGeometry x="-1" y="6" relative="1" as="geometry">
             <mxPoint x="90" y="303.5" as="sourcePoint" />
             <Array as="points">
@@ -257,7 +257,7 @@
         <mxCell id="GUa0Qi7QkAxoq6VWGlQY-63" value="X_im_o[31:0]" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=NewsGotT;fontSize=12;fontColor=default;spacing=0;spacingRight=3;spacingLeft=-9;spacingBottom=-2;spacingTop=-2;" parent="1" vertex="1">
           <mxGeometry x="644" y="296.5" width="65" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="GUa0Qi7QkAxoq6VWGlQY-64" value="fft_ready_o" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;startArrow=oval;startFill=1;startSize=3;endFill=1;align=left;fontFamily=NewsGotT;" parent="1" edge="1">
+        <mxCell id="GUa0Qi7QkAxoq6VWGlQY-64" value="fft_ready_o" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;startArrow=oval;startFill=1;startSize=3;endFill=1;align=left;fontFamily=NewsGotT;fontSize=12;" parent="1" edge="1">
           <mxGeometry x="1" y="5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="460" y="188" as="sourcePoint" />
             <mxPoint x="760" y="85" as="targetPoint" />
@@ -268,7 +268,7 @@
             <mxPoint x="4" y="5" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="GUa0Qi7QkAxoq6VWGlQY-65" value="busy_o" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;startArrow=oval;startFill=1;startSize=3;endFill=1;align=left;fontFamily=NewsGotT;" parent="1" edge="1">
+        <mxCell id="GUa0Qi7QkAxoq6VWGlQY-65" value="busy_o" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;startArrow=oval;startFill=1;startSize=3;endFill=1;align=left;fontFamily=NewsGotT;fontSize=12;" parent="1" edge="1">
           <mxGeometry x="1" y="5" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="440" y="216" as="sourcePoint" />
             <mxPoint x="760" y="70" as="targetPoint" />
