@@ -6,147 +6,93 @@ import numpy as np
 
 # from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-from waveletFunctions import wave_signif, wavelet
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import chirp
+import os
 
-__author__ = 'Evgeniya Predybaylo'
+from util import rel_error, fprint_vector, plot_cwt
 
+# Geração do sinal
+N = 1024
+fractional_len = 8
+fs = 8000  # Frequência de amostragem
+duration = N / fs  # Duração para obter exatamente 1024 amostras
+t = np.arange(0, duration, 1/fs)  # Vetor de tempo para gerar 1024 amostras a 8 kHz
+f0 = 300  # Frequência da primeira onda senoidal
+f1 = 700  # Frequência da segunda onda senoidal
 
-# WAVETEST Example Python script for WAVELET, using NINO3 SST dataset
-#
-# See "http://paos.colorado.edu/research/wavelets/"
-# The Matlab code written January 1998 by C. Torrence
-# modified to Python by Evgeniya Predybaylo, December 2014
-#
-# Modified Oct 1999, changed Global Wavelet Spectrum (GWS) to be sideways,
-#   changed all "log" to "log2", changed logarithmic axis on GWS to
-#   a normal axis.
-# ---------------------------------------------------------------------------
+# Dois sinais senoidais
+x = np.sin(2 * np.pi * f0 * t) + np.sin(2 * np.pi * f1 * t)
 
-# READ THE DATA
-sst = np.loadtxt('sst_nino3.dat')  # input SST time series
-sst = sst - np.mean(sst)
-variance = np.std(sst, ddof=1) ** 2
-print("variance = ", variance)
+# Sinal chirp
+# x = chirp(t, f0, duration, f1, method='quadratic')
+x = np.cos(2 * np.pi * t * (f0 + (f1 - f0) * t**2 / (3 * duration**2)))
+x = np.round(x * (2 ** fractional_len))
+x = x.astype(complex)
 
-# ----------C-O-M-P-U-T-A-T-I-O-N------S-T-A-R-T-S------H-E-R-E---------------
-
-# normalize by standard deviation (not necessary, but makes it easier
-# to compare with plot on Interactive Wavelet page, at
-# "http://paos.colorado.edu/research/wavelets/plot/"
-if 0:
-    variance = 1.0
-    sst = sst / np.std(sst, ddof=1)
-n = len(sst)
-dt = 0.25
-time = np.arange(len(sst)) * dt + 1871.0  # construct time array
-xlim = ([1870, 2000])  # plotting range
-pad = 1  # pad the time series with zeroes (recommended)
-dj = 0.25  # this will do 4 sub-octaves per octave
-s0 = 2 * dt  # this says start at a scale of 6 months
-j1 = 7 / dj  # this says do 7 powers-of-two with dj sub-octaves each
-lag1 = 0.72  # lag-1 autocorrelation for red noise background
-print("lag1 = ", lag1)
+# Parâmetros da Wavelet
+dt = 1 / fs
+pad = 0  # Preencher a série temporal com zeros (recomendado)
+omega = 6.0  # Parâmetro da wavelet para MORLET
 mother = 'MORLET'
+no = 4  # Número de oitavas
+vpo = 16  # Vozes por oitava
+s0_ind = 2  # Aumentar s0_ind fará a wavelet começar em frequências mais baixas
+s0 = s0_ind * dt
+J1 = no * vpo
 
-# Wavelet transform:
-wave, period, scale, coi = wavelet(sst, dt, pad, dj, s0, j1, mother)
-power = (np.abs(wave)) ** 2  # compute wavelet power spectrum
-global_ws = (np.sum(power, axis=1) / n)  # time-average over all times
+# Transformada Wavelet
+from waveletFunctions import wavelet
+wt, period, scale, freq, coi, daughter = wavelet(x, fs, no, vpo, s0, mother, omega, pad, fractional_len)
 
-# Significance levels:
-signif = wave_signif(([variance]), dt=dt, sigtest=0, scale=scale,
-    lag1=lag1, mother=mother)
-# expand signif --> (J+1)x(N) array
-sig95 = signif[:, np.newaxis].dot(np.ones(n)[np.newaxis, :])
-sig95 = power / sig95  # where ratio > 1, power is significant
+# Ajuste da filha da wavelet
+daughter_fix = np.round(daughter * (2 ** fractional_len)) * (2 ** -fractional_len)
+rel_error(daughter, daughter_fix)
 
-# Global wavelet spectrum & significance levels:
-dof = n - scale  # the -scale corrects for padding at edges
-global_signif = wave_signif(variance, dt=dt, scale=scale, sigtest=1,
-    lag1=lag1, dof=dof, mother=mother)
+# Plotar o escalograma
+rep_scale = 'log2'
+plot_cwt(t, freq, wt, coi, fs, rep_scale, N, J1)
+plt.title(f'Scalogram and Instantaneous Frequencies in {rep_scale} scale: no={no}; vpo={vpo}; s0={s0_ind:.2f}*dt')
+plt.show()
 
-# Scale-average between El Nino periods of 2--8 years
-avg = np.logical_and(scale >= 2, scale < 8)
-Cdelta = 0.776  # this is for the MORLET wavelet
-# expand scale --> (J+1)x(N) array
-scale_avg = scale[:, np.newaxis].dot(np.ones(n)[np.newaxis, :])
-scale_avg = power / scale_avg  # [Eqn(24)]
-scale_avg = dj * dt / Cdelta * sum(scale_avg[avg, :])  # [Eqn(24)]
-scaleavg_signif = wave_signif(variance, dt=dt, scale=scale, sigtest=2,
-    lag1=lag1, dof=([2, 7.9]), mother=mother)
+# Salvar os dados de entrada e saída em arquivos
+filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/input.txt"
+fprint_vector(np.real(x).reshape(1, -1), 1, filename, 'w')
 
-# ------------------------------------------------------ Plotting
+filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/golden_re.txt"
+fprint_vector(np.real(wt), J1, filename, 'w')
 
-# --- Plot time series
-fig = plt.figure(figsize=(9, 10))
-gs = GridSpec(3, 4, hspace=0.4, wspace=0.75)
-plt.subplots_adjust(left=0.1, bottom=0.05, right=0.9, top=0.95,
-                    wspace=0, hspace=0)
-plt.subplot(gs[0, 0:3])
-plt.plot(time, sst, 'k')
-plt.xlim(xlim[:])
-plt.xlabel('Time (year)')
-plt.ylabel('NINO3 SST (\u00B0C)')
-plt.title('a) NINO3 Sea Surface Temperature (seasonal)')
+filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/golden_im.txt"
+fprint_vector(np.imag(wt), J1, filename, 'w')
 
-plt.text(time[-1] + 35, 0.5, 'Wavelet Analysis\nC. Torrence & G.P. Compo\n'
-    'http://paos.colorado.edu/\nresearch/wavelets/',
-    horizontalalignment='center', verticalalignment='center')
+# Salvar a filha da wavelet em arquivo
+dwavelet_filename = "/home/fernandes/thesis/00_code/matlab/cwt/daughter_wavelet/dwavelet.txt"
+fprint_vector(daughter, J1, dwavelet_filename, 'w')
 
-# --- Contour plot wavelet power spectrum
-# plt3 = plt.subplot(3, 1, 2)
-plt3 = plt.subplot(gs[1, 0:3])
-levels = [0, 0.5, 1, 2, 4, 999]
-# *** or use 'contour'
-CS = plt.contourf(time, period, power, len(levels))
-im = plt.contourf(CS, levels=levels,
-    colors=['white', 'bisque', 'orange', 'orangered', 'darkred'])
-plt.xlabel('Time (year)')
-plt.ylabel('Period (years)')
-plt.title('b) Wavelet Power Spectrum (contours at 0.5,1,2,4\u00B0C$^2$)')
-plt.xlim(xlim[:])
-# 95# significance contour, levels at -99 (fake) and 1 (95# signif)
-plt.contour(time, period, sig95, [-99, 1], colors='k')
-# cone-of-influence, anything "below" is dubious
-plt.fill_between(time, coi * 0 + period[-1], coi, facecolor="none",
-    edgecolor="#00000040", hatch='x')
-plt.plot(time, coi, 'k')
-# format y-scale
-plt3.set_yscale('log', base=2, subs=None)
-plt.ylim([np.min(period), np.max(period)])
-ax = plt.gca().yaxis
-ax.set_major_formatter(ticker.ScalarFormatter())
-plt3.ticklabel_format(axis='y', style='plain')
-plt3.invert_yaxis()
-# set up the size and location of the colorbar
-# position=fig.add_axes([0.5,0.36,0.2,0.01])
-# plt.colorbar(im, cax=position, orientation='horizontal')
-#   , fraction=0.05, pad=0.5)
+# Converter .txt para .COE
+os.chdir("/home/fernandes/thesis/00_code/matlab/cwt/daughter_wavelet/")
+os.system("./coe_dump.sh dwavelet.txt 10")
+os.chdir("..")
 
-# plt.subplots_adjust(right=0.7, top=0.9)
+# Ler os dados de saída do FPGA
+cwt_re_output = np.zeros((J1, N))
+output_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/output_re.txt"
+with open(output_filename, 'r') as f:
+    for i in range(J1):
+        vector = np.array([float(val) for val in f.readline().split()])
+        cwt_re_output[i, :] = vector
 
-# --- Plot global wavelet spectrum
-plt4 = plt.subplot(gs[1, -1])
-plt.plot(global_ws, period)
-plt.plot(global_signif, period, '--')
-plt.xlabel('Power (\u00B0C$^2$)')
-plt.title('c) Global Wavelet Spectrum')
-plt.xlim([0, 1.25 * np.max(global_ws)])
-# format y-scale
-plt4.set_yscale('log', base=2, subs=None)
-plt.ylim([np.min(period), np.max(period)])
-ax = plt.gca().yaxis
-ax.set_major_formatter(ticker.ScalarFormatter())
-plt4.ticklabel_format(axis='y', style='plain')
-plt4.invert_yaxis()
+cwt_im_output = np.zeros((J1, N))
+output_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/output_im.txt"
+with open(output_filename, 'r') as f:
+    for i in range(J1):
+        vector = np.array([float(val) for val in f.readline().split()])
+        cwt_im_output[i, :] = vector
 
-# --- Plot 2--8 yr scale-average time series
-plt.subplot(gs[2, 0:3])
-plt.plot(time, scale_avg, 'k')
-plt.xlim(xlim[:])
-plt.xlabel('Time (year)')
-plt.ylabel('Avg variance (\u00B0C$^2$)')
-plt.title('d) 2-8 yr Scale-average Time Series')
-plt.plot(xlim, scaleavg_signif + [0, 0], '--')
+cwt_fpga = cwt_re_output + 1j * cwt_im_output
 
+# Plotar o escalograma dos dados do FPGA
+plot_cwt(t, freq, cwt_fpga, coi, fs, rep_scale, N, J1)
+plt.title('Scalogram from FPGA Output')
 plt.show()

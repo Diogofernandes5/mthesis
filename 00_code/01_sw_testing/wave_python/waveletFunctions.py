@@ -1,38 +1,13 @@
-# Copyright (C) 1995-2021, Christopher Torrence and Gilbert P.Compo
-# Python version of the code is written by Evgeniya Predybaylo in 2014
-# edited by Michael von Papen (FZ Juelich, INM-6), 2018, to include
-# analysis at arbitrary frequencies
+#WAVELET  1D Wavelet transform with optional singificance testing
 #
-#   This software may be used, copied, or redistributed as long as it is not
-#   sold and this copyright notice is reproduced on each copy made. This
-#   routine is provided as is without any express or implied warranties
-#   whatsoever.
-#
-# Notice: Please acknowledge the use of the above software in any publications:
-#            Wavelet software was provided by C. Torrence and G. Compo,
-#      and is available at URL: http://paos.colorado.edu/research/wavelets/''.
-#
-# Reference: Torrence, C. and G. P. Compo, 1998: A Practical Guide to
-#            Wavelet Analysis. <I>Bull. Amer. Meteor. Soc.</I>, 79, 61-78.
-#
-# Please send a copy of such publications to either C. Torrence or G. Compo:
-#  Dr. Christopher Torrence               Dr. Gilbert P. Compo
-#  Research Systems, Inc.                 Climate Diagnostics Center
-#  4990 Pearl East Circle                 325 Broadway R/CDC1
-#  Boulder, CO 80301, USA                 Boulder, CO 80305-3328, USA
-#  E-mail: chris[AT]rsinc[DOT]com         E-mail: compo[AT]colorado[DOT]edu
-#
-# ----------------------------------------------------------------------------
-
-
-# # WAVELET  1D Wavelet transform with optional significance testing
-#   wave, period, scale, coi = wavelet(Y, dt, pad, dj, s0, J1, mother, param)
+#   [cfs,PERIOD,SCALE,COI] = wavelet(Y,DT,PAD,DJ,S0,J1,MOTHER,PARAM)
 #
 #   Computes the wavelet transform of the vector Y (length N),
 #   with sampling rate DT.
 #
 #   By default, the Morlet wavelet (k0=6) is used.
 #   The wavelet basis is normalized to have total energy=1 at all scales.
+#
 #
 # INPUTS:
 #
@@ -41,29 +16,29 @@
 #
 # OUTPUTS:
 #
-#    WAVE is the WAVELET transform of Y. This is a complex array
-#    of dimensions (N,J1+1). FLOAT(WAVE) gives the WAVELET amplitude,
-#    ATAN(IMAGINARY(WAVE),FLOAT(WAVE) gives the WAVELET phase.
-#    The WAVELET power spectrum is ABS(WAVE)**2.
-#    Its units are sigma**2 (the time series variance).
+#    cfs is the WAVELET transform of Y. This is a complex array
+#    of dimensions (N,J1+1). FLOAT(cfs) gives the WAVELET amplitude,
+#    ATAN(IMAGINARY(cfs),FLOAT(cfs) gives the WAVELET phase.
+#    The WAVELET power spectrum is ABS(cfs)^2.
+#    Its units are sigma^2 (the time series variance).
+#
 #
 # OPTIONAL INPUTS:
+# 
+# *** Note *** setting any of the following to -1 will cause the default
+#               value to be used.
+#       
+#    NO = number of octaves.Each octave represents a specific frequency band 
+#           where the higher part of the octave has a frequency range that is 
+#           double that of the lower part. 
 #
-# *** Note *** if none of the optional variables is set up, then the program
-#   uses default values of -1.
-#
-#    PAD = if set to 1 (default is 0), pad time series with zeroes to get
-#         N up to the next higher power of 2. This prevents wraparound
-#         from the end of the time series to the beginning, and also
-#         speeds up the FFT's used to do the wavelet transform.
-#         This will not eliminate all edge effects (see COI below).
-#
-#    DJ = the spacing between discrete scales. Default is 0.25.
-#         A smaller # will give better scale resolution, but be slower to plot.
+#    VPO = voices per octave - number of scales between each octave 
+#          (the spacing between discrete scales). Default is 4.
+#         A greater # will give better scale resolution, but be slower to plot.
 #
 #    S0 = the smallest scale of the wavelet.  Default is 2*DT.
 #
-#    J1 = the # of scales minus one. Scales range from S0 up to S0*2**(J1*DJ),
+#    J1 = the # of scales minus one. Scales range from S0 up to S0*2^(J1*DJ),
 #        to give a total of (J1+1) scales. Default is J1 = (LOG2(N DT/S0))/DJ.
 #
 #    MOTHER = the mother wavelet function.
@@ -74,106 +49,123 @@
 #            For 'PAUL' this is m (order), default is 4.
 #            For 'DOG' this is m (m-th derivative), default is 2.
 #
+#    PAD = if set to 1 (default is 0), pad time series with enough zeroes to get
+#         N up to the next higher power of 2. This prevents wraparound
+#         from the end of the time series to the beginning, and also
+#         speeds up the FFT's used to do the wavelet transform.
+#         This will not eliminate all edge effects (see COI below).
 #
 # OPTIONAL OUTPUTS:
 #
 #    PERIOD = the vector of "Fourier" periods (in time units) that corresponds
 #           to the SCALEs.
 #
-#    SCALE = the vector of scale indices, given by S0*2**(j*DJ), j=0...J1
+#    SCALE = the vector of scale indices, given by S0*2^(J1*DJ), J1=0...J1
 #            where J1+1 is the total # of scales.
+#
+#    FREQ = The vector of "Fourier" frequencies (Hz) converted from scales
 #
 #    COI = if specified, then return the Cone-of-Influence, which is a vector
 #        of N points that contains the maximum period of useful information
 #        at that particular time.
 #        Periods greater than this are subject to edge effects.
+#        This can be used to plot COI lines on a contour plot by doing:
+#
+#              contour(time,log(period),log(power))
+#              plot(time,log(coi),'k')
+#
+#----------------------------------------------------------------------------
 
 import numpy as np
 
 from scipy.optimize import fminbound
 from scipy.special._ufuncs import gamma, gammainc
 
-__author__ = 'Evgeniya Predybaylo, Michael von Papen'
+def wavelet(Y, fs, no=-1, vpo=-1, s0=-1, mother=-1, param=-1, pad=-1, fractional_len=0):
+    N = len(Y)
 
-
-def wavelet(Y, dt, pad=0, dj=-1, s0=-1, J1=-1, mother=-1, param=-1, freq=None):
-    n1 = len(Y)
-
+    if no == -1:
+        no = 7
+    if vpo == -1:
+        vpo = 4
     if s0 == -1:
-        s0 = 2 * dt
-    if dj == -1:
-        dj = 1. / 4.
-    if J1 == -1:
-        J1 = np.fix((np.log(n1 * dt / s0) / np.log(2)) / dj)
+        s0 = 2 / fs
     if mother == -1:
         mother = 'MORLET'
 
-    # construct time series to analyze, pad if necessary
-    x = Y - np.mean(Y)
-    if pad == 1:
-        # power of 2 nearest to N
-        base2 = np.fix(np.log(n1) / np.log(2) + 0.4999)
-        nzeroes = (2 ** (base2 + 1) - n1).astype(np.int64)
-        x = np.concatenate((x, np.zeros(nzeroes)))
-
+    # Construct time series to analyze, pad if necessary
+    x = np.array(Y, dtype=complex)
     n = len(x)
 
-    # construct wavenumber array used in transform [Eqn(5)]
+    # Compute FFT of the (padded) time series
+    fft_o = np.fft.fft(x)  # [Eqn(3)]
+
+    # Write output of fft module to file
+    fft_re_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/golden_re.txt"
+    fft_im_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/golden_im.txt"
+
+    np.savetxt(fft_re_filename, np.real(fft_o), fmt='%f')
+    np.savetxt(fft_im_filename, np.imag(fft_o), fmt='%f')
+
+    # Construct wavenumber array used in transform [Eqn(5)]
+    multiplier = (2 * (np.pi * fs)) / n
     kplus = np.arange(1, int(n / 2) + 1)
-    kplus = (kplus * 2 * np.pi / (n * dt))
+    kplus = (kplus * multiplier)
     kminus = np.arange(1, int((n - 1) / 2) + 1)
-    kminus = np.sort((-kminus * 2 * np.pi / (n * dt)))
+    kminus = np.sort(-kminus * multiplier)
     k = np.concatenate(([0.], kplus, kminus))
 
-    # compute FFT of the (padded) time series
-    f = np.fft.fft(x)  # [Eqn(3)]
+    # Construct SCALE array & empty PERIOD & WAVE arrays
+    J1 = no * vpo
+    a0 = 2 ** (1 / vpo)
+    ind = np.arange(J1)
+    scale = s0 * (a0 ** ind)
 
-    # construct SCALE array & empty PERIOD & WAVE arrays
-    if mother.upper() == 'MORLET':
-        if param == -1:
-            param = 6.
-        fourier_factor = 4 * np.pi / (param + np.sqrt(2 + param**2))
-    elif mother.upper() == 'PAUL':
-        if param == -1:
-            param = 4.
-        fourier_factor = 4 * np.pi / (2 * param + 1)
-    elif mother.upper() == 'DOG':
-        if param == -1:
-            param = 2.
-        fourier_factor = 2 * np.pi * np.sqrt(2. / (2 * param + 1))
-    else:
-        fourier_factor = np.nan
+    period = scale  # declare the period array
+    cfs = np.zeros((J1, n), dtype=complex)  # declare the coefficients array
+    wavelet = np.zeros((J1, n), dtype=complex)  # declare the wavelet array
 
-    if freq is None:
-        j = np.arange(0, J1 + 1)
-        scale = s0 * 2. ** (j * dj)
-        freq = 1. / (fourier_factor * scale)
-        period = 1. / freq
-    else:
-        scale = 1. / (fourier_factor * freq)
-        period = 1. / freq
-    # define the wavelet array
-    wave = np.zeros(shape=(len(scale), n), dtype=complex)
+    # Write output of mul module to file
+    mul_re_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/mul/golden_re.txt"
+    mul_im_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/mul/golden_im.txt"
 
-    # loop through all scales and compute transform
-    for a1 in range(0, len(scale)):
-        daughter, fourier_factor, coi, _ = \
-            wave_bases(mother, k, scale[a1], param)
-        wave[a1, :] = np.fft.ifft(f * daughter)  # wavelet transform[Eqn(4)]
+    with open(mul_re_filename, 'w') as fp_re, open(mul_im_filename, 'w') as fp_im:
+        # Loop through all scales and compute transform
+        for j in range(J1):
+            daughter, fourier_factor, e_folding, dofmin = wave_bases(mother, k, scale[j], param, fs)
+            daughter = np.round(daughter * (2 ** fractional_len))
+            wavelet[j, :] = daughter
+            mul = fft_o * daughter
 
-    # COI [Sec.3g]
-    coi = coi * dt * np.concatenate((
-        np.insert(np.arange(int((n1 + 1) / 2) - 1), [0], [1E-5]),
-        np.insert(np.flipud(np.arange(0, int(n1 / 2) - 1)), [-1], [1E-5])))
-    wave = wave[:, :n1]  # get rid of padding before returning
+            # print re output of mul to file
+            np.savetxt(fp_re, np.real(mul).reshape(1, -1), fmt='%f')
+            # print im output of mul to file
+            np.savetxt(fp_im, np.imag(mul).reshape(1, -1), fmt='%f')
 
-    return wave, period, scale, coi
+            mul = np.round(mul / 128)
+            cfs[j, :] = np.fft.ifft(mul)  # wavelet transform[Eqn(4)]
 
+    # Write output of ifft module to file
+    ifft_re_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/ifft/golden_re.txt"
+    ifft_im_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/ifft/golden_im.txt"
 
-# --------------------------------------------------------------------------
-# WAVE_BASES  1D Wavelet functions Morlet, Paul, or DOG
+    np.savetxt(ifft_re_filename, np.real(cfs), fmt='%f')
+    np.savetxt(ifft_im_filename, np.imag(cfs), fmt='%f')
+
+    freq = 1.0 / (fourier_factor * scale)  # frequency conversion
+    period = 1.0 / freq
+
+    e_folding = e_folding * scale  # COI [Sec.3g]
+    L = np.minimum(np.floor(N / 2), e_folding)
+    R = np.maximum(np.ceil(N / 2), N - e_folding)
+    coi = np.column_stack((L, R))
+
+    return cfs, period, scale, freq, coi, wavelet
+
+#WAVE_BASES  1D Wavelet functions Morlet, Paul, or DOG
 #
-#  DAUGHTER,FOURIER_FACTOR,COI,DOFMIN = wave_bases(MOTHER,K,SCALE,PARAM)
+#  [DAUGHTER,FOURIER_FACTOR,COI,DOFMIN] = ...
+#      wave_bases(MOTHER,K,SCALE,PARAM);
 #
 #   Computes the wavelet function as a function of Fourier frequency,
 #   used for the wavelet transform in Fourier space.
@@ -194,52 +186,75 @@ def wavelet(Y, dt, pad=0, dj=-1, s0=-1, J1=-1, mother=-1, param=-1, freq=None):
 #    DOFMIN = a number, degrees of freedom for each point in the wavelet power
 #             (either 2 for Morlet and Paul, or 1 for the DOG)
 
-def wave_bases(mother, k, scale, param):
+import numpy as np
+from scipy.special import factorial, gamma
+
+def wave_bases(mother, k, scale, param, fs):
+    """
+    Computes the wavelet function as a function of Fourier frequency,
+    used for the wavelet transform in Fourier space.
+
+    Parameters:
+        mother (str): Type of wavelet ('MORLET', 'PAUL', or 'DOG').
+        k (numpy array): Fourier frequencies at which to calculate the wavelet.
+        scale (float): Wavelet scale.
+        param (float): Nondimensional parameter for the wavelet function.
+        fs (float): Sampling frequency.
+
+    Returns:
+        daughter (numpy array): Wavelet function.
+        fourier_factor (float): Ratio of Fourier period to scale.
+        e_folding (float): Cone-of-influence size at the scale.
+        dofmin (int): Degrees of freedom for each point in the wavelet power.
+    """
+    mother = mother.upper()
     n = len(k)
-    kplus = np.array(k > 0., dtype=float)
 
-    if mother == 'MORLET':  # -----------------------------------  Morlet
-
+    if mother == 'MORLET':  # Morlet wavelet
         if param == -1:
-            param = 6.
+            param = 6.0
+        k0 = param
 
-        k0 = np.copy(param)
-        # calc psi_0(s omega) from Table 1
-        expnt = -(scale * k - k0) ** 2 / 2. * kplus
-        norm = np.sqrt(scale * k[1]) * (np.pi ** (-0.25)) * np.sqrt(n)
+        expnt = -(scale * k - k0) ** 2 / 2
+        norm = (np.pi ** -0.25) * np.sqrt(n)  # Total energy = N [Eqn(7)]
         daughter = norm * np.exp(expnt)
-        daughter = daughter * kplus  # Heaviside step function
-        # Scale-->Fourier [Sec.3h]
-        fourier_factor = (4 * np.pi) / (k0 + np.sqrt(2 + k0 ** 2))
-        coi = fourier_factor / np.sqrt(2)  # Cone-of-influence [Sec.3g]
-        dofmin = 2  # Degrees of freedom
-    elif mother == 'PAUL':  # --------------------------------  Paul
-        if param == -1:
-            param = 4.
-        m = param
-        # calc psi_0(s omega) from Table 1
-        expnt = -scale * k * kplus
-        norm_bottom = np.sqrt(m * np.prod(np.arange(1, (2 * m))))
-        norm = np.sqrt(scale * k[1]) * (2 ** m / norm_bottom) * np.sqrt(n)
-        daughter = norm * ((scale * k) ** m) * np.exp(expnt) * kplus
-        fourier_factor = 4 * np.pi / (2 * m + 1)
-        coi = fourier_factor * np.sqrt(2)
-        dofmin = 2
-    elif mother == 'DOG':  # --------------------------------  DOG
-        if param == -1:
-            param = 2.
-        m = param
-        # calc psi_0(s omega) from Table 1
-        expnt = -(scale * k) ** 2 / 2.0
-        norm = np.sqrt(scale * k[1] / gamma(m + 0.5)) * np.sqrt(n)
-        daughter = -norm * (1j ** m) * ((scale * k) ** m) * np.exp(expnt)
-        fourier_factor = 2 * np.pi * np.sqrt(2. / (2 * m + 1))
-        coi = fourier_factor / np.sqrt(2)
-        dofmin = 1
-    else:
-        print('Mother must be one of MORLET, PAUL, DOG')
+        daughter = daughter * (k > 0)  # Heaviside step function
 
-    return daughter, fourier_factor, coi, dofmin
+        fourier_factor = (4 * np.pi) / (k0 + np.sqrt(2 + k0 ** 2))  # Scale --> Fourier [Sec.3h]
+        e_folding = np.sqrt(2) * fs
+        dofmin = 2  # Degrees of freedom
+
+    elif mother == 'PAUL':  # Paul wavelet
+        if param == -1:
+            param = 4.0
+        m = param
+
+        expnt = -(scale * k)
+        norm = (2 ** m) / np.sqrt(m * factorial(2 * m - 1))
+        daughter = norm * ((scale * k) ** m) * np.exp(expnt)
+        daughter = daughter * (k > 0)  # Heaviside step function
+
+        fourier_factor = (4 * np.pi) / (2 * m + 1)
+        e_folding = fs / np.sqrt(2)
+        dofmin = 2
+
+    elif mother == 'DOG':  # DOG wavelet
+        if param == -1:
+            param = 2.0
+        m = param
+
+        expnt = -(scale * k) ** 2 / 2.0
+        norm = -((1j ** m) / np.sqrt(gamma(m + 0.5))) * (scale * k) ** m
+        daughter = norm * np.exp(expnt)
+
+        fourier_factor = 2 * np.pi * np.sqrt(2.0 / (2 * m + 1))
+        e_folding = np.sqrt(2) * fs
+        dofmin = 1
+
+    else:
+        raise ValueError("Mother must be one of 'MORLET', 'PAUL', or 'DOG'.")
+
+    return daughter, fourier_factor, e_folding, dofmin
 
 
 # --------------------------------------------------------------------------

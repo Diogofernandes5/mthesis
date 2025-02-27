@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_spi_read_acc_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_spi_read_acc" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="25,456.254 ns"></ZoomStartTime>
+      <ZoomEndTime time="25,658.750 ns"></ZoomEndTime>
+      <Cursor1Time time="25,585.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="176"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="20" />
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/rstn">
+      <obj_property name="ElementShortName">rstn</obj_property>
+      <obj_property name="ObjectShortName">rstn</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/dl_busy_i">
+      <obj_property name="ElementShortName">dl_busy_i</obj_property>
+      <obj_property name="ObjectShortName">dl_busy_i</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/intr">
+      <obj_property name="ElementShortName">intr</obj_property>
+      <obj_property name="ObjectShortName">intr</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/data">
+      <obj_property name="ElementShortName">data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/data_valid">
+      <obj_property name="ElementShortName">data_valid</obj_property>
+      <obj_property name="ObjectShortName">data_valid</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group145">
+      <obj_property name="label">SPI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="group" fp_name="group146">
+         <obj_property name="label">signals</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="logic" fp_name="/tb_spi_read_acc/SPI_clk_o">
+            <obj_property name="ElementShortName">SPI_clk_o</obj_property>
+            <obj_property name="ObjectShortName">SPI_clk_o</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/tb_spi_read_acc/SPI_MISO_i">
+            <obj_property name="ElementShortName">SPI_MISO_i</obj_property>
+            <obj_property name="ObjectShortName">SPI_MISO_i</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/tb_spi_read_acc/SPI_MOSI_o">
+            <obj_property name="ElementShortName">SPI_MOSI_o</obj_property>
+            <obj_property name="ObjectShortName">SPI_MOSI_o</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/tb_spi_read_acc/SPI_CS_o">
+            <obj_property name="ElementShortName">SPI_CS_o</obj_property>
+            <obj_property name="ObjectShortName">SPI_CS_o</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb_spi_read_acc/tx_count">
+         <obj_property name="ElementShortName">tx_count[3:0]</obj_property>
+         <obj_property name="ObjectShortName">tx_count[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb_spi_read_acc/tx_dv">
+         <obj_property name="ElementShortName">tx_dv</obj_property>
+         <obj_property name="ObjectShortName">tx_dv</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb_spi_read_acc/tx_byte">
+         <obj_property name="ElementShortName">tx_byte[7:0]</obj_property>
+         <obj_property name="ObjectShortName">tx_byte[7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb_spi_read_acc/tx_ready">
+         <obj_property name="ElementShortName">tx_ready</obj_property>
+         <obj_property name="ObjectShortName">tx_ready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb_spi_read_acc/rx_count">
+         <obj_property name="ElementShortName">rx_count[3:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_count[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb_spi_read_acc/rx_dv">
+         <obj_property name="ElementShortName">rx_dv</obj_property>
+         <obj_property name="ObjectShortName">rx_dv</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb_spi_read_acc/rx_byte">
+         <obj_property name="ElementShortName">rx_byte[7:0]</obj_property>
+         <obj_property name="ObjectShortName">rx_byte[7:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/state">
+      <obj_property name="ElementShortName">state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">state[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/cmd_index">
+      <obj_property name="ElementShortName">cmd_index[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cmd_index[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/config_done">
+      <obj_property name="ElementShortName">config_done</obj_property>
+      <obj_property name="ObjectShortName">config_done</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/acc_data">
+      <obj_property name="ElementShortName">acc_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">acc_data[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/bram_en">
+      <obj_property name="ElementShortName">bram_en</obj_property>
+      <obj_property name="ObjectShortName">bram_en</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_spi_read_acc/bram_we">
+      <obj_property name="ElementShortName">bram_we</obj_property>
+      <obj_property name="ObjectShortName">bram_we</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/bram_addr">
+      <obj_property name="ElementShortName">bram_addr[9:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_addr[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/bram_din">
+      <obj_property name="ElementShortName">bram_din[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_din[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/bram_latency_shift">
+      <obj_property name="ElementShortName">bram_latency_shift[1:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_latency_shift[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/data_counter">
+      <obj_property name="ElementShortName">data_counter[10:0]</obj_property>
+      <obj_property name="ObjectShortName">data_counter[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/axis_dt_pnt">
+      <obj_property name="ElementShortName">axis_dt_pnt[12:0]</obj_property>
+      <obj_property name="ObjectShortName">axis_dt_pnt[12:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/spi_slave_data">
+      <obj_property name="ElementShortName">spi_slave_data[0:7][7:0]</obj_property>
+      <obj_property name="ObjectShortName">spi_slave_data[0:7][7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_spi_read_acc/spi_slave_index">
+      <obj_property name="ElementShortName">spi_slave_index[2:0]</obj_property>
+      <obj_property name="ObjectShortName">spi_slave_index[2:0]</obj_property>
+   </wvobject>
+</wave_config>
