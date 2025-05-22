@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="freeRTOS_simple_intr_system-bitFile" value="${project_loc:freeRTOS_simple_intr}/_ide/bitstream/design_1_wrapper.bit"/>
+	<item key="freeRTOS_simple_intr_system-bmmFile" value=""/>
+	<item key="freeRTOS_simple_intr_system-target" value="Local"/>
+	<item key="freeRTOS_simple_intr_system-device" value="Auto Detect"/>
+	<item key="freeRTOS_simple_intr_system-partial_bit" value="false"/>
+	<item key="freeRTOS_simple_intr_system-skip_rev_check" value="false"/>
+	<item key="programfpga.sdxproject" value="freeRTOS_simple_intr_system"/>
+	<item key="devices_info_Local" value="{&quot;cables&quot;:[{&quot;name&quot;:&quot;Digilent Zybo Z7 210351AB6DB4A&quot;,&quot;indexContextMap&quot;:{&quot;2&quot;:&quot;jsn-Zybo Z7-210351AB6DB4A-4ba00477-0&quot;,&quot;3&quot;:&quot;jsn-Zybo Z7-210351AB6DB4A-13722093-0&quot;}}]}"/>
+</section>

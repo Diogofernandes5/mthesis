@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="freeRTOS_tcp_client_intr_py" location="/home/fernandes/thesis/00_code/09_ext/zybo_lw_ip_server_ex/freeRTOS_tcp_client_intr_py/freeRTOS_tcp_client_intr_py" platform="/home/fernandes/thesis/00_code/09_ext/zybo_lw_ip_server_ex/freeRTOS_tcp_client_intr_py/lw_ip_server_intr_wrapper/export/lw_ip_server_intr_wrapper/lw_ip_server_intr_wrapper.xpfm" platformUID="xilinx:zybo-z7-10::0.0(custom)" systemProject="freeRTOS_tcp_client_intr_py_system" sysConfig="lw_ip_server_intr_wrapper" runtime="cpp" cpu="freertos10_xilinx_ps7_cortexa9_0" cpuInstance="ps7_cortexa9_0" os="freertos10_xilinx" mssSignature="367977ba4b39ea7368f2040552097dce">
+  <configuration name="Debug" id="xilinx.gnu.armv7.exe.debug.335746590" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.armv7.exe.release.1979293009" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="freertos_lwip_tcp_perf_client" hasBspSettings="true"/>
+</sdkproject:SdkProject>

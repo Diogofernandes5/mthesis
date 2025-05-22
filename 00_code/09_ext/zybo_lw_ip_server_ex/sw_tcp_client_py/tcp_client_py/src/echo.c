@@ -1,0 +1,289 @@
+/*
+ * Copyright (C) 2009 - 2019 Xilinx, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+ * OF SUCH DAMAGE.
+ *
+ */
+
+#include <stdio.h>
+#include <string.h>
+
+#include "lwip/err.h"
+#include "lwip/tcp.h"
+
+#include "xil_cache.h"
+
+#include "echo.h"
+#if defined (__arm__) || defined (__aarch64__)
+#include "xil_printf.h"
+#endif
+
+//#include "xil_mmu.h"
+
+#include "xtime_l.h"
+
+// DDR Base address
+#define DDR_BASE_ADDR XPAR_PS7_DDR_0_S_AXI_BASEADDR
+
+// Memory base address - sum to DDR_BASE_ADDR protects DDR
+#define MEM_ADDR 0x00400000
+
+#define UNCACHED_BASE (0x05000000) // Example address
+volatile uint32_t *uncached_buf = (uint32_t*)UNCACHED_BASE;
+
+// global variables used to pass data between callbacks, tcp_arg
+// could potentially be used instead
+u16_t bytes_to_send;
+u16_t words_to_send;
+u32_t test_buf[65536];
+u32_t *write_head;
+
+u8_t client_id = 0;
+
+XTime tEnd, tStart;
+
+int transfer_data() {
+	return 0;
+}
+
+void print_app_header()
+{
+#if (LWIP_IPV6==0)
+	xil_printf("\n\r\n\r-----lwIP TCP echo server ------\n\r");
+#else
+	xil_printf("\n\r\n\r-----lwIPv6 TCP echo server ------\n\r");
+#endif
+	xil_printf("TCP packets sent to port 6001 will be echoed back\n\r");
+}
+
+err_t push_data(struct tcp_pcb *tpcb)
+{
+    // add up to remaining bytes_to_send to the transmit buffer, or
+    // fill the remaining space in the transmit buffer
+    u16_t packet_size = bytes_to_send;
+    u16_t max_bytes = tcp_sndbuf(tpcb);
+    err_t status;
+
+    // if there's nothing left to send, exit early
+    if (bytes_to_send == 0) {
+        return ERR_OK;
+    }
+
+    // if adding all bytes to the buffer would make it overflow,
+    // only fill the available space
+    if (packet_size > max_bytes) {
+        packet_size = max_bytes;
+    }
+
+//    Xil_SetTlbAttributes(UNCACHED_BASE, NORM_NONCACHE);
+//
+//    memcpy((void*)uncached_buf, write_head, packet_size);
+
+    // write to the LWIP library's buffer
+    status = tcp_write(tpcb, (int*)write_head, packet_size, TCP_WRITE_FLAG_COPY);
+//    status = tcp_write(tpcb, (u32_t*)uncached_buf, 10, 0);  TCP_WRITE_FLAG_COPY
+
+    xil_printf("push_data: Asked to add %d bytes to the send buffer, adding %d bytes\r\n",
+               bytes_to_send, bytes_to_send);
+
+    // keep track of how many bytes have been pushed to the buffer
+    if (packet_size > bytes_to_send) {
+        bytes_to_send = 0;
+    } else {
+        bytes_to_send -= packet_size;
+    }
+
+    // move our transmit buffer head forward
+    write_head += packet_size;
+
+    return status;
+}
+
+//void send_data_to_pc(void *data, int length, struct tcp_pcb *pcb) {
+//    // Create packet and send
+//    struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, length, PBUF_RAM);
+//    memcpy(p->payload, data, length);
+//    tcp_write(pcb, p->payload, p->len, 1);
+//    pbuf_free(p);
+//}
+
+err_t sent_callback(void *arg, struct tcp_pcb *tpcb, u16_t len) {
+	XTime_GetTime(&tEnd);
+
+	// log to USBUART for debugging purposes
+	xil_printf("entered sent_callback\r\n");
+	xil_printf("Elapsed: %d ticks\r\n", tEnd - tStart);
+	printf("Elapsed: %lf seconds\r\n", ((double)(tEnd - tStart) / (double)COUNTS_PER_SECOND));
+	xil_printf("    bytes_to_send = %d\r\n", bytes_to_send);
+	xil_printf("    len = %d\r\n", len);
+	xil_printf("    free space = %d\r\n", tcp_sndbuf(tpcb));
+
+	// if all bytes have been sent, we're done
+	if (bytes_to_send <= 0)
+		return ERR_OK;
+
+	return push_data(tpcb);
+}
+
+err_t recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p,
+                    err_t err)
+{
+	/* do not read the packet if we are not in ESTABLISHED state */
+	if (!p) {
+		tcp_close(tpcb);
+		tcp_recv(tpcb, NULL);
+		return ERR_OK;
+	}
+
+    xil_printf("entered recv_callback\r\n");
+	/* indicate that the packet has been received */
+	tcp_recved(tpcb, p->len);
+
+    // convert the first two bytes of the received packet's payload
+    // to a 16-bit unsigned integer
+	words_to_send = *((u16_t*)(p->payload));
+	bytes_to_send = words_to_send * sizeof(u32_t);
+
+    xil_printf("Server asked for %d words\r\n", words_to_send);
+	// load the buffer
+	for (int i = 0; i < bytes_to_send; i++) {
+		test_buf[i]= (u32_t)(i & 0xFF);
+	}
+
+//    write_head = (u32_t *) DDR_BASE_ADDR + MEM_ADDR;
+    write_head = test_buf;
+
+    XTime_GetTime(&tStart);
+
+    if (bytes_to_send > 0) {
+        err = push_data(tpcb);
+    } // else, nothing to send
+
+	/* free the received pbuf */
+	pbuf_free(p);
+
+	return err;
+}
+
+/* Client connection callback */
+err_t connected_callback(void *arg, struct tcp_pcb *tpcb, err_t err)
+{
+	static int connection = 1;
+
+    if (err != ERR_OK) {
+        printf("Connection failed: %d\n", err);
+        return err;
+    }
+
+    /* Set the same callbacks as before */
+    tcp_recv(tpcb, recv_callback);
+    tcp_sent(tpcb, sent_callback);
+
+    /* just use an integer number indicating the connection id as the
+		   callback argument */
+	tcp_arg(tpcb, (void*)(UINTPTR)connection);
+
+    printf("Connected to server\n");
+
+    /* Send initial data (if needed) */
+//    const char *msg = "Zynq client connected\n";
+    u8_t data[256];
+    for(int i = 0; i < 256; i++)
+    	data[i] = i;
+
+    err_t wr_err = tcp_write(tpcb, data, 256, 0);
+
+    if (wr_err != ERR_OK) {
+        printf("Failed to send initial data: %d\n", wr_err);
+        return wr_err;
+    }
+
+    return ERR_OK;
+}
+
+/** Close a tcp session */
+static void connection_close(struct tcp_pcb *pcb)
+{
+	err_t err;
+
+	if (pcb != NULL) {
+		tcp_sent(pcb, NULL);
+		tcp_err(pcb, NULL);
+		err = tcp_close(pcb);
+		if (err != ERR_OK) {
+			/* Free memory with abort */
+			tcp_abort(pcb);
+		}
+	}
+}
+
+int start_application()
+{
+	err_t err;
+	struct tcp_pcb* pcb;
+	ip_addr_t remote_addr;
+//	u32_t i;
+
+#if LWIP_IPV6==1
+	remote_addr.type= IPADDR_TYPE_V6;
+	err = inet6_aton(TCP_SERVER_IPV6_ADDRESS, &remote_addr);
+#else
+	err = inet_aton(TCP_SERVER_IP_ADDRESS, &remote_addr);
+#endif /* LWIP_IPV6 */
+
+	if (!err) {
+		xil_printf("Invalid Server IP address: %d\r\n", err);
+		return -1;
+	}
+
+	/* Create Client PCB */
+	pcb = tcp_new_ip_type(IPADDR_TYPE_ANY);
+	if (!pcb) {
+		xil_printf("Error in PCB creation. out of memory\r\n");
+		return -2;
+	}
+
+	err = tcp_connect(pcb, &remote_addr, TCP_CONN_PORT,
+			connected_callback);
+	if (err) {
+		xil_printf("Error on tcp_connect: %d\r\n", err);
+		connection_close(pcb);
+		return -3;
+	}
+//	client.client_id = 0;
+
+	/* specify callback to use for incoming connections */
+//	tcp_accept(pcb, accept_callback);
+
+//	xil_printf("TCP echo server started @ port %d\n\r", port);
+
+//	int data_buf[1024];
+//	for(int i = 0; i<1024;i++){
+//		data_buf[i] = i;
+//	}
+//
+//	send_data_to_pc(data_buf, 1024, pcb);
+
+	return 0;
+}

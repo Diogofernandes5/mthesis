@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="freeRTOS_simple_intr" location="/home/fernandes/thesis/00_code/09_ext/zybo_lw_ip_server_ex/freeRTOS_simple_intr/freeRTOS_simple_intr" platform="/home/fernandes/thesis/00_code/09_ext/zybo_lw_ip_server_ex/freeRTOS_simple_intr/design_1_wrapper/export/design_1_wrapper/design_1_wrapper.xpfm" platformUID="xilinx:zybo-z7-10::0.0(custom)" systemProject="freeRTOS_simple_intr_system" sysConfig="design_1_wrapper" runtime="cpp" cpu="freertos10_xilinx_ps7_cortexa9_0" cpuInstance="ps7_cortexa9_0" os="freertos10_xilinx" mssSignature="95c3db32e63947de4ba71ef439926aae">
+  <configuration name="Debug" id="xilinx.gnu.armv7.exe.debug.297505847">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.armv7.exe.release.1259600708" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="freertos_hello_world"/>
+</sdkproject:SdkProject>

@@ -1,0 +1,85 @@
+timestamp=[2025-04-11 13:40:26], mode=WORKBENCH_START, duration=0:00:05.088, duration_ms=5088, data={}
+timestamp=[2025-04-11 13:40:26], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.055, duration_ms=55, data={}
+timestamp=[2025-04-11 13:40:26], mode=WORKBENCH_UI_INIT, duration=0:00:00.452, duration_ms=452, data={editors_count=5, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
+timestamp=[2025-04-11 13:41:24], mode=APP_CREATION, duration=0:00:13.220, duration_ms=13220, data={name=tcp_client_py, project_type=sdk, os=standalone, processor=ps7_cortexa9, runtime=cpp, platform=design_1_wrapper, application_type=application}
+timestamp=[2025-04-11 13:42:18], mode=PLATFORM_GENERATION, duration=0:00:19.188, duration_ms=19188, data={name=design_1_wrapper}
+timestamp=[2025-04-11 13:42:21], mode=BUILD, duration=0:00:01.361, duration_ms=1361, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 14:14:38], mode=BUILD, duration=0:00:00.235, duration_ms=235, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 14:14:50], mode=BUILD, duration=0:00:00.337, duration_ms=337, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:23:36], mode=BUILD, duration=0:00:00.234, duration_ms=234, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:24:02], mode=BUILD, duration=0:00:00.234, duration_ms=234, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:24:26], mode=BUILD, duration=0:00:00.232, duration_ms=232, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:24:34], mode=BUILD, duration=0:00:00.232, duration_ms=232, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:24:43], mode=BUILD, duration=0:00:00.336, duration_ms=336, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:27:48], mode=BUILD, duration=0:00:00.235, duration_ms=235, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:28:03], mode=BUILD, duration=0:00:00.335, duration_ms=335, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:29:54], mode=BUILD, duration=0:00:00.235, duration_ms=235, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:30:05], mode=BUILD, duration=0:00:00.384, duration_ms=384, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:31:27], mode=BUILD, duration=0:00:00.387, duration_ms=387, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:33:17], mode=BUILD, duration=0:00:00.336, duration_ms=336, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:35:53], mode=BUILD, duration=0:00:00.390, duration_ms=390, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:36:04], mode=BUILD, duration=0:00:00.384, duration_ms=384, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:47:07], mode=BUILD, duration=0:00:00.385, duration_ms=385, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:48:45], mode=BUILD, duration=0:00:00.183, duration_ms=183, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-11 15:50:07], mode=BUILD, duration=0:00:00.386, duration_ms=386, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-15 16:32:47], mode=WORKBENCH_START, duration=0:00:06.312, duration_ms=6312, data={}
+timestamp=[2025-04-15 16:32:47], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.085, duration_ms=85, data={}
+timestamp=[2025-04-15 16:32:48], mode=WORKBENCH_UI_INIT, duration=0:00:01.007, duration_ms=1007, data={editors_count=5, platform_editors_count=1, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,tcp_client_py,tcp_client_py_system}
+timestamp=[2025-04-15 16:37:49], mode=BUILD, duration=0:00:00.647, duration_ms=647, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-15 16:38:02], mode=BUILD, duration=0:00:00.330, duration_ms=330, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-15 16:46:02], mode=BUILD, duration=0:00:00.184, duration_ms=184, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-15 17:06:59], mode=BUILD, duration=0:00:00.332, duration_ms=332, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-15 18:21:58], mode=BUILD, duration=0:00:00.390, duration_ms=390, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-15 18:25:00], mode=BUILD, duration=0:00:00.383, duration_ms=383, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 18:40:10], mode=WORKBENCH_START, duration=0:00:06.527, duration_ms=6527, data={}
+timestamp=[2025-04-22 18:40:10], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.114, duration_ms=114, data={}
+timestamp=[2025-04-22 18:40:12], mode=WORKBENCH_UI_INIT, duration=0:00:01.730, duration_ms=1730, data={editors_count=5, platform_editors_count=2, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,tcp_client_py,tcp_client_py_system}
+timestamp=[2025-04-22 18:44:41], mode=BUILD, duration=0:00:00.236, duration_ms=236, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:18:09], mode=BUILD, duration=0:00:00.296, duration_ms=296, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:18:26], mode=BUILD, duration=0:00:00.237, duration_ms=237, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:19:11], mode=BUILD, duration=0:00:00.442, duration_ms=442, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:20:42], mode=BUILD, duration=0:00:00.383, duration_ms=383, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:22:12], mode=BUILD, duration=0:00:00.238, duration_ms=238, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:23:06], mode=BUILD, duration=0:00:00.237, duration_ms=237, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:23:32], mode=BUILD, duration=0:00:00.342, duration_ms=342, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:29:27], mode=BUILD, duration=0:00:00.389, duration_ms=389, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:35:34], mode=BUILD, duration=0:00:00.392, duration_ms=392, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:36:26], mode=BUILD, duration=0:00:00.389, duration_ms=389, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 19:39:08], mode=BUILD, duration=0:00:00.392, duration_ms=392, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 20:01:20], mode=BUILD, duration=0:00:00.393, duration_ms=393, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 20:04:48], mode=BUILD, duration=0:00:00.394, duration_ms=394, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 20:05:51], mode=BUILD, duration=0:00:00.398, duration_ms=398, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-22 20:07:28], mode=BUILD, duration=0:00:00.398, duration_ms=398, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 11:39:52], mode=BUILD, duration=0:00:00.396, duration_ms=396, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 11:41:19], mode=BUILD, duration=0:00:00.396, duration_ms=396, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 11:41:31], mode=BUILD, duration=0:00:00.398, duration_ms=398, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 11:45:33], mode=BUILD, duration=0:00:00.554, duration_ms=554, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 11:46:24], mode=BUILD, duration=0:00:00.557, duration_ms=557, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 16:00:58], mode=BUILD, duration=0:00:00.398, duration_ms=398, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 16:04:08], mode=BUILD, duration=0:00:00.394, duration_ms=394, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 16:27:02], mode=BUILD, duration=0:00:00.398, duration_ms=398, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 16:31:05], mode=BUILD, duration=0:00:00.417, duration_ms=417, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 16:37:35], mode=BUILD, duration=0:00:00.244, duration_ms=244, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 16:38:00], mode=BUILD, duration=0:00:00.495, duration_ms=495, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 17:40:01], mode=BUILD, duration=0:00:00.410, duration_ms=410, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 17:56:41], mode=BUILD, duration=0:00:00.443, duration_ms=443, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 17:58:55], mode=BUILD, duration=0:00:00.569, duration_ms=569, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 18:04:14], mode=BUILD, duration=0:00:00.404, duration_ms=404, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-23 18:05:28], mode=BUILD, duration=0:00:00.707, duration_ms=707, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 11:46:14], mode=BUILD, duration=0:00:00.452, duration_ms=452, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 11:49:56], mode=BUILD, duration=0:00:00.395, duration_ms=395, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 12:15:53], mode=BUILD, duration=0:00:01.560, duration_ms=1560, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 12:17:04], mode=BUILD, duration=0:00:00.533, duration_ms=533, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 17:19:44], mode=WORKBENCH_START, duration=0:00:07.616, duration_ms=7616, data={}
+timestamp=[2025-04-24 17:19:45], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.093, duration_ms=93, data={}
+timestamp=[2025-04-24 17:19:46], mode=WORKBENCH_UI_INIT, duration=0:00:01.900, duration_ms=1900, data={editors_count=7, platform_editors_count=3, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,tcp_client_py,tcp_client_py_system}
+timestamp=[2025-04-24 17:20:43], mode=BUILD, duration=0:00:00.403, duration_ms=403, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 17:20:57], mode=BUILD, duration=0:00:00.238, duration_ms=238, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 17:21:04], mode=BUILD, duration=0:00:00.434, duration_ms=434, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-24 17:23:37], mode=BUILD, duration=0:00:00.383, duration_ms=383, data={name=tcp_client_py, configuration=Debug, clean_build=false}
+timestamp=[2025-04-29 18:20:48], mode=WORKBENCH_START, duration=0:00:15.807, duration_ms=15807, data={}
+timestamp=[2025-04-29 18:20:48], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.074, duration_ms=74, data={}
+timestamp=[2025-04-29 18:20:52], mode=WORKBENCH_UI_INIT, duration=0:00:04.858, duration_ms=4858, data={editors_count=7, platform_editors_count=3, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,tcp_client_py,tcp_client_py_system}
+timestamp=[2025-05-05 22:51:28], mode=WORKBENCH_START, duration=0:00:09.568, duration_ms=9568, data={}
+timestamp=[2025-05-05 22:51:28], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.031, duration_ms=31, data={}
+timestamp=[2025-05-05 22:51:30], mode=WORKBENCH_UI_INIT, duration=0:00:01.902, duration_ms=1902, data={editors_count=7, platform_editors_count=3, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,tcp_client_py,tcp_client_py_system}

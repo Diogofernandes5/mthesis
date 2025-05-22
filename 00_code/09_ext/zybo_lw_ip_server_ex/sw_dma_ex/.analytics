@@ -1,0 +1,18 @@
+timestamp=[2025-04-15 19:54:16], mode=WORKBENCH_START, duration=0:00:06.025, duration_ms=6025, data={}
+timestamp=[2025-04-15 19:54:17], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.043, duration_ms=43, data={}
+timestamp=[2025-04-15 19:54:17], mode=WORKBENCH_UI_INIT, duration=0:00:00.431, duration_ms=431, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
+timestamp=[2025-04-15 19:55:13], mode=APP_CREATION, duration=0:00:14.259, duration_ms=14259, data={name=dma_eth_ex, project_type=sdk, os=standalone, processor=ps7_cortexa9, runtime=cpp, platform=design_1_wrapper, application_type=application}
+timestamp=[2025-04-15 20:01:36], mode=APP_CREATION, duration=0:00:05.160, duration_ms=5160, data={name=xemacps_example_intr_dma_1, project_type=sdk, os=standalone, processor=cortex-a9, runtime=C/C++, platform=design_1_wrapper, application_type=application}
+timestamp=[2025-04-15 20:02:04], mode=PLATFORM_GENERATION, duration=0:00:11.975, duration_ms=11975, data={name=design_1_wrapper}
+timestamp=[2025-04-15 20:02:06], mode=BUILD, duration=0:00:00.595, duration_ms=595, data={name=xemacps_example_intr_dma_1, configuration=Debug, clean_build=false}
+timestamp=[2025-04-16 11:21:38], mode=WORKBENCH_START, duration=0:00:07.001, duration_ms=7001, data={}
+timestamp=[2025-04-16 11:21:38], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.031, duration_ms=31, data={}
+timestamp=[2025-04-16 11:21:39], mode=WORKBENCH_UI_INIT, duration=0:00:01.413, duration_ms=1413, data={editors_count=5, platform_editors_count=2, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,xemacps_example_intr_dma_1,xemacps_example_intr_dma_1_system}
+timestamp=[2025-04-22 16:24:17], mode=WORKBENCH_START, duration=0:00:06.848, duration_ms=6848, data={}
+timestamp=[2025-04-22 16:24:18], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.046, duration_ms=46, data={}
+timestamp=[2025-04-22 16:24:19], mode=WORKBENCH_UI_INIT, duration=0:00:01.524, duration_ms=1524, data={editors_count=4, platform_editors_count=1, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,xemacps_example_intr_dma_1,xemacps_example_intr_dma_1_system}
+timestamp=[2025-05-12 17:35:32], mode=WORKBENCH_START, duration=0:00:06.553, duration_ms=6553, data={}
+timestamp=[2025-05-12 17:35:32], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.035, duration_ms=35, data={}
+timestamp=[2025-05-12 17:35:33], mode=WORKBENCH_UI_INIT, duration=0:00:01.451, duration_ms=1451, data={editors_count=5, platform_editors_count=1, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,design_1_wrapper,xemacps_example_intr_dma_1,xemacps_example_intr_dma_1_system}
+timestamp=[2025-05-12 17:35:54], mode=PLATFORM_GENERATION, duration=0:00:07.249, duration_ms=7249, data={name=design_1_wrapper}
+timestamp=[2025-05-12 17:35:56], mode=BUILD, duration=0:00:00.557, duration_ms=557, data={name=xemacps_example_intr_dma_1, configuration=Debug, clean_build=false}
