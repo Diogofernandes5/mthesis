@@ -1,0 +1,90 @@
+#include "timer.h"
+
+#include "FreeRTOS.h"
+
+static TaskHandle_t xTaskHandle;
+
+void TimerISR(void *CallbackRef)
+{
+	XTtcPs *InstancePtr = (XTtcPs *) CallbackRef;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    u32 XTtcPsStatusReg = XTtcPs_GetInterruptStatus(InstancePtr);
+    XTtcPs_ClearInterruptStatus(InstancePtr, XTtcPsStatusReg);
+
+    vTaskNotifyGiveFromISR(xTaskHandle, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
+//    if ( xSemaphoreGiveFromISR( xSemaphore, &xHigherPriorityTaskWoken ) != pdFALSE) {
+//		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+//	}
+}
+
+int SetupTimer(XTtcPs *xTimerInstance)
+{
+	const TickType_t x1second = pdMS_TO_TICKS( DELAY_1_SECOND );
+
+	const TickType_t x100mseconds = pdMS_TO_TICKS( DELAY_100_MILISEC );
+	int xStatus;
+
+//	xSemaphore = xSemaphoreCreateBinary();
+//	if ( xSemaphore == NULL ) {
+//		xil_printf("Failed to create semaphore\n");
+//		return XST_FAILURE;
+//	}
+	xTaskHandle = xTaskGetCurrentTaskHandle();
+
+	XTtcPs_Config *pxTimerConfig;
+	XInterval usInterval;
+	uint8_t ucPrescaler;
+
+	/* Initialize configuration */
+	pxTimerConfig = XTtcPs_LookupConfig( XPAR_XTTCPS_3_BASEADDR );
+
+	xStatus = XTtcPs_CfgInitialize( xTimerInstance, pxTimerConfig, pxTimerConfig->BaseAddress );
+	if ( xStatus != XST_SUCCESS ) {
+		XTtcPs_Stop(xTimerInstance);
+		xStatus = XTtcPs_CfgInitialize( xTimerInstance, pxTimerConfig, pxTimerConfig->BaseAddress );
+		if ( xStatus != XST_SUCCESS ) {
+			xil_printf( "In %s: Timer Cfg initialization failed...\r\n", __func__ );
+			return xStatus;
+		}
+	}
+
+	XTtcPs_SetOptions( xTimerInstance, XTTCPS_OPTION_INTERVAL_MODE | XTTCPS_OPTION_WAVE_DISABLE );
+
+	XTtcPs_CalcIntervalFromFreq( xTimerInstance, configTICK_RATE_HZ * 2, &usInterval, &ucPrescaler );
+	XTtcPs_SetInterval( xTimerInstance, usInterval );
+	XTtcPs_SetPrescaler( xTimerInstance, ucPrescaler );
+	XTtcPs_EnableInterrupts( xTimerInstance, XTTCPS_IXR_INTERVAL_MASK );
+
+	xPortInstallInterruptHandler( TIMER_INTR_ID, (Xil_ExceptionHandler)TtcHandler, &xTimerInstance );
+	/* Enable interrupt for TTC1 instance */
+	vPortEnableInterrupt(TIMER_INTR_ID);
+
+	sys_thread_new("timer_task", (void(*)(void*))prvTimerTask, 0,
+					configMINIMAL_STACK_SIZE,
+					tskIDLE_PRIORITY);
+
+	XTtcPs_Start( xTimerInstance );
+
+}
+
+void prvTimerTask( void *pvParameters )
+{
+	XTtcPs *TtcPtr = (XTtcPs*) pvParameter;
+
+	ConfigTimer(TtcPtr);
+
+	xil_printf("Waiting for semaphore, FreeRTOS tick count is %x\n\r", xTaskGetTickCount());
+
+	while(1)
+	{
+		ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+		xil_printf("Timer interrupt occurred!\r\n");
+	}
+
+	xil_printf("Successfully ran FreeRTOS interrupt example, FreeRTOS tick count is %x \n\r",
+					   xTaskGetTickCount());
+			vTaskDelete( xTimerTask );
+}

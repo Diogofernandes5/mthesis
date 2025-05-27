@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="pvParameters"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="pvParameters"/>
+			<item value="256"/>
+			<item value="xSemaphore"/>
+			<item value="TtcHandler"/>
+			<item value="xTimerTask"/>
+			<item value="TTC"/>
+			<item value="xTaskHandleInstance"/>
+			<item value="ttc"/>
+			<item value="xTaskHandle"/>
+			<item value="XPAR_XTTCPS_3_DEVICE_ID"/>
+			<item value="INTERRUPT_ID"/>
+			<item value="xtt"/>
+			<item value="XPAR_TMRCTR_1_DEVICE_ID"/>
+		</list>
+		<list key="replacehistory">
+			<item value="timerSemaphore"/>
+			<item value="TimerHandler"/>
+			<item value="xTaskHandleInstance"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="1403"/>
+		<item key="DIALOG_Y_ORIGIN" value="226"/>
+		<item key="DIALOG_WIDTH" value="443"/>
+		<item key="DIALOG_HEIGHT" value="437"/>
+		<item key="DIALOG_FONT_NAME" value="1|Ubuntu|11.0|0|GTK|1|"/>
+	</section>
+</section>

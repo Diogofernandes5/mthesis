@@ -1,0 +1,37 @@
+#include "xil_printf.h"
+#include "globals.h"
+#include "stdlib.h"
+
+void fill_ddr(u32 size)
+{
+	u32 *buffer;
+
+	if(size <= 0 || size > 65536)
+	{
+		xil_printf("It was not possible to write to DDR, insert a valid size of array!\n\r");
+		return;
+	}
+
+	buffer = malloc(size);
+
+	for (int i = 0; i < size; i++) {
+		buffer[i] = i; // Fill with test pattern
+	}
+
+	// Copy to DDR
+    u32 *ddr = (u32*)(DDR_BASE_ADDR + MEM_ADDR);
+	memcpy(ddr, buffer, size);
+
+	int err = 0;
+	// Verify
+	for (int i = 0; i < size; i++) {
+		if (ddr[i] != buffer[i]) {
+			err = 1;
+			xil_printf("Error at offset %d!\n", i);
+		}
+	}
+	if(err)
+		xil_printf("DDR writing didn't worked\n\r");
+	else
+		xil_printf("DDR writing worked fine\n\r");
+}

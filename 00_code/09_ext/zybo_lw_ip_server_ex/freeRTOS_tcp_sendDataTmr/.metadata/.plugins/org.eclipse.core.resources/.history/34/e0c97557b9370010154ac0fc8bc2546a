@@ -1,0 +1,31 @@
+/*------DDR------*/
+// DDR Base address
+#define DDR_BASE_ADDR 	XPAR_PS7_DDR_0_S_AXI_BASEADDR
+
+// Memory base address - sum to DDR_BASE_ADDR protects DDR
+#define MEM_ADDR 		0x00400000
+
+void fill_ddr(void)
+{
+	u32 buffer[1024]; // Example data buffer
+	for (int i = 0; i < 1024; i++) {
+		buffer[i] = i; // Fill with test pattern
+	}
+
+	// Copy to DDR
+    u32 *ddr = (u32*)DDR_BASE_ADDR + MEM_ADDR;
+	memcpy(ddr, buffer, sizeof(buffer));
+
+	int err = 0;
+	// Verify
+	for (int i = 0; i < 1024; i++) {
+		if (ddr[i] != buffer[i]) {
+			err = 1;
+			xil_printf("Error at offset %d!\n", i);
+		}
+	}
+	if(err)
+		xil_printf("DDR writing didn't worked\n\r");
+	else
+		xil_printf("DDR writing worked fine\n\r");
+}

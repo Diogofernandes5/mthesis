@@ -1,0 +1,20 @@
+#ifndef __TIMER_H__
+#define __TIMER_H__
+
+#include "xparameters.h"
+
+/*------TTC------*/
+#define	TIMER_DEVICE_ID		XPAR_XTTCPS_3_DEVICE_ID
+
+#define TIMER_INTR_ID		XPAR_XTTCPS_3_INTR
+
+//#define TIMER_ID	1
+#define DELAY_10_SECONDS		10000UL
+#define DELAY_1_SECOND			1000UL
+#define TIMER_CHECK_THRESHOLD	9
+#define DELAY_100_MILISEC		100UL
+
+
+int SetupTimer(XTtcPs *xTimerInstance);
+
+#endif /*__TIMER_H__*/

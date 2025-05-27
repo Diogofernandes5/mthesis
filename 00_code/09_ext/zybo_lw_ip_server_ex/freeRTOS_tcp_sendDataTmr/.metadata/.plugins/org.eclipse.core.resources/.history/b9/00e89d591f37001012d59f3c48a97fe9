@@ -1,0 +1,39 @@
+#include "timer.h"
+
+int ConfigTimer()
+{
+	const TickType_t x1second = pdMS_TO_TICKS( DELAY_1_SECOND );
+
+	const TickType_t x100mseconds = pdMS_TO_TICKS( DELAY_100_MILISEC );
+	int xStatus;
+
+	xSemaphore = xSemaphoreCreateBinary();
+	if ( xSemaphore == NULL ) {
+		xil_printf("Failed to create semaphore\n");
+		return XST_FAILURE;
+	}
+
+	XTtcPs_Config *pxTimerConfig;
+	XInterval usInterval;
+	uint8_t ucPrescaler;
+
+	/* Initialize configuration */
+	pxTimerConfig = XTtcPs_LookupConfig( XPAR_XTTCPS_3_BASEADDR );
+
+	xStatus = XTtcPs_CfgInitialize( &xTimerInstance, pxTimerConfig, pxTimerConfig->BaseAddress );
+	if ( xStatus != XST_SUCCESS ) {
+		XTtcPs_Stop(&xTimerInstance);
+		xStatus = XTtcPs_CfgInitialize( &xTimerInstance, pxTimerConfig, pxTimerConfig->BaseAddress );
+		if ( xStatus != XST_SUCCESS ) {
+			xil_printf( "In %s: Timer Cfg initialization failed...\r\n", __func__ );
+			return xStatus;
+		}
+	}
+
+	XTtcPs_SetOptions( &xTimerInstance, XTTCPS_OPTION_INTERVAL_MODE | XTTCPS_OPTION_WAVE_DISABLE );
+
+	XTtcPs_CalcIntervalFromFreq( &xTimerInstance, configTICK_RATE_HZ * 2, &usInterval, &ucPrescaler );
+	XTtcPs_SetInterval( &xTimerInstance, usInterval );
+	XTtcPs_SetPrescaler( &xTimerInstance, ucPrescaler );
+	XTtcPs_EnableInterrupts( &xTimerInstance, XTTCPS_IXR_INTERVAL_MASK );
+}
