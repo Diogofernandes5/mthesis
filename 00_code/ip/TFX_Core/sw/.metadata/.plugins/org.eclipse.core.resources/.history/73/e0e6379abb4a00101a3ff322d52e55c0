@@ -1,0 +1,173 @@
+#include <stdio.h>
+#include <string.h>
+
+#include "lwip/sockets.h"
+#include "netif/xadapter.h"
+#include "lwipopts.h"
+#include "xil_printf.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+#include "lwip/inet.h"
+
+#include "globals.h"
+
+#include "xil_io.h"
+
+/**************** DEFINES ******************/
+#define THREAD_STACKSIZE 1024
+
+#define TCP_SERVER_IP_ADDRESS "192.168.1.100"
+
+#define RECV_BUF_SIZE 2048
+
+// N*J1*2=256*4*2
+#define WORDS_TO_SEND 2048
+//#define WORDS_TO_SEND 262144
+#define BYTES_TO_SEND (WORDS_TO_SEND*sizeof(u32))
+
+/**************** PROTOTYPES ******************/
+//void fill_ddr(u32 size);
+
+/**************** VARIABLES ******************/
+u16_t echo_port = 5000;
+
+u8_t connected = 0;
+
+extern volatile SemaphoreHandle_t CwtDoneSemaphore;
+
+void send_data_thread(void *p)
+{
+	int sd = (int)p;
+	int32_t len = 0;
+	u32 *ddr;
+
+//	const TickType_t x10seconds = pdMS_TO_TICKS(DELAY_10_SECONDS);
+
+//	fill_ddr(WORDS_TO_SEND);
+
+	while (1) {
+		if(connected)
+		{
+			// Can use 0 in the blocking time to make the semaphore take polling
+			if (xSemaphoreTake(CwtDoneSemaphore, portMAX_DELAY) != pdTRUE) {
+				xil_printf("FreeRTOS interrupt example FAILED \n\r");
+//				vTaskDelete(xTimerTask);
+				break;
+			}
+
+			xil_printf("Sending size (bytes): %d\n\r", BYTES_TO_SEND);
+			// send size first
+			len = htonl(BYTES_TO_SEND); // network byte order
+
+			if (send(sd, &len, sizeof(len), 0) < 0) {
+			    xil_printf("Failed to send length\n\r");
+			    break;
+			}
+
+			ddr = (u32*)(DDR_BASE_ADDR + MEM_ADDR);
+			if (send(sd, ddr, BYTES_TO_SEND, 0) < 0) {
+			    xil_printf("Failed to send data\n\r");
+			    break;
+			}
+		}
+	}
+
+	/* close connection */
+//	write(sd, "exit", 4);
+
+//	close(sd);
+	vTaskDelete(NULL);
+}
+
+void recv_thread(void *p)
+{
+	int sd = (int)p;
+	char recv_buf[RECV_BUF_SIZE];
+	int n = 0;
+
+	while (1) {
+		if(connected)
+		{
+			if ((n = read(sd, recv_buf, RECV_BUF_SIZE)) < 0) {
+				xil_printf("%s: error reading from socket %d, closing socket\r\n", __FUNCTION__, sd);
+				break;
+			}
+
+			/* break if the recved message = "quit" */
+			if (!strncmp(recv_buf, "exit", 4)) {
+				connected = 0;
+				xil_printf("Server closed connection...\r\n");
+				break;
+			}
+
+			/* break if server closed connection */
+			if (n <= 0) {
+				connected = 0;
+				xil_printf("Unexpectedly disconnected from server...\r\n");
+				break;
+			}
+		}
+	}
+
+	/* close connection */
+//	write(sd, "exit", 4);
+
+//	close(sd);
+	vTaskDelete(NULL);
+}
+
+void connect_thread()
+{
+	int sock;
+	struct sockaddr_in address;
+	int status = -1;
+	xTaskHandle sendTask;
+
+	memset(&address, 0, sizeof(address));
+
+	if ((sock = lwip_socket(AF_INET, SOCK_STREAM, 0)) < 0)
+		return;
+
+	address.sin_family = AF_INET;
+	address.sin_port = htons(echo_port);
+	address.sin_addr.s_addr = inet_addr(TCP_SERVER_IP_ADDRESS);
+
+	xil_printf("\r\nTrying to connect to server...\r\n\r\n");
+	while(1) {
+		while ( (status < 0) || !connected ) {
+			status = lwip_connect(sock, (struct sockaddr *)&address, sizeof(address));
+			if(status < 0) {
+				xil_printf("Couldn't connect to server! Trying again...\n\r");
+
+				// don't do nothing more if send task is still active
+				// waits for the send thread to quit (only after send data function fails)
+				while(eTaskGetState(sendTask) != eDeleted);
+				close(sock);
+				if ((sock = lwip_socket(AF_INET, SOCK_STREAM, 0)) < 0)
+					break;
+				vTaskDelay(pdMS_TO_TICKS(5000)); // Wait 5 seconds before retry
+			}
+			else {
+				xil_printf("\r\nConnected to server!\r\n");
+				connected = 1;// Connected successfully
+
+				Xil_Out32(0x43C00000, 1);
+
+				sendTask = sys_thread_new("send", send_data_thread,
+												(void*)sock,
+												THREAD_STACKSIZE,
+												DEFAULT_THREAD_PRIO);
+
+				sys_thread_new("recv", recv_thread,
+												(void*)sock,
+												THREAD_STACKSIZE,
+												DEFAULT_THREAD_PRIO);
+			}
+		}
+	}
+
+	/* close connection */
+	close(sock);
+	vTaskDelete(NULL);
+}

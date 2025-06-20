@@ -1,0 +1,4 @@
+
+#include "xparameters.h"
+
+#define TIMER_INTR_ID		XPAR_XTTCPS_3_INTR

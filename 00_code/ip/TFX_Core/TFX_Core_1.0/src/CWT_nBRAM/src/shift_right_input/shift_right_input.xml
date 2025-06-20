@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>user.org</spirit:vendor>
+  <spirit:library>customized_ip</spirit:library>
+  <spirit:name>shift_right_input</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagesynthesis</spirit:name>
+        <spirit:displayName>Synthesis</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:modelName>shift_right</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jun 09 18:20:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:a12e4c46</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_synthesisconstraints</spirit:name>
+        <spirit:displayName>Synthesis Constraints</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis.constraints</spirit:envIdentifier>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:a12e4c46</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsynthesiswrapper</spirit:name>
+        <spirit:displayName>Verilog Synthesis Wrapper</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:synthesis.wrapper</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>shift_right_input</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsynthesiswrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jun 09 18:20:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:a12e4c46</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagebehavioralsimulation</spirit:name>
+        <spirit:displayName>Simulation</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:modelName>shift_right</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jun 09 18:20:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:5025e7ae</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsimulationwrapper</spirit:name>
+        <spirit:displayName>Verilog Simulation Wrapper</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:simulation.wrapper</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>shift_right_input</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsimulationwrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jun 09 18:20:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:5025e7ae</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>data_in</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.WIDTH&apos;)) - 1)">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>signed</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>data_out</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.WIDTH&apos;)) - 1)">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>signed</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+    <spirit:modelParameters>
+      <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
+        <spirit:name>SHIFT_NUM</spirit:name>
+        <spirit:displayName>Shift Num</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.SHIFT_NUM">7</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>WIDTH</spirit:name>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.WIDTH">32</spirit:value>
+      </spirit:modelParameter>
+    </spirit:modelParameters>
+  </spirit:model>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>src/shift_r.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/shift_r_test/shift_r_test.srcs/sources_1/new/shift_r.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsynthesiswrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>synth/shift_right_input.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>src/shift_r.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../tests/shift_r_test/shift_r_test.srcs/sources_1/new/shift_r.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsimulationwrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sim/shift_right_input.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>shift_right</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">shift_right_input</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>WIDTH</spirit:name>
+      <spirit:displayName>Width</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.WIDTH" spirit:minimum="8" spirit:maximum="64" spirit:rangeType="long">32</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>SHIFT_NUM</spirit:name>
+      <spirit:displayName>Shift Num</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.SHIFT_NUM">7</spirit:value>
+      <spirit:vendorExtensions>
+        <xilinx:parameterInfo>
+          <xilinx:enablement>
+            <xilinx:isEnabled xilinx:resolve="generated" xilinx:id="PARAM_ENABLEMENT.SHIFT_NUM">true</xilinx:isEnabled>
+          </xilinx:enablement>
+        </xilinx:parameterInfo>
+      </spirit:vendorExtensions>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:displayName>shift_right</xilinx:displayName>
+      <xilinx:definitionSource>package_project</xilinx:definitionSource>
+      <xilinx:coreRevision>20</xilinx:coreRevision>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7f649446_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@347726a5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@35ea7d60_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@28ace00a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67846231_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4c818bd3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5465c117_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@48ad1568_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3c653704_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@141cdf7b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26ece948_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5641e40_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17f7caa_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@126a323a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1a69c82_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@557d19bd_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1989815a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@421d64c4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ff63d75_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@15dcaa4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7c2d6ef2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3492d159_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@45a32564_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16f85ce8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@54b828d0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@354c4ec7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6c6817de_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@18cf1803_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@fb3be38_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d2d3b06_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1501ee49_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@43a6e2f5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@a0faed4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ea184e9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@38ca1d63_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@754bcc00_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7dafd32c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b3c6ee_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@47bf305e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a9527ed_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@42cac138_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@35ae14cf_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@69d8add5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@57f95aef_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@34f6a50d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@ef7b52f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e4eafed_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@512e74e7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@43ac44ef_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16f2fe23_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2425cdee_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@458f2928_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7c6f678a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@18fb1861_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4fe6aaeb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5f29a1f7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3cb980af_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@660bae52_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@75b4632b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4603209c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@594c3d5a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@760aebe6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@338c507e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4f96dbbe_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@75b9fd7b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d0ae837_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@ea09f8d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72110746_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2e7964c7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@27d14268_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@39df4c83_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26ce1913_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@19131097_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a0ddac8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@265ead0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5c1aff95_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b250e79_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@676ee9d6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78b7e9e1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7cad7a14_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@38f8f819_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78adcb8f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29f79e90_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ccec90f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6534b64_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1881dbb9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@54732649_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67394239_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@230be4d4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41c7036_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72749c6e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4910e0ae_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ae83663_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4aff0250_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@165450da_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@70423695_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2f975b50_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@dac0eb0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3d2092b0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3afccd6a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6304a659_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4db3bb1e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@76b59c6e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7a544b69_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@463436af_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26e26915_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d914a22_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e89e3c4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@77631a7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1916ccf4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2cd7e6c8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e54e88e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41131cd5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@52405fbc_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@137126c6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1bdb4f9b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@60c192b6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@760f300d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ec34938_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@33effc1d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@747543a8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2abcffc6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3473fb2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@407d25c8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@cf22bb0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5578990b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5ddde488_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@294233fb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@bc1c8e2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1f5c15fa_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@535b300d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@209f548b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4c83e2c7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@412cb715_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73093a43_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5244be0f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1d425997_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@432e0b7d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1c040fda_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@66246ac9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a331b4f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a9f796a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5df567c1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7a7559e8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6a749d67_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@202089ca_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4c02adf6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@253fbba2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@149a88c6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@225c2fcc_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@324c3452_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@777fe4ac_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2dba9788_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16de310_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@64d43efb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ccc94b9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@52a9b399_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@40dc4a9a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3e36b8c4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@765365e0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@53b38873_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7de4d086_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1fcbfcc1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49ad26be_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@600e6c5c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58f78c0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@10a9167d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@51fbdedd_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5eb88822_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7dfdb10_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1d523512_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16f583dc_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@33ef0faf_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7b14ef20_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@758ef5f6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@60fcb456_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@31e9e71a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3cac69c0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@48b8d1c3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78ea7ea0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58b544b5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7bcef64a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17d28fa3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41efef8e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@494a67d7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58fbf190_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@75e196ea_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5477495d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@775ea9b0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@9b4dc3a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@19668cd2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@229670fa_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@a93ce60_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2bc3d75e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@283660ac_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@50df1101_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6db70732_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3efd4093_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1d8a6dbc_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b9fd0b5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4a3a4d78_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1f7789c0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@dd9406d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6680b271_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@74ce23f3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1e162448_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@c49666c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@751a566b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@19f0e06c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@17099f32_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4fa1986_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6c7bb9ac_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41d6c52d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5a7aa97f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@329e10c9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78c8bfee_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@171137c8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3a390d46_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@9eb9c1e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3a41fa09_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@21bd4843_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6e0fe76d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1bcf500f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5cbb0dd4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@593916d3_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2cb19505_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67d10e78_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7407ddb4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2e83b059_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e908c9c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2557470b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b6a1fe2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@15be46de_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@18a08a3f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@37ed4ea6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@31968a3f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1013d23c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1448acde_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4fb99d76_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a48bda6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@78b8f102_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a2dc787_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/shift_right</xilinx:tag>
+      </xilinx:tags>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="3d0f33ce"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="d20ce3f7"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="a64c8f8d"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="554b6ceb"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>

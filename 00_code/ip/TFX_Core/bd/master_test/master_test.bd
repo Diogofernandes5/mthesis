@@ -1,0 +1,161 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0xFB506AC162C2D7AF",
+      "device": "xc7z010clg400-1",
+      "name": "master_test",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2021.1",
+      "validated": "true"
+    },
+    "design_tree": {
+      "axi_vip_0": "",
+      "TFX_Core_0": ""
+    },
+    "ports": {
+      "start_i": {
+        "direction": "I"
+      },
+      "ACLK": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "ARESETN",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "master_test_ACLK",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "ARESETN": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
+      },
+      "cwt_done_o": {
+        "direction": "O",
+        "parameters": {
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default_prop"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
+            "value_src": "const_prop"
+          }
+        }
+      }
+    },
+    "components": {
+      "axi_vip_0": {
+        "vlnv": "xilinx.com:ip:axi_vip:1.1",
+        "xci_name": "master_test_axi_vip_0_0",
+        "xci_path": "ip/master_test_axi_vip_0_0/master_test_axi_vip_0_0.xci",
+        "inst_hier_path": "axi_vip_0",
+        "parameters": {
+          "INTERFACE_MODE": {
+            "value": "SLAVE"
+          }
+        }
+      },
+      "TFX_Core_0": {
+        "vlnv": "user.org:user:TFX_Core:1.0",
+        "xci_name": "master_test_TFX_Core_0_0",
+        "xci_path": "ip/master_test_TFX_Core_0_0/master_test_TFX_Core_0_0.xci",
+        "inst_hier_path": "TFX_Core_0",
+        "parameters": {
+          "C_M_AXI_Data_BURST_LEN": {
+            "value": "256"
+          }
+        },
+        "interface_ports": {
+          "m_axi_data": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "m_axi_data",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0xFFFFFFFF",
+              "width": "32"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "m_axi_data": {
+              "range": "4G",
+              "width": "32"
+            }
+          }
+        }
+      }
+    },
+    "interface_nets": {
+      "TFX_Core_0_m_axi_data": {
+        "interface_ports": [
+          "TFX_Core_0/m_axi_data",
+          "axi_vip_0/S_AXI"
+        ]
+      }
+    },
+    "nets": {
+      "TFX_Core_0_cwt_done": {
+        "ports": [
+          "TFX_Core_0/cwt_done",
+          "cwt_done_o"
+        ]
+      },
+      "m_axi_data_aclk_0_1": {
+        "ports": [
+          "ACLK",
+          "axi_vip_0/aclk",
+          "TFX_Core_0/s_axi_config_aclk",
+          "TFX_Core_0/m_axi_data_aclk"
+        ]
+      },
+      "s_axi_config_aresetn_0_1": {
+        "ports": [
+          "ARESETN",
+          "axi_vip_0/aresetn",
+          "TFX_Core_0/s_axi_config_aresetn",
+          "TFX_Core_0/m_axi_data_aresetn"
+        ]
+      },
+      "start_i_0_1": {
+        "ports": [
+          "start_i",
+          "TFX_Core_0/start_but_i"
+        ]
+      }
+    }
+  }
+}

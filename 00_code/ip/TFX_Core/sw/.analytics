@@ -1,0 +1,88 @@
+timestamp=[2025-06-13 15:15:51], mode=WORKBENCH_START, duration=0:00:09.930, duration_ms=9930, data={}
+timestamp=[2025-06-13 15:15:52], mode=WORKBENCH_UI_INIT, duration=0:00:00.601, duration_ms=601, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
+timestamp=[2025-06-13 15:15:52], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.065, duration_ms=65, data={}
+timestamp=[2025-06-13 15:32:09], mode=APP_CREATION, duration=0:00:15.110, duration_ms=15110, data={name=TFX_Core_1CWT, project_type=sdk, os=freertos10_xilinx, processor=ps7_cortexa9, runtime=cpp, platform=TFX_Core_wrapper, application_type=application}
+timestamp=[2025-06-13 15:59:12], mode=PLATFORM_GENERATION, duration=0:00:25.908, duration_ms=25908, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-13 15:59:15], mode=BUILD, duration=0:00:00.623, duration_ms=623, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 16:16:31], mode=BUILD, duration=0:00:00.246, duration_ms=246, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 16:16:54], mode=BUILD, duration=0:00:00.341, duration_ms=341, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 16:17:38], mode=BUILD, duration=0:00:00.383, duration_ms=383, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 16:18:07], mode=BUILD, duration=0:00:00.182, duration_ms=182, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=true}
+timestamp=[2025-06-13 16:18:07], mode=BUILD, duration=0:00:00.481, duration_ms=481, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 18:14:06], mode=BUILD, duration=0:00:00.392, duration_ms=392, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 18:15:25], mode=BUILD, duration=0:00:00.543, duration_ms=543, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 18:16:04], mode=BUILD, duration=0:00:00.188, duration_ms=188, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 18:21:51], mode=BUILD, duration=0:00:00.437, duration_ms=437, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 18:23:15], mode=BUILD, duration=0:00:00.387, duration_ms=387, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-13 18:24:14], mode=BUILD, duration=0:00:00.388, duration_ms=388, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 10:12:03], mode=WORKBENCH_START, duration=0:00:08.291, duration_ms=8291, data={}
+timestamp=[2025-06-16 10:12:04], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.076, duration_ms=76, data={}
+timestamp=[2025-06-16 10:12:06], mode=WORKBENCH_UI_INIT, duration=0:00:02.401, duration_ms=2401, data={editors_count=6, platform_editors_count=0, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TFX_Core_1CWT,TFX_Core_1CWT_system,TFX_Core_wrapper}
+timestamp=[2025-06-16 10:29:22], mode=BUILD, duration=0:00:00.594, duration_ms=594, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 10:34:15], mode=BUILD, duration=0:00:00.327, duration_ms=327, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 10:34:33], mode=BUILD, duration=0:00:00.383, duration_ms=383, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 10:48:20], mode=BUILD, duration=0:00:00.384, duration_ms=384, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 10:49:41], mode=BUILD, duration=0:00:00.384, duration_ms=384, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 11:33:25], mode=WORKBENCH_START, duration=0:00:06.622, duration_ms=6622, data={}
+timestamp=[2025-06-16 11:33:25], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.047, duration_ms=47, data={}
+timestamp=[2025-06-16 11:33:27], mode=WORKBENCH_UI_INIT, duration=0:00:01.924, duration_ms=1924, data={editors_count=6, platform_editors_count=1, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TFX_Core_1CWT,TFX_Core_1CWT_system,TFX_Core_wrapper}
+timestamp=[2025-06-16 11:34:46], mode=BUILD, duration=0:00:00.625, duration_ms=625, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 12:18:09], mode=WORKBENCH_START, duration=0:00:06.327, duration_ms=6327, data={}
+timestamp=[2025-06-16 12:18:10], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.060, duration_ms=60, data={}
+timestamp=[2025-06-16 12:18:11], mode=WORKBENCH_UI_INIT, duration=0:00:01.709, duration_ms=1709, data={editors_count=8, platform_editors_count=2, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TFX_Core_1CWT,TFX_Core_1CWT_system,TFX_Core_wrapper}
+timestamp=[2025-06-16 12:22:02], mode=BUILD, duration=0:00:00.649, duration_ms=649, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 12:32:34], mode=PLATFORM_GENERATION, duration=0:00:05.974, duration_ms=5974, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-16 12:32:37], mode=BUILD, duration=0:00:00.743, duration_ms=743, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 15:10:06], mode=BUILD, duration=0:00:00.461, duration_ms=461, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 15:34:03], mode=PLATFORM_GENERATION, duration=0:00:06.136, duration_ms=6136, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-16 15:44:06], mode=BUILD, duration=0:00:00.854, duration_ms=854, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 15:51:58], mode=BUILD, duration=0:00:00.385, duration_ms=385, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 15:52:42], mode=BUILD, duration=0:00:00.388, duration_ms=388, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 15:54:31], mode=BUILD, duration=0:00:00.386, duration_ms=386, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 16:00:07], mode=BUILD, duration=0:00:00.437, duration_ms=437, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 16:00:32], mode=BUILD, duration=0:00:00.439, duration_ms=439, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 16:05:11], mode=BUILD, duration=0:00:00.387, duration_ms=387, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 16:06:24], mode=BUILD, duration=0:00:00.396, duration_ms=396, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 18:10:06], mode=PLATFORM_GENERATION, duration=0:00:05.815, duration_ms=5815, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-16 18:10:17], mode=BUILD, duration=0:00:00.847, duration_ms=847, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 18:17:06], mode=BUILD, duration=0:00:00.507, duration_ms=507, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 18:24:47], mode=BUILD, duration=0:00:00.791, duration_ms=791, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 18:28:17], mode=BUILD, duration=0:00:00.680, duration_ms=680, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 18:33:51], mode=BUILD, duration=0:00:00.308, duration_ms=308, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 18:34:16], mode=BUILD, duration=0:00:00.560, duration_ms=560, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 19:28:29], mode=PLATFORM_GENERATION, duration=0:00:05.787, duration_ms=5787, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-16 19:29:24], mode=BUILD, duration=0:00:00.849, duration_ms=849, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 19:29:32], mode=BUILD, duration=0:00:07.054, duration_ms=7054, data={name=TFX_Core_1CWT_system, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 19:30:21], mode=BUILD, duration=0:00:00.416, duration_ms=416, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 19:57:12], mode=PLATFORM_GENERATION, duration=0:00:05.904, duration_ms=5904, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-16 19:57:23], mode=BUILD, duration=0:00:00.797, duration_ms=797, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-16 19:57:36], mode=BUILD, duration=0:00:07.053, duration_ms=7053, data={name=TFX_Core_1CWT_system, configuration=Debug, clean_build=false}
+timestamp=[2025-06-17 19:15:18], mode=WORKBENCH_START, duration=0:00:10.362, duration_ms=10362, data={}
+timestamp=[2025-06-17 19:15:19], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.045, duration_ms=45, data={}
+timestamp=[2025-06-17 19:15:20], mode=WORKBENCH_UI_INIT, duration=0:00:01.679, duration_ms=1679, data={editors_count=7, platform_editors_count=1, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TFX_Core_1CWT,TFX_Core_1CWT_system,TFX_Core_wrapper}
+timestamp=[2025-06-17 19:16:51], mode=PLATFORM_GENERATION, duration=0:00:05.760, duration_ms=5760, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 10:34:48], mode=WORKBENCH_START, duration=0:00:06.834, duration_ms=6834, data={}
+timestamp=[2025-06-18 10:34:48], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.029, duration_ms=29, data={}
+timestamp=[2025-06-18 10:34:49], mode=WORKBENCH_UI_INIT, duration=0:00:01.326, duration_ms=1326, data={editors_count=7, platform_editors_count=1, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TFX_Core_1CWT,TFX_Core_1CWT_system,TFX_Core_wrapper}
+timestamp=[2025-06-18 10:35:13], mode=PLATFORM_GENERATION, duration=0:00:05.497, duration_ms=5497, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 11:27:33], mode=PLATFORM_GENERATION, duration=0:00:05.799, duration_ms=5799, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 11:54:24], mode=PLATFORM_GENERATION, duration=0:00:05.799, duration_ms=5799, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 13:50:55], mode=PLATFORM_GENERATION, duration=0:00:06.943, duration_ms=6943, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 13:50:59], mode=BUILD, duration=0:00:01.112, duration_ms=1112, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-18 13:51:14], mode=BUILD, duration=0:00:07.707, duration_ms=7707, data={name=TFX_Core_1CWT_system, configuration=Debug, clean_build=false}
+timestamp=[2025-06-18 14:56:57], mode=WORKBENCH_START, duration=0:00:06.470, duration_ms=6470, data={}
+timestamp=[2025-06-18 14:56:58], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.158, duration_ms=158, data={}
+timestamp=[2025-06-18 14:57:00], mode=WORKBENCH_UI_INIT, duration=0:00:03.605, duration_ms=3605, data={editors_count=5, platform_editors_count=0, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TFX_Core_1CWT,TFX_Core_1CWT_system,TFX_Core_wrapper}
+timestamp=[2025-06-18 15:02:31], mode=PLATFORM_GENERATION, duration=0:00:05.910, duration_ms=5910, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 15:36:10], mode=PLATFORM_GENERATION, duration=0:00:05.953, duration_ms=5953, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 15:57:55], mode=PLATFORM_GENERATION, duration=0:00:05.842, duration_ms=5842, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 16:10:39], mode=PLATFORM_GENERATION, duration=0:00:05.499, duration_ms=5499, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 16:12:06], mode=BUILD, duration=0:00:00.852, duration_ms=852, data={name=TFX_Core_1CWT, configuration=Debug, clean_build=false}
+timestamp=[2025-06-18 16:29:50], mode=PLATFORM_GENERATION, duration=0:00:05.744, duration_ms=5744, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-18 16:51:55], mode=PLATFORM_GENERATION, duration=0:00:17.017, duration_ms=17017, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-20 08:39:35], mode=WORKBENCH_START, duration=0:00:07.724, duration_ms=7724, data={}
+timestamp=[2025-06-20 08:39:35], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.048, duration_ms=48, data={}
+timestamp=[2025-06-20 08:39:37], mode=WORKBENCH_UI_INIT, duration=0:00:01.657, duration_ms=1657, data={editors_count=6, platform_editors_count=0, projects_count=4, platform_projects_count=1, active_platform_editor=false, projects=RemoteSystemsTempFiles,TFX_Core_1CWT,TFX_Core_1CWT_system,TFX_Core_wrapper}
+timestamp=[2025-06-20 08:50:31], mode=PLATFORM_GENERATION, duration=0:00:15.295, duration_ms=15295, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-20 09:01:10], mode=PLATFORM_GENERATION, duration=0:00:05.850, duration_ms=5850, data={name=TFX_Core_wrapper}
+timestamp=[2025-06-20 09:16:29], mode=PLATFORM_GENERATION, duration=0:00:05.348, duration_ms=5348, data={name=TFX_Core_wrapper}
