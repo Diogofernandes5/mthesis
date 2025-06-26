@@ -32,7 +32,7 @@ create_clock -name clk -period 20 -waveform {0 10} [get_ports { sys_clk }];
 #set_property -dict {PACKAGE_PIN J14 IOSTANDARD LVCMOS33} [get_ports vaux6n]
 
 ##Buttons (from left to right on the board)
-set_property -dict { PACKAGE_PIN Y16   IOSTANDARD LVCMOS33 } [get_ports { start }]; #IO_L7P_T1_34 Sch=btn[3]
+#set_property -dict { PACKAGE_PIN Y16   IOSTANDARD LVCMOS33 } [get_ports { start }]; #IO_L7P_T1_34 Sch=btn[3]
 #set_property -dict { PACKAGE_PIN K19   IOSTANDARD LVCMOS33 } [get_ports { rstn }]; #IO_L10P_T1_AD11P_35 Sch=btn[2]
 #set_property -dict { PACKAGE_PIN P16   IOSTANDARD LVCMOS33 } [get_ports { btn[1] }]; #IO_L24N_T3_34 Sch=btn[1]
 #set_property -dict { PACKAGE_PIN K18   IOSTANDARD LVCMOS33 } [get_ports { btn[0] }]; #IO_L12N_T1_MRCC_35 Sch=btn[0]

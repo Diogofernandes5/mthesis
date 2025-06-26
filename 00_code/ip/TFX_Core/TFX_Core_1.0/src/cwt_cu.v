@@ -32,8 +32,10 @@ reg [1:0] state;
 reg [1:0] nstate;
 
 reg [$clog2(N*J1*2):0] data_counter;
-reg [$clog2(J1):0] counter_j;
+wire [$clog2(J1):0] counter_j;
 reg [$clog2(J1):0] counter_j_aux;
+
+reg ifft_done_d;
 
 reg start_sending;
 
@@ -62,7 +64,7 @@ always @(*) begin
 				nstate = S_RECEIVE_DATA;
 		
 		S_CHECK_J:
-			if((counter_j == J1) && (~dl_busy_i))
+			if((counter_j == (J1-1)) && (~dl_busy_i))
                 nstate = S_SEND_RESULTS;
 			else 
 				nstate = S_IDLE;		
@@ -92,7 +94,8 @@ always @(*) begin
 		S_RECEIVE_DATA: begin
 			bram_en_o <= 1'b1;
 			bram_we_o <= 1'b1;
-			bram_addr_o <= ((counter_j - 1) << $clog2(N)) + data_counter;
+//			bram_addr_o <= ((counter_j - 1) << $clog2(N)) + data_counter;
+			bram_addr_o <= ((counter_j) << $clog2(N)) + data_counter;
 
 			start_sending <= 1'b0;
 			busy_o <= 1'b1;
@@ -161,13 +164,13 @@ end
 always @(posedge clk or negedge rstn) begin
 	if(~rstn) begin
 		data_counter <= 32'd0;
-		counter_j <= 12'd0;
+//		counter_j <= 12'd0;
 	end
 	else begin
 		case(state)
 			S_IDLE: begin
 				data_counter <= 32'd0;
-				counter_j <= counter_j_aux;
+//				counter_j <= counter_j_aux;
 			end
 				
 			S_RECEIVE_DATA: begin
@@ -176,12 +179,12 @@ always @(posedge clk or negedge rstn) begin
 				else
 				    data_counter <= data_counter;
 				
-				counter_j <= counter_j_aux;
+//				counter_j <= counter_j_aux;
 			end
 			
 			S_CHECK_J: begin
 				data_counter <= 32'd0;
-				counter_j <= counter_j_aux;
+//				counter_j <= counter_j_aux;
 			end
 			
 			S_SEND_RESULTS: begin
@@ -190,18 +193,38 @@ always @(posedge clk or negedge rstn) begin
 				else 
 				    data_counter <= data_counter;
 				    
-                counter_j <= 12'd0;
+//                counter_j <= 12'd0;
             end
         endcase
 	end
 end
 
-always @(posedge ifft_ready_i or negedge rstn) begin
-	if(~rstn) begin
-		counter_j_aux <= 0;
-	end
-    else 
-        counter_j_aux <= counter_j_aux + 1;
+assign counter_j = counter_j_aux;
+
+always @(posedge clk or negedge rstn) begin
+    if(~rstn)
+        counter_j_aux <= 'b11111; // negative
+    else begin
+        ifft_done_d <= ifft_done_i;  // Register the previous state of ifft_done_i
+    
+        if (ifft_done_i && !ifft_done_d) begin
+            // Rising edge detected
+            counter_j_aux <= counter_j_aux + 1;
+        end
+        else if (state == S_SEND_RESULTS)
+            counter_j_aux <= 'b11111;
+    end
 end
+
+//always @(posedge ifft_done_i or negedge rstn) begin
+//	if(~rstn) begin
+//		counter_j_aux <= 0;
+//	end
+//    else 
+//    	if(state == S_SEND_RESULTS)
+//        	counter_j_aux <= 'd0;
+//        else 
+//        	counter_j_aux <= counter_j_aux + 1;
+//end
 
 endmodule

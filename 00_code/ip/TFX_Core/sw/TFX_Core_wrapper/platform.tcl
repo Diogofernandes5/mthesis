@@ -64,3 +64,24 @@ platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_w
 platform generate -domains 
 platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
 platform generate -domains 
+platform active {TFX_Core_wrapper}
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 
+platform clean
+platform generate
+platform generate -domains freertos10_xilinx_ps7_cortexa9_0,zynq_fsbl 
+platform active {TFX_Core_wrapper}
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 

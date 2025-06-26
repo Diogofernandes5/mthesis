@@ -126,11 +126,6 @@
 /******************************************************************/
 
 
-/* Peripheral Definitions for peripheral TFX_CORE_0 */
-#define XPAR_TFX_CORE_0_BASEADDR 0x43C00000
-#define XPAR_TFX_CORE_0_HIGHADDR 0x43C0FFFF
-
-
 /* Peripheral Definitions for peripheral PS7_AFI_0 */
 #define XPAR_PS7_AFI_0_S_AXI_BASEADDR 0xF8008000
 #define XPAR_PS7_AFI_0_S_AXI_HIGHADDR 0xF8008FFF
@@ -221,6 +216,11 @@
 /* Peripheral Definitions for peripheral PS7_SLCR_0 */
 #define XPAR_PS7_SLCR_0_S_AXI_BASEADDR 0xF8000000
 #define XPAR_PS7_SLCR_0_S_AXI_HIGHADDR 0xF8000FFF
+
+
+/* Peripheral Definitions for peripheral TFX_CORE_0 */
+#define XPAR_TFX_CORE_0_BASEADDR 0x43C00000
+#define XPAR_TFX_CORE_0_HIGHADDR 0x43C0FFFF
 
 
 /******************************************************************/

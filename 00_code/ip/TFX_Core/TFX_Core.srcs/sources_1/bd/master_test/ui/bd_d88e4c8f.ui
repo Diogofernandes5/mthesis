@@ -1,23 +1,25 @@
 {
    "ActiveEmotionalView":"Default View",
    "Default View_ScaleFactor":"1.0",
-   "Default View_TopLeft":"-307,-94",
+   "Default View_TopLeft":"-302,-81",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:10.0 TLS
 #  -string -flagsOSRD
 preplace port port-id_start -pg 1 -lvl 0 -x 0 -y 180 -defaultsOSRD
 preplace port port-id_ACLK -pg 1 -lvl 0 -x 0 -y 200 -defaultsOSRD
 preplace port port-id_ARESETN -pg 1 -lvl 0 -x 0 -y 220 -defaultsOSRD
-preplace port port-id_cwt_done_o -pg 1 -lvl 3 -x 560 -y 220 -defaultsOSRD
-preplace inst axi_vip_0 -pg 1 -lvl 2 -x 440 -y 80 -defaultsOSRD
+preplace port port-id_cwt_done_o -pg 1 -lvl 3 -x 570 -y 220 -defaultsOSRD
+preplace inst axi_vip_0 -pg 1 -lvl 2 -x 450 -y 80 -defaultsOSRD
 preplace inst TFX_Core_0 -pg 1 -lvl 1 -x 190 -y 210 -defaultsOSRD
 preplace netloc TFX_Core_0_cwt_done 1 1 2 NJ 220 NJ
 preplace netloc m_axi_data_aclk_0_1 1 0 2 20 80 NJ
-preplace netloc s_axi_config_aresetn_0_1 1 0 2 30 100 NJ
+preplace netloc s_axi_config_aresetn_0_1 1 0 2 30 310 360J
 preplace netloc start_1 1 0 1 NJ 180
 preplace netloc TFX_Core_0_m_axi_data 1 1 1 350 60n
-levelinfo -pg 1 0 190 440 560
-pagesize -pg 1 -db -bbox -sgen -120 0 700 320
+levelinfo -pg 1 0 190 450 570
+pagesize -pg 1 -db -bbox -sgen -120 0 710 320
 "
 }
-0
+{
+   "da_axi4_cnt":"1"
+}

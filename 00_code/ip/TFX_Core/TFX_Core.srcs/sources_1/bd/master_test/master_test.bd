@@ -7,7 +7,8 @@
       "name": "master_test",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2021.1"
+      "tool_version": "2021.1",
+      "validated": "true"
     },
     "design_tree": {
       "axi_vip_0": "",
@@ -19,14 +20,60 @@
       },
       "ACLK": {
         "type": "clk",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "ARESETN",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "master_test_ACLK",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "ARESETN": {
         "type": "rst",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
       },
       "cwt_done_o": {
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default_prop"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
+            "value_src": "const_prop"
+          }
+        }
       }
     },
     "components": {
@@ -43,9 +90,14 @@
       },
       "TFX_Core_0": {
         "vlnv": "user.org:user:TFX_Core:1.0",
-        "xci_name": "master_test_TFX_Core_0_2",
-        "xci_path": "ip/master_test_TFX_Core_0_2/master_test_TFX_Core_0_2.xci",
+        "xci_name": "master_test_TFX_Core_0_5",
+        "xci_path": "ip/master_test_TFX_Core_0_5/master_test_TFX_Core_0_5.xci",
         "inst_hier_path": "TFX_Core_0",
+        "parameters": {
+          "C_M_AXI_Data_BURST_LEN": {
+            "value": "256"
+          }
+        },
         "interface_ports": {
           "m_axi_data": {
             "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
@@ -101,24 +153,8 @@
       },
       "start_1": {
         "ports": [
-          "start",
-          "TFX_Core_0/start_but_i"
+          "start"
         ]
-      }
-    },
-    "addressing": {
-      "/TFX_Core_0": {
-        "address_spaces": {
-          "m_axi_data": {
-            "segments": {
-              "SEG_axi_vip_0_Reg": {
-                "address_block": "/axi_vip_0/S_AXI/Reg",
-                "offset": "0x44A00000",
-                "range": "64K"
-              }
-            }
-          }
-        }
       }
     }
   }

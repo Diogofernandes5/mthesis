@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xC149A1F1BF98BDAD",
+      "boundary_crc": "0xCC6CFA533DC59CAD",
       "device": "xc7z010clg400-1",
       "gen_directory": "../../../../TFX_Core.gen/sources_1/bd/TFX_Core",
       "name": "TFX_Core",
@@ -92,11 +92,6 @@
             "value_src": "default"
           }
         }
-      }
-    },
-    "ports": {
-      "start": {
-        "direction": "I"
       }
     },
     "components": {
@@ -1830,12 +1825,6 @@
           "ps7_0_axi_periph/ARESETN",
           "TFX_Core_0/s_axi_config_aresetn",
           "TFX_Core_0/m_axi_data_aresetn"
-        ]
-      },
-      "start_1": {
-        "ports": [
-          "start",
-          "TFX_Core_0/start_but_i"
         ]
       }
     },

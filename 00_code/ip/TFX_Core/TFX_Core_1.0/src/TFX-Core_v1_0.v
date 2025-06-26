@@ -28,7 +28,7 @@ module TFX_Core_v1_0 #
 (
     // Users to add ports here
        
-    input wire start_but_i,
+//    input wire start_but_i,
 //    input wire [C_M_AXI_Data_DATA_WIDTH-1:0] data_i,
     
     output wire cwt_done,
@@ -116,19 +116,21 @@ localparam integer C_NUM_OF_TRANSFERS = 2048;
 
 wire dl_busy;
 
-wire ps_start;
-wire start;
+//wire ps_start;
+//wire start;
+
+wire econnected;
 
 assign dl_busy = 0;
 
-assign start = ps_start | start_but_i;
+//assign start = ps_start | start_but_i;
 
 // Instantiation of Axi Bus Interface S_AXI_Config
 TFX_Core_v1_0_S_AXI_Config # ( 
     .C_S_AXI_DATA_WIDTH(C_S_AXI_Config_DATA_WIDTH),
     .C_S_AXI_ADDR_WIDTH(C_S_AXI_Config_ADDR_WIDTH)
 ) S_AXI_Config (
-    .start(ps_start),
+    .econnected(econnected),
 
     .S_AXI_ACLK(s_axi_config_aclk),
     .S_AXI_ARESETN(s_axi_config_aresetn),
@@ -171,10 +173,11 @@ TFX_Core_v1_0_M_AXI_Data # (
     .C_NUM_OF_TRANSFERS(C_NUM_OF_TRANSFERS)
     
 ) M_AXI_Data (
-    .start_i(start),
+//    .start_i(start),
 //    .data_i(data_i),
     .dl_busy(dl_busy),
-    
+    .econnected(econnected),
+        
     .cwt_done(cwt_done),
     
     .M_AXI_ACLK(m_axi_data_aclk),

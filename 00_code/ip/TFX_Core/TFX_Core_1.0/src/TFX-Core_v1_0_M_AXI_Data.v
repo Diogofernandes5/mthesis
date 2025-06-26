@@ -37,10 +37,11 @@ module TFX_Core_v1_0_M_AXI_Data #
 )
 (
     // Users to add ports here
-    input wire start_i, // start CWT
+//    input wire start_i, // start CWT
 //    input wire [C_M_AXI_DATA_WIDTH-1:0] data_in,
     
     input wire dl_busy, // em principio podes por a 0
+    input wire econnected,
     
     output wire cwt_done, //inicio das transmissões
 
@@ -252,7 +253,7 @@ localparam integer N_J1 = N*J1;
 
 wire dready;
 
-reg [$clog2(N):0] brom_addr;
+wire [$clog2(N-1):0] brom_addr;
 
 wire [C_M_AXI_DATA_WIDTH-1:0] x_re;
 wire [C_M_AXI_DATA_WIDTH-1:0] x_im;
@@ -265,7 +266,7 @@ wire busy;
 wire cwt_row_done;
 wire cwt_row_ready;
 
-reg sending;
+reg send_inputs;
 
 /*********************** CU **********************/
 
@@ -887,60 +888,67 @@ assign write_done_pulse = writes_done && !write_done_prev;
 
 wire start_pulse;
 reg start_reg;
+reg start_reg2;
 
-always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-    if(~M_AXI_ARESETN) begin
-        start_reg = 0;
-    end
-    else begin
-        if(start_i) begin
-            start_reg = 1;
-        end
-        else begin
-            start_reg = 0;
-        end
-    end
-end
+reg incomplete;
+reg [3:0] cwt_counter;
 
-assign start_pulse = start_i && (~start_reg);
-
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(~M_AXI_ARESETN) begin
-//        dready <= 0;
-//    end
-//    else begin
-//        if(sending) begin
-//            dready = 1;
-//        end
-//        else begin
-//            dready = 0;
-//        end       
+//always @(posedge M_AXI_ACLK) begin
+//    start_reg <= 0;
+//    start_reg2 <= 0;
+    
+//    if(~busy) begin
+//        start_reg <= (start_i || incomplete);
+//        start_reg2 <= start_reg;
 //    end
 //end
 
-assign dready = sending;
+//assign start_pulse = (~start_reg2) && (start_i || incomplete);
 
-always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin 
-    if(~M_AXI_ARESETN) begin
-        sending <= 0;
-        brom_addr <= 'b0;
-    end
-    else begin
-        if(start_pulse) begin
-            brom_addr = brom_addr + 1;
-            sending = 1;
-        end
-        else if (brom_addr == (N+1)) begin
-            sending = 0;
-            brom_addr <= 'b0;
-        end
+//assign dready = send_inputs;
+
+//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin 
+//    if(~M_AXI_ARESETN) begin
+//        send_inputs <= 0;
+//        brom_addr <= 'b0;
+//        cwt_counter <= 'b0;
+//        incomplete <= 0; 
+//    end
+//    else begin
+//        if(start_pulse) begin
+//            brom_addr <= brom_addr + 1;
+//            send_inputs <= 1;
+//        end
+//        else if (brom_addr == (N+1)) begin
+//            send_inputs <= 0;
+//            brom_addr <= 'b0;
+//            if(cwt_counter < 3) begin
+//                cwt_counter <= cwt_counter + 1;
+//                incomplete <= 1; 
+//            end
+//            else begin
+//                cwt_counter <= 'b0;
+//                incomplete <= 0; 
+//            end
+            
+//        end
         
-        if(dready)
-            brom_addr <= brom_addr + 1;
-    end
-end
+//        if(dready)
+//            brom_addr <= brom_addr + 1;
+//    end
+//end
 
-//assign sendIncomplete = ((brom_addr < N) && sending) ? 1 : 0;
+sensor_cu 
+#(.N(N)) 
+input_gen(
+    .clk(M_AXI_ACLK),
+    .rstn(M_AXI_ARESETN),
+    .busy(busy),
+    .econnected(econnected),
+    .start_pulse(start_pulse),
+    .dready(dready),
+    .brom_addr(brom_addr)
+);
 
 brom_vals sensor_vals (
     .clka(M_AXI_ACLK),    
@@ -949,13 +957,14 @@ brom_vals sensor_vals (
 );
 assign x_im = 'b0;
 
+
 // CWT Core 
 // sends a row each time cwt_row_done_o comes high
 CWT_nBRAM CWT_core (
     .clk(M_AXI_ACLK),
     .rstn(M_AXI_ARESETN),
     
-    .start_i(start_i),
+    .start_i(start_pulse),
     .dready_i(dready),
     .dl_busy_i(cwt_busy),
     
@@ -1004,31 +1013,6 @@ assign bram_addr_x_im = bram_addr_x_re | N_J1;
 
 assign INIT_AXI_TXN = cwt_done;
 
-//reg cwt_done_ff;
-//wire cwt_done_pulse;
-
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(~M_AXI_ARESETN) begin
-//        cwt_done_ff <= 0;
-//    end
-//    else begin
-//        cwt_done_ff <= cwt_done;
-//    end
-    
-//end
-
-//assign cwt_done_pulse = cwt_done & ~cwt_done_ff;
-
-always @(negedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-    if(~M_AXI_ARESETN) begin
-        cwt_output_r <= 0;
-    end
-//    else begin
-//        cwt_output_r <= cwt_output;
-//    end
-end
-
-
 // When receiving we use both ports of BRAM
 // When sending data out, we use only the A port of BRAM
 // First port writes X_RE vals, the second writes the X_IM vals
@@ -1046,19 +1030,5 @@ cwt_results bram_results (
     .addrb(bram_addr_x_im),          // input wire [10 : 0] addrb
     .dinb(X_im)            // input wire [31 : 0] dinb
 );
-
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(!M_AXI_ARESETN || write_done_pulse) begin
-//        brom_addr <= 'b0;
-//    end
-//    else begin
-//        if(wnext || init_txn_pulse)
-//            brom_addr <= brom_addr + 1;
-//        else if(rnext || M_AXI_RVALID)
-//            brom_addr <= brom_addr + 1;
-//        else 
-//            brom_addr <= brom_addr;
-//    end
-//end
-	                                                                                                     
+                                                                                                
 endmodule

@@ -15,7 +15,7 @@ module TFX_Core_v1_0_S_AXI_Config #
 )
 (
     // Users to add ports here
-    output wire start,
+    output wire econnected,
 
     // User ports ends
     // Do not modify the ports beyond this line
@@ -225,7 +225,7 @@ always @( posedge S_AXI_ACLK )
 begin
   if ( S_AXI_ARESETN == 1'b0 )
     begin
-//      slv_reg0 <= 0;
+      slv_reg0 <= 0;
       slv_reg1 <= 0;
       slv_reg2 <= 0;
       slv_reg3 <= 0;
@@ -236,13 +236,13 @@ begin
     end 
   else if (slv_reg_wren) begin
     case ( axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
-//      3'h0:
-//        for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
-//          if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-//            // Respective byte enables are asserted as per write strobes 
-//            // Slave register 0
-//            slv_reg0[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-//          end  
+      3'h0:
+        for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
+          if ( S_AXI_WSTRB[byte_index] == 1 ) begin
+            // Respective byte enables are asserted as per write strobes 
+            // Slave register 0
+            slv_reg0[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+          end  
       3'h1:
         for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
           if ( S_AXI_WSTRB[byte_index] == 1 ) begin
@@ -293,7 +293,7 @@ begin
             slv_reg7[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
           end  
       default : begin
-//                  slv_reg0 <= slv_reg0;
+                  slv_reg0 <= slv_reg0;
                   slv_reg1 <= slv_reg1;
                   slv_reg2 <= slv_reg2;
                   slv_reg3 <= slv_reg3;
@@ -441,51 +441,59 @@ end
 
 // Add user logic here
 
+
+`ifdef SYNTHESIS
+    assign econnected = slv_reg0[0];
+`else
+    assign econnected = 1;
+`endif
+
+
 // start logic
 // writing 1 to slv_reg0, makes the tfc_core initiate 
 // start only active within 4 clock cycles
 
-reg [2:0] data_counter;
-reg writen;
+//reg [2:0] data_counter;
+//reg writen;
 
-assign start = slv_reg0[0];
+//assign start = slv_reg0[0];
 
-always @( posedge S_AXI_ACLK ) begin
-    if ( S_AXI_ARESETN == 1'b0 ) begin
-        slv_reg0 <= 0;
-        writen <= 0;
-    end
+//always @( posedge S_AXI_ACLK ) begin
+//    if ( S_AXI_ARESETN == 1'b0 ) begin
+//        slv_reg0 <= 0;
+//        writen <= 0;
+//    end
       
-    else if (slv_reg_wren && (~axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB])) begin
-        for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
-            if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-                // Respective byte enables are asserted as per write strobes 
-                // Slave register 0
-                slv_reg0[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-            end
-        if(slv_reg0[0])
-            writen <= 1;
-    end
-    else if (writen && (data_counter > 3'b011)) begin
-        slv_reg0 <= 0;
-        writen <= 0;
-    end
-    else begin
-        slv_reg0 <= slv_reg0;
-        writen <= writen;
-    end  
-end
+//    else if (slv_reg_wren && (~axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB])) begin
+//        for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
+//            if ( S_AXI_WSTRB[byte_index] == 1 ) begin
+//                // Respective byte enables are asserted as per write strobes 
+//                // Slave register 0
+//                slv_reg0[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+//            end
+//        if(slv_reg0[0])
+//            writen <= 1;
+//    end
+//    else if (writen && (data_counter > 3'b011)) begin
+//        slv_reg0 <= 0;
+//        writen <= 0;
+//    end
+//    else begin
+//        slv_reg0 <= slv_reg0;
+//        writen <= writen;
+//    end  
+//end
 
-always @(posedge S_AXI_ACLK or negedge S_AXI_ARESETN) begin
-    if(~S_AXI_ARESETN) begin
-        data_counter = 0;
-    end
-    else if(writen) begin
-        data_counter <= data_counter + 1;    
-    end
-    else
-        data_counter <= 0;
-end
+//always @(posedge S_AXI_ACLK or negedge S_AXI_ARESETN) begin
+//    if(~S_AXI_ARESETN) begin
+//        data_counter = 0;
+//    end
+//    else if(writen) begin
+//        data_counter <= data_counter + 1;    
+//    end
+//    else
+//        data_counter <= 0;
+//end
 
 // User logic ends
 
