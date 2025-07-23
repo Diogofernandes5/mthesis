@@ -1,12 +1,12 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xCC6CFA533DC59CAD",
+      "boundary_crc": "0x768C8C8DC0FA2DCA",
       "device": "xc7z010clg400-1",
       "gen_directory": "../../../../TFX_Core.gen/sources_1/bd/TFX_Core",
       "name": "TFX_Core",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
-      "synth_flow_mode": "Hierarchical",
+      "synth_flow_mode": "None",
       "tool_version": "2021.1",
       "validated": "true"
     },
@@ -24,7 +24,7 @@
           "auto_pc": ""
         }
       },
-      "TFX_Core_0": ""
+      "TFX_Core_v2_0": ""
     },
     "interface_ports": {
       "DDR": {
@@ -92,6 +92,26 @@
             "value_src": "default"
           }
         }
+      }
+    },
+    "ports": {
+      "INT1": {
+        "direction": "I"
+      },
+      "SPI_MISO": {
+        "direction": "I"
+      },
+      "SPI_MOSI": {
+        "direction": "O"
+      },
+      "SPI_clk": {
+        "direction": "O"
+      },
+      "SPI_CS": {
+        "direction": "O"
+      },
+      "spi_enable": {
+        "direction": "O"
       }
     },
     "components": {
@@ -1712,17 +1732,20 @@
           }
         }
       },
-      "TFX_Core_0": {
-        "vlnv": "user.org:user:TFX_Core:1.0",
-        "xci_name": "TFX_Core_TFX_Core_0_2",
-        "xci_path": "ip/TFX_Core_TFX_Core_0_2/TFX_Core_TFX_Core_0_2.xci",
-        "inst_hier_path": "TFX_Core_0",
+      "TFX_Core_v2_0": {
+        "vlnv": "user.org:user:TFX_Core_v2_1:1.0",
+        "xci_name": "TFX_Core_TFX_Core_v2_0_0",
+        "xci_path": "ip/TFX_Core_TFX_Core_v2_0_0/TFX_Core_TFX_Core_v2_0_0.xci",
+        "inst_hier_path": "TFX_Core_v2_0",
         "parameters": {
           "C_M_AXI_Data_BURST_LEN": {
             "value": "256"
           },
           "C_M_AXI_Data_TARGET_SLAVE_BASE_ADDR": {
             "value": "0x10000000"
+          },
+          "C_SPI_ENABLE": {
+            "value": "false"
           }
         },
         "interface_ports": {
@@ -1748,10 +1771,10 @@
       }
     },
     "interface_nets": {
-      "TFX_Core_0_m_axi_data": {
+      "S00_AXI_1": {
         "interface_ports": [
-          "TFX_Core_0/m_axi_data",
-          "axi_mem_intercon/S00_AXI"
+          "axi_mem_intercon/S00_AXI",
+          "TFX_Core_v2_0/m_axi_data"
         ]
       },
       "axi_mem_intercon_M00_AXI": {
@@ -1781,15 +1804,51 @@
       "ps7_0_axi_periph_M00_AXI": {
         "interface_ports": [
           "ps7_0_axi_periph/M00_AXI",
-          "TFX_Core_0/s_axi_config"
+          "TFX_Core_v2_0/s_axi_config"
         ]
       }
     },
     "nets": {
-      "TFX_Core_0_cwt_done": {
+      "SPI_MISO_1": {
         "ports": [
-          "TFX_Core_0/cwt_done",
+          "SPI_MISO",
+          "TFX_Core_v2_0/SPI_MISO_i"
+        ]
+      },
+      "TFX_Core_v2_0_SPI_CS_o": {
+        "ports": [
+          "TFX_Core_v2_0/SPI_CS_o",
+          "SPI_CS"
+        ]
+      },
+      "TFX_Core_v2_0_SPI_MOSI_o": {
+        "ports": [
+          "TFX_Core_v2_0/SPI_MOSI_o",
+          "SPI_MOSI"
+        ]
+      },
+      "TFX_Core_v2_0_SPI_clk_o": {
+        "ports": [
+          "TFX_Core_v2_0/SPI_clk_o",
+          "SPI_clk"
+        ]
+      },
+      "TFX_Core_v2_0_cwt_send_done_o": {
+        "ports": [
+          "TFX_Core_v2_0/cwt_send_done_o",
           "processing_system7_0/IRQ_F2P"
+        ]
+      },
+      "TFX_Core_v2_0_spi_enable": {
+        "ports": [
+          "TFX_Core_v2_0/spi_enable",
+          "spi_enable"
+        ]
+      },
+      "intr_1": {
+        "ports": [
+          "INT1",
+          "TFX_Core_v2_0/intr_i"
         ]
       },
       "processing_system7_0_FCLK_CLK0": {
@@ -1804,8 +1863,8 @@
           "ps7_0_axi_periph/S00_ACLK",
           "ps7_0_axi_periph/M00_ACLK",
           "ps7_0_axi_periph/ACLK",
-          "TFX_Core_0/s_axi_config_aclk",
-          "TFX_Core_0/m_axi_data_aclk"
+          "TFX_Core_v2_0/s_axi_config_aclk",
+          "TFX_Core_v2_0/m_axi_data_aclk"
         ]
       },
       "processing_system7_0_FCLK_RESET0_N": {
@@ -1823,8 +1882,8 @@
           "ps7_0_axi_periph/S00_ARESETN",
           "ps7_0_axi_periph/M00_ARESETN",
           "ps7_0_axi_periph/ARESETN",
-          "TFX_Core_0/s_axi_config_aresetn",
-          "TFX_Core_0/m_axi_data_aresetn"
+          "TFX_Core_v2_0/s_axi_config_aresetn",
+          "TFX_Core_v2_0/m_axi_data_aresetn"
         ]
       }
     },
@@ -1833,8 +1892,8 @@
         "address_spaces": {
           "Data": {
             "segments": {
-              "SEG_TFX_Core_0_reg0": {
-                "address_block": "/TFX_Core_0/s_axi_config/reg0",
+              "SEG_TFX_Core_v2_0_reg0": {
+                "address_block": "/TFX_Core_v2_0/s_axi_config/reg0",
                 "offset": "0x43C00000",
                 "range": "64K"
               }
@@ -1842,7 +1901,7 @@
           }
         }
       },
-      "/TFX_Core_0": {
+      "/TFX_Core_v2_0": {
         "address_spaces": {
           "m_axi_data": {
             "segments": {

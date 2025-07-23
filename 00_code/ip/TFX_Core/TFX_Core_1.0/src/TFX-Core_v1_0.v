@@ -27,9 +27,17 @@ module TFX_Core_v1_0 #
 )
 (
     // Users to add ports here
-       
-//    input wire start_but_i,
-//    input wire [C_M_AXI_Data_DATA_WIDTH-1:0] data_i,
+    input wire intr_i,
+        
+    output wire SPI_clk_o,
+    input wire SPI_MISO_i,
+    output wire SPI_MOSI_o,
+    output wire SPI_CS_o,
+
+`ifndef SYNTHESIS
+    output reg config_done,
+    output wire [3:0] rx_count,
+`endif
     
     output wire cwt_done,
     
@@ -112,14 +120,15 @@ localparam C_M_CACHE_VAL = 4'b0010;
 localparam C_M_PROT_VAL = 3'b000;
 
 // Number of transactions to be operated, independently of the data width
-localparam integer C_NUM_OF_TRANSFERS = 2048;
+localparam integer C_NUM_OF_TRANSFERS = 2048; // 2*4*256
 
 wire dl_busy;
 
-//wire ps_start;
-//wire start;
-
 wire econnected;
+
+// wire [1:0] acc_range;      
+// wire [3:0] acc_resolution; 
+// wire [5:0] axis_to_read;
 
 assign dl_busy = 0;
 
@@ -131,6 +140,10 @@ TFX_Core_v1_0_S_AXI_Config # (
     .C_S_AXI_ADDR_WIDTH(C_S_AXI_Config_ADDR_WIDTH)
 ) S_AXI_Config (
     .econnected(econnected),
+
+    // .acc_range      (acc_range),
+    // .acc_resolution (acc_resolution),
+    // .axis_to_read   (axis_to_read),
 
     .S_AXI_ACLK(s_axi_config_aclk),
     .S_AXI_ARESETN(s_axi_config_aresetn),
@@ -173,13 +186,27 @@ TFX_Core_v1_0_M_AXI_Data # (
     .C_NUM_OF_TRANSFERS(C_NUM_OF_TRANSFERS)
     
 ) M_AXI_Data (
-//    .start_i(start),
-//    .data_i(data_i),
     .dl_busy(dl_busy),
     .econnected(econnected),
+
+    .intr_i(intr_i),
+
+    // .acc_range      (acc_range),
+    // .acc_resolution (acc_resolution),
+    // .axis_to_read   (axis_to_read),
+
+    .SPI_clk_o(SPI_clk_o),
+    .SPI_MISO_i(SPI_MISO_i),
+    .SPI_MOSI_o(SPI_MOSI_o),
+    .SPI_CS_o(SPI_CS_o),
+
+`ifndef SYNTHESIS
+    .config_done(config_done),
+    .rx_count(rx_count),
+`endif
         
     .cwt_done(cwt_done),
-    
+
     .M_AXI_ACLK(m_axi_data_aclk),
     .M_AXI_ARESETN(m_axi_data_aresetn),
     .M_AXI_AWID(m_axi_data_awid),

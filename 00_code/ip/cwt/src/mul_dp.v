@@ -10,13 +10,11 @@ module mul_dp #(
     input wire [31:0] x_re_i,
     input wire [31:0] x_im_i,
     
-    input wire bram_res_en_i,
-    input wire bram_res_we_i,
-    input wire [$clog2(N)-1:0] bram_res_addr_i,
+    input wire src_sel_i,
     
-    input wire bram_mul_en_i,
-    input wire bram_mul_we_i,
-    input wire [$clog2(N)-1:0] bram_mul_addr_i,
+    input wire bram_en_i,
+    input wire bram_we_i,
+    input wire [$clog2(N)-1:0] bram_addr_i,
     
     input wire [$clog2(N*J1)-1:0] daughter_addr_i,
     
@@ -24,8 +22,8 @@ module mul_dp #(
     output wire [31:0] X_im_o,
 
     /************************************/
-    output wire [31:0] bram_res_re,
-    output wire [31:0] bram_res_im,
+    output wire [31:0] x_re_bram,
+    output wire [31:0] x_im_bram,
     output wire [31:0] x_re_m,
     output wire [31:0] x_im_m,
     output wire [31:0] brom_daughter
@@ -51,6 +49,13 @@ wire [31:0] mult_res_x_im;
 
 // wire [31:0] brom_daughter;
 
+// src_sel mux
+wire [31:0] x_re_src;
+wire [31:0] x_im_src;
+
+//wire [31:0] x_re_bram;
+//wire [31:0] x_im_bram;
+
 assign rst = ~rstn;
 
 /* Daughter wavelet coeficients to multiply by the fft results */ 
@@ -60,39 +65,54 @@ brom_daughter daughter_wave (
     .douta(brom_daughter)  // output wire [31 : 0] douta
 );
 
-/********* BRAM to Store the FFT results ***********/
-bram_N_point bram_fft_res_re (
-    .clka(~clk),    // input wire clka
-    .rsta(rst),
-    .ena(bram_res_en_i),      // input wire ena
-    .wea(bram_res_we_i),      // input wire [0 : 0] wea
-    .addra(bram_res_addr_i),  // input wire [9 : 0] addra
-    .dina(x_re_i),    // input wire [31 : 0] dina
-    .douta(bram_res_re)  // output wire [31 : 0] douta
+/* Mux to select if the input to the BRAM is the input port or the multiplication result */
+mux2_0 x_re_src_mux (
+    .d0(x_re_i),    // FFT result
+    .d1(x_re_m),    // MUL result
+    .s(src_sel_i),
+    .y(x_re_src)
 );
 
-bram_N_point bram_fft_res_im (
+mux2_0 x_im_src_mux (
+    .d0(x_im_i),    // FFT result
+    .d1(x_im_m),    // MUL result
+    .s(src_sel_i),
+    .y(x_im_src)
+);
+
+/********* BRAM to store the FFT and MUL results ***********/
+bram_N_point bram_re (
     .clka(~clk),    // input wire clka
     .rsta(rst),
-    .ena(bram_res_en_i),      // input wire ena
-    .wea(bram_res_we_i),      // input wire [0 : 0] wea
-    .addra(bram_res_addr_i),  // input wire [9 : 0] addra
-    .dina(x_im_i),    // input wire [31 : 0] dina
-    .douta(bram_res_im)  // output wire [31 : 0] douta
+    .ena(bram_en_i),      // input wire ena
+    .wea(bram_we_i),      // input wire [0 : 0] wea
+    .addra(bram_addr_i),  // input wire [9 : 0] addra
+    .dina(x_re_src),    // input wire [31 : 0] dina
+    .douta(x_re_bram)  // output wire [31 : 0] douta
+);
+
+bram_N_point bram_im (
+    .clka(~clk),    // input wire clka
+    .rsta(rst),
+    .ena(bram_en_i),      // input wire ena
+    .wea(bram_we_i),      // input wire [0 : 0] wea
+    .addra(bram_addr_i),  // input wire [9 : 0] addra
+    .dina(x_im_src),    // input wire [31 : 0] dina
+    .douta(x_im_bram)  // output wire [31 : 0] douta
 );
 
 /********* Logic to invert number if it is negative to make multiplication ***********/
 mux2_0 x_re_mux ( // if number is negative, invert the number to make the multiplication
-    .d0(bram_res_re),  
-    .d1(~bram_res_re + 1'b1),
-    .s(bram_res_re[31]),
+    .d0(x_re_bram),  
+    .d1(~x_re_bram + 1'b1),
+    .s(x_re_bram[31]),
     .y(x_re)
 );
 
 mux2_0 x_im_mux ( // if number is negative, invert the number to make the multiplication
-    .d0(bram_res_im),  
-    .d1(~bram_res_im + 1'b1),
-    .s(bram_res_im[31]),
+    .d0(x_im_bram),  
+    .d1(~x_im_bram + 1'b1),
+    .s(x_im_bram[31]),
     .y(x_im)
 );
 
@@ -115,36 +135,18 @@ multiplier_ip mult_x_im_mul (
 mux2_0 mult_x_re_mux ( // if number is negative, invert the number to make the multiplication
     .d0(mult_res_x_re),  
     .d1(~mult_res_x_re + 1'b1),
-    .s(bram_res_re[31] ^ brom_daughter[31]),
+    .s(x_re_bram[31] ^ brom_daughter[31]),
     .y(x_re_m)
 );
 
 mux2_0 mult_x_im_mux ( // if number is negative, invert the number to make the multiplication
     .d0(mult_res_x_im),  
     .d1(~mult_res_x_im + 1'b1),
-    .s(bram_res_im[31] ^ brom_daughter[31]),
+    .s(x_im_bram[31] ^ brom_daughter[31]),
     .y(x_im_m)
 );
 
-/* Store multiplication results */ 
-bram_N_point bram_mult_res_x_re (
-    .clka(~clk),    // input wire clka
-    .rsta(rst),
-    .ena(bram_mul_en_i),      // input wire ena
-    .wea(bram_mul_we_i),      // input wire [0 : 0] wea
-    .addra(bram_mul_addr_i),  // input wire [9 : 0] addra
-    .dina(x_re_m),    // input wire [31 : 0] dina
-    .douta(X_re_o)  // output wire [31 : 0] douta
-);
-
-bram_N_point bram_mult_res_x_im (
-    .clka(~clk),    // input wire clka
-    .rsta(rst),
-    .ena(bram_mul_en_i),      // input wire ena
-    .wea(bram_mul_we_i),      // input wire [0 : 0] wea
-    .addra(bram_mul_addr_i),  // input wire [9 : 0] addra
-    .dina(x_im_m),    // input wire [31 : 0] dina
-    .douta(X_im_o)  // output wire [31 : 0] douta
-);
+assign X_re_o = x_re_bram;
+assign X_im_o = x_im_bram;
  
 endmodule

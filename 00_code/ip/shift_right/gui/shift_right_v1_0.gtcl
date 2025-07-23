@@ -1,0 +1,2 @@
+# This file is automatically written.  Do not modify.
+proc gen_USERPARAMETER_SHIFT_NUM_ENABLEMENT {SHIFT_NUM WIDTH } {expr $SHIFT_NUM < $WIDTH}

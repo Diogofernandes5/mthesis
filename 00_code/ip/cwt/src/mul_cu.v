@@ -7,13 +7,11 @@ module mul_cu #(
     input wire fft_ready_i,
     input wire dl_busy_i,
     
-    output reg bram_res_en_o,
-    output reg bram_res_we_o,
-    output reg [$clog2(N)-1:0] bram_res_addr_o,
+    output reg src_sel_o,
     
-    output reg bram_mul_en_o,
-    output reg bram_mul_we_o,
-    output reg [$clog2(N)-1:0] bram_mul_addr_o,
+    output reg bram_en_o,
+    output reg bram_we_o,
+    output reg [$clog2(N)-1:0] bram_addr_o,
     
     output reg [$clog2(N*J1)-1:0] daughter_addr_o,
     
@@ -122,13 +120,11 @@ always @(*) begin
 
     case(state)
         S_IDLE: begin
-            bram_res_en_o <= 1'b0;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= 11'd0;
+            bram_en_o <= 1'b0;
+            bram_we_o <= 1'b0;
+            bram_addr_o <= 11'b0;
             
-            bram_mul_en_o <= 1'b0;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= 11'd0;
+            src_sel_o <= 0;
 
             daughter_addr_o <= 24'd0;
 
@@ -137,13 +133,11 @@ always @(*) begin
         end
         
         S_FILL_MEM: begin
-            bram_res_en_o <= 1'b1;
-            bram_res_we_o <= 1'b1;
-            bram_res_addr_o <= data_counter;
+            bram_en_o <= 1'b1;
+            bram_we_o <= 1'b1;
+            bram_addr_o <= data_counter;
             
-            bram_mul_en_o <= 1'b0;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= 11'd0;
+            src_sel_o <= 0;
 
             daughter_addr_o <= 24'd0;
             
@@ -152,13 +146,11 @@ always @(*) begin
         end
 
         S_CHECK_J: begin
-            bram_res_en_o <= 1'b0;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= 11'd0;
+            bram_en_o <= 1'b0;
+            bram_we_o <= 1'b0;
+            bram_addr_o <= 11'b0;
             
-            bram_mul_en_o <= 1'b0;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= 11'd0;
+            src_sel_o <= 1;
 
             daughter_addr_o <= ((counter_j - 1)  << $clog2(N)) + counter_n;
             
@@ -167,13 +159,11 @@ always @(*) begin
         end
 
         S_CHECK_N: begin
-            bram_res_en_o <= 1'b1;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= counter_n;
+            bram_en_o <= 1'b1;
+            bram_we_o <= 1'b0;
+            bram_addr_o <= counter_n;
             
-            bram_mul_en_o <= 1'b1;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= counter_n;
+            src_sel_o <= 1;
 
             daughter_addr_o <= ((counter_j - 1)  << $clog2(N)) + counter_n;
 
@@ -182,13 +172,11 @@ always @(*) begin
         end
 
         S_S_IFFT: begin
-            bram_res_en_o <= 1'b0;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= 11'd0;
+            bram_en_o <= 1'b1;
+            bram_we_o <= 1'b0;
+            bram_addr_o <= data_counter;
             
-            bram_mul_en_o <= 1'b1;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= data_counter;
+            src_sel_o <= 1;
 
             daughter_addr_o <= 24'd0;
             
@@ -197,13 +185,11 @@ always @(*) begin
         end
         
         S_READ_MEM: begin
-            bram_res_en_o <= 1'b1;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= counter_n;
+            bram_en_o <= 1'b1;
+            bram_we_o <= 1'b0;
+            bram_addr_o <= counter_n;
             
-            bram_mul_en_o <= 1'b1;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= counter_n;
+            src_sel_o <= 1;
 
             daughter_addr_o <= ((counter_j - 1)  << $clog2(N)) + counter_n;
 
@@ -212,13 +198,11 @@ always @(*) begin
         end
 
         S_MULTIPLY: begin
-            bram_res_en_o <= 1'b1;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= counter_n;
+            bram_en_o <= 1'b1;
+            bram_we_o <= 1'b0;
+            bram_addr_o <= counter_n;
             
-            bram_mul_en_o <= 1'b1;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= counter_n;
+            src_sel_o <= 1;
 
             daughter_addr_o <= ((counter_j - 1)  << $clog2(N)) + counter_n;
 
@@ -227,13 +211,11 @@ always @(*) begin
         end
 
         S_WRITE_MEM: begin
-            bram_res_en_o <= 1'b1;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= counter_n;
+            bram_en_o <= 1'b1;
+            bram_we_o <= 1'b1;
+            bram_addr_o <= counter_n;
             
-            bram_mul_en_o <= 1'b1;
-            bram_mul_we_o <= 1'b1;
-            bram_mul_addr_o <= counter_n;
+            src_sel_o <= 1;
 
             daughter_addr_o <= ((counter_j - 1)  << $clog2(N)) + counter_n;
 
@@ -242,13 +224,11 @@ always @(*) begin
         end
         
         default: begin
-            bram_res_en_o <= 1'b0;
-            bram_res_we_o <= 1'b0;
-            bram_res_addr_o <= 11'd0;
+            bram_en_o <= 1'b0;
+            bram_we_o <= 1'b0;
+            bram_addr_o <= 11'd0;
             
-            bram_mul_en_o <= 1'b0;
-            bram_mul_we_o <= 1'b0;
-            bram_mul_addr_o <= 11'd0;
+            src_sel_o <= 0;
 
             daughter_addr_o <= 24'd0;
 

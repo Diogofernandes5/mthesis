@@ -7,6 +7,7 @@ module fft_architecture #(
     input rstn,
     
     input start_i,
+    input dready_i,
     input dl_busy_i,
     
     input [31:0] x0_re_i,
@@ -15,6 +16,7 @@ module fft_architecture #(
 //    input [31:0] x1_im_i,
 
     output wire fft_ready_o,
+    output wire fft_done_o,
     output wire busy_o,
     output wire [31:0] x0_re_o,
     output wire [31:0] x0_im_o,
@@ -80,10 +82,12 @@ fft_control_unit control_unit (
     .rstn(rstn),                      // input wire rstn
     
     .start_i(start_i),                // input wire start_i
+    .dready_i(dready_i),
     .dl_busy_i(dl_busy_i),
     
     .src_sel_o(src_sel),            // output wire src_sel_o
     .fft_ready_o(fft_ready_o),        // output wire fft_ready_o
+    .fft_done_o(fft_done_o),
     .busy_o(busy_o),
     .bram_addr_x0_o(bram_addr_x0),  // output wire [10 : 0] bram_addr_x0_o
     .bram_addr_x1_o(bram_addr_x1),  // output wire [10 : 0] bram_addr_x1_o

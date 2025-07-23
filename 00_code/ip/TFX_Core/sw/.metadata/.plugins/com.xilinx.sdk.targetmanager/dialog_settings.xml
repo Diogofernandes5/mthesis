@@ -6,6 +6,12 @@
 	<item key="TFX_Core_1CWT_system-device" value="Auto Detect"/>
 	<item key="TFX_Core_1CWT_system-partial_bit" value="false"/>
 	<item key="TFX_Core_1CWT_system-skip_rev_check" value="false"/>
-	<item key="programfpga.sdxproject" value="TFX_Core_1CWT_system"/>
+	<item key="programfpga.sdxproject" value="TFX_1CWT_system"/>
 	<item key="devices_info_Local" value="{&quot;cables&quot;:[{&quot;name&quot;:&quot;Digilent Zybo Z7 210351AB6DB4A&quot;,&quot;indexContextMap&quot;:{&quot;2&quot;:&quot;jsn-Zybo Z7-210351AB6DB4A-4ba00477-0&quot;,&quot;3&quot;:&quot;jsn-Zybo Z7-210351AB6DB4A-13722093-0&quot;}}]}"/>
+	<item key="TFX_1CWT_system-bitFile" value="${project_loc:TFX_1CWT}/_ide/bitstream/TFX_Core_wrapper.bit"/>
+	<item key="TFX_1CWT_system-bmmFile" value=""/>
+	<item key="TFX_1CWT_system-target" value="Local"/>
+	<item key="TFX_1CWT_system-device" value="Auto Detect"/>
+	<item key="TFX_1CWT_system-partial_bit" value="false"/>
+	<item key="TFX_1CWT_system-skip_rev_check" value="false"/>
 </section>

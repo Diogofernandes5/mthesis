@@ -122,6 +122,11 @@
 /******************************************************************/
 
 
+/* Peripheral Definitions for peripheral TFX_CORE_V2_0 */
+#define XPAR_TFX_CORE_V2_0_BASEADDR 0x43C00000
+#define XPAR_TFX_CORE_V2_0_HIGHADDR 0x43C0FFFF
+
+
 /* Peripheral Definitions for peripheral PS7_AFI_0 */
 #define XPAR_PS7_AFI_0_S_AXI_BASEADDR 0xF8008000
 #define XPAR_PS7_AFI_0_S_AXI_HIGHADDR 0xF8008FFF
@@ -214,14 +219,12 @@
 #define XPAR_PS7_SLCR_0_S_AXI_HIGHADDR 0xF8000FFF
 
 
-/* Peripheral Definitions for peripheral TFX_CORE_0 */
-#define XPAR_TFX_CORE_0_BASEADDR 0x43C00000
-#define XPAR_TFX_CORE_0_HIGHADDR 0x43C0FFFF
-
-
 /******************************************************************/
 
 
+/* Canonical Definitions for peripheral TFX_CORE_V2_0 */
+#define XPAR_TFX_CORE_V2_1_BASEADDR 0x43C00000
+#define XPAR_TFX_CORE_V2_1_HIGHADDR 0x43C0FFFF
 
 
 
@@ -307,7 +310,7 @@
 /******************************************************************/
 
 /* Definitions for Fabric interrupts connected to ps7_scugic_0 */
-#define XPAR_FABRIC_TFX_CORE_0_CWT_DONE_INTR 61U
+#define XPAR_FABRIC_TFX_CORE_V2_0_CWT_SEND_DONE_O_INTR 61U
 
 /******************************************************************/
 

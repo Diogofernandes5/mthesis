@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x7330F79E07F78B54",
+      "boundary_crc": "0xA91EDB187F58F320",
       "device": "xc7z010clg400-1",
       "gen_directory": "../../../../TFX_Core.gen/sources_1/bd/master_test",
       "name": "master_test",
@@ -12,12 +12,9 @@
     },
     "design_tree": {
       "axi_vip_0": "",
-      "TFX_Core_0": ""
+      "TFX_Core_v1_0_0": ""
     },
     "ports": {
-      "start": {
-        "direction": "I"
-      },
       "ACLK": {
         "type": "clk",
         "direction": "I",
@@ -62,12 +59,42 @@
           }
         }
       },
-      "cwt_done_o": {
+      "SPI_CS": {
+        "direction": "O"
+      },
+      "SPI_MOSI": {
+        "direction": "O"
+      },
+      "SPI_clk": {
+        "direction": "O"
+      },
+      "SPI_MISO": {
+        "direction": "I"
+      },
+      "intr": {
+        "direction": "I"
+      },
+      "acc_send_done": {
+        "type": "intr",
         "direction": "O",
         "parameters": {
           "PortWidth": {
             "value": "1",
-            "value_src": "default_prop"
+            "value_src": "default"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
+            "value_src": "const_prop"
+          }
+        }
+      },
+      "cwt_send_done": {
+        "type": "intr",
+        "direction": "O",
+        "parameters": {
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default"
           },
           "SENSITIVITY": {
             "value": "LEVEL_HIGH",
@@ -88,14 +115,14 @@
           }
         }
       },
-      "TFX_Core_0": {
-        "vlnv": "user.org:user:TFX_Core:1.0",
-        "xci_name": "master_test_TFX_Core_0_5",
-        "xci_path": "ip/master_test_TFX_Core_0_5/master_test_TFX_Core_0_5.xci",
-        "inst_hier_path": "TFX_Core_0",
+      "TFX_Core_v1_0_0": {
+        "vlnv": "user.org:user:TFX_Core_v2_1:1.0",
+        "xci_name": "master_test_TFX_Core_v2_1_0_0",
+        "xci_path": "ip/master_test_TFX_Core_v2_1_0_0/master_test_TFX_Core_v2_1_0_0.xci",
+        "inst_hier_path": "TFX_Core_v1_0_0",
         "parameters": {
-          "C_M_AXI_Data_BURST_LEN": {
-            "value": "256"
+          "C_SPI_ENABLE": {
+            "value": "false"
           }
         },
         "interface_ports": {
@@ -121,39 +148,70 @@
       }
     },
     "interface_nets": {
-      "TFX_Core_0_m_axi_data": {
+      "TFX_Core_v2_1_0_m_axi_data": {
         "interface_ports": [
-          "TFX_Core_0/m_axi_data",
+          "TFX_Core_v1_0_0/m_axi_data",
           "axi_vip_0/S_AXI"
         ]
       }
     },
     "nets": {
-      "TFX_Core_0_cwt_done": {
+      "SPI_MISO_1": {
         "ports": [
-          "TFX_Core_0/cwt_done",
-          "cwt_done_o"
+          "SPI_MISO",
+          "TFX_Core_v1_0_0/SPI_MISO_i"
+        ]
+      },
+      "TFX_Core_v1_0_0_acc_send_done_o": {
+        "ports": [
+          "TFX_Core_v1_0_0/acc_send_done_o",
+          "acc_send_done"
+        ]
+      },
+      "TFX_Core_v1_0_0_cwt_send_done_o": {
+        "ports": [
+          "TFX_Core_v1_0_0/cwt_send_done_o",
+          "cwt_send_done"
+        ]
+      },
+      "TFX_Core_v2_1_0_SPI_CS_o": {
+        "ports": [
+          "TFX_Core_v1_0_0/SPI_CS_o",
+          "SPI_CS"
+        ]
+      },
+      "TFX_Core_v2_1_0_SPI_MOSI_o": {
+        "ports": [
+          "TFX_Core_v1_0_0/SPI_MOSI_o",
+          "SPI_MOSI"
+        ]
+      },
+      "TFX_Core_v2_1_0_SPI_clk_o": {
+        "ports": [
+          "TFX_Core_v1_0_0/SPI_clk_o",
+          "SPI_clk"
+        ]
+      },
+      "intr_1": {
+        "ports": [
+          "intr",
+          "TFX_Core_v1_0_0/intr_i"
         ]
       },
       "m_axi_data_aclk_0_1": {
         "ports": [
           "ACLK",
           "axi_vip_0/aclk",
-          "TFX_Core_0/s_axi_config_aclk",
-          "TFX_Core_0/m_axi_data_aclk"
+          "TFX_Core_v1_0_0/s_axi_config_aclk",
+          "TFX_Core_v1_0_0/m_axi_data_aclk"
         ]
       },
       "s_axi_config_aresetn_0_1": {
         "ports": [
           "ARESETN",
           "axi_vip_0/aresetn",
-          "TFX_Core_0/s_axi_config_aresetn",
-          "TFX_Core_0/m_axi_data_aresetn"
-        ]
-      },
-      "start_1": {
-        "ports": [
-          "start"
+          "TFX_Core_v1_0_0/s_axi_config_aresetn",
+          "TFX_Core_v1_0_0/m_axi_data_aresetn"
         ]
       }
     }

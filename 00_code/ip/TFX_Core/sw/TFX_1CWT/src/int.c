@@ -1,0 +1,65 @@
+#include "xparameters.h"
+#include "xscugic.h"
+
+#include "FreeRTOS.h"
+#include "semphr.h"
+
+//#define ACC_DONE_INTR XPAR_FABRIC_TFX_CORE_V2_0_ACC_SEND_DONE_O_INTR
+#define CWT_DONE_INTR XPAR_FABRIC_TFX_CORE_V2_0_CWT_SEND_DONE_O_INTR
+
+volatile SemaphoreHandle_t CwtDoneSemaphore;
+//volatile SemaphoreHandle_t AccDoneSemaphore;
+
+static void CwtDoneHandler()
+{
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+	xil_printf("interrupt");
+
+	if ( xSemaphoreGiveFromISR( CwtDoneSemaphore, &xHigherPriorityTaskWoken ) != pdFALSE) {
+		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+	}
+}
+
+//static void AccDoneHandler()
+//{
+//	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+//
+//	if ( xSemaphoreGiveFromISR( AccDoneSemaphore, &xHigherPriorityTaskWoken ) != pdFALSE) {
+//		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+//	}
+//}
+
+
+int SetupInterruptSystem(XScuGic *IntcInstancePtr)
+{
+
+//	AccDoneSemaphore = xSemaphoreCreateBinary();
+//	if ( AccDoneSemaphore == NULL ) {
+//		xil_printf("Failed to create AccDone Semaphore!\n\rAborting...\n\r");
+//		return XST_FAILURE;
+//	}
+
+	CwtDoneSemaphore = xSemaphoreCreateBinary();
+	if ( CwtDoneSemaphore == NULL ) {
+		xil_printf("Failed to create CwtDone Semaphore!\n\rAborting...\n\r");
+		return XST_FAILURE;
+	}
+
+	// Register interrupt handler using FreeRTOS-aware function
+//	xPortInstallInterruptHandler(ACC_DONE_INTR, AccDoneHandler, NULL);
+	BaseType_t status = xPortInstallInterruptHandler(CWT_DONE_INTR, CwtDoneHandler, NULL);
+	if (status != pdPASS) {
+		xil_printf("[ERROR] Failed to install CWT ISR! Status: %ld\n\r", status);
+		return XST_FAILURE;
+	}
+
+	xil_printf("[INFO] CWT ISR handler installed\n\r");
+
+	// Enable the interrupt line
+//	vPortEnableInterrupt(ACC_DONE_INTR);
+	vPortEnableInterrupt(CWT_DONE_INTR);
+
+	return XST_SUCCESS;
+}
+

@@ -23,8 +23,8 @@ wire busy;
 wire [31:0] X_re;
 wire [31:0] X_im;
 
-localparam N = 1024;
-localparam J1 = 64;
+localparam N = 256;
+localparam J1 = 4;
 
 /************ load input buffers ***************/
 reg [31:0] input_buf[0:N-1];
@@ -327,7 +327,7 @@ always @(posedge fft_ready) begin
         $display("ERROR: failed to open '%s'", FFT_OUTPUT_RE_FN);
         $stop;
     end
-    $display("\n[FFT] Writing fft_re output results to %0s", FFT_OUTPUT_RE_FN);
+    $display("\n[FFT] Writing fft_re output results to %0s... \n", FFT_OUTPUT_RE_FN);
     for(j = 0; j < N; j = j + 1) begin
         $fwrite(fp, "%0d\n", $signed(output_fft_re_buf[j]));
     end
@@ -340,42 +340,25 @@ always @(posedge fft_ready) begin
         $display("ERROR: failed to open '%s'", FFT_OUTPUT_IM_FN);
         $stop;
     end
-    $display("\n[FFT] Writing fft_im output results to %0s", FFT_OUTPUT_IM_FN);
+    $display("[FFT] Writing fft_im output results to %0s... \n", FFT_OUTPUT_IM_FN);
     for(j = 0; j < N; j = j + 1) begin
         $fwrite(fp, "%0d\n", $signed(output_fft_im_buf[j]));
     end
 
     $fclose(fp);
-
-
+    
     /******** OPEN GOLDEN RE **********/    
     fp = $fopen(FFT_GOLDEN_RE_FN, "r");    
     if(fp == 0) begin
         $display("ERROR: failed to open '%s'", FFT_GOLDEN_RE_FN);
         $stop;
     end
-
-    /******** COMPARE RE GOLDEN **********/
-    $display("[FFT] Comparing FFT RE results with %0s ...", FFT_GOLDEN_RE_FN);
-    num_errors = 0;
-    for(j = 0; j < N; j = j + 1) begin
-        // use input_buf to hold golden vector values
-        $fscanf(fp, "%d\n", golden_fft_re_buf[j]);
-
-        if(output_fft_re_buf[j] != golden_fft_re_buf[j]) begin
-            $display("[FFT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_fft_re_buf[j]), $signed(golden_fft_re_buf[j]));
-            num_errors = num_errors + 1;
-        end
-    end
-    // NUM ERRORS IMAGINARY
-    if(num_errors == 0)
-        $display("[FFT] RE PASSED\n");
-    else
-        $display("[FFT] RE FAILED - %3d errors!\n", num_errors);
     
+    for(j = 0; j < N; j = j + 1)
+        $fscanf(fp, "%d\n", golden_fft_re_buf[j]);
+        
     $fclose(fp);
     
-
     /******** OPEN GOLDEN IM **********/
     fp = $fopen(FFT_GOLDEN_IM_FN, "r");
     if(fp == 0) begin
@@ -383,28 +366,53 @@ always @(posedge fft_ready) begin
         $stop;
     end
     
+    for(j = 0; j < N; j = j + 1)
+        $fscanf(fp, "%d\n", golden_fft_im_buf[j]);
+        
+    $fclose(fp);
+
+    /******** COMPARE RE GOLDEN **********/
+    $display("[FFT] Comparing FFT RE results with %0s ...", FFT_GOLDEN_RE_FN);
+    num_errors = 0;
+    for(j = 0; j < N; j = j + 1) begin
+        if($isunknown(golden_fft_im_buf[j])) begin
+            $display("[FFT] ERROR at reading golden file");
+            $finish;
+        end
+        else if(output_fft_re_buf[j] !== golden_fft_re_buf[j]) begin
+            $display("[FFT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_fft_re_buf[j]), $signed(golden_fft_re_buf[j]));
+            num_errors = num_errors + 1;
+        end
+    end
+    
+    // NUM ERRORS Real
+    if(num_errors == 0)
+        $display("[FFT] RE PASSED\n");
+    else
+        $display("[FFT] RE FAILED - %3d errors!\n", num_errors);
+    
+
     /******** COMPARE IM GOLDEN **********/
     $display("[FFT] Comparing FFT IM results with %0s ...", FFT_GOLDEN_IM_FN);
     num_errors = 0;
     for(j = 0; j < N; j = j + 1) begin
-        // use input_buf to hold golden vector values
-        $fscanf(fp, "%d\n", golden_fft_im_buf[j]);
-
-        if(output_fft_im_buf[j] != golden_fft_im_buf[j]) begin
+        if($isunknown(golden_fft_im_buf[j])) begin
+            $display("[FFT] ERROR at reading golden file");
+            $finish;
+        end
+        else if(output_fft_im_buf[j] != golden_fft_im_buf[j]) begin
             $display("[FFT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_fft_im_buf[j]), $signed(golden_fft_im_buf[j]));
             num_errors = num_errors + 1;
         end
     end
     
-    // NUM ERRORS REAL
+    // NUM ERRORS IM
     if(num_errors == 0)
         $display("[FFT] IM PASSED\n");
     else
         $display("[FFT] IM FAILED - %3d errors!\n", num_errors);
-    
-    $fclose(fp);
-
-    //$stop;
+        
+    $stop;
 end
 
 initial counter_j_mul <= 0;
@@ -422,7 +430,7 @@ always @(posedge mul_done) begin
             $display("ERROR: failed to open '%s'", MUL_OUTPUT_RE_FN);
             $stop;
         end
-        $display("\n[MUL] Writing mul_re output results to %0s", MUL_OUTPUT_RE_FN);
+        $display("\n[MUL] Writing mul_re output results to %0s... \n", MUL_OUTPUT_RE_FN);
         for(j = 0; j < N*J1; j = j + 1) begin
             $fwrite(fp, "%0d\n", $signed(output_mul_re_buf[j]));
         end
@@ -435,7 +443,7 @@ always @(posedge mul_done) begin
             $display("ERROR: failed to open '%s'", MUL_OUTPUT_IM_FN);
             $stop;
         end
-        $display("\n[MUL] Writing mul_im output results to %0s", MUL_OUTPUT_IM_FN);
+        $display("[MUL] Writing mul_im output results to %0s... \n", MUL_OUTPUT_IM_FN);
         for(j = 0; j < N*J1; j = j + 1) begin
             $fwrite(fp, "%0d\n", $signed(output_mul_im_buf[j]));
         end
@@ -449,14 +457,29 @@ always @(posedge mul_done) begin
             $display("ERROR: failed to open '%s'", MUL_GOLDEN_RE_FN);
             $stop;
         end
+        
+        for(j = 0; j < N*J1; j = j + 1)
+            $fscanf(fp, "%d\n", golden_mul_re_buf[j]);
+            
+        $fclose(fp);
+                
+        /******** OPEN GOLDEN IM **********/
+        fp = $fopen(MUL_GOLDEN_IM_FN, "r");
+        if(fp == 0) begin
+            $display("ERROR: failed to open '%s'", MUL_GOLDEN_IM_FN);
+            $stop;
+        end
+        
+        for(j = 0; j < N*J1; j = j + 1)
+            $fscanf(fp, "%d\n", golden_mul_im_buf[j]);
+            
+        $fclose(fp);
+        
 
         /******** COMPARE RE GOLDEN **********/
         $display("[MUL] Comparing MUL RE results with %0s ...", MUL_GOLDEN_RE_FN);
         num_errors = 0;
         for(j = 0; j < N*J1; j = j + 1) begin
-            // use input_buf to hold golden vector values
-            $fscanf(fp, "%d\n", golden_mul_re_buf[j]);
-
             if(output_mul_re_buf[j] != golden_mul_re_buf[j]) begin
                 $display("[MUL] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_mul_re_buf[j]), $signed(golden_mul_re_buf[j]));
                 num_errors = num_errors + 1;
@@ -468,23 +491,11 @@ always @(posedge mul_done) begin
         else
             $display("[MUL] RE FAILED - %3d errors!\n", num_errors);
         
-        $fclose(fp);
-        
 
-        /******** OPEN GOLDEN IM **********/
-        fp = $fopen(MUL_GOLDEN_IM_FN, "r");
-        if(fp == 0) begin
-            $display("ERROR: failed to open '%s'", MUL_GOLDEN_IM_FN);
-            $stop;
-        end
-        
         /******** COMPARE IM GOLDEN **********/
         $display("[MUL] Comparing MUL IM results with %0s ...", MUL_GOLDEN_IM_FN);
         num_errors = 0;
         for(j = 0; j < N*J1; j = j + 1) begin
-            // use input_buf to hold golden vector values
-            $fscanf(fp, "%d\n", golden_mul_im_buf[j]);
-
             if(output_mul_im_buf[j] != golden_mul_im_buf[j]) begin
                 $display("[MUL] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_mul_im_buf[j]), $signed(golden_mul_im_buf[j]));
                 num_errors = num_errors + 1;
@@ -496,10 +507,8 @@ always @(posedge mul_done) begin
             $display("[MUL] IM PASSED\n");
         else
             $display("[MUL] IM FAILED - %3d errors!\n", num_errors);
-        
-        $fclose(fp);
 
-        // $stop;
+        $stop;
     end
 end
 
@@ -518,7 +527,7 @@ always @(posedge ifft_ready) begin
             $display("ERROR: failed to open '%s'", IFFT_OUTPUT_RE_FN);
             $stop;
         end
-        $display("\n[IFFT] Writing mul_re output results to %0s", IFFT_OUTPUT_RE_FN);
+        $display("\n[IFFT] Writing mul_re output results to %0s... \n", IFFT_OUTPUT_RE_FN);
         for(j = 0; j < N*J1; j = j + 1) begin
             $fwrite(fp, "%0d\n", $signed(output_ifft_re_buf[j]));
         end
@@ -531,7 +540,7 @@ always @(posedge ifft_ready) begin
             $display("ERROR: failed to open '%s'", IFFT_OUTPUT_IM_FN);
             $stop;
         end
-        $display("\n[IFFT] Writing mul_im output results to %0s", IFFT_OUTPUT_IM_FN);
+        $display("[IFFT] Writing mul_im output results to %0s... \n", IFFT_OUTPUT_IM_FN);
         for(j = 0; j < N*J1; j = j + 1) begin
             $fwrite(fp, "%0d\n", $signed(output_ifft_im_buf[j]));
         end
@@ -545,28 +554,12 @@ always @(posedge ifft_ready) begin
             $display("ERROR: failed to open '%s'", IFFT_GOLDEN_RE_FN);
             $stop;
         end
-
-        /******** COMPARE RE GOLDEN **********/
-        $display("[IFFT] Comparing IFFT RE results with %0s ...", IFFT_GOLDEN_RE_FN);
-        num_errors = 0;
-        for(j = 0; j < N*J1; j = j + 1) begin
-            // use input_buf to hold golden vector values
+        
+        for(j = 0; j < N*J1; j = j + 1)
             $fscanf(fp, "%d\n", golden_ifft_re_buf[j]);
 
-            if(output_ifft_re_buf[j] != golden_ifft_re_buf[j]) begin
-                $display("[IFFT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_ifft_re_buf[j]), $signed(golden_ifft_re_buf[j]));
-                num_errors = num_errors + 1;
-            end
-        end
-        // NUM ERRORS IMAGINARY
-        if(num_errors == 0)
-            $display("[IFFT] RE PASSED\n");
-        else
-            $display("[IFFT] RE FAILED - %3d errors!\n", num_errors);
-        
         $fclose(fp);
         
-
         /******** OPEN GOLDEN IM **********/
         fp = $fopen(IFFT_GOLDEN_IM_FN, "r");
         if(fp == 0) begin
@@ -574,13 +567,30 @@ always @(posedge ifft_ready) begin
             $stop;
         end
         
+        for(j = 0; j < N*J1; j = j + 1)
+            $fscanf(fp, "%d\n", golden_ifft_im_buf[j]);
+        
+        $fclose(fp);
+        
+        /******** COMPARE RE GOLDEN **********/
+        $display("[IFFT] Comparing IFFT RE results with %0s ...", IFFT_GOLDEN_RE_FN);
+        num_errors = 0;
+        for(j = 0; j < N*J1; j = j + 1) begin
+            if(output_ifft_re_buf[j] != golden_ifft_re_buf[j]) begin
+                $display("[IFFT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_ifft_re_buf[j]), $signed(golden_ifft_re_buf[j]));
+                num_errors = num_errors + 1;
+            end
+        end
+        // NUM ERRORS RE
+        if(num_errors == 0)
+            $display("[IFFT] RE PASSED\n");
+        else
+            $display("[IFFT] RE FAILED - %3d errors!\n", num_errors);
+        
         /******** COMPARE IM GOLDEN **********/
         $display("[IFFT] Comparing IFFT IM results with %0s ...", IFFT_GOLDEN_IM_FN);
         num_errors = 0;
         for(j = 0; j < N*J1; j = j + 1) begin
-            // use input_buf to hold golden vector values
-            $fscanf(fp, "%d\n", golden_ifft_im_buf[j]);
-
             if(output_ifft_im_buf[j] != golden_ifft_im_buf[j]) begin
                 $display("[IFFT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_ifft_im_buf[j]), $signed(golden_ifft_im_buf[j]));
                 num_errors = num_errors + 1;
@@ -592,10 +602,8 @@ always @(posedge ifft_ready) begin
             $display("[IFFT] IM PASSED\n");
         else
             $display("[IFFT] IM FAILED - %3d errors!\n", num_errors);
-        
-        $fclose(fp);
 
-        // $stop;
+        $stop;
     end
 end
 
@@ -611,7 +619,7 @@ always @(posedge cwt_ready) begin
         $display("ERROR: failed to open '%s'", CWT_OUTPUT_RE_FN);
         $stop;
     end
-    $display("\n[CWT] Writing cwt_re output results to %0s", CWT_OUTPUT_RE_FN);
+    $display("\n[CWT] Writing cwt_re output results to %0s... \n", CWT_OUTPUT_RE_FN);
     for(j = 0; j < N*J1; j = j + 1) begin
         $fwrite(fp, "%0d\n", $signed(output_cwt_re_buf[j]));
     end
@@ -624,7 +632,7 @@ always @(posedge cwt_ready) begin
         $display("ERROR: failed to open '%s'", CWT_OUTPUT_IM_FN);
         $stop;
     end
-    $display("\n[CWT] Writing cwt_im output results to %0s", CWT_OUTPUT_IM_FN);
+    $display("[CWT] Writing cwt_im output results to %0s... \n", CWT_OUTPUT_IM_FN);
     for(j = 0; j < N*J1; j = j + 1) begin
         $fwrite(fp, "%0d\n", $signed(output_cwt_im_buf[j]));
     end
@@ -638,14 +646,28 @@ always @(posedge cwt_ready) begin
         $display("ERROR: failed to open '%s'", CWT_GOLDEN_RE_FN);
         $stop;
     end
+    
+    for(j = 0; j < N*J1; j = j + 1)
+        $fscanf(fp, "%d\n", golden_cwt_re_buf[j]);
 
+    $fclose(fp);
+    
+    /******** OPEN GOLDEN IM **********/
+    fp = $fopen(CWT_GOLDEN_IM_FN, "r");
+    if(fp == 0) begin
+        $display("ERROR: failed to open '%s'", CWT_GOLDEN_IM_FN);
+        $stop;
+    end
+    
+    for(j = 0; j < N*J1; j = j + 1) 
+        $fscanf(fp, "%d\n", golden_cwt_im_buf[j]);
+        
+    $fclose(fp);
+    
     /******** COMPARE RE GOLDEN **********/
     $display("[CWT] Comparing CWT RE results with %0s ...", CWT_GOLDEN_RE_FN);
     num_errors = 0;
     for(j = 0; j < N*J1; j = j + 1) begin
-        // use input_buf to hold golden vector values
-        $fscanf(fp, "%d\n", golden_cwt_re_buf[j]);
-
         if(output_cwt_re_buf[j] != golden_cwt_re_buf[j]) begin
             $display("[CWT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_cwt_re_buf[j]), $signed(golden_cwt_re_buf[j]));
             num_errors = num_errors + 1;
@@ -657,23 +679,10 @@ always @(posedge cwt_ready) begin
     else
         $display("[CWT] RE FAILED - %3d errors!\n", num_errors);
     
-    $fclose(fp);
-    
-
-    /******** OPEN GOLDEN IM **********/
-    fp = $fopen(CWT_GOLDEN_IM_FN, "r");
-    if(fp == 0) begin
-        $display("ERROR: failed to open '%s'", CWT_GOLDEN_IM_FN);
-        $stop;
-    end
-    
     /******** COMPARE IM GOLDEN **********/
     $display("[CWT] Comparing CWT IM results with %0s ...", CWT_GOLDEN_IM_FN);
     num_errors = 0;
     for(j = 0; j < N*J1; j = j + 1) begin
-        // use input_buf to hold golden vector values
-        $fscanf(fp, "%d\n", golden_cwt_im_buf[j]);
-
         if(output_cwt_im_buf[j] != golden_cwt_im_buf[j]) begin
             $display("[CWT] ERROR at input[%2d]: Output values differ output=%5d, expected %5d", j, $signed(output_cwt_im_buf[j]), $signed(golden_cwt_im_buf[j]));
             num_errors = num_errors + 1;
@@ -685,8 +694,6 @@ always @(posedge cwt_ready) begin
         $display("[CWT] IM PASSED\n");
     else
         $display("[CWT] IM FAILED - %3d errors!\n", num_errors);
-    
-    $fclose(fp);
 
     $stop;
 end

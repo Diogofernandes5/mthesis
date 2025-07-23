@@ -17,6 +17,10 @@ module TFX_Core_v1_0_S_AXI_Config #
     // Users to add ports here
     output wire econnected,
 
+    // output wire [1:0] acc_range,      
+    // output wire [3:0] acc_resolution, 
+    // output wire [5:0] axis_to_read,   
+
     // User ports ends
     // Do not modify the ports beyond this line
 
@@ -447,6 +451,17 @@ end
 `else
     assign econnected = 1;
 `endif
+
+
+// `ifdef SYNTHESIS
+//     assign acc_range = slv_reg1[1:0]; 
+//     assign acc_resolution = slv_reg2[3:0]; 
+//     assign axis_to_read = slv_reg[5:0];
+// `else
+//     assign acc_range = 13; 
+//     assign acc_resolution = 3; 
+//     assign axis_to_read = 32;
+// `endif
 
 
 // start logic

@@ -37,11 +37,25 @@ module TFX_Core_v1_0_M_AXI_Data #
 )
 (
     // Users to add ports here
-//    input wire start_i, // start CWT
-//    input wire [C_M_AXI_DATA_WIDTH-1:0] data_in,
     
-    input wire dl_busy, // em principio podes por a 0
+    input wire dl_busy,
     input wire econnected,
+
+    // input wire [1:0] acc_range,      
+    // input wire [3:0] acc_resolution, 
+    // input wire [5:0] axis_to_read,
+
+    input wire intr_i,
+
+    output wire SPI_clk_o,
+    input wire SPI_MISO_i,
+    output wire SPI_MOSI_o,
+    output wire SPI_CS_o,
+
+`ifndef SYNTHESIS
+    output reg config_done,
+    output wire [3:0] rx_count,
+`endif
     
     output wire cwt_done, //inicio das transmissões
 
@@ -261,7 +275,7 @@ wire [C_M_AXI_DATA_WIDTH-1:0] x_im;
 wire [C_M_AXI_DATA_WIDTH-1:0] X_re;
 wire [C_M_AXI_DATA_WIDTH-1:0] X_im;
 
-wire busy;
+wire core_busy;
 
 wire cwt_row_done;
 wire cwt_row_ready;
@@ -885,76 +899,42 @@ end
 
 assign write_done_pulse = writes_done && !write_done_prev;
 
+/*************************************************************/
 
 wire start_pulse;
-reg start_reg;
-reg start_reg2;
 
-reg incomplete;
-reg [3:0] cwt_counter;
 
-//always @(posedge M_AXI_ACLK) begin
-//    start_reg <= 0;
-//    start_reg2 <= 0;
-    
-//    if(~busy) begin
-//        start_reg <= (start_i || incomplete);
-//        start_reg2 <= start_reg;
-//    end
-//end
-
-//assign start_pulse = (~start_reg2) && (start_i || incomplete);
-
-//assign dready = send_inputs;
-
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin 
-//    if(~M_AXI_ARESETN) begin
-//        send_inputs <= 0;
-//        brom_addr <= 'b0;
-//        cwt_counter <= 'b0;
-//        incomplete <= 0; 
-//    end
-//    else begin
-//        if(start_pulse) begin
-//            brom_addr <= brom_addr + 1;
-//            send_inputs <= 1;
-//        end
-//        else if (brom_addr == (N+1)) begin
-//            send_inputs <= 0;
-//            brom_addr <= 'b0;
-//            if(cwt_counter < 3) begin
-//                cwt_counter <= cwt_counter + 1;
-//                incomplete <= 1; 
-//            end
-//            else begin
-//                cwt_counter <= 'b0;
-//                incomplete <= 0; 
-//            end
-            
-//        end
-        
-//        if(dready)
-//            brom_addr <= brom_addr + 1;
-//    end
-//end
-
-sensor_cu 
-#(.N(N)) 
-input_gen(
+spi_read_acc #(
+    .DATA_PTS_NUM('d256))
+acc_read (
     .clk(M_AXI_ACLK),
     .rstn(M_AXI_ARESETN),
-    .busy(busy),
-    .econnected(econnected),
-    .start_pulse(start_pulse),
-    .dready(dready),
-    .brom_addr(brom_addr)
+
+    .dl_busy_i(core_busy),
+    .intr_i(intr_i),
+
+    .start_o(start_pulse),
+    .data_valid_o(dready),
+    
+    .data_o(x_re),
+
+    .SPI_clk_o(SPI_clk_o),
+    .SPI_MISO_i(SPI_MISO_i),
+    .SPI_MOSI_o(SPI_MOSI_o),
+    .SPI_CS_o(SPI_CS_o)
+`ifndef SYNTHESIS
+    ,
+    .config_done(config_done),
+    .rx_count(rx_count)
+`endif
 );
 
-brom_vals sensor_vals (
-    .clka(M_AXI_ACLK),    
-    .addra(brom_addr),
-    .douta(x_re)
-);
+
+// brom_vals sensor_vals (
+//     .clka(M_AXI_ACLK),    
+//     .addra(brom_addr),
+//     .douta(x_re)
+// );
 assign x_im = 'b0;
 
 
@@ -971,7 +951,7 @@ CWT_nBRAM CWT_core (
     .x_re_i(x_re),
     .x_im_i(x_im),
     
-    .busy_o(busy),
+    .busy_o(core_busy),
     
     .cwt_row_done_o(cwt_row_done),
     .cwt_row_ready_o(cwt_row_ready),

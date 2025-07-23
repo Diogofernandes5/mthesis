@@ -13,74 +13,13 @@ platform create -name {TFX_Core_wrapper}\
 -out {/home/fernandes/thesis/00_code/ip/TFX_Core/sw}
 
 platform write
-domain create -name {freertos10_xilinx_ps7_cortexa9_0} -display-name {freertos10_xilinx_ps7_cortexa9_0} -os {freertos10_xilinx} -proc {ps7_cortexa9_0} -runtime {cpp} -arch {32-bit} -support-app {freertos_lwip_echo_server}
+domain create -name {freertos10_xilinx_ps7_cortexa9_0} -display-name {freertos10_xilinx_ps7_cortexa9_0} -os {freertos10_xilinx} -proc {ps7_cortexa9_0} -runtime {cpp} -arch {32-bit} -support-app {freertos_lwip_tcp_perf_client}
 platform generate -domains 
-platform active {TFX_Core_wrapper}
+platform write
 domain active {zynq_fsbl}
 domain active {freertos10_xilinx_ps7_cortexa9_0}
 platform generate -quick
 platform generate
-platform active {TFX_Core_wrapper}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform active {TFX_Core_wrapper}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform active {TFX_Core_wrapper}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform active {TFX_Core_wrapper}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform active {TFX_Core_wrapper}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains freertos10_xilinx_ps7_cortexa9_0 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform active {TFX_Core_wrapper}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform clean
-platform generate
-platform generate -domains freertos10_xilinx_ps7_cortexa9_0,zynq_fsbl 
-platform active {TFX_Core_wrapper}
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
-platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
 platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
 platform generate -domains 
 platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}

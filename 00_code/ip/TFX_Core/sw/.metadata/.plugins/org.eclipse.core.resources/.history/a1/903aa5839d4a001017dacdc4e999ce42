@@ -1,0 +1,18 @@
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
+// Useful shared defines
+/*------TIMER------*/
+#define DELAY_10_SECONDS		10000UL
+#define DELAY_1_SECOND			1000UL
+#define TIMER_CHECK_THRESHOLD	9
+#define DELAY_100_MILISEC		100UL
+#define DELAY_10_MILISEC		10UL
+
+/*------DDR------*/
+// DDR Base address
+#define DDR_BASE_ADDR 	XPAR_PS7_DDR_0_S_AXI_BASEADDR
+// Memory base address - sum to DDR_BASE_ADDR protects DDR
+#define MEM_ADDR 		0x40000000
+
+#endif

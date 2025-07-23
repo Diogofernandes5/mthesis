@@ -1,35 +1,43 @@
-//Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
-//--------------------------------------------------------------------------------
-//Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Mon Jun  9 19:14:15 2025
-//Host        : fernandes420 running 64-bit Ubuntu 22.04.5 LTS
-//Command     : generate_target TFX_Core_v1_0_bfm_1_wrapper.bd
-//Design      : TFX_Core_v1_0_bfm_1_wrapper
-//Purpose     : IP block netlist
-//--------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
 module TFX_Core_v1_0_bfm_1_wrapper
    (ACLK,
     ARESETN,
-    start_i,
-    cwt_done_o);
+    SPI_CS,
+    SPI_MISO,
+    SPI_MOSI,
+    SPI_clk,
+    acc_send_done,
+    cwt_send_done,
+    intr);
   input ACLK;
   input ARESETN;
-   
-  input start_i;
-  
-  output cwt_done_o;
+  output SPI_CS;
+  input SPI_MISO;
+  output SPI_MOSI;
+  output SPI_clk;
+  output acc_send_done;
+  output cwt_send_done;
+  input intr;
 
   wire ACLK;
   wire ARESETN;
-  wire start_i;
-  wire cwt_done_o;
-  
-  master_test TFX_Core_v1_0_bfm_1_i
+  wire SPI_CS;
+  wire SPI_MISO;
+  wire SPI_MOSI;
+  wire SPI_clk;
+  wire acc_send_done;
+  wire cwt_send_done;
+  wire intr;
+
+  master_test master_test_i
        (.ACLK(ACLK),
         .ARESETN(ARESETN),
-        .start_i(start_i),
-        .cwt_done_o(cwt_done_o));
-        
+        .SPI_CS(SPI_CS),
+        .SPI_MISO(SPI_MISO),
+        .SPI_MOSI(SPI_MOSI),
+        .SPI_clk(SPI_clk),
+        .acc_send_done(acc_send_done),
+        .cwt_send_done(cwt_send_done),
+        .intr(intr));
 endmodule

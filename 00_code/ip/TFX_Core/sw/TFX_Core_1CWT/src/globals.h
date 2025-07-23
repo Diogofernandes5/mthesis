@@ -17,7 +17,4 @@
 // Memory base address - sum to DDR_BASE_ADDR protects DDR
 #define MEM_ADDR 		0x00000000
 
-/*------CONFIG ADDR-----*/
-#define ECONNECTED 		0x43C00000
-
 #endif

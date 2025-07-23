@@ -2,16 +2,18 @@ module control_unit #(
     parameter N = 1024,
     parameter STAGES_NUM = 3,
     parameter FIRST_STAGE = 0,
-    parameter BF_OP_CYCLES = 10
+    parameter BF_OP_CYCLES = 8
 ) (
     input wire clk, 
     input wire rstn,
     
-    input wire start_i,
-    input wire dl_busy_i,         // data line busy to receive data
+    input wire start_i,         // start pulse
+    input wire dready_i,        // data ready
+    input wire dl_busy_i,       // data line busy to receive data
 
     output reg src_sel_o,
-    output reg fft_ready_o,
+    output reg fft_done_o,      // pulse
+    output reg fft_ready_o,     // data ready
     output reg busy_o,
 
     output reg bf_ce_o,
@@ -25,24 +27,7 @@ module control_unit #(
     output reg bram_x0_en_o,
     output reg bram_x1_en_o,
     
-    output reg [$clog2(N/2)-1:0] twiddle_addr_o,
-    
-    //***************** TESTS ******************
-    output reg [3:0] state,
-//    output reg [3:0] stage_counter,
-    
-//    output wire [$clog2(N/2)-1:0] staged_half_N
-    
-//    output reg [9:0] group_size,
-//    output reg start_div,
-    
-//    output reg [9:0] group_start,
-//    output wire [10:0] bram_addr_x0,           // summation result auxiliary used for bram_addr when needed
-//    output wire [10:0] bram_addr_x1,           // summation result auxiliary used for bram_addr when needed
-    
-//    output reg [10:0] bf_counter             // butterfly counter
-      output reg [$clog2(N):0] data_counter       // data counter for the store state
-//    output reg [9:0] local_index
+    output reg [$clog2(N/2)-1:0] twiddle_addr_o
 );
 
 /****************** DEFINE STATES ********************/
@@ -61,15 +46,14 @@ localparam S_SEND_RESULTS = 4'b1001;
 localparam HALF_N = N/2;
 localparam BRAM_SIZE = N;
 
-//localparam BF_OP_CYCLES = 4'd9;
 localparam DIV_CYCLES = 4'd11;
 
 /****************** STATE AND NSTATE ********************/
-//reg [3:0] state;
+reg [3:0] state;
 reg [3:0] nstate;
 
 /****************** COUNTER REGISTERS ********************/
-//reg [$clog2(N):0] data_counter;            // data counter for the store state
+reg [$clog2(N):0] data_counter;            // data counter for the store state
 reg [$clog2(N)-1:0] bf_counter;              // butterfly counter
 
 reg [3:0] bf_cycle_counter;         // used for delay of the butterfly operation
@@ -93,6 +77,8 @@ wire [$clog2(N/2)-1:0] staged_half_N;
 reg [$clog2(N)-1:0] twiddle_addr_ad;
 
 /****************** SIGNALS ********************/
+reg dready_d;
+
 reg start_div;                      // signal to start division
 
 reg start_sending;                  // signal to start sending data
@@ -346,14 +332,30 @@ always @(*) begin
     endcase
 end
 
+//reg dready_d;  
+
+//always @(posedge clk or negedge rstn) begin
+//    if (!rstn) begin
+//        dready_d <= 0;
+//    end else begin
+//        dready_d <= dready_i;
+//    end
+//end
+
 /* FFT_READY LOGIC */
 always @(negedge clk) begin
     /* start sending and bram address bigger than 0, because of the bram delay */
-    if(start_sending && (data_counter > 10'd0))
-        fft_ready_o <= 1'b1;
-        
-    else 
-        fft_ready_o <= 1'b0;
+    if(start_sending && (data_counter > 10'd0)) begin
+        fft_ready_o <= 1;
+        if(data_counter > 10'd1)
+            fft_done_o <= 0;
+        else
+            fft_done_o <= 1;
+    end 
+    else  begin
+        fft_ready_o <= 0;
+        fft_done_o <= 0;
+    end
 end
 
 /*********** COUNTERS AND SIGNALS ***********/
@@ -380,7 +382,10 @@ always @(posedge clk or negedge rstn) begin
             end
             
             S_STORE_INPUTS: 
-                data_counter <= data_counter + 1; // increment data_counter
+                if(dready_i)
+                    data_counter <= data_counter + 1; // increment data_counter
+                else 
+                    data_counter <= data_counter;
             
             S_CALC_STAGE_VARS: begin
                 if(!start_div && !div_bf_cycle_counter)

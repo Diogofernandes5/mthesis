@@ -97,7 +97,6 @@ void recv_thread(void *p)
 			/* break if the recved message = "quit" */
 			if (!strncmp(recv_buf, "exit", 4)) {
 				connected = 0;
-				Xil_Out32(ECONNECTED, connected); // send connected message
 				xil_printf("Server closed connection...\r\n");
 				break;
 			}
@@ -105,7 +104,6 @@ void recv_thread(void *p)
 			/* break if server closed connection */
 			if (n <= 0) {
 				connected = 0;
-				Xil_Out32(ECONNECTED, connected); // send connected message
 				xil_printf("Unexpectedly disconnected from server...\r\n");
 				break;
 			}
@@ -157,7 +155,8 @@ void connect_thread()
 			else {
 				xil_printf("\r\nConnected to server!\r\n");
 				connected = 1;// Connected successfully
-				Xil_Out32(ECONNECTED, connected); // send connected message
+
+//				Xil_Out32(0x43C00000, 1);
 
 				sendTask = sys_thread_new("send", send_data_thread,
 												(void*)sock,
