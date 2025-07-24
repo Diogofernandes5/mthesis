@@ -19,22 +19,24 @@
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
+//#include "timers.h"
 #include "semphr.h"
 #include "portmacro.h"
 
 /* Xilinx includes. */
 #include "xil_printf.h"
 #include "xparameters.h"
+//#include "xttcps.h"
 #include "xscugic.h"
 
 #include "lwip/dhcp.h"
 
-#include "globals.h"
+//#include "timer.h"
 
 /**************** DEFINES ******************/
 #define THREAD_STACKSIZE 1024
 
-#define DHCP_COARSE_TIMER_SECS_NEW 3
+#define DHCP_COARSE_TIMER_SECS_NEW 2
 
 /**************** PROTOTYPES ******************/
 int main_thread();

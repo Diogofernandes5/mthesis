@@ -1,6 +1,6 @@
 module cwt #(
-    parameter N = 256,
-    parameter J1 = 4)(
+    parameter N = 1024,
+    parameter J1 = 64)(
 	input wire clk,
 	input wire rstn,
 
@@ -121,7 +121,11 @@ mul_ip #(
 	.mul_done_o(mul_done),
 	.busy_o(mul_busy),
 	.X_re_o(mul_re),
-	.X_im_o(mul_im)
+	.X_im_o(mul_im),
+	
+	.bram_mul_addr(bram_mul_addr),
+	
+	.counter_j(counter_j_mul)
 );
 
 divide_mul_res divide_mul (

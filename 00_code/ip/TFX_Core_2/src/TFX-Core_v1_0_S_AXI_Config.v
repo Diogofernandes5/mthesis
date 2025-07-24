@@ -11,19 +11,11 @@ module TFX_Core_v1_0_S_AXI_Config #
     // Width of S_AXI data bus
     parameter integer C_S_AXI_DATA_WIDTH	= 32,
     // Width of S_AXI address bus
-    parameter integer C_S_AXI_ADDR_WIDTH	= 5,
-    
-    // Only used in simulation
-    parameter C_SPI_ENABLE = 1
+    parameter integer C_S_AXI_ADDR_WIDTH	= 5
 )
 (
     // Users to add ports here
     output wire econnected,
-    output wire spi_enable,
-
-    // output wire [1:0] acc_range,      
-    // output wire [3:0] acc_resolution, 
-    // output wire [5:0] axis_to_read,   
 
     // User ports ends
     // Do not modify the ports beyond this line
@@ -449,28 +441,12 @@ end
 
 // Add user logic here
 
+
 `ifdef SYNTHESIS
     assign econnected = slv_reg0[0];
-//    assign spi_enable = slv_reg1[0];
 `else
     assign econnected = 1;
-//    assign spi_enable = C_SPI_ENABLE;
 `endif
-
-//assign econnected = slv_reg0[0];
-//assign spi_enable = slv_reg1[0];
-assign spi_enable = 0;
-
-
-// `ifdef SYNTHESIS
-//     assign acc_range = slv_reg1[1:0]; 
-//     assign acc_resolution = slv_reg2[3:0]; 
-//     assign axis_to_read = slv_reg[5:0];
-// `else
-//     assign acc_range = 13; 
-//     assign acc_resolution = 3; 
-//     assign axis_to_read = 32;
-// `endif
 
 
 // start logic

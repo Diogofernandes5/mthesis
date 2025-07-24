@@ -4,11 +4,9 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
-#define ACC_DONE_INTR XPAR_FABRIC_TFX_CORE_V2_0_ACC_SEND_DONE_O_INTR
-#define CWT_DONE_INTR XPAR_FABRIC_TFX_CORE_V2_0_CWT_SEND_DONE_O_INTR
+#define CWT_DONE_INTR XPAR_FABRIC_TFX_CORE_0_CWT_DONE_INTR
 
 volatile SemaphoreHandle_t CwtDoneSemaphore;
-volatile SemaphoreHandle_t AccDoneSemaphore;
 
 static void CwtDoneHandler()
 {
@@ -19,24 +17,9 @@ static void CwtDoneHandler()
 	}
 }
 
-static void AccDoneHandler()
-{
-	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-
-	if ( xSemaphoreGiveFromISR( AccDoneSemaphore, &xHigherPriorityTaskWoken ) != pdFALSE) {
-		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
-	}
-}
-
 
 int SetupInterruptSystem(XScuGic *IntcInstancePtr)
 {
-	AccDoneSemaphore = xSemaphoreCreateBinary();
-	if ( AccDoneSemaphore == NULL ) {
-		xil_printf("Failed to create AccDone Semaphore!\n\rAborting...\n\r");
-		return XST_FAILURE;
-	}
-
 	CwtDoneSemaphore = xSemaphoreCreateBinary();
 	if ( CwtDoneSemaphore == NULL ) {
 		xil_printf("Failed to create CwtDone Semaphore!\n\rAborting...\n\r");
@@ -44,11 +27,9 @@ int SetupInterruptSystem(XScuGic *IntcInstancePtr)
 	}
 
 	// Register interrupt handler using FreeRTOS-aware function
-	xPortInstallInterruptHandler(ACC_DONE_INTR, AccDoneHandler, NULL);
 	xPortInstallInterruptHandler(CWT_DONE_INTR, CwtDoneHandler, NULL);
 
 	// Enable the interrupt line
-	vPortEnableInterrupt(ACC_DONE_INTR);
 	vPortEnableInterrupt(CWT_DONE_INTR);
 
 	return XST_SUCCESS;

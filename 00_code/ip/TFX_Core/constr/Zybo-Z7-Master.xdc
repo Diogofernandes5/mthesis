@@ -39,7 +39,7 @@ create_clock -name clk -period 20 -waveform {0 10} [get_ports { sys_clk }];
 
 
 ##LEDs (from left to right on the board)
-set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports spi_enable]
+#set_property -dict { PACKAGE_PIN D18   IOSTANDARD LVCMOS33 } [get_ports { led[3] }]; #IO_L3N_T0_DQS_AD1N_35 Sch=led[3]
 #set_property -dict { PACKAGE_PIN G14   IOSTANDARD LVCMOS33 } [get_ports { led[2] }]; #IO_0_35 Sch=led[2]
 #set_property -dict { PACKAGE_PIN M15   IOSTANDARD LVCMOS33 } [get_ports { led[1] }]; #IO_L23N_T3_35 Sch=led[1]
 #set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { led[0] }]; #IO_L23P_T3_35 Sch=led[0]
@@ -138,25 +138,25 @@ set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports spi_enable]
 
 
 ##Pmod Header JD
-set_property -dict {PACKAGE_PIN T14 IOSTANDARD LVCMOS33} [get_ports SPI_clk]
-set_property -dict {PACKAGE_PIN T15 IOSTANDARD LVCMOS33} [get_ports SPI_MOSI]
-set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports SPI_MISO]
-set_property -dict {PACKAGE_PIN R14 IOSTANDARD LVCMOS33} [get_ports SPI_CS]
+#set_property -dict { PACKAGE_PIN T14   IOSTANDARD LVCMOS33     } [get_ports { jd[0] }]; #IO_L5P_T0_34 Sch=jd_p[1]
+#set_property -dict { PACKAGE_PIN T15   IOSTANDARD LVCMOS33     } [get_ports { jd[1] }]; #IO_L5N_T0_34 Sch=jd_n[1]
+#set_property -dict { PACKAGE_PIN P14   IOSTANDARD LVCMOS33     } [get_ports { jd[2] }]; #IO_L6P_T0_34 Sch=jd_p[2]
+#set_property -dict { PACKAGE_PIN R14   IOSTANDARD LVCMOS33     } [get_ports { jd[3] }]; #IO_L6N_T0_VREF_34 Sch=jd_n[2]
 #set_property -dict { PACKAGE_PIN U14   IOSTANDARD LVCMOS33     } [get_ports { jd[4] }]; #IO_L11P_T1_SRCC_34 Sch=jd_p[3]
 #set_property -dict { PACKAGE_PIN U15   IOSTANDARD LVCMOS33     } [get_ports { jd[5] }]; #IO_L11N_T1_SRCC_34 Sch=jd_n[3]
 #set_property -dict { PACKAGE_PIN V17   IOSTANDARD LVCMOS33     } [get_ports { jd[6] }]; #IO_L21P_T3_DQS_34 Sch=jd_p[4]
-set_property -dict {PACKAGE_PIN V18 IOSTANDARD LVCMOS33} [get_ports INT1]
+#set_property -dict { PACKAGE_PIN V18   IOSTANDARD LVCMOS33     } [get_ports { jd[7] }]; #IO_L21N_T3_DQS_34 Sch=jd_n[4]
 
 
 ##Pmod Header JE
-# set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { SPI_clk }]; #IO_L4P_T0_34 Sch=je[1]
-# set_property -dict { PACKAGE_PIN W16   IOSTANDARD LVCMOS33 } [get_ports { SPI_MOSI }]; #IO_L18N_T2_34 Sch=je[2]
-# set_property -dict { PACKAGE_PIN J15   IOSTANDARD LVCMOS33 } [get_ports { SPI_MISO }]; #IO_25_35 Sch=je[3]
-# set_property -dict { PACKAGE_PIN H15   IOSTANDARD LVCMOS33 } [get_ports { SPI_CS }]; #IO_L19P_T3_35 Sch=je[4]
+#set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { je[0] }]; #IO_L4P_T0_34 Sch=je[1]
+#set_property -dict { PACKAGE_PIN W16   IOSTANDARD LVCMOS33 } [get_ports { je[1] }]; #IO_L18N_T2_34 Sch=je[2]
+#set_property -dict { PACKAGE_PIN J15   IOSTANDARD LVCMOS33 } [get_ports { je[2] }]; #IO_25_35 Sch=je[3]
+#set_property -dict { PACKAGE_PIN H15   IOSTANDARD LVCMOS33 } [get_ports { je[3] }]; #IO_L19P_T3_35 Sch=je[4]
 #set_property -dict { PACKAGE_PIN V13   IOSTANDARD LVCMOS33 } [get_ports { je[4] }]; #IO_L3N_T0_DQS_34 Sch=je[7]
 #set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports { je[5] }]; #IO_L9N_T1_DQS_34 Sch=je[8]
 #set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports { je[6] }]; #IO_L20P_T3_34 Sch=je[9]
-# set_property -dict { PACKAGE_PIN Y17   IOSTANDARD LVCMOS33 } [get_ports { INT1 }]; #IO_L7N_T1_34 Sch=je[10]
+#set_property -dict { PACKAGE_PIN Y17   IOSTANDARD LVCMOS33 } [get_ports { je[7] }]; #IO_L7N_T1_34 Sch=je[10]
 
 
 ##Pcam MIPI CSI-2 Connector
@@ -201,28 +201,3 @@ set_property -dict {PACKAGE_PIN V18 IOSTANDARD LVCMOS33} [get_ports INT1]
 
 
 
-
-set_property MARK_DEBUG true [get_nets TFX_Core_i/TFX_Core_v2_0/inst/M_AXI_Data/brom_sampling_done]
-
-set_property MARK_DEBUG true [get_nets TFX_Core_i/TFX_Core_v2_0/inst/M_AXI_Data/INIT_AXI_TXN]
-set_property MARK_DEBUG true [get_nets TFX_Core_i/TFX_Core_v2_0/inst/M_AXI_Data/cwt_row_done]
-
-create_debug_core u_ila_0 ila
-set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
-set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
-set_property C_ADV_TRIGGER false [get_debug_cores u_ila_0]
-set_property C_DATA_DEPTH 1024 [get_debug_cores u_ila_0]
-set_property C_EN_STRG_QUAL false [get_debug_cores u_ila_0]
-set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
-set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
-set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
-set_property port_width 1 [get_debug_ports u_ila_0/clk]
-connect_debug_port u_ila_0/clk [get_nets [list TFX_Core_i/processing_system7_0/inst/FCLK_CLK0]]
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 4 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list TFX_Core_i/TFX_Core_v2_0/inst/M_AXI_Data/brom_sampling_done TFX_Core_i/TFX_Core_v2_0/inst/M_AXI_Data/cwt_row_done TFX_Core_i/TFX_Core_v2_0/inst/M_AXI_Data/INIT_AXI_TXN TFX_Core_i/TFX_Core_v2_0/inst/cwt_send_done_o]]
-set_property MARK_DEBUG true [get_nets TFX_Core_i/TFX_Core_v2_0/inst/cwt_send_done_o]
-set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
-set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
-set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
-connect_debug_port dbg_hub/clk [get_nets clk]

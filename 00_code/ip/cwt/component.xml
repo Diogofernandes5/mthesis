@@ -82,7 +82,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>8c62d63f</spirit:value>
+            <spirit:value>a754f3a8</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -116,7 +116,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>8c62d63f</spirit:value>
+            <spirit:value>a754f3a8</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -131,7 +131,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>f3c6efe6</spirit:value>
+            <spirit:value>a689923f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -606,7 +606,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,(spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)) * spirit:decode(id(&apos;MODELPARAM_VALUE.J1&apos;))))) - 1)">9</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,(spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)) * spirit:decode(id(&apos;MODELPARAM_VALUE.J1&apos;))))) - 1)">15</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -894,7 +894,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">7</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">9</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -918,7 +918,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">7</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">9</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -982,7 +982,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,(spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)) / 2))) - 1)">6</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,(spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)) / 2))) - 1)">8</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -1074,7 +1074,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">7</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.N&apos;)))) - 1)">9</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -1098,7 +1098,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.J1&apos;))))">2</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.J1&apos;))))">6</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -1122,7 +1122,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.J1&apos;))))">2</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="spirit:ceil(spirit:log(2,spirit:decode(id(&apos;MODELPARAM_VALUE.J1&apos;))))">6</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -1146,12 +1146,12 @@
       <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
         <spirit:name>N</spirit:name>
         <spirit:displayName>N</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.N">256</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.N">1024</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>J1</spirit:name>
         <spirit:displayName>J1</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.J1">4</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.J1">64</spirit:value>
       </spirit:modelParameter>
     </spirit:modelParameters>
   </spirit:model>
@@ -1166,16 +1166,6 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>ip/shift_right_input/shift_right_input.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/shift_right_input/shift_right_input.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_divide_mul/shift_x_re_i</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>src/dwavelet.COE</spirit:name>
         <spirit:userFileType>coe</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
@@ -1184,43 +1174,49 @@
         <spirit:name>src/bram_cwt_res/bram_cwt_res.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_cwt_re_res/bram_cwt_res</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_cwt_re_res</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/ifft_pipeline/ifft_pipeline.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_ifft/ifft_pipeline</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_ifft</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>src/mux2_0/mux2_0.xci</spirit:name>
+        <spirit:name>src/shift_right_input/shift_right_input.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/x_re_src_mux/mux2_0</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/multiplier_ip/multiplier_ip.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/mult_x_re_mul/multiplier_ip</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_divide_mul/shift_x_re_i</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/bram_N_point/bram_N_point.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/bram_re/bram_N_point</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/bram_fft_res_re</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/mux2_0/mux2_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/x_re_mux</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/multiplier_ip/multiplier_ip.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/mult_x_re_mul</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/brom_daughter/brom_daughter.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/daughter_wave/brom_daughter</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/daughter_wave</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/fft_pipeline_ip/fft_pipeline_ip.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_fft/fft_pipeline_ip</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_fft</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/cwt_cu.v</spirit:name>
@@ -1270,71 +1266,8 @@
       <spirit:file>
         <spirit:name>src/cwt.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_6f033cd6</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_f7d7a8d6</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/cwt/daughter_wavelet/dwavelet.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/bram_cwt_res/bram_cwt_res.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_cwt_re_res</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/ifft_pipeline/ifft_pipeline.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_ifft</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/mux2_0/mux2_0.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/x_re_src_mux</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/multiplier_ip/multiplier_ip.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/mult_x_re_mul</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/bram_N_point/bram_N_point.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/bram_re</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/brom_daughter/brom_daughter.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/daughter_wave</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>cwt/cwt.srcs/sources_1/ip/fft_pipeline_ip/fft_pipeline_ip.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_fft</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_re_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_im_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>tmp_edit_project.gen/sources_1/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>tmp_edit_project.gen/sources_1/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1400,16 +1333,6 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>ip/shift_right_input/shift_right_input.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/shift_right_input/shift_right_input.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_divide_mul/shift_x_re_i</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>src/dwavelet.COE</spirit:name>
         <spirit:userFileType>coe</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
@@ -1418,43 +1341,49 @@
         <spirit:name>src/bram_cwt_res/bram_cwt_res.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_cwt_re_res/bram_cwt_res</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_cwt_re_res</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/ifft_pipeline/ifft_pipeline.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_ifft/ifft_pipeline</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_ifft</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>src/mux2_0/mux2_0.xci</spirit:name>
+        <spirit:name>src/shift_right_input/shift_right_input.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/x_re_src_mux/mux2_0</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/multiplier_ip/multiplier_ip.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/mult_x_re_mul/multiplier_ip</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_divide_mul/shift_x_re_i</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/bram_N_point/bram_N_point.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/bram_re/bram_N_point</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/bram_fft_res_re</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/mux2_0/mux2_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/x_re_mux</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/multiplier_ip/multiplier_ip.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/mult_x_re_mul</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/brom_daughter/brom_daughter.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/daughter_wave/brom_daughter</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_mul/datapath/daughter_wave</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/fft_pipeline_ip/fft_pipeline_ip.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_fft/fft_pipeline_ip</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_fft</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/cwt_cu.v</spirit:name>
@@ -1505,69 +1434,6 @@
         <spirit:name>src/cwt.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/cwt/daughter_wavelet/dwavelet.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/bram_cwt_res/bram_cwt_res.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_cwt_re_res</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/ifft_pipeline/ifft_pipeline.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_ifft</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/mux2_0/mux2_0.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/x_re_src_mux</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/multiplier_ip/multiplier_ip.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/mult_x_re_mul</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/bram_N_point/bram_N_point.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/bram_re</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ip/brom_daughter/brom_daughter.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_mul/datapath/daughter_wave</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>cwt/cwt.srcs/sources_1/ip/fft_pipeline_ip/fft_pipeline_ip.xci</spirit:name>
-        <spirit:userFileType>xci</spirit:userFileType>
-        <spirit:userFileType>CELL_NAME_fft</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_re_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/fft/fft_w_im_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>../../matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>tmp_edit_project.gen/sources_1/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>tmp_edit_project.gen/sources_1/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE</spirit:name>
-        <spirit:userFileType>coe</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1636,49 +1502,8 @@
         <spirit:name>src/cwt_tb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
         <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/mul_tb_behav.wcfg</spirit:name>
-        <spirit:fileType>unknown</spirit:fileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/mul_cu_tb_behav.wcfg</spirit:name>
-        <spirit:fileType>unknown</spirit:fileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>src/cwt_tb_behav.wcfg</spirit:name>
-        <spirit:fileType>unknown</spirit:fileType>
-        <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>sim/cwt_tb.v</spirit:name>
-        <spirit:fileType>systemVerilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>sim/mul_tb_behav.wcfg</spirit:name>
-        <spirit:fileType>unknown</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>sim/mul_cu_tb_behav.wcfg</spirit:name>
-        <spirit:fileType>unknown</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>sim/cwt_tb_behav.wcfg</spirit:name>
-        <spirit:fileType>unknown</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_testbench</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1696,12 +1521,12 @@
     <spirit:parameter>
       <spirit:name>N</spirit:name>
       <spirit:displayName>N</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.N">256</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.N">1024</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>J1</spirit:name>
       <spirit:displayName>J1</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.J1">4</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.J1">64</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>Component_Name</spirit:name>
@@ -1725,11 +1550,11 @@
       <xilinx:xpmLibraries>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>4</xilinx:coreRevision>
+      <xilinx:coreRevision>1</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>user.org:user:cwt:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2025-06-20T09:51:27Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2025-02-20T12:19:15Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@22accd21_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@cc8092e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
@@ -1812,85 +1637,15 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@1b1c06d6_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@5a2e1f2a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@475c23f4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@3b2a65e8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@7a93a525_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4a4694ea_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@3b5aeacd_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@7293552f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@565dab4d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@50ea207c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@3d9b5e04_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@d80cad4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@bd8a614_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@6604996a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@22008ff9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@7a90a000_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@72329463_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@597fcba_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@7acc5c4d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@27658fd_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@31cc8c34_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@2d87834c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@82ba477_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@22406fea_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4382b6fe_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@2cef0765_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@38a6ccd8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@281907a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@11d9aee0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@300f270a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@77cd5a03_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@5051010_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4d0a8505_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4edb572e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@183ff593_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@6c0961e2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@3722c248_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@e866dff_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@6f75f08d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@51743f6c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@188c3a19_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@6a0858a1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4409b9c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@3f2905c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@38bd3966_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@167d74d1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@500cff5f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@774d109c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4024b89e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@55ee4f5b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@73b24cd9_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@d3223d5_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@344f7b34_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@12197a28_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@288d4055_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@2644fc9e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@1746e443_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@76c62ec0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@1541a02b_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@121a4bfe_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@7d1d4a40_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4152601a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@a60f7d4_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@134d5c3c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@5094acfc_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@64ea6242_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@2239d9e0_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@6551773f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@623d638d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@12256b69_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@69995384_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@785520b2_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@3e997e4d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/cwt</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dbc0055f"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="48b26750"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="355b6c1a"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="6a5a52ff"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="4f07133d"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="5c1e59cd"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="c78727b2"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="0c6cfafd"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="226b2968"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

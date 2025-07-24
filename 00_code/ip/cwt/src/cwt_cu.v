@@ -131,6 +131,7 @@ always @(posedge clk or negedge rstn) begin
 	if(~rstn) begin
 		data_counter <= 32'd0;
 		counter_j <= 12'd0;
+		counter_j_aux <= 0;
 	end
 	else begin
 		case(state)
@@ -157,12 +158,8 @@ always @(posedge clk or negedge rstn) begin
 	end
 end
 
-always @(posedge ifft_ready_i or negedge rstn) begin
-	if(~rstn) begin
-		counter_j_aux <= 0;
-	end
-    else 
-        counter_j_aux <= counter_j_aux + 1;
+always @(posedge ifft_ready_i) begin
+    counter_j_aux <= counter_j_aux + 1;
 end
 
 endmodule

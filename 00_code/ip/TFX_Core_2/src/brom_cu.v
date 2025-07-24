@@ -3,20 +3,18 @@ module brom_cu #(
 (
     input wire clk, 
     input wire rstn,
-    // input wire start_i,
-    input wire econnected,
-    input wire dl_busy,
     
-    output reg start_pulse,
-    output reg dready,
-    output reg [($clog2(N)-1):0] brom_addr
-
+    input wire econnected_i,
+    input wire dl_busy_i,
+    
+    output reg start_o,
+    output reg dready_o,
+    output reg [($clog2(N)-1):0] brom_addr_o
 );
 
 localparam INPUT_CLK = 50000000;
 localparam SENSOR_ODR = 3200;
 
-// localparam CLK_ODRXN = (INPUT_CLK / SENSOR_ODR) * N ;
 localparam CLK_ODRXN = INPUT_CLK / SENSOR_ODR; 
 
 // define states
@@ -24,15 +22,15 @@ localparam S_IDLE = 2'b00;
 localparam S_SEND = 2'b01;
 
 // state and nextstate registers
-reg [1:0] state;
-reg [1:0] nstate;
+reg[1:0] state;
+reg[1:0] nstate;
 
 reg [31:0] clk_counter;
 
 wire new_data;
 reg new_data_r;
 
-reg [15:0] data_counter;
+reg [$clog2(N):0] data_counter;
 
 reg start_sending;
 
@@ -49,27 +47,25 @@ end
 always @(*) begin
     case(state)
         S_IDLE: begin
-        	if(new_data_r && ~dl_busy)
+        	if(new_data_r && ~dl_busy_i)
         		nstate = S_SEND;
             else
                 nstate = S_IDLE;
         end
 
         S_SEND: begin 
-        	if(data_counter == N)
+        	if(data_counter > N)
         		nstate = S_IDLE;
             else
                 nstate = S_SEND;
         end
-        default:
-            nstate = S_IDLE;
 
     endcase
 end
 
 // output logic
 always @(*) begin
-    brom_addr <= data_counter;
+    brom_addr_o <= data_counter;
     
     case(state)
         S_IDLE: begin
@@ -86,29 +82,32 @@ always @(*) begin
 end
 
 always @(posedge clk) begin
-    start_pulse <= 0;
-//    dready <= 0;
+    start_o <= 0;
     /* start sending and bram address bigger than 0, because of the bram delay */
     if(start_sending) begin
-        start_pulse <= 1;
-//        dready <= 1;
+        start_o <= 1;
         
         if(data_counter > 'd2) begin
-            start_pulse <= 0;
+            start_o <= 0;
         end
     end
 end
 
 always @(posedge clk or negedge rstn) begin
 	if(~rstn) begin
-		dready <= 0;
+		dready_o <= 0;
 	end
     else
-        if(start_pulse)
-            dready <= 1;
+        if(start_o)
+            dready_o <= 1;
         else if(~start_sending)
-            dready <= 0;      
+            dready_o <= 0;      
 end
+
+always @(posedge clk) 
+    new_data_r <= new_data;
+
+assign new_data = econnected_i ? (clk_counter == CLK_ODRXN) : 0;
 
 always @(posedge clk or negedge rstn) begin
     if (~rstn) begin
@@ -122,11 +121,6 @@ always @(posedge clk or negedge rstn) begin
         data_counter <= 'd0;
 end
 
-always @(posedge clk) 
-    new_data_r <= new_data;
-
-assign new_data = econnected ? (clk_counter == CLK_ODRXN) : 0;
-
 always @(posedge clk or negedge rstn) begin
     if (~rstn)
         clk_counter <= 'd0;
@@ -139,6 +133,5 @@ always @(posedge clk or negedge rstn) begin
         end
     end
 end
-
 
 endmodule

@@ -15,12 +15,13 @@ platform create -name {TFX_Core_wrapper}\
 platform write
 domain create -name {freertos10_xilinx_ps7_cortexa9_0} -display-name {freertos10_xilinx_ps7_cortexa9_0} -os {freertos10_xilinx} -proc {ps7_cortexa9_0} -runtime {cpp} -arch {32-bit} -support-app {freertos_lwip_tcp_perf_client}
 platform generate -domains 
-platform write
+platform active {TFX_Core_wrapper}
 domain active {zynq_fsbl}
 domain active {freertos10_xilinx_ps7_cortexa9_0}
 platform generate -quick
 platform generate
+platform active {TFX_Core_wrapper}
 platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
-platform generate -domains 
+platform generate
 platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
 platform generate -domains 

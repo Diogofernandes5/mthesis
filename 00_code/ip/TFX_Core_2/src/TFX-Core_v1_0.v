@@ -14,8 +14,8 @@ module TFX_Core_v1_0 #
     parameter integer C_S_AXI_Config_ADDR_WIDTH	= 5,
 
     // Parameters of Axi Master Bus Interface M_AXI_Data
-    parameter  C_M_AXI_Data_TARGET_SLAVE_BASE_ADDR	= 32'h10000000,
-    parameter integer C_M_AXI_Data_BURST_LEN	= 256,
+    parameter  C_M_AXI_Data_TARGET_SLAVE_BASE_ADDR	= 32'h40000000,
+    parameter integer C_M_AXI_Data_BURST_LEN	= 16,
     parameter integer C_M_AXI_Data_ID_WIDTH	= 1,
     parameter integer C_M_AXI_Data_ADDR_WIDTH	= 32,
     parameter integer C_M_AXI_Data_DATA_WIDTH	= 32,
@@ -23,25 +23,15 @@ module TFX_Core_v1_0 #
     parameter integer C_M_AXI_Data_ARUSER_WIDTH	= 0,
     parameter integer C_M_AXI_Data_WUSER_WIDTH	= 0,
     parameter integer C_M_AXI_Data_RUSER_WIDTH	= 0,
-    parameter integer C_M_AXI_Data_BUSER_WIDTH	= 0,
-    
-    // Only used in simulation
-    parameter C_SPI_ENABLE = 1
-    
+    parameter integer C_M_AXI_Data_BUSER_WIDTH	= 0
 )
 (
     // Users to add ports here
-    input wire intr_i,
-        
-    output wire SPI_clk_o,
-    input wire SPI_MISO_i,
-    output wire SPI_MOSI_o,
-    output wire SPI_CS_o,
+       
+//    input wire start_but_i,
+//    input wire [C_M_AXI_Data_DATA_WIDTH-1:0] data_i,
     
-    output wire cwt_send_done_o, //inicio das transmissões
-    output wire acc_send_done_o,
-    
-    output wire spi_enable,
+    output wire cwt_done,
     
     // User ports ends
     // Do not modify the ports beyond this line
@@ -121,20 +111,15 @@ localparam C_M_CACHE_VAL = 4'b0010;
 // value to be used in C_M_AxPROT
 localparam C_M_PROT_VAL = 3'b000;
 
-localparam integer J1 = 4;
-localparam integer N = 256;
-
 // Number of transactions to be operated, independently of the data width
-localparam integer C_NUM_OF_TRANSFERS = 2*J1*N; // 2*4*256
+localparam integer C_NUM_OF_TRANSFERS = 2048;
 
 wire dl_busy;
 
-wire econnected;
-//wire spi_enable;
+//wire ps_start;
+//wire start;
 
-// wire [1:0] acc_range;      
-// wire [3:0] acc_resolution; 
-// wire [5:0] axis_to_read;
+wire econnected;
 
 assign dl_busy = 0;
 
@@ -143,16 +128,9 @@ assign dl_busy = 0;
 // Instantiation of Axi Bus Interface S_AXI_Config
 TFX_Core_v1_0_S_AXI_Config # ( 
     .C_S_AXI_DATA_WIDTH(C_S_AXI_Config_DATA_WIDTH),
-    .C_S_AXI_ADDR_WIDTH(C_S_AXI_Config_ADDR_WIDTH),
-    
-    .C_SPI_ENABLE(C_SPI_ENABLE)
+    .C_S_AXI_ADDR_WIDTH(C_S_AXI_Config_ADDR_WIDTH)
 ) S_AXI_Config (
     .econnected(econnected),
-    .spi_enable(spi_enable),
-
-    // .acc_range      (acc_range),
-    // .acc_resolution (acc_resolution),
-    // .axis_to_read   (axis_to_read),
 
     .S_AXI_ACLK(s_axi_config_aclk),
     .S_AXI_ARESETN(s_axi_config_aresetn),
@@ -192,29 +170,16 @@ TFX_Core_v1_0_M_AXI_Data # (
     
     .C_M_CACHE_VAL(C_M_CACHE_VAL),
     .C_M_PROT_VAL(C_M_PROT_VAL),
-    .C_NUM_OF_TRANSFERS(C_NUM_OF_TRANSFERS),
-    .N(N),
-    .J1(J1)
+    .C_NUM_OF_TRANSFERS(C_NUM_OF_TRANSFERS)
     
 ) M_AXI_Data (
+//    .start_i(start),
+//    .data_i(data_i),
     .dl_busy(dl_busy),
     .econnected(econnected),
-    .spi_enable(spi_enable),
-
-    .intr_i(intr_i),
-
-    // .acc_range      (acc_range),
-    // .acc_resolution (acc_resolution),
-    // .axis_to_read   (axis_to_read),
-
-    .SPI_clk_o(SPI_clk_o),
-    .SPI_MISO_i(SPI_MISO_i),
-    .SPI_MOSI_o(SPI_MOSI_o),
-    .SPI_CS_o(SPI_CS_o),
+        
+    .cwt_done(cwt_done),
     
-    .cwt_send_done_o(cwt_send_done_o),
-    .acc_send_done_o(acc_send_done_o),
-
     .M_AXI_ACLK(m_axi_data_aclk),
     .M_AXI_ARESETN(m_axi_data_aresetn),
     .M_AXI_AWID(m_axi_data_awid),

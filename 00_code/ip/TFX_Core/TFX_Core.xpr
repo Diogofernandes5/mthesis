@@ -62,20 +62,20 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSABoardId" Val="zybo-z7-10"/>
-    <Option Name="WTXSimLaunchSim" Val="594"/>
+    <Option Name="WTXSimLaunchSim" Val="615"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="129"/>
-    <Option Name="WTModelSimExportSim" Val="129"/>
-    <Option Name="WTQuestaExportSim" Val="129"/>
-    <Option Name="WTIesExportSim" Val="129"/>
-    <Option Name="WTVcsExportSim" Val="129"/>
-    <Option Name="WTRivieraExportSim" Val="129"/>
-    <Option Name="WTActivehdlExportSim" Val="128"/>
+    <Option Name="WTXSimExportSim" Val="134"/>
+    <Option Name="WTModelSimExportSim" Val="134"/>
+    <Option Name="WTQuestaExportSim" Val="134"/>
+    <Option Name="WTIesExportSim" Val="134"/>
+    <Option Name="WTVcsExportSim" Val="134"/>
+    <Option Name="WTRivieraExportSim" Val="134"/>
+    <Option Name="WTActivehdlExportSim" Val="133"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -100,8 +100,14 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="TFX_Core.bd" FileRelPathName="ip/TFX_Core_processing_system7_0_0/TFX_Core_processing_system7_0_0.xci">
+          <Proxy FileSetName="TFX_Core_processing_system7_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="TFX_Core.bd" FileRelPathName="ip/TFX_Core_TFX_Core_v1_0_0_0/TFX_Core_TFX_Core_v1_0_0_0.xci">
+          <Proxy FileSetName="TFX_Core_TFX_Core_v1_0_0_0"/>
+        </CompFileExtendedInfo>
       </File>
-      <File Path="$PGENDIR/sources_1/bd/TFX_Core/hdl/TFX_Core_wrapper.v">
+      <File Path="$PPRDIR/bd/TFX_Core/hdl/TFX_Core_wrapper.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -117,23 +123,12 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="master_test.bd" FileRelPathName="ip/master_test_axi_vip_0_0/master_test_axi_vip_0_0.xci">
-          <Proxy FileSetName="master_test_axi_vip_0_0"/>
-        </CompFileExtendedInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/00_code/ip/TFX_Core/bd/master_test/ip/master_test_TFX_Core_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE">
+      <File Path="$PPRDIR/srcs/TFX_Core_v1_0_bfm_1_wrapper.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/bd/master_test/ip/master_test_TFX_Core_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE"/>
-          <Attr Name="ImportTime" Val="1750073723"/>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/00_code/ip/TFX_Core/bd/master_test/ip/master_test_TFX_Core_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/bd/master_test/ip/master_test_TFX_Core_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE"/>
-          <Attr Name="ImportTime" Val="1750073723"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
@@ -144,6 +139,18 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../../matlab/cwt/daughter_wavelet/dwavelet.COE">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PGENDIR/sources_1/bd/master_test/ip/master_test_TFX_Core_v1_0_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PGENDIR/sources_1/bd/master_test/ip/master_test_TFX_Core_v1_0_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -161,61 +168,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PGENDIR/sources_1/ip/TFX_Core_TFX_Core_0_1/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/bd/TFX_Core/ip/TFX_Core_TFX_Core_0_1/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE"/>
-          <Attr Name="ImportTime" Val="1750242907"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PGENDIR/sources_1/ip/TFX_Core_TFX_Core_0_1/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/bd/TFX_Core/ip/TFX_Core_TFX_Core_0_1/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE"/>
-          <Attr Name="ImportTime" Val="1750242907"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/srcs/TFX_Core_v1_0_bfm_1_wrapper.v">
-        <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PGENDIR/sources_1/bd/master_test/ip/master_test_TFX_Core_v2_1_0_0/src/brom_vals.COE">
+      <File Path="$PGENDIR/sources_1/bd/TFX_Core/ip/TFX_Core_TFX_Core_v1_0_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PGENDIR/sources_1/bd/master_test/ip/master_test_TFX_Core_v2_1_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PGENDIR/sources_1/bd/master_test/ip/master_test_TFX_Core_v2_1_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PGENDIR/sources_1/bd/TFX_Core/ip/TFX_Core_TFX_Core_v2_0_0/src/brom_vals.COE">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PGENDIR/sources_1/bd/TFX_Core/ip/TFX_Core_TFX_Core_v2_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_re_twiddles.COE">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PGENDIR/sources_1/bd/TFX_Core/ip/TFX_Core_TFX_Core_v2_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE">
+      <File Path="$PGENDIR/sources_1/bd/TFX_Core/ip/TFX_Core_TFX_Core_v1_0_0_0/src/CWT_nBRAM/matlab/twiddle_factors/ifft/ifft_w_im_twiddles.COE">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -294,9 +253,15 @@
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
     </FileSet>
-    <FileSet Name="master_test_axi_vip_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/master_test_axi_vip_0_0" RelGenDir="$PGENDIR/master_test_axi_vip_0_0">
+    <FileSet Name="TFX_Core_processing_system7_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/TFX_Core_processing_system7_0_0" RelGenDir="$PGENDIR/TFX_Core_processing_system7_0_0">
       <Config>
-        <Option Name="TopModule" Val="master_test_axi_vip_0_0"/>
+        <Option Name="TopModule" Val="TFX_Core_processing_system7_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="TFX_Core_TFX_Core_v1_0_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/TFX_Core_TFX_Core_v1_0_0_0" RelGenDir="$PGENDIR/TFX_Core_TFX_Core_v1_0_0_0">
+      <Config>
+        <Option Name="TopModule" Val="TFX_Core_TFX_Core_v1_0_0_0"/>
         <Option Name="UseBlackboxStub" Val="1"/>
       </Config>
     </FileSet>
@@ -336,9 +301,21 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="master_test_axi_vip_0_0_synth_1" Type="Ft3:Synth" SrcSet="master_test_axi_vip_0_0" Part="xc7z010clg400-1" ConstrsSet="master_test_axi_vip_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/master_test_axi_vip_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/master_test_axi_vip_0_0_synth_1">
+    <Run Id="TFX_Core_processing_system7_0_0_synth_1" Type="Ft3:Synth" SrcSet="TFX_Core_processing_system7_0_0" Part="xc7z010clg400-1" ConstrsSet="TFX_Core_processing_system7_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/TFX_Core_processing_system7_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/TFX_Core_processing_system7_0_0_synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2021"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="TFX_Core_TFX_Core_v1_0_0_0_synth_1" Type="Ft3:Synth" SrcSet="TFX_Core_TFX_Core_v1_0_0_0" Part="xc7z010clg400-1" ConstrsSet="TFX_Core_TFX_Core_v1_0_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/TFX_Core_TFX_Core_v1_0_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/TFX_Core_TFX_Core_v1_0_0_0_synth_1">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
+          <Desc>Vivado Synthesis Defaults</Desc>
+        </StratHandle>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -364,9 +341,28 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="master_test_axi_vip_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7z010clg400-1" ConstrsSet="master_test_axi_vip_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="master_test_axi_vip_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/master_test_axi_vip_0_0_impl_1">
+    <Run Id="TFX_Core_processing_system7_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7z010clg400-1" ConstrsSet="TFX_Core_processing_system7_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="TFX_Core_processing_system7_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/TFX_Core_processing_system7_0_0_impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2021"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="TFX_Core_TFX_Core_v1_0_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7z010clg400-1" ConstrsSet="TFX_Core_TFX_Core_v1_0_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="TFX_Core_TFX_Core_v1_0_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/TFX_Core_TFX_Core_v1_0_0_0_impl_1">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
+          <Desc>Default settings for Implementation.</Desc>
+        </StratHandle>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>

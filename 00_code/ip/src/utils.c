@@ -6,7 +6,7 @@ void fill_ddr(u32 size)
 {
 //	u32 *buffer;
 
-	if(size <= 0 || ((DDR_BASE_ADDR+size) > XPAR_PS7_DDR_0_S_AXI_HIGHADDR) )
+	if(size <= 0 || ((DDR_BASE_ADDR+MEM_ADDR+size) > XPAR_PS7_DDR_0_S_AXI_HIGHADDR) )
 	{
 		xil_printf("It was not possible to write to DDR, insert a valid size of array!\n\r");
 		return;
@@ -19,7 +19,7 @@ void fill_ddr(u32 size)
 //	}
 
 	// Copy to DDR
-    u32 *ddr = (u32*)(DDR_BASE_ADDR);
+    u32 *ddr = (u32*)(DDR_BASE_ADDR + MEM_ADDR);
 //	memcpy(ddr, buffer, size * sizeof(u32));
 
 	for (int i = 0; i < size; i++) {

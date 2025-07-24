@@ -18,9 +18,7 @@ module cwt_cu #(
 	output reg busy_o,
 	
 	output reg cwt_done_o,
-	output reg cwt_ready_o,
-	
-	output reg send_done_o
+	output reg cwt_ready_o
 	);
 
 // define states
@@ -91,8 +89,6 @@ always @(*) begin
 
 			start_sending <= 1'b0;
 			busy_o <= 1'b0;
-			
-            send_done_o <= 0;
 		end
 			
 		S_RECEIVE_DATA: begin
@@ -103,8 +99,6 @@ always @(*) begin
 
 			start_sending <= 1'b0;
 			busy_o <= 1'b1;
-			
-            send_done_o <= 0;
 		end
 		
 		S_CHECK_J: begin
@@ -114,8 +108,6 @@ always @(*) begin
 
 			start_sending <= 1'b0;
 			busy_o <= 1'b1;
-			
-            send_done_o <= 0;
 		end
 
 		S_SEND_RESULTS: begin
@@ -125,11 +117,6 @@ always @(*) begin
 
 			start_sending <= 1'b1;
 			busy_o <= 1'b1;
-			
-			if(data_counter > (N*J1*2 - 3))
-			     send_done_o <= 1;
-			else
-			     send_done_o <= 0;
 		end
 
 	endcase

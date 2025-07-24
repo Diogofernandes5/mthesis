@@ -1,21 +1,18 @@
 # Definitional proc to organize widgets for parameters.
 proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "Component_Name"
-  #Adding Page
-  set Page_0 [ipgui::add_page $IPINST -name "Page 0"]
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_ADDR_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_ARUSER_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_AWUSER_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_BURST_LEN" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_BUSER_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_DATA_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_ID_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_RUSER_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_TARGET_SLAVE_BASE_ADDR" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_M_AXI_Data_WUSER_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_S_AXI_Config_ADDR_WIDTH" -parent ${Page_0}
-  ipgui::add_param $IPINST -name "C_S_AXI_Config_DATA_WIDTH" -parent ${Page_0}
-
+  ipgui::add_param $IPINST -name "C_S_AXI_Config_DATA_WIDTH"
+  ipgui::add_param $IPINST -name "C_S_AXI_Config_ADDR_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_TARGET_SLAVE_BASE_ADDR"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_BURST_LEN"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_ID_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_ADDR_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_DATA_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_AWUSER_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_ARUSER_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_WUSER_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_RUSER_WIDTH"
+  ipgui::add_param $IPINST -name "C_M_AXI_Data_BUSER_WIDTH"
 
 }
 

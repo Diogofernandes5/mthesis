@@ -33,31 +33,17 @@ module TFX_Core_v1_0_M_AXI_Data #
     parameter C_M_PROT_VAL = 3'b000,
     
     // Number of transactions to be operated, independently of the data width
-    parameter integer C_NUM_OF_TRANSFERS = 2048,
-    
-    parameter integer N = 1024,
-    parameter integer J1 = 4
+    parameter integer C_NUM_OF_TRANSFERS = 2048
 )
 (
     // Users to add ports here
+//    input wire start_i, // start CWT
+//    input wire [C_M_AXI_DATA_WIDTH-1:0] data_in,
     
-    input wire dl_busy,
+    input wire dl_busy, // em principio podes por a 0
     input wire econnected,
-    input wire spi_enable,
-
-    // input wire [1:0] acc_range,      
-    // input wire [3:0] acc_resolution, 
-    // input wire [5:0] axis_to_read,
-
-    input wire intr_i,
-
-    output wire SPI_clk_o,
-    input wire SPI_MISO_i,
-    output wire SPI_MOSI_o,
-    output wire SPI_CS_o,
     
-    output wire cwt_send_done_o, //inicio das transmissões
-    output wire acc_send_done_o,
+    output wire cwt_done, //inicio das transmissões
 
     // User ports ends
     // Do not modify the ports beyond this line
@@ -176,54 +162,15 @@ module TFX_Core_v1_0_M_AXI_Data #
     output wire  M_AXI_RREADY
 );
 
-//function integer clogb2;
-//    input [31:0] bit_depth;
-//    integer i;
-//    begin
-//        clogb2 = 0;
-//        for(i = 0; bit_depth > 0; i = i + 1) begin
-//            bit_depth = bit_depth >> 1;            
-//            clogb2 = i + 1;
-//        end
-//    end
-//endfunction
+// function called clogb2 that returns an integer which has the 
+// value of the ceiling of the log base 2.                      
+function integer clogb2 (input integer bit_depth);              
+begin                                                           
+    for(clogb2=0; bit_depth>0; clogb2=clogb2+1)                   
+        bit_depth = bit_depth >> 1;                                 
+end                                                           
+endfunction                                                     
 
-function integer clogb2;
-    input [31:0] bit_depth;
-    integer i;
-    integer tmp;
-    begin
-        tmp = bit_depth;
-        clogb2 = 0;
-        for(i = 0; i < 32; i = i + 1) begin
-            if(tmp > 0)
-                clogb2 = i + 1;
-            tmp = tmp >> 1;
-        end
-    end
-endfunction
-
-//function integer clogb2;
-//    input [31:0] bit_depth;
-//    integer i;
-//    begin
-//        clogb2 = 0;
-//        for(i = 0; i < 31; i = i + 1) begin
-//            if(bit_depth > 0)
-//                clogb2 = i + 1;
-//            bit_depth = bit_depth >> 1;
-//        end
-//    end
-//endfunction
-
-// addr to be added to the axi_waddr
-reg [C_M_AXI_ADDR_WIDTH-1:0] waddr_offset_r;
-
-reg [15:0] num_transfers;
-wire [31:0] num_bytes;
-wire [15:0] num_bursts_req;
-wire [7:0] master_length;
-                                            
 // C_TRANSACTIONS_NUM is the width of the index counter for 
 // number of write or read transaction.
 // Defines the size of the index inside of the burst 
@@ -231,17 +178,14 @@ localparam integer C_TRANSACTIONS_NUM = clogb2(C_M_AXI_BURST_LEN-1);
 
 // Number of bytes to be sent or received 
 // (C_NUM_OF_TRANSFERS-1 to not gain another bit)
-assign num_bytes = (C_M_AXI_DATA_WIDTH/8) * (num_transfers-1);
 localparam integer C_NUM_BYTES = (C_M_AXI_DATA_WIDTH/8) * (C_NUM_OF_TRANSFERS-1);
 
 // Burst length for transactions, in C_M_AXI_DATA_WIDTHs - used to define the size of the variables
 // Non-2^n lengths will eventually cause bursts across 4K address boundaries.
 // Ex: for 4096 bytes (1024 words) the size will be 12
-assign master_length = clogb2(num_bytes);
-localparam integer C_MASTER_LENGTH = clogb2(C_NUM_BYTES);
+localparam integer C_MASTER_LENGTH	= clogb2(C_NUM_BYTES);
 
 // total number of burst transfers is master length divided by burst length and burst size
-assign num_bursts_req = master_length-clogb2((C_M_AXI_BURST_LEN * (C_M_AXI_DATA_WIDTH/8))-1);
 localparam integer C_NO_BURSTS_REQ = C_MASTER_LENGTH-clogb2((C_M_AXI_BURST_LEN * (C_M_AXI_DATA_WIDTH/8))-1);
 
 // Example State machine to initialize counter, initialize write transactions, 
@@ -301,63 +245,8 @@ wire    INIT_AXI_TXN;
 reg write_done_prev;
 wire write_done_pulse;
 
-
-/************************ ACC *************************/
-localparam ACC_RESOLUTION = 13;
-
-wire [ACC_RESOLUTION-1:0] acc_data;
-wire [C_M_AXI_DATA_WIDTH-1:0] x_re_acc;
-wire acc_sampling_done;
-wire acc_dready;
-wire acc_start_send;
-
-wire [$clog2(N)-1:0] brom_addr;
-//wire [ACC_RESOLUTION-1:0] brom_data;
-wire [32-1:0] brom_data;
-wire [C_M_AXI_DATA_WIDTH-1:0] x_re_brom;
-wire brom_sampling_done;
-wire brom_dready;
-
-wire next;
-wire [31:0] axi_data_out;
-wire [31:0] x;
-
-wire start_pulse;
-wire dready;
-
-/************************ CWT *************************/
-localparam integer N_J1 = N*J1;
-
-wire [C_M_AXI_DATA_WIDTH-1:0] x_re;
-wire [C_M_AXI_DATA_WIDTH-1:0] x_im;
-
-wire [C_M_AXI_DATA_WIDTH-1:0] X_re;
-wire [C_M_AXI_DATA_WIDTH-1:0] X_im;
-
-wire core_busy;
-
-wire cwt_row_done;
-wire cwt_row_ready;
-
-reg send_inputs;
-
-/*********************** CWT CU **********************/
-
-wire bram_en;
-wire bram_we;
-wire [$clog2(N*J1*2)-1:0] bram_addr_x_re;
-wire [$clog2(N*J1*2)-1:0] bram_addr_x_im;
-
-wire cwt_busy;
-
-wire cwt_done;
-wire cwt_ready;
-
-wire [C_M_AXI_DATA_WIDTH-1:0] bram_cwt_output;
+/*********************************************************/
 wire [C_M_AXI_DATA_WIDTH-1:0] cwt_output;
-//reg [C_M_AXI_DATA_WIDTH-1:0] cwt_output_r;
-
-wire sendIncomplete;
 
 // I/O Connections assignments
 
@@ -482,12 +371,10 @@ end
 always @(posedge M_AXI_ACLK)                                         
 begin                                                                
     if (M_AXI_ARESETN == 0 || init_txn_pulse == 1'b1)                                                                                                   
-//        axi_awaddr <= waddr_offset_r;
-         axi_awaddr <= 'b0;                                             
+        axi_awaddr <= 'b0;                                             
                                                              
     else if (M_AXI_AWREADY && axi_awvalid)                                                                                         
-//        axi_awaddr <= (axi_awaddr + burst_size_bytes) | waddr_offset_r;
-        axi_awaddr <= axi_awaddr + burst_size_bytes;                                                                           
+        axi_awaddr <= axi_awaddr + burst_size_bytes;                                                                              
     else                                                               
         axi_awaddr <= axi_awaddr;                                        
 end                                                                
@@ -581,14 +468,12 @@ Data pattern is only a simple incrementing count from 0 for each burst  */
 always @(posedge M_AXI_ACLK)                                                      
 begin                                                                             
     if (M_AXI_ARESETN == 0 || init_txn_pulse == 1'b1)                                                         
-        axi_wdata <= axi_data_out;                                                             
+        axi_wdata <= cwt_output;                                                             
     //else if (wnext && axi_wlast)                                                  
     //  axi_wdata <= 'b0;                                                           
-    else if (wnext) begin
-        axi_wdata <= axi_data_out;
-        if(axi_wlast)
-            axi_wdata <= 0;
-    end
+    else if (wnext)  
+       //	      axi_wdata <= axi_wdata + 1;                                                   
+        axi_wdata <= cwt_output;                                                   
     else                                                                            
         axi_wdata <= axi_wdata;                                                       
 end                                                                             
@@ -803,7 +688,7 @@ begin
                                                                                                                                                                               
     else if (M_AXI_AWREADY && axi_awvalid)                                                                  
       begin                                                                                                 
-        if (write_burst_counter[num_bursts_req] == 1'b0)                                                                                                                                              
+        if (write_burst_counter[C_NO_BURSTS_REQ] == 1'b0)                                                                                                                                              
             write_burst_counter <= write_burst_counter + 1'b1;                                              
             //write_burst_counter[C_NO_BURSTS_REQ] <= 1'b1;                                                                                                                                              
       end                                                                                                   
@@ -820,7 +705,7 @@ begin
                                                                                                                                                                                  
     else if (M_AXI_ARREADY && axi_arvalid)                                                                  
       begin                                                                                                 
-        if (read_burst_counter[num_bursts_req] == 1'b0)                                                                                                                                             
+        if (read_burst_counter[C_NO_BURSTS_REQ] == 1'b0)                                                                                                                                             
             read_burst_counter <= read_burst_counter + 1'b1;                                                
             //read_burst_counter[C_NO_BURSTS_REQ] <= 1'b1;                                                                                                                                           
       end                                                                                                   
@@ -911,7 +796,7 @@ begin
                                                                                                             
     //The writes_done should be associated with a bready response                                           
     //else if (M_AXI_BVALID && axi_bready && (write_burst_counter == {(C_NO_BURSTS_REQ-1){1}}) && axi_wlast)
-    else if (M_AXI_BVALID && (write_burst_counter[num_bursts_req]) && axi_bready)                          
+    else if (M_AXI_BVALID && (write_burst_counter[C_NO_BURSTS_REQ]) && axi_bready)                          
         writes_done <= 1'b1;                                                                                  
     else                                                                                                    
         writes_done <= writes_done;                                                                           
@@ -946,7 +831,7 @@ begin
                                                                                                             
     //The reads_done should be associated with a rready response                                            
     //else if (M_AXI_BVALID && axi_bready && (write_burst_counter == {(C_NO_BURSTS_REQ-1){1}}) && axi_wlast)
-    else if (M_AXI_RVALID && (read_index == C_M_AXI_BURST_LEN-1) && (read_burst_counter[num_bursts_req])) //&& axi_rready 
+    else if (M_AXI_RVALID && (read_index == C_M_AXI_BURST_LEN-1) && (read_burst_counter[C_NO_BURSTS_REQ])) //&& axi_rready 
       reads_done <= 1'b1;                                                                                   
     else                                                                                                    
       reads_done <= reads_done;                                                                             
@@ -964,59 +849,67 @@ end
 assign write_done_pulse = writes_done && !write_done_prev;
 
 /*************************************************************/
+/****************** ACC *******************/
+localparam ACC_RESOLUTION = 13;
+localparam SPI_ENABLE = 0;
 
-//assign next = wnext || init_txn_pulse;
-assign next = wnext || init_txn_pulse;
+wire [ACC_RESOLUTION-1:0] acc_data;
+wire [C_M_AXI_DATA_WIDTH-1:0] x_re_acc;
+wire acc_sampling_done;
+wire acc_dready;
 
-/******************** INPUT SPI *******************/
-//assign x_re_acc = { { (C_M_AXI_DATA_WIDTH-ACC_RESOLUTION) { acc_data[ACC_RESOLUTION-1] } }, acc_data };
+/****************** BROM ******************/
+wire brom_sampling_done;
+wire brom_dready;
+wire [$clog2(N)-1:0] brom_addr;
+wire [ACC_RESOLUTION-1:0] brom_data;
+wire [C_M_AXI_DATA_WIDTH-1:0] x_re_brom;
 
-//spi_read_acc #(
-//    .DATA_PTS_NUM('d256))
-//acc_read (
-//    .clk(M_AXI_ACLK),
-//    .rstn(M_AXI_ARESETN),
+/***************** MUX *******************/
+wire start;
+wire dready;
+wire [C_M_AXI_DATA_WIDTH-1:0] x_re;
+wire [C_M_AXI_DATA_WIDTH-1:0] x_im;
 
-//    .dl_busy_i(core_busy),
-//    .intr_i(intr_i),
+/**************** AXI *****************/
+wire next;
 
-//    .start_o(acc_sampling_done),
-//    .data_valid_o(acc_dready),
-    
-//    .data_o(acc_data),
+/*************** CORE ****************/
+localparam integer J1 = 4;
+localparam integer N = 256;
+localparam integer N_J1 = N*J1;
 
-//    .SPI_clk_o(SPI_clk_o),
-//    .SPI_MISO_i(SPI_MISO_i),
-//    .SPI_MOSI_o(SPI_MOSI_o),
-//    .SPI_CS_o(SPI_CS_o)
-//);
+wire [C_M_AXI_DATA_WIDTH-1:0] X_re;
+wire [C_M_AXI_DATA_WIDTH-1:0] X_im;
 
-//// Receives and send via AXI the accelerometer data
-//send_acc_data #(
-//    .N(N))
-//send_data (
-//    .clk(M_AXI_ACLK),
-//    .rstn(M_AXI_ARESETN),
-//    .start(acc_sampling_done),
-//    .dready(acc_dready),
-//    .acc_data(x_re_acc),
-//    .next(next),
-//    .data_o(x),
-//    .send_acc_data_o(acc_start_send),
-//    .send_done_o(acc_send_done_o)
-//);
+wire core_busy;
+
+wire cwt_row_done;
+wire cwt_row_ready;
+
+reg send_inputs;
+
+/*************** CWT CU ***************/
+
+wire bram_en;
+wire bram_we;
+wire [$clog2(N*J1*2)-1:0] bram_addr_x_re;
+wire [$clog2(N*J1*2)-1:0] bram_addr_x_im;
+
+wire cwt_busy;
+
+//wire cwt_done;
+wire cwt_ready;
 
 /******************** INPUT BROM *******************/
-brom_cu 
-#(.N(N)) 
-brom_gen(
+brom_cu #(.N(N)) input_gen(
     .clk(M_AXI_ACLK),
     .rstn(M_AXI_ARESETN),
-    .dl_busy(core_busy),
-    .econnected(econnected),
-    .start_pulse(brom_sampling_done),
-    .dready(brom_dready),
-    .brom_addr(brom_addr)
+    .dl_busy_i(core_busy),
+    .econnected_i(econnected),
+    .start_o(brom_sampling_done),
+    .dready_o(brom_dready),
+    .brom_addr_o(brom_addr)
 );
 
 brom_vals sensor_vals (
@@ -1024,13 +917,15 @@ brom_vals sensor_vals (
     .addra(brom_addr),
     .douta(brom_data)
 );
-//assign x_re_brom = { { 19 { brom_data[12] } }, brom_data };
+assign x_re_brom = { { (C_M_AXI_DATA_WIDTH-ACC_RESOLUTION) { brom_data[ACC_RESOLUTION-1] } }, brom_data };
+
+/******************** INPUT ACC *******************/
+assign x_re_acc = { { (C_M_AXI_DATA_WIDTH-ACC_RESOLUTION) { acc_data[ACC_RESOLUTION-1] } }, acc_data };
 
 /******************** INPUT GEN *********************/
-
 input_mux #(.DATA_WIDTH(C_M_AXI_DATA_WIDTH))
 cwt_input_gen (
-    .sel(spi_enable), // 0 = BROM, 1 = SPI
+    .sel(SPI_ENABLE), // 0 = BROM, 1 = SPI
     
     .brom_data(x_re_brom),
     .brom_sampling_done(brom_sampling_done),
@@ -1041,7 +936,7 @@ cwt_input_gen (
     .acc_dready(acc_dready),
     
     .tfx_input(x_re),
-    .sampling_done(start_pulse),
+    .sampling_done(start),
     .dready(dready)
 );
 assign x_im = 'b0;
@@ -1052,11 +947,11 @@ CWT_nBRAM CWT_core (
     .clk(M_AXI_ACLK),
     .rstn(M_AXI_ARESETN),
     
-    .start_i(brom_sampling_done),
-    .dready_i(brom_dready),
+    .start_i(start),
+    .dready_i(dready),
     .dl_busy_i(cwt_busy),
     
-    .x_re_i(brom_data),
+    .x_re_i(x_re),
     .x_im_i(x_im),
     
     .busy_o(core_busy),
@@ -1068,12 +963,8 @@ CWT_nBRAM CWT_core (
     .X_im_o(X_im)
 );
 
-//assign INIT_AXI_TXN = acc_start_send || cwt_done;
-assign INIT_AXI_TXN = cwt_done;
-
-// sampled data or the output data
-//assign axi_data_out = x | cwt_output;
-assign axi_data_out = cwt_output;
+//assign next = wnext || init_txn_pulse;
+assign next = wnext || init_txn_pulse;
 
 cwt_cu #(
     .N(N),
@@ -1096,67 +987,12 @@ cwt_control_unit (
     .busy_o(cwt_busy),
     
     .cwt_done_o(cwt_done),
-    .cwt_ready_o(cwt_ready),
-    
-    .send_done_o(cwt_send_done_o)
+    .cwt_ready_o(cwt_ready)
 );
 // make it to the second half of the bram
 assign bram_addr_x_im = bram_addr_x_re | N_J1;
 
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(!M_AXI_ARESETN)
-//        num_transfers <= N;
-//    else if(acc_start_send)
-//        num_transfers <= N;
-        
-//    else if(cwt_done)
-//        num_transfers <= 2*N_J1;
-
-//    else 
-//        num_transfers <= num_transfers;
-//end
-always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-    num_transfers <= 2*N_J1;
-    if(!M_AXI_ARESETN)
-        num_transfers <= 2*N_J1;
-end
-
-localparam INPUT_BUF_BASE_ADDR = 0;
-localparam OUTPUT_BUF_BASE_ADDR = 32'h10000000;
-
-//reg cwt_num;
-
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(!M_AXI_ARESETN)
-//        waddr_offset_r <= INPUT_BUF_BASE_ADDR;
-
-//    else if(!spi_enable)
-//        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
-
-//    else if(acc_send_done_o)
-//        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
-
-//    else if(cwt_send_done_o)
-//        waddr_offset_r <= INPUT_BUF_BASE_ADDR | (!cwt_num << $clog2(N*4));
-//    else 
-//        waddr_offset_r <= waddr_offset_r;   
-//end
-
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
-//    if(!M_AXI_ARESETN)
-//        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
-//end
-
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(!M_AXI_ARESETN) begin
-//        cwt_num <= 0;
-//    end
-//    else if(cwt_send_done_o)
-//        cwt_num <= ~cwt_num;
-//    else
-//        cwt_num <= cwt_num;
-//end
+assign INIT_AXI_TXN = cwt_done;
 
 // When receiving we use both ports of BRAM
 // When sending data out, we use only the A port of BRAM
@@ -1167,7 +1003,7 @@ cwt_results bram_results (
     .wea(bram_we),              // input wire [0 : 0] wea
     .addra(bram_addr_x_re),          // input wire [10 : 0] addra
     .dina(X_re),            // input wire [31 : 0] dina
-    .douta(bram_cwt_output),          // output wire [31 : 0] douta
+    .douta(cwt_output),          // output wire [31 : 0] douta
     
     .clkb(~M_AXI_ACLK),            // input wire clkb
     .enb(bram_en),              // input wire enb
@@ -1175,7 +1011,5 @@ cwt_results bram_results (
     .addrb(bram_addr_x_im),          // input wire [10 : 0] addrb
     .dinb(X_im)            // input wire [31 : 0] dinb
 );
-
-assign cwt_output = (bram_en || axi_wlast) ? bram_cwt_output : 0;
                                                                                                 
 endmodule

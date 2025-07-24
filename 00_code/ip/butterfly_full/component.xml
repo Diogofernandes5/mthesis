@@ -76,7 +76,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>60044e02</spirit:value>
+            <spirit:value>0abc9e75</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -104,7 +104,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>efffebc8</spirit:value>
+            <spirit:value>422afd3d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -709,8 +709,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>butterfly_full</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>47</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2025-06-05T14:15:38Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>48</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2025-07-23T12:54:09Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@25115f42_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@3dc10184_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
@@ -1339,12 +1339,17 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@3607c7c1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@b62ea65_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@11cde217_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3cb9a273_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3febe0a_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@47191876_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@22ea65d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@592e59da_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/butterfly_full</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="8b6bf9f6"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="611979aa"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="ce94ac6f"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="44b03c17"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="3db86c29"/>
     </xilinx:packagingInfo>
