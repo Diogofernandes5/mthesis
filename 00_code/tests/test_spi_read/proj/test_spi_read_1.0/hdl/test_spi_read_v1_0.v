@@ -20,7 +20,6 @@ module test_spi_read_v1_0 #
     input wire intr_i,
     
     output reg config_done_o,
-    output wire config_done,
     
     output wire SPI_clk_o,
     input wire SPI_MISO_i,
@@ -68,10 +67,12 @@ reg [15:0] counter;
 wire [12:0] data;
 wire data_valid;
 
-//wire config_done;
+wire config_done;
 reg config_flag;
 
 wire [7:0] axis_to_read;
+
+wire rstn;
 
 // Instantiation of Axi Bus Interface S00_AXI
 test_spi_read_v1_0_S00_AXI # ( 
@@ -82,6 +83,7 @@ test_spi_read_v1_0_S00_AXI # (
     .data(data),
     
     .axis_to_read(axis_to_read),
+    .rstn(rstn),
 
     .S_AXI_ACLK(s00_axi_aclk),
     .S_AXI_ARESETN(s00_axi_aresetn),
@@ -158,7 +160,7 @@ spi_read_acc #(
   .DATA_PTS_NUM(DATA_PTS_NUM)
 ) spi_read_acc_ip (
   .clk(s00_axi_aclk),
-  .rstn(s00_axi_aresetn),
+  .rstn(rstn),
   .dl_busy_i(dl_busy_i),
   .intr_i(intr),
   .axis_to_read(axis_to_read),

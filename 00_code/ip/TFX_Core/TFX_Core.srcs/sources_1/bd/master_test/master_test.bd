@@ -12,6 +12,7 @@
     },
     "design_tree": {
       "axi_vip_0": "",
+      "axi_vip_1": "",
       "TFX_Core_v1_0_0": ""
     },
     "ports": {
@@ -86,6 +87,61 @@
           }
         }
       },
+      "axi_vip_1": {
+        "vlnv": "xilinx.com:ip:axi_vip:1.1",
+        "xci_name": "master_test_axi_vip_1_0",
+        "xci_path": "ip/master_test_axi_vip_1_0/master_test_axi_vip_1_0.xci",
+        "inst_hier_path": "axi_vip_1",
+        "parameters": {
+          "ADDR_WIDTH": {
+            "value": "32"
+          },
+          "DATA_WIDTH": {
+            "value": "32"
+          },
+          "HAS_BRESP": {
+            "value": "1"
+          },
+          "HAS_PROT": {
+            "value": "1"
+          },
+          "HAS_RRESP": {
+            "value": "1"
+          },
+          "HAS_WSTRB": {
+            "value": "1"
+          },
+          "INTERFACE_MODE": {
+            "value": "MASTER"
+          },
+          "PROTOCOL": {
+            "value": "AXI4LITE"
+          },
+          "READ_WRITE_MODE": {
+            "value": "READ_WRITE"
+          }
+        },
+        "interface_ports": {
+          "M_AXI": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "Master_AXI",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0xFFFFFFFF",
+              "width": "32"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "Master_AXI": {
+              "range": "4G",
+              "width": "32"
+            }
+          }
+        }
+      },
       "TFX_Core_v1_0_0": {
         "vlnv": "user.org:user:TFX_Core_v1_0:1.0",
         "xci_name": "master_test_TFX_Core_v1_0_0_0",
@@ -127,12 +183,18 @@
           "TFX_Core_v1_0_0/m_axi_data",
           "axi_vip_0/S_AXI"
         ]
+      },
+      "axi_vip_1_M_AXI": {
+        "interface_ports": [
+          "axi_vip_1/M_AXI",
+          "TFX_Core_v1_0_0/s_axi_config"
+        ]
       }
     },
     "nets": {
       "TFX_Core_v1_0_0_cwt_done": {
         "ports": [
-          "TFX_Core_v1_0_0/cwt_done",
+          "TFX_Core_v1_0_0/cwt_done_o",
           "cwt_done_o"
         ]
       },
@@ -140,6 +202,7 @@
         "ports": [
           "ACLK",
           "axi_vip_0/aclk",
+          "axi_vip_1/aclk",
           "TFX_Core_v1_0_0/s_axi_config_aclk",
           "TFX_Core_v1_0_0/m_axi_data_aclk"
         ]
@@ -148,19 +211,33 @@
         "ports": [
           "ARESETN",
           "axi_vip_0/aresetn",
+          "axi_vip_1/aresetn",
           "TFX_Core_v1_0_0/s_axi_config_aresetn",
           "TFX_Core_v1_0_0/m_axi_data_aresetn"
         ]
       }
     },
     "addressing": {
+      "/axi_vip_1": {
+        "address_spaces": {
+          "Master_AXI": {
+            "segments": {
+              "SEG_TFX_Core_v1_0_0_reg0": {
+                "address_block": "/TFX_Core_v1_0_0/s_axi_config/reg0",
+                "offset": "0x00000000",
+                "range": "64K"
+              }
+            }
+          }
+        }
+      },
       "/TFX_Core_v1_0_0": {
         "address_spaces": {
           "m_axi_data": {
             "segments": {
               "SEG_axi_vip_0_Reg": {
                 "address_block": "/axi_vip_0/S_AXI/Reg",
-                "offset": "0x44A00000",
+                "offset": "0x50000000",
                 "range": "64K"
               }
             }

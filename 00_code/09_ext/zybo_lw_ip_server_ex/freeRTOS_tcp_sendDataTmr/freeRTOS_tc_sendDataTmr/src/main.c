@@ -24,30 +24,18 @@
 #include "portmacro.h"
 
 /* Xilinx includes. */
-#include "xil_exception.h"
 #include "xil_printf.h"
 #include "xparameters.h"
 #include "xttcps.h"
 
 #include "lwip/dhcp.h"
 
+#include"timer.h"
+
 /**************** DEFINES ******************/
 #define THREAD_STACKSIZE 1024
 
 #define DHCP_COARSE_TIMER_SECS_NEW 5
-
-/*------INTERRUPT------*/
-#define INTC_DEVICE_ID  XPAR_PS7_SCUGIC_0_DEVICE_ID
-
-#define WRITE_DONE_INTR XPAR_FABRIC_AXI_MASTER_FULL_0_TX_DONE_INTR_INTR
-#define GPIO_INTR 		XPAR_FABRIC_GPIO_0_VEC_ID
-
-/*------TTC------*/
-#define	TIMER_DEVICE_ID		XPAR_PS7_TTC_3_DEVICE_ID
-
-#define TIMER_INTR_ID		XPAR_XTTCPS_3_INTR
-
-#define TIMER_FREQ 		50 //Hz
 
 /**************** PROTOTYPES ******************/
 int main_thread();
@@ -56,9 +44,6 @@ void connect_thread();
 
 void lwip_init();
 
-static void prvTimerTask(void *pvParameters);
-static void TimerHandler(XTtcPs *InstancePtr);
-
 extern volatile int dhcp_timoutcntr;
 err_t dhcp_start(struct netif *netif);
 
@@ -66,13 +51,6 @@ err_t dhcp_start(struct netif *netif);
 
 static struct netif server_netif;
 struct netif *echo_netif;
-
-/* Instance for ttcps */
-static XTtcPs xTimerInstance;
-
-TaskHandle_t xTimerTask;
-
-SemaphoreHandle_t timerSemaphore;
 
 void print_ip(char *msg, ip_addr_t *ip)
 {
@@ -94,7 +72,7 @@ int main()
     xil_printf("\r\n\r\n");
     xil_printf("-----lwIP Socket Mode Client Send Data Application ------\r\n");
 
-    prvTimerTask((void*) NULL);
+    setupTimer((void*) NULL);
 
 	sys_thread_new("main_thrd", (void(*)(void*))main_thread, 0,
 	                THREAD_STACKSIZE,
@@ -201,62 +179,3 @@ int main_thread()
     return 0;
 }
 
-static void TimerHandler(XTtcPs *InstancePtr)
-{
-	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-	u32 XTtcPsStatusReg;
-	Xil_AssertNonvoid(InstancePtr != NULL);
-
-	XTtcPsStatusReg = XTtcPs_GetInterruptStatus(InstancePtr);
-	XTtcPs_ClearInterruptStatus(InstancePtr, XTtcPsStatusReg);
-//	XTtcPs_Stop(InstancePtr);
-
-	if ( xSemaphoreGiveFromISR( timerSemaphore, &xHigherPriorityTaskWoken ) != pdFALSE) {
-		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
-	}
-}
-
-static void prvTimerTask(void *pvParameters)
-{
-	int xStatus;
-
-	timerSemaphore = xSemaphoreCreateBinary();
-	if ( timerSemaphore == NULL ) {
-		xil_printf("Failed to create semaphore\n");
-		return XST_FAILURE;
-	}
-
-	XTtcPs_Config *pxTimerConfig;
-	XInterval usInterval;
-	uint8_t ucPrescaler;
-
-	pxTimerConfig = XTtcPs_LookupConfig( TIMER_DEVICE_ID );
-
-	xStatus = XTtcPs_CfgInitialize( &xTimerInstance, pxTimerConfig, pxTimerConfig->BaseAddress );
-	if ( xStatus != XST_SUCCESS ) {
-		XTtcPs_Stop(&xTimerInstance);
-		xStatus = XTtcPs_CfgInitialize( &xTimerInstance, pxTimerConfig, pxTimerConfig->BaseAddress );
-		if ( xStatus != XST_SUCCESS ) {
-			xil_printf( "In %s: Timer Cfg initialization failed...\r\n", __func__ );
-			return;
-		}
-	}
-
-	XTtcPs_SetOptions( &xTimerInstance, XTTCPS_OPTION_INTERVAL_MODE | XTTCPS_OPTION_WAVE_DISABLE );
-
-	// Calculate interval from the frequency given
-	XTtcPs_CalcIntervalFromFreq( &xTimerInstance, TIMER_FREQ, &usInterval, &ucPrescaler );
-//	XTtcPs_CalcIntervalFromFreq( &xTimerInstance, configTICK_RATE_HZ * 2, &usInterval, &ucPrescaler );
-//	XTtcPs_CalcIntervalFromFreq( &xTimerInstance, 1, &usInterval, &ucPrescaler ); // 1 Hz
-	XTtcPs_SetInterval( &xTimerInstance, usInterval );
-	XTtcPs_SetPrescaler( &xTimerInstance, ucPrescaler );
-	XTtcPs_EnableInterrupts( &xTimerInstance, XTTCPS_IXR_INTERVAL_MASK );
-	/* Register the ttcps Timer interrupt handler with interrupt controller */
-
-	xPortInstallInterruptHandler( TIMER_INTR_ID, (Xil_ExceptionHandler)TimerHandler, &xTimerInstance );
-	/* Enable interrupt for TTC1 instance */
-	vPortEnableInterrupt(TIMER_INTR_ID);
-	XTtcPs_Start( &xTimerInstance );
-
-	xil_printf("Waiting for semaphore, FreeRTOS tick count is %x\n\r", xTaskGetTickCount());
-}

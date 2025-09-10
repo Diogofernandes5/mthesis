@@ -4,6 +4,8 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 
+#include "globals.h"
+
 #define CWT_DONE_INTR XPAR_FABRIC_TFX_CORE_V1_0_0_CWT_DONE_INTR
 
 volatile SemaphoreHandle_t CwtDoneSemaphore;
@@ -11,6 +13,8 @@ volatile SemaphoreHandle_t CwtDoneSemaphore;
 static void CwtDoneHandler()
 {
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+//	Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ETHER_BUSY_SLVR), 1); // busy
 
 	if ( xSemaphoreGiveFromISR( CwtDoneSemaphore, &xHigherPriorityTaskWoken ) != pdFALSE) {
 		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );

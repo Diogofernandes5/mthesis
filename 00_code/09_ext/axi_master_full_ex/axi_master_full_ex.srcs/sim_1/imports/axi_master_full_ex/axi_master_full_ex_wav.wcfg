@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="axi_master_full_v1_0_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="axi_master_full_v1_0_tb" />
+            <top_module name="axi_vip_pkg" />
+            <top_module name="glbl" />
+            <top_module name="std" />
+            <top_module name="xil_common_vip_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="48,221.900 ns"></ZoomStartTime>
+      <ZoomEndTime time="48,296.601 ns"></ZoomEndTime>
+      <Cursor1Time time="48,265.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="177"></NameColumnWidth>
+      <ValueColumnWidth column_width="75"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="14" />
+   <wvobject type="protoinst" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/M_AXI">
+      <obj_property name="children_use_element_short_name">true</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ENUM_TRANSACTION</obj_property>
+      <obj_property name="EnumTransactionColorTable">0=blank 1=#D399FF 2=pink</obj_property>
+      <obj_property name="EnumTransactionValueTable">0=blank;1=Read;2=Write;3=Read/Write</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">turquoise</obj_property>
+      <obj_property name="Render_Data">/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/M_AXI.readWriteSummary</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="CellHeight">36</obj_property>
+      <obj_property name="ElementShortName">M_AXI</obj_property>
+      <obj_property name="ObjectShortName">M_AXI</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/expected_rdata">
+      <obj_property name="ElementShortName">expected_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">expected_rdata[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/brom_val">
+      <obj_property name="ElementShortName">brom_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">brom_val[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/brom_addr">
+      <obj_property name="ElementShortName">brom_addr[14:0]</obj_property>
+      <obj_property name="ObjectShortName">brom_addr[14:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/rnext">
+      <obj_property name="ElementShortName">rnext</obj_property>
+      <obj_property name="ObjectShortName">rnext</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/wnext">
+      <obj_property name="ElementShortName">wnext</obj_property>
+      <obj_property name="ObjectShortName">wnext</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/writes_done">
+      <obj_property name="ElementShortName">writes_done</obj_property>
+      <obj_property name="ObjectShortName">writes_done</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/INIT_AXI_TXN">
+      <obj_property name="ElementShortName">INIT_AXI_TXN</obj_property>
+      <obj_property name="ObjectShortName">INIT_AXI_TXN</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/init_txn_pulse">
+      <obj_property name="ElementShortName">init_txn_pulse</obj_property>
+      <obj_property name="ObjectShortName">init_txn_pulse</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_master_full_v1_0_tb/DUT/M_AXI_TXN_DONE">
+      <obj_property name="ElementShortName">M_AXI_TXN_DONE</obj_property>
+      <obj_property name="ObjectShortName">M_AXI_TXN_DONE</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/C_NO_BURSTS_REQ">
+      <obj_property name="ElementShortName">C_NO_BURSTS_REQ[31:0]</obj_property>
+      <obj_property name="ObjectShortName">C_NO_BURSTS_REQ[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/read_burst_counter">
+      <obj_property name="ElementShortName">read_burst_counter[6:0]</obj_property>
+      <obj_property name="ObjectShortName">read_burst_counter[6:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_master_full_v1_0_tb/DUT/axi_master_full_v1_0_bfm_1_i/axi_master_full_0/inst/axi_master_full_v1_0_M_AXI_inst/read_index">
+      <obj_property name="ElementShortName">read_index[4:0]</obj_property>
+      <obj_property name="ObjectShortName">read_index[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_master_full_v1_0_tb/intr">
+      <obj_property name="ElementShortName">intr</obj_property>
+      <obj_property name="ObjectShortName">intr</obj_property>
+   </wvobject>
+</wave_config>

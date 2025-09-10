@@ -34,3 +34,6 @@ platform generate -domains
 platform generate
 platform config -updatehw {/home/fernandes/thesis/00_code/09_ext/zybo_lw_ip_server_ex/lw_ip_server_intr_wrapper.xsa}
 platform generate -domains 
+platform clean
+platform generate
+platform generate

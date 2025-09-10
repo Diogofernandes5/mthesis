@@ -36,7 +36,7 @@
 /**************** DEFINES ******************/
 #define THREAD_STACKSIZE 1024
 
-#define DHCP_COARSE_TIMER_SECS_NEW 2
+#define DHCP_COARSE_TIMER_SECS_NEW 4
 
 /**************** PROTOTYPES ******************/
 int main_thread();

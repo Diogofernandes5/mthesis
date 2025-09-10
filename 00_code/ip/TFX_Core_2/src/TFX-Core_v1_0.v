@@ -31,7 +31,7 @@ module TFX_Core_v1_0 #
 //    input wire start_but_i,
 //    input wire [C_M_AXI_Data_DATA_WIDTH-1:0] data_i,
     
-    output wire cwt_done,
+    output wire cwt_done_o,
     
     // User ports ends
     // Do not modify the ports beyond this line
@@ -114,23 +114,20 @@ localparam C_M_PROT_VAL = 3'b000;
 // Number of transactions to be operated, independently of the data width
 localparam integer C_NUM_OF_TRANSFERS = 2048;
 
-wire dl_busy;
-
-//wire ps_start;
-//wire start;
+//wire cwt_ready;
 
 wire econnected;
-
-assign dl_busy = 0;
-
-//assign start = ps_start | start_but_i;
+wire irq_status;
 
 // Instantiation of Axi Bus Interface S_AXI_Config
 TFX_Core_v1_0_S_AXI_Config # ( 
     .C_S_AXI_DATA_WIDTH(C_S_AXI_Config_DATA_WIDTH),
     .C_S_AXI_ADDR_WIDTH(C_S_AXI_Config_ADDR_WIDTH)
 ) S_AXI_Config (
+//    .cwt_ready_i(cwt_ready),
     .econnected(econnected),
+    .irq_status(irq_status),
+    .cwt_irq_i(cwt_done_o),
 
     .S_AXI_ACLK(s_axi_config_aclk),
     .S_AXI_ARESETN(s_axi_config_aresetn),
@@ -173,12 +170,11 @@ TFX_Core_v1_0_M_AXI_Data # (
     .C_NUM_OF_TRANSFERS(C_NUM_OF_TRANSFERS)
     
 ) M_AXI_Data (
-//    .start_i(start),
-//    .data_i(data_i),
-    .dl_busy(dl_busy),
+
+    .irq_status(irq_status),
     .econnected(econnected),
         
-    .cwt_done(cwt_done),
+    .cwt_irq_o(cwt_done_o),
     
     .M_AXI_ACLK(m_axi_data_aclk),
     .M_AXI_ARESETN(m_axi_data_aresetn),
@@ -225,9 +221,5 @@ TFX_Core_v1_0_M_AXI_Data # (
     .M_AXI_RVALID(m_axi_data_rvalid),
     .M_AXI_RREADY(m_axi_data_rready)
 );
-
-//wire start_reg;
-
-
 
 endmodule

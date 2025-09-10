@@ -15,7 +15,12 @@ module TFX_Core_v1_0_S_AXI_Config #
 )
 (
     // Users to add ports here
+    input wire cwt_irq_i,
+//    input wire cwt_ready_i,
+    
     output wire econnected,
+    
+    output reg irq_status,
 
     // User ports ends
     // Do not modify the ports beyond this line
@@ -227,8 +232,8 @@ begin
     begin
       slv_reg0 <= 0;
       slv_reg1 <= 0;
-      slv_reg2 <= 0;
-      slv_reg3 <= 0;
+      slv_reg2 <= 1;
+//      slv_reg3 <= 0;
       slv_reg4 <= 0;
       slv_reg5 <= 0;
       slv_reg6 <= 0;
@@ -257,13 +262,13 @@ begin
             // Slave register 2
             slv_reg2[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
           end  
-      3'h3:
-        for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
-          if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-            // Respective byte enables are asserted as per write strobes 
-            // Slave register 3
-            slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-          end  
+//      3'h3:
+//        for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
+//          if ( S_AXI_WSTRB[byte_index] == 1 ) begin
+//            // Respective byte enables are asserted as per write strobes 
+//            // Slave register 3
+//            slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+//          end  
       3'h4:
         for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
           if ( S_AXI_WSTRB[byte_index] == 1 ) begin
@@ -296,7 +301,7 @@ begin
                   slv_reg0 <= slv_reg0;
                   slv_reg1 <= slv_reg1;
                   slv_reg2 <= slv_reg2;
-                  slv_reg3 <= slv_reg3;
+//                  slv_reg3 <= slv_reg3;
                   slv_reg4 <= slv_reg4;
                   slv_reg5 <= slv_reg5;
                   slv_reg6 <= slv_reg6;
@@ -441,13 +446,42 @@ end
 
 // Add user logic here
 
-
 `ifdef SYNTHESIS
     assign econnected = slv_reg0[0];
 `else
     assign econnected = 1;
 `endif
 
+//`ifdef SYNTHESIS
+//    assign irq_status = slv_reg2[0];
+//`else
+//    assign irq_status = 0;
+//`endif
+
+//assign irq_status = slv_reg2[0];
+
+wire ps_ack;
+wire writing_ps_ack;
+
+assign ps_ack = slv_reg2[0];
+assign writing_ps_ack = slv_reg_wren && (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] == 3'd2);
+
+always @(posedge S_AXI_ACLK) begin
+    if(!S_AXI_ARESETN) begin
+        slv_reg3 <= 0;
+        irq_status <= 0;
+    end
+    else begin
+        if(cwt_irq_i)
+            irq_status <= 1;
+        else if(ps_ack && writing_ps_ack) // reset by PS (ACK)
+            irq_status <= 0;
+        else
+            irq_status <= irq_status;
+        
+        slv_reg3 <= {31'd0,irq_status};
+    end
+end
 
 // start logic
 // writing 1 to slv_reg0, makes the tfc_core initiate 

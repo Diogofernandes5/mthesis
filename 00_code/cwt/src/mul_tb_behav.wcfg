@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="mul_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="mul_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="1,506.000001 us"></ZoomEndTime>
+      <Cursor1Time time="97.556000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="170"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="17" />
+   <wvobject type="logic" fp_name="/mul_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mul_tb/rstn">
+      <obj_property name="ElementShortName">rstn</obj_property>
+      <obj_property name="ObjectShortName">rstn</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mul_tb/fft_ready">
+      <obj_property name="ElementShortName">fft_ready</obj_property>
+      <obj_property name="ObjectShortName">fft_ready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mul_tb/dl_busy">
+      <obj_property name="ElementShortName">dl_busy</obj_property>
+      <obj_property name="ObjectShortName">dl_busy</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mul_tb/x_re">
+      <obj_property name="ElementShortName">x_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x_re[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mul_tb/x_im">
+      <obj_property name="ElementShortName">x_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">x_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mul_tb/mul_done">
+      <obj_property name="ElementShortName">mul_done</obj_property>
+      <obj_property name="ObjectShortName">mul_done</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mul_tb/mul_ready">
+      <obj_property name="ElementShortName">mul_ready</obj_property>
+      <obj_property name="ObjectShortName">mul_ready</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mul_tb/X_re">
+      <obj_property name="ElementShortName">X_re[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X_re[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mul_tb/X_im">
+      <obj_property name="ElementShortName">X_im[31:0]</obj_property>
+      <obj_property name="ObjectShortName">X_im[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider305" type="divider">
+      <obj_property name="label">Tests</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group66">
+      <obj_property name="label">BRAM_FFT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/mul_tb/dut/controlunit/bram_fft_en_o">
+         <obj_property name="ElementShortName">bram_fft_en_o</obj_property>
+         <obj_property name="ObjectShortName">bram_fft_en_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/mul_tb/dut/controlunit/bram_fft_we_o">
+         <obj_property name="ElementShortName">bram_fft_we_o</obj_property>
+         <obj_property name="ObjectShortName">bram_fft_we_o</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/controlunit/bram_fft_addr_o">
+         <obj_property name="ElementShortName">bram_fft_addr_o[7:0]</obj_property>
+         <obj_property name="ObjectShortName">bram_fft_addr_o[7:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/datapath/fft_re_bram">
+         <obj_property name="ElementShortName">fft_re_bram[31:0]</obj_property>
+         <obj_property name="ObjectShortName">fft_re_bram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/datapath/fft_im_bram">
+         <obj_property name="ElementShortName">fft_im_bram[31:0]</obj_property>
+         <obj_property name="ObjectShortName">fft_im_bram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group66">
+      <obj_property name="label">BRAM_MUL</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/mul_tb/dut/controlunit/bram_mul_en_o">
+         <obj_property name="ElementShortName">bram_mul_en_o</obj_property>
+         <obj_property name="ObjectShortName">bram_mul_en_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/mul_tb/dut/controlunit/bram_mul_we_o">
+         <obj_property name="ElementShortName">bram_mul_we_o</obj_property>
+         <obj_property name="ObjectShortName">bram_mul_we_o</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/controlunit/bram_mul_addr_o">
+         <obj_property name="ElementShortName">bram_mul_addr_o[7:0]</obj_property>
+         <obj_property name="ObjectShortName">bram_mul_addr_o[7:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/datapath/mul_re_bram">
+         <obj_property name="ElementShortName">mul_re_bram[31:0]</obj_property>
+         <obj_property name="ObjectShortName">mul_re_bram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/datapath/mul_im_bram">
+         <obj_property name="ElementShortName">mul_im_bram[31:0]</obj_property>
+         <obj_property name="ObjectShortName">mul_im_bram[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/mul_tb/dut/datapath/daughter_addr_i">
+      <obj_property name="ElementShortName">daughter_addr_i[9:0]</obj_property>
+      <obj_property name="ObjectShortName">daughter_addr_i[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mul_tb/dut/datapath/brom_daughter">
+      <obj_property name="ElementShortName">brom_daughter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">brom_daughter[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group116">
+      <obj_property name="label">MUL_RES</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/mul_tb/dut/datapath/x_re_m">
+         <obj_property name="ElementShortName">x_re_m[31:0]</obj_property>
+         <obj_property name="ObjectShortName">x_re_m[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/datapath/x_im_m">
+         <obj_property name="ElementShortName">x_im_m[31:0]</obj_property>
+         <obj_property name="ObjectShortName">x_im_m[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group67">
+      <obj_property name="label">COUNTERS</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/mul_tb/dut/controlunit/data_counter">
+         <obj_property name="ElementShortName">data_counter[8:0]</obj_property>
+         <obj_property name="ObjectShortName">data_counter[8:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/controlunit/counter_n">
+         <obj_property name="ElementShortName">counter_n[8:0]</obj_property>
+         <obj_property name="ObjectShortName">counter_n[8:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/controlunit/counter_j">
+         <obj_property name="ElementShortName">counter_j[2:0]</obj_property>
+         <obj_property name="ObjectShortName">counter_j[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/mul_tb/dut/controlunit/cycle_counter">
+         <obj_property name="ElementShortName">cycle_counter[2:0]</obj_property>
+         <obj_property name="ObjectShortName">cycle_counter[2:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

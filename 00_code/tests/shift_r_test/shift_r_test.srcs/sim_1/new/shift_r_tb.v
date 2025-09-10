@@ -1,14 +1,17 @@
 `timescale 1ns / 1ps
 
+`define CLK_PERIOD 10   // nanoseconds
+
 module tb_shift_right;
+
+reg clk;
+reg rstn;
 
 reg [31:0] data_in;
 wire [31:0] data_out;
 
-wire [width-1:0] aux;
-
 localparam width = 32;
-localparam shift_num = 12; 
+localparam shift_num = 7; 
 
 // Instantiate the shift_right module
 shift_right #(
@@ -16,9 +19,21 @@ shift_right #(
     .shift_num(shift_num))
 dut 
 (
+    .clk(clk),
+    .rstn(rstn),
+
     .data_in(data_in),
     .data_out(data_out)
 );
+
+always #(`CLK_PERIOD/2) clk = ~clk;
+
+initial begin
+    clk <= 1;
+    rstn <= 0;
+        
+    #(`CLK_PERIOD*10) rstn <= 1;
+end
 
 initial begin
     // Test cases

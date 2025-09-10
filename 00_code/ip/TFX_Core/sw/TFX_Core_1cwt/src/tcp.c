@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "lwip/sockets.h"
 #include "netif/xadapter.h"
 #include "lwipopts.h"
 #include "xil_printf.h"
 #include "FreeRTOS.h"
+#include "semphr.h"
 #include "task.h"
 
 #include "lwip/inet.h"
@@ -14,17 +16,25 @@
 
 #include "xil_io.h"
 
+#include "xil_cache.h"
+
 /**************** DEFINES ******************/
 #define THREAD_STACKSIZE 1024
 
 #define TCP_SERVER_IP_ADDRESS "192.168.1.100"
 
-#define RECV_BUF_SIZE 2048
-
+#define ACC_WORDS_TO_SEND 	N
+#define ACC_BYTES_TO_SEND 	(ACC_WORDS_TO_SEND*sizeof(u32))
 // N*J1*2=256*4*2
-#define WORDS_TO_SEND 2048
-//#define WORDS_TO_SEND 262144
-#define BYTES_TO_SEND (WORDS_TO_SEND*sizeof(u32))
+#define CWT_WORDS_TO_SEND 	2*N_J1
+#define CWT_BYTES_TO_SEND 	(CWT_WORDS_TO_SEND*sizeof(u32))
+
+#define RECV_BUF_SIZE 		CWT_WORDS_TO_SEND
+
+#define SPI_ENABLE 	0
+
+#define ACK_MSG "ACK_OK"
+#define ACK_MSG_LEN 6
 
 /**************** PROTOTYPES ******************/
 void fill_ddr(u32 size);
@@ -34,42 +44,71 @@ u16_t echo_port = 5000;
 
 u8_t connected = 0;
 
+unsigned int cwt_count = 0;
+
 extern volatile SemaphoreHandle_t CwtDoneSemaphore;
+
+TaskHandle_t sendTask = NULL;
+TaskHandle_t recvTask = NULL;
+
+int ack_received = 0;
 
 void send_data_thread(void *p)
 {
 	int sd = (int)p;
 	int32_t len = 0;
 	u32 *ddr;
+	u32 mem_addr;
+	int irq = 0;
 
-//	const TickType_t x10seconds = pdMS_TO_TICKS(DELAY_10_SECONDS);
-
-//	fill_ddr(WORDS_TO_SEND);
+//	Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ETHER_BUSY_SLVR), 0); // not busy
 
 	while (1) {
 		if(connected)
 		{
 			// Can use 0 in the blocking time to make the semaphore take polling
-			if (xSemaphoreTake(CwtDoneSemaphore, portMAX_DELAY) != pdTRUE) {
-				xil_printf("FreeRTOS interrupt example FAILED \n\r");
-//				vTaskDelete(xTimerTask);
+//			if (xSemaphoreTake(CwtDoneSemaphore, portMAX_DELAY) != pdTRUE) {
+//				xil_printf("[CWT] FAILED taking semaphore!\n\r");
+////				vTaskDelete(xTimerTask);
+//				break;
+//			}
+
+			while(irq != 1)
+				irq = Xil_In32(SLAVE_ADDR + (sizeof(uint32_t)*IRQ_STATUS_SLVR)); // send ACK)
+
+//			Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ETHER_BUSY_SLVR), 1); // busy
+
+			xil_printf("[CWT] Sending size (bytes): %d (%d)\n\r", CWT_WORDS_TO_SEND, CWT_BYTES_TO_SEND);
+			// send size first
+			len = htonl(CWT_BYTES_TO_SEND); // network byte order
+
+			if (send(sd, &len, sizeof(len), 0) < 0) {
+				xil_printf("[CWT] Failed to send length\n\r");
 				break;
 			}
 
-			xil_printf("Sending size (bytes): %d\n\r", BYTES_TO_SEND);
-			// send size first
-			len = htonl(BYTES_TO_SEND); // network byte order
-
-			if (send(sd, &len, sizeof(len), 0) < 0) {
-			    xil_printf("Failed to send length\n\r");
-			    break;
+//			mem_addr = (cwt_count % 2 == 0) ? CWT_BASE_ADDR : (CWT_BASE_ADDR + CWT_BYTES_TO_SEND);
+//			ddr = (u32*)(DDR_BASE_ADDR + mem_addr);
+			ddr = (u32*)(0x20000000);
+			Xil_DCacheInvalidateRange((UINTPTR)ddr, CWT_BYTES_TO_SEND);
+			for(int i = 10; i>0;i--);
+			if (send(sd, ddr, CWT_BYTES_TO_SEND, 0) < 0) {
+				xil_printf("[CWT] Failed to send data\n\r");
+				break;
 			}
 
-			ddr = (u32*)(DDR_BASE_ADDR + MEM_ADDR);
-			if (send(sd, ddr, BYTES_TO_SEND, 0) < 0) {
-			    xil_printf("Failed to send data\n\r");
-			    break;
+			int notified = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(100000000000));
+
+			if (notified <= 0) {
+				xil_printf("[CWT] ACK not received!\n\r");
+				break;
 			}
+
+			xil_printf("[CWT] Received ACK\n\r");
+
+			cwt_count++;
+
+			Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ETHER_BUSY_SLVR), 1); // send ACK
 		}
 	}
 
@@ -83,7 +122,7 @@ void send_data_thread(void *p)
 void recv_thread(void *p)
 {
 	int sd = (int)p;
-	char recv_buf[RECV_BUF_SIZE];
+	char recv_buf[8];
 	int n = 0;
 
 	while (1) {
@@ -94,10 +133,16 @@ void recv_thread(void *p)
 				break;
 			}
 
+			xil_printf("Received %s\n\r",recv_buf);
+
+			if(!strncmp(recv_buf, ACK_MSG, ACK_MSG_LEN)) {
+				xTaskNotifyGive(sendTask);  // Unblock sender task
+            }
+
 			/* break if the recved message = "quit" */
 			if (!strncmp(recv_buf, "exit", 4)) {
 				connected = 0;
-				Xil_Out32(ECONNECTED, connected); // send connected message
+				Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ECONNECTED_SLVR), connected); // send connected message
 				xil_printf("Server closed connection...\r\n");
 				break;
 			}
@@ -105,7 +150,7 @@ void recv_thread(void *p)
 			/* break if server closed connection */
 			if (n <= 0) {
 				connected = 0;
-				Xil_Out32(ECONNECTED, connected); // send connected message
+				Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ECONNECTED_SLVR), connected); // send connected message
 				xil_printf("Unexpectedly disconnected from server...\r\n");
 				break;
 			}
@@ -124,7 +169,6 @@ void connect_thread()
 	int sock;
 	struct sockaddr_in address;
 	int status = -1;
-	xTaskHandle sendTask = NULL;
 
 	memset(&address, 0, sizeof(address));
 
@@ -134,6 +178,8 @@ void connect_thread()
 	address.sin_family = AF_INET;
 	address.sin_port = htons(echo_port);
 	address.sin_addr.s_addr = inet_addr(TCP_SERVER_IP_ADDRESS);
+
+	Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ETHER_BUSY_SLVR), 1); // busy
 
 	xil_printf("\r\nTrying to connect to server...\r\n\r\n");
 	while(1) {
@@ -157,14 +203,14 @@ void connect_thread()
 			else {
 				xil_printf("\r\nConnected to server!\r\n");
 				connected = 1;// Connected successfully
-				Xil_Out32(ECONNECTED, connected); // send connected message
+				Xil_Out32(SLAVE_ADDR + (sizeof(uint32_t)*ECONNECTED_SLVR), connected); // send connected message
 
 				sendTask = sys_thread_new("send", send_data_thread,
 												(void*)sock,
 												THREAD_STACKSIZE,
 												DEFAULT_THREAD_PRIO);
 
-				sys_thread_new("recv", recv_thread,
+				recvTask = sys_thread_new("recv", recv_thread,
 												(void*)sock,
 												THREAD_STACKSIZE,
 												DEFAULT_THREAD_PRIO);

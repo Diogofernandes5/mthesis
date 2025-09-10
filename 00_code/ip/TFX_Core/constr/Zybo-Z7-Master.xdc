@@ -1,6 +1,7 @@
 ##Clock signal
 #set_property -dict { PACKAGE_PIN K17   IOSTANDARD LVCMOS33 } [get_ports { clk }]; #IO_L12P_T1_MRCC_35 Sch=sysclk
-create_clock -name clk -period 20 -waveform {0 10} [get_ports { sys_clk }];
+#create_clock -name clk -period 20 -waveform {0 10} [get_ports { sys_clk }];
+#create_clock -name clk_fpga_0 -period 20.000 [get_pins processing_system7_0/FCLK_CLK0]
 
 #set_property DONT_TOUCH true [get_cells design_1_i/axi_interconnect_0/xbar/inst/gen_sasd.crossbar_sasd_0/addr_arbiter_inst/m_axi_wdata[0]_INST_0]
 
@@ -201,3 +202,74 @@ create_clock -name clk -period 20 -waveform {0 10} [get_ports { sys_clk }];
 
 
 
+
+set_property MARK_DEBUG true [get_nets TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/INIT_AXI_TXN]
+
+
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/S_AXI_Config/eth_busy_reg_0[0]}]
+connect_debug_port u_ila_0/probe1 [get_nets [list {TFX_Core_i/TFX_Core_v1_0_0/inst/S_AXI_Config/eth_busy_reg_0[0]}]]
+
+set_property MARK_DEBUG true [get_nets TFX_Core_i/TFX_Core_v1_0_0/inst/S_AXI_Config/irq_status]
+set_property MARK_DEBUG false [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/S_AXI_Config/irq_status_reg_0[0]}]
+
+
+set_property MARK_DEBUG false [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/Q[0]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[4]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[2]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[0]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[1]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[3]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[5]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[18]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[19]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[16]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[17]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[14]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[15]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[12]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[13]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[6]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[7]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[8]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[9]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[10]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[28]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[30]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[31]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[29]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[20]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[22]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[24]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[26]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[27]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[25]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[23]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[21]}]
+set_property MARK_DEBUG true [get_nets {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[11]}]
+
+create_debug_core u_ila_0 ila
+set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
+set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
+set_property C_ADV_TRIGGER false [get_debug_cores u_ila_0]
+set_property C_DATA_DEPTH 1024 [get_debug_cores u_ila_0]
+set_property C_EN_STRG_QUAL false [get_debug_cores u_ila_0]
+set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
+set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
+set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
+set_property port_width 1 [get_debug_ports u_ila_0/clk]
+connect_debug_port u_ila_0/clk [get_nets [list TFX_Core_i/processing_system7_0/inst/FCLK_CLK0]]
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
+set_property port_width 32 [get_debug_ports u_ila_0/probe0]
+connect_debug_port u_ila_0/probe0 [get_nets [list {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[0]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[1]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[2]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[3]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[4]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[5]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[6]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[7]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[8]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[9]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[10]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[11]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[12]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[13]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[14]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[15]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[16]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[17]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[18]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[19]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[20]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[21]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[22]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[23]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[24]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[25]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[26]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[27]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[28]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[29]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[30]} {TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/m_axi_data_wdata[31]}]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
+set_property port_width 1 [get_debug_ports u_ila_0/probe1]
+connect_debug_port u_ila_0/probe1 [get_nets [list TFX_Core_i/TFX_Core_v1_0_0/inst/M_AXI_Data/INIT_AXI_TXN]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
+set_property port_width 1 [get_debug_ports u_ila_0/probe2]
+connect_debug_port u_ila_0/probe2 [get_nets [list TFX_Core_i/TFX_Core_v1_0_0/inst/S_AXI_Config/irq_status]]
+set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
+set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
+set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
+connect_debug_port dbg_hub/clk [get_nets u_ila_0_FCLK_CLK0]

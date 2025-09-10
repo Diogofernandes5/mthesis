@@ -37,13 +37,13 @@ module TFX_Core_v1_0_M_AXI_Data #
 )
 (
     // Users to add ports here
-//    input wire start_i, // start CWT
-//    input wire [C_M_AXI_DATA_WIDTH-1:0] data_in,
+//    input wire intr_i,
     
-    input wire dl_busy, // em principio podes por a 0
+    input wire irq_status, // em principio podes por a 0
     input wire econnected,
     
-    output wire cwt_done, //inicio das transmissões
+//    output wire cwt_ready_o, //inicio das transmissões
+    output wire cwt_irq_o,
 
     // User ports ends
     // Do not modify the ports beyond this line
@@ -248,6 +248,9 @@ wire write_done_pulse;
 /*********************************************************/
 wire [C_M_AXI_DATA_WIDTH-1:0] cwt_output;
 
+// addr to be added to the axi_waddr
+reg [C_M_AXI_ADDR_WIDTH-1:0] waddr_offset_r;
+
 // I/O Connections assignments
 
 //I/O Connections. Write Address (AW)
@@ -371,10 +374,10 @@ end
 always @(posedge M_AXI_ACLK)                                         
 begin                                                                
     if (M_AXI_ARESETN == 0 || init_txn_pulse == 1'b1)                                                                                                   
-        axi_awaddr <= 'b0;                                             
-                                                             
+//        axi_awaddr <= 'b0;                                             
+        axi_awaddr <= waddr_offset_r;                                                              
     else if (M_AXI_AWREADY && axi_awvalid)                                                                                         
-        axi_awaddr <= axi_awaddr + burst_size_bytes;                                                                              
+        axi_awaddr <= axi_awaddr + burst_size_bytes;
     else                                                               
         axi_awaddr <= axi_awaddr;                                        
 end                                                                
@@ -849,6 +852,10 @@ end
 assign write_done_pulse = writes_done && !write_done_prev;
 
 /*************************************************************/
+localparam integer J1 = 4;
+localparam integer N = 256;
+localparam integer N_J1 = N*J1;
+
 /****************** ACC *******************/
 localparam ACC_RESOLUTION = 13;
 localparam SPI_ENABLE = 0;
@@ -861,7 +868,7 @@ wire acc_dready;
 /****************** BROM ******************/
 wire brom_sampling_done;
 wire brom_dready;
-wire [$clog2(N)-1:0] brom_addr;
+wire [$clog2(N*2)-1:0] brom_addr;
 wire [ACC_RESOLUTION-1:0] brom_data;
 wire [C_M_AXI_DATA_WIDTH-1:0] x_re_brom;
 
@@ -875,10 +882,6 @@ wire [C_M_AXI_DATA_WIDTH-1:0] x_im;
 wire next;
 
 /*************** CORE ****************/
-localparam integer J1 = 4;
-localparam integer N = 256;
-localparam integer N_J1 = N*J1;
-
 wire [C_M_AXI_DATA_WIDTH-1:0] X_re;
 wire [C_M_AXI_DATA_WIDTH-1:0] X_im;
 
@@ -886,8 +889,6 @@ wire core_busy;
 
 wire cwt_row_done;
 wire cwt_row_ready;
-
-reg send_inputs;
 
 /*************** CWT CU ***************/
 
@@ -898,7 +899,7 @@ wire [$clog2(N*J1*2)-1:0] bram_addr_x_im;
 
 wire cwt_busy;
 
-//wire cwt_done;
+wire cwt_done;
 wire cwt_ready;
 
 /******************** INPUT BROM *******************/
@@ -920,6 +921,39 @@ brom_vals sensor_vals (
 assign x_re_brom = { { (C_M_AXI_DATA_WIDTH-ACC_RESOLUTION) { brom_data[ACC_RESOLUTION-1] } }, brom_data };
 
 /******************** INPUT ACC *******************/
+//spi_read_acc #(.DATA_PTS_NUM(N))
+//acc_read (
+//    .clk(M_AXI_ACLK),
+//    .rstn(M_AXI_ARESETN),
+
+//    .dl_busy_i(core_busy),
+//    .intr_i(intr_i),
+
+//    .start_o(acc_sampling_done),
+//    .data_valid_o(acc_dready),
+    
+//    .data_o(acc_data),
+
+//    .SPI_clk_o(SPI_clk_o),
+//    .SPI_MISO_i(SPI_MISO_i),
+//    .SPI_MOSI_o(SPI_MOSI_o),
+//    .SPI_CS_o(SPI_CS_o)
+//);
+
+//// Receives and send via AXI the accelerometer data
+//send_acc_data #(
+//    .N(N))
+//send_data (
+//    .clk(M_AXI_ACLK),
+//    .rstn(M_AXI_ARESETN),
+//    .start(acc_sampling_done),
+//    .dready(acc_dready),
+//    .acc_data(x_re_acc),
+//    .next(next),
+//    .data_o(x),
+//    .send_acc_data_o(acc_start_send),
+//    .send_done_o(acc_send_done_o)
+//);
 assign x_re_acc = { { (C_M_AXI_DATA_WIDTH-ACC_RESOLUTION) { acc_data[ACC_RESOLUTION-1] } }, acc_data };
 
 /******************** INPUT GEN *********************/
@@ -976,7 +1010,7 @@ cwt_control_unit (
     .ifft_ready_i(cwt_row_ready),
     .ifft_done_i(cwt_row_done),
     
-    .dl_busy_i(dl_busy),
+    .dl_busy_i(irq_status),
     
     .next(next),
     
@@ -987,7 +1021,9 @@ cwt_control_unit (
     .busy_o(cwt_busy),
     
     .cwt_done_o(cwt_done),
-    .cwt_ready_o(cwt_ready)
+    .cwt_ready_o(cwt_ready),
+    
+    .cwt_irq_o(cwt_irq_o)
 );
 // make it to the second half of the bram
 assign bram_addr_x_im = bram_addr_x_re | N_J1;
@@ -1011,5 +1047,53 @@ cwt_results bram_results (
     .addrb(bram_addr_x_im),          // input wire [10 : 0] addrb
     .dinb(X_im)            // input wire [31 : 0] dinb
 );
+
+/******************** ADDR CHANGE ********************/
+localparam INPUT_BUF_BASE_ADDR = 0;
+localparam OUTPUT_BUF_BASE_ADDR = 32'h10000000;
+
+always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
+    if(!M_AXI_ARESETN)
+        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR;
+    else 
+        waddr_offset_r <= waddr_offset_r;   
+end
+
+//reg cwt_num;
+
+//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
+//    if(!M_AXI_ARESETN)
+//        waddr_offset_r <= INPUT_BUF_BASE_ADDR;
+
+//    else if(!SPI_ENABLE)
+//        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
+
+////    else if(acc_send_done_o)
+////        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
+
+////    else if(cwt_send_done_o)
+////        waddr_offset_r <= INPUT_BUF_BASE_ADDR | (!cwt_num << $clog2(N*4));
+//    else 
+//        waddr_offset_r <= waddr_offset_r;   
+//end
+
+//reg cwt_num_toggled;
+
+//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
+//    if(!M_AXI_ARESETN) begin
+//        cwt_num <= 0;
+//        cwt_num_toggled <= 0;
+//    end
+//    else if(init_txn_pulse)
+//        cwt_num_toggled <= 0;
+//    else if(!cwt_done && cwt_ready && !cwt_num_toggled) begin
+//        cwt_num <= ~cwt_num;
+//        cwt_num_toggled <= 1; 
+//    end    
+//    else begin
+//        cwt_num <= cwt_num;
+//        cwt_num_toggled <= cwt_num_toggled; 
+//    end    
+//end
                                                                                                 
 endmodule

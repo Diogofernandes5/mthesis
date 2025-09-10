@@ -1,0 +1,172 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0xEFAD1CFBEE7EF945",
+      "device": "xc7z010clg400-1",
+      "gen_directory": "../../../../axi_master_full_ex.gen/sources_1/bd/axi_master_full_v1_0_bfm_1",
+      "name": "axi_master_full_v1_0_bfm_1",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "None",
+      "tool_version": "2021.1",
+      "validated": "true"
+    },
+    "design_tree": {
+      "slave_0": "",
+      "axi_master_full_0": ""
+    },
+    "ports": {
+      "ACLK": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "ARESETN"
+          },
+          "CLK_DOMAIN": {
+            "value": "axi_master_full_v1_0_bfm_1_ACLK"
+          },
+          "FREQ_HZ": {
+            "value": "100000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000"
+          }
+        }
+      },
+      "ARESETN": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW"
+          }
+        }
+      },
+      "M_AXI_INIT_AXI_TXN": {
+        "direction": "I"
+      },
+      "M_AXI_ERROR": {
+        "direction": "O"
+      },
+      "M_AXI_TXN_DONE": {
+        "direction": "O"
+      },
+      "tx_done_intr": {
+        "type": "intr",
+        "direction": "O",
+        "parameters": {
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
+            "value_src": "const_prop"
+          }
+        }
+      }
+    },
+    "components": {
+      "slave_0": {
+        "vlnv": "xilinx.com:ip:axi_vip:1.1",
+        "xci_name": "axi_master_full_v1_0_bfm_1_slave_0_0",
+        "xci_path": "ip/axi_master_full_v1_0_bfm_1_slave_0_0/axi_master_full_v1_0_bfm_1_slave_0_0.xci",
+        "inst_hier_path": "slave_0",
+        "parameters": {
+          "INTERFACE_MODE": {
+            "value": "SLAVE"
+          },
+          "PROTOCOL": {
+            "value": "AXI4"
+          }
+        }
+      },
+      "axi_master_full_0": {
+        "vlnv": "user.org:user:axi_master_full:1.0",
+        "xci_name": "axi_master_full_v1_0_bfm_1_axi_master_full_0_2",
+        "xci_path": "ip/axi_master_full_v1_0_bfm_1_axi_master_full_0_2/axi_master_full_v1_0_bfm_1_axi_master_full_0_2.xci",
+        "inst_hier_path": "axi_master_full_0",
+        "interface_ports": {
+          "M_AXI": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "M_AXI",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0xFFFFFFFF",
+              "width": "32"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "M_AXI": {
+              "range": "4G",
+              "width": "32"
+            }
+          }
+        }
+      }
+    },
+    "interface_nets": {
+      "axi_master_full_0_M_AXI": {
+        "interface_ports": [
+          "axi_master_full_0/M_AXI",
+          "slave_0/S_AXI"
+        ]
+      }
+    },
+    "nets": {
+      "ACLK_1": {
+        "ports": [
+          "ACLK",
+          "slave_0/aclk",
+          "axi_master_full_0/m_axi_aclk"
+        ]
+      },
+      "M_AXI_INIT_AXI_TXN_1": {
+        "ports": [
+          "M_AXI_INIT_AXI_TXN",
+          "axi_master_full_0/m_axi_init_axi_txn"
+        ]
+      },
+      "aresetn_net": {
+        "ports": [
+          "ARESETN",
+          "slave_0/aresetn",
+          "axi_master_full_0/m_axi_aresetn"
+        ]
+      },
+      "axi_master_full_0_m_axi_error": {
+        "ports": [
+          "axi_master_full_0/m_axi_error",
+          "M_AXI_ERROR"
+        ]
+      },
+      "axi_master_full_0_m_axi_txn_done": {
+        "ports": [
+          "axi_master_full_0/m_axi_txn_done",
+          "M_AXI_TXN_DONE"
+        ]
+      },
+      "axi_master_full_0_tx_done_intr": {
+        "ports": [
+          "axi_master_full_0/tx_done_intr",
+          "tx_done_intr"
+        ]
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@
 #include "lwip/inet.h"
 
 #include "globals.h"
+#include "timer.h"
 
 /**************** DEFINES ******************/
 #define THREAD_STACKSIZE 1024
@@ -19,7 +20,7 @@
 
 #define RECV_BUF_SIZE 2048
 
-#define WORDS_TO_SEND 262144
+#define WORDS_TO_SEND 2048
 #define BYTES_TO_SEND (WORDS_TO_SEND*sizeof(u32))
 
 /**************** PROTOTYPES ******************/
@@ -36,20 +37,20 @@ void send_data_thread(void *p)
 	int32_t len = 0;
 	u32 *ddr;
 
-	const TickType_t x100mseconds = pdMS_TO_TICKS(DELAY_100_MILISEC);
+	const TickType_t x10seconds = pdMS_TO_TICKS(DELAY_10_SECONDS);
 
-	fill_ddr(WORDS_TO_SEND);
+//	fill_ddr(WORDS_TO_SEND);
 
 	while (1) {
 		if(connected)
 		{
-			if (xSemaphoreTake(timerSemaphore, x100mseconds) != pdTRUE) {
+			if (xSemaphoreTake(timerSemaphore, x10seconds) != pdTRUE) {
 				xil_printf("FreeRTOS interrupt example FAILED \n");
 				vTaskDelete(xTimerTask);
 				break;
 			}
 
-			xil_printf("Sending size (bytes): %d\n\r", BYTES_TO_SEND);
+			xil_printf("Sending size: %d words (%d bytes)\n\r", WORDS_TO_SEND, BYTES_TO_SEND);
 			// send size first
 			len = htonl(BYTES_TO_SEND); // network byte order
 

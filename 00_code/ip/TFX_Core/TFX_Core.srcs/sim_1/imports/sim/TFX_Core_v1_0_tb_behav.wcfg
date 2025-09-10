@@ -14,15 +14,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="3.455000 us"></ZoomStartTime>
-      <ZoomEndTime time="3,498.455001 us"></ZoomEndTime>
-      <Cursor1Time time="598.455000 us"></Cursor1Time>
+      <ZoomStartTime time="5,866.297578 us"></ZoomStartTime>
+      <ZoomEndTime time="7,320.297579 us"></ZoomEndTime>
+      <Cursor1Time time="7,264.315000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="234"></NameColumnWidth>
+      <NameColumnWidth column_width="206"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="7" />
+   <WVObjectSize size="8" />
    <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/clock">
       <obj_property name="ElementShortName">clock</obj_property>
       <obj_property name="ObjectShortName">clock</obj_property>
@@ -31,23 +31,6 @@
       <obj_property name="label">BROM</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/econnected">
-         <obj_property name="ElementShortName">econnected</obj_property>
-         <obj_property name="ObjectShortName">econnected</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/start_pulse">
-         <obj_property name="ElementShortName">start_pulse</obj_property>
-         <obj_property name="ObjectShortName">start_pulse</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/dready">
-         <obj_property name="ElementShortName">dready</obj_property>
-         <obj_property name="ObjectShortName">dready</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/brom_addr">
-         <obj_property name="ElementShortName">brom_addr[7:0]</obj_property>
-         <obj_property name="ObjectShortName">brom_addr[7:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      </wvobject>
       <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/x_re">
          <obj_property name="ElementShortName">x_re[31:0]</obj_property>
          <obj_property name="ObjectShortName">x_re[31:0]</obj_property>
@@ -67,6 +50,18 @@
             <obj_property name="ObjectShortName">clk_counter[31:0]</obj_property>
             <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/econnected_i">
+            <obj_property name="ElementShortName">econnected_i</obj_property>
+            <obj_property name="ObjectShortName">econnected_i</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/dl_busy_i">
+            <obj_property name="ElementShortName">dl_busy_i</obj_property>
+            <obj_property name="ObjectShortName">dl_busy_i</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/new_data">
+            <obj_property name="ElementShortName">new_data</obj_property>
+            <obj_property name="ObjectShortName">new_data</obj_property>
+         </wvobject>
          <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/new_data_r">
             <obj_property name="ElementShortName">new_data_r</obj_property>
             <obj_property name="ObjectShortName">new_data_r</obj_property>
@@ -75,6 +70,33 @@
             <obj_property name="ElementShortName">data_counter[8:0]</obj_property>
             <obj_property name="ObjectShortName">data_counter[8:0]</obj_property>
             <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/start_o">
+            <obj_property name="ElementShortName">start_o</obj_property>
+            <obj_property name="ObjectShortName">start_o</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/dready_o">
+            <obj_property name="ElementShortName">dready_o</obj_property>
+            <obj_property name="ObjectShortName">dready_o</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/toggle_page">
+            <obj_property name="ElementShortName">toggle_page</obj_property>
+            <obj_property name="ObjectShortName">toggle_page</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/input_gen/brom_addr_o">
+            <obj_property name="ElementShortName">brom_addr_o[8:0]</obj_property>
+            <obj_property name="ObjectShortName">brom_addr_o[8:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/brom_data">
+            <obj_property name="ElementShortName">brom_data[12:0]</obj_property>
+            <obj_property name="ObjectShortName">brom_data[12:0]</obj_property>
+            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/x_re_brom">
+            <obj_property name="ElementShortName">x_re_brom[31:0]</obj_property>
+            <obj_property name="ObjectShortName">x_re_brom[31:0]</obj_property>
+            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
          </wvobject>
       </wvobject>
    </wvobject>
@@ -264,13 +286,43 @@
       <wvobject type="group" fp_name="group92">
          <obj_property name="label">Tests</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/cwt_control_unit/data_counter">
             <obj_property name="ElementShortName">data_counter[11:0]</obj_property>
             <obj_property name="ObjectShortName">data_counter[11:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/cwt_control_unit/counter_j">
             <obj_property name="ElementShortName">counter_j[2:0]</obj_property>
             <obj_property name="ObjectShortName">counter_j[2:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/i_out">
+            <obj_property name="ElementShortName">i_out[10:0]</obj_property>
+            <obj_property name="ObjectShortName">i_out[10:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/cwt_num">
+            <obj_property name="ElementShortName">cwt_num</obj_property>
+            <obj_property name="ObjectShortName">cwt_num</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/CWT_core/cwt_row_done_o">
+            <obj_property name="ElementShortName">cwt_row_done_o</obj_property>
+            <obj_property name="ObjectShortName">cwt_row_done_o</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/CWT_core/cwt_row_ready_o">
+            <obj_property name="ElementShortName">cwt_row_ready_o</obj_property>
+            <obj_property name="ObjectShortName">cwt_row_ready_o</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/X_re">
+            <obj_property name="ElementShortName">X_re[31:0]</obj_property>
+            <obj_property name="ObjectShortName">X_re[31:0]</obj_property>
+            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/X_im">
+            <obj_property name="ElementShortName">X_im[31:0]</obj_property>
+            <obj_property name="ObjectShortName">X_im[31:0]</obj_property>
+            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/cwt_control_unit/ifft_done_d">
             <obj_property name="ElementShortName">ifft_done_d</obj_property>
@@ -282,18 +334,35 @@
          </wvobject>
       </wvobject>
    </wvobject>
-   <wvobject type="protoinst" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/m_axi_data">
-      <obj_property name="children_use_element_short_name">true</obj_property>
-      <obj_property name="WaveformStyle">STYLE_ENUM_TRANSACTION</obj_property>
-      <obj_property name="EnumTransactionColorTable">0=blank 1=#D399FF 2=pink</obj_property>
-      <obj_property name="EnumTransactionValueTable">0=blank;1=Read;2=Write;3=Read/Write</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">turquoise</obj_property>
-      <obj_property name="Render_Data">/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/m_axi_data.readWriteSummary</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      <obj_property name="CellHeight">36</obj_property>
-      <obj_property name="ElementShortName">m_axi_data</obj_property>
-      <obj_property name="ObjectShortName">m_axi_data</obj_property>
+   <wvobject type="group" fp_name="group261">
+      <obj_property name="label">AXI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/inst/M_AXI_Data/waddr_offset_r">
+         <obj_property name="ElementShortName">waddr_offset_r[31:0]</obj_property>
+         <obj_property name="ObjectShortName">waddr_offset_r[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="protoinst" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/m_axi_data">
+         <obj_property name="children_use_element_short_name">true</obj_property>
+         <obj_property name="WaveformStyle">STYLE_ENUM_TRANSACTION</obj_property>
+         <obj_property name="EnumTransactionColorTable">0=blank 1=#D399FF 2=pink</obj_property>
+         <obj_property name="EnumTransactionValueTable">0=blank;1=Read;2=Write;3=Read/Write</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">turquoise</obj_property>
+         <obj_property name="Render_Data">/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/m_axi_data.readWriteSummary</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="CellHeight">36</obj_property>
+         <obj_property name="ElementShortName">m_axi_data</obj_property>
+         <obj_property name="ObjectShortName">m_axi_data</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="protoinst" fp_name="/TFX_Core_v1_0_tb/DUT/TFX_Core_v1_0_bfm_1_i/TFX_Core_v1_0_0/s_axi_config">
+         <obj_property name="ElementShortName">s_axi_config</obj_property>
+         <obj_property name="ObjectShortName">s_axi_config</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/TFX_Core_v1_0_tb/cwt_done">
+      <obj_property name="ElementShortName">cwt_done</obj_property>
+      <obj_property name="ObjectShortName">cwt_done</obj_property>
    </wvobject>
 </wave_config>

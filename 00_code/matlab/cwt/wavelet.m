@@ -75,7 +75,8 @@
 %              plot(time,log(coi),'k')
 %
 %----------------------------------------------------------------------------
-function [cfs,period,scale,freq,coi,wavelet] = ...
+
+function [cfs,period,scale,freq,coi,daughter] = ...
 	wavelet(Y,fs,no,vpo,s0,mother,param,pad, fractional_len);
 
 if (nargin < 8), pad = -1;, end
@@ -89,6 +90,7 @@ if (nargin < 2)
 end
 
 N = length(Y);
+n1 = length(Y);
 
 if (no == -1), no = 7;, end
 if (vpo == -1), vpo = 4;, end
@@ -102,14 +104,15 @@ if (mother == -1), mother = 'MORLET';, end
 % 	x = [x,zeros(1,2^(base2+1)-n1)];
 % end
 
-%x(1:N) = Y - mean(Y);
-x(1:N) = Y;
-n = length(x);
+% x(1:N) = Y - mean(Y);
+% x(1:N) = Y;
+% N = length(x);
 
 %% Compute FFT of the (padded) time series
 % fft_o = fft(x);    % [Eqn(3)]
-x_i = complex(x, zeros(1,N));
-fft_o = fft_frac(x_i, N, N, fractional_len);
+% x_i = complex(x, zeros(1,N));
+fft_o = fft_frac(Y, N, N, fractional_len);
+% fft_o = fft_frac(x_i, N, N, fractional_len);
 
 %% Write output of fft module to file
 fft_re_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/golden_re.txt";
@@ -131,10 +134,10 @@ fclose(fp);
 
 %% Construct wavenumber array used in transform [Eqn(5)]
 % k represents w
-k = 1:fix(n/2);
-multiplier = ((2.*(pi*fs))/n);
+k = 1:fix(N/2);
+multiplier = ((2.*(pi*fs))/N);
 k = k.*multiplier;
-k = [0., k, -k(fix((n-1)/2):-1:1)];
+k = [0., k, -k(fix((N-1)/2):-1:1)];
 
 %% Construct SCALE array & empty PERIOD & WAVE arrays
 J1 = no*vpo;
@@ -144,86 +147,110 @@ ind = 0:(J1-1);
 scale = s0*(a0.^ind);
 
 period = scale;        % declare the period array
-cfs = zeros(J1-1,n);  % declare the coeficients array
+cfs = zeros(J1-1,N);  % declare the coeficients array
 cfs = cfs + 1i*cfs;  % make it complex
 
-wavelet = zeros(J1-1,n);  % declare the wavelet array
-% wavelet = wavelet + 1i*wavelet;  % make it complex
+daughter = zeros(J1-1,N);  % declare the wavelet array
+% daughter = daughter + 1i*daughter;  % make it complex
 
 %% Write ouput of mul module to file
 mul_re_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/mul/golden_re.txt";
 mul_im_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/mul/golden_im.txt";
 
-fp_re = fopen(mul_re_filename, 'w');
-if(fp_re == -1)
+fp_mul_re_golden = fopen(mul_re_filename, 'w');
+if(fp_mul_re_golden == -1)
     error("Couldn't open file: %s", mul_re_filename);
 end
 
-fp_im = fopen(mul_im_filename, 'w');
-if(fp_im == -1)
+fp_mul_im_golden = fopen(mul_im_filename, 'w');
+if(fp_mul_im_golden == -1)
     error("Couldn't open file: %s", mul_im_filename);
+end
+
+%% Write ouput of mul module to file
+div_re_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/div/golden_re.txt";
+div_im_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/div/golden_im.txt";
+
+fp_div_re_golden = fopen(div_re_filename, 'w');
+if(fp_div_re_golden == -1)
+    error("Couldn't open file: %s", div_re_filename);
+end
+
+fp_div_im_golden = fopen(div_im_filename, 'w');
+if(fp_div_im_golden == -1)
+    error("Couldn't open file: %s", div_im_filename);
 end
 
 %% Write ouput of ifft module to file
 ifft_re_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/ifft/golden_re.txt";
 ifft_im_filename = "/home/fernandes/thesis/00_code/matlab/golden_vectors/ifft/golden_im.txt";
 
-fp_ifft_re = fopen(ifft_re_filename, 'w');
-if(fp_ifft_re == -1)
+fp_ifft_re_golden = fopen(ifft_re_filename, 'w');
+if(fp_ifft_re_golden == -1)
     error("Couldn't open file: %s", ifft_re_filename);
 end
 
-fp_ifft_im = fopen(ifft_im_filename, 'w');
-if(fp_ifft_im == -1)
+fp_ifft_im_golden = fopen(ifft_im_filename, 'w');
+if(fp_ifft_im_golden == -1)
     error("Couldn't open file: %s", ifft_im_filename);
 end
 
 %% Loop through all scales and compute transform
 for j = 1:J1
-	[daughter,fourier_factor,e_folding,dofmin] = wave_bases(mother, k, scale(j), param, fs);
-    daughter = fix(daughter * 2^fractional_len);
-    % daughter = fix(2 * 2^fractional_len);
-    wavelet(j,:) = daughter;
-    mul = fft_o.*daughter;
-    
-    % print re output of mul to file
-    fprintf(fp_re, "%s", regexprep(num2str(real(mul)),'\s+','\n'));
-    fprintf(fp_re, "\n");
-    
-    % print im output of mul to file
-    fprintf(fp_im, "%s", regexprep(num2str(imag(mul)),'\s+','\n'));
-    fprintf(fp_im, "\n");
+	[daughter_j,fourier_factor,e_folding,dofmin] = wave_bases(mother, k, scale(j), param, fs);
+    daughter(j,:) = daughter_j;
 
+    daughter_fix = fix(daughter_j * 2^fractional_len);
+
+    mul = fft_o.*daughter_fix;
+
+    % print re golden of mul to file
+    fprintf(fp_mul_re_golden, "%s", regexprep(num2str(real(mul)),'\s+','\n'));
+    fprintf(fp_mul_re_golden, "\n");
+    % print im golden of mul to file
+    fprintf(fp_mul_im_golden, "%s", regexprep(num2str(imag(mul)),'\s+','\n'));
+    fprintf(fp_mul_im_golden, "\n");
+    
     mul = fix(mul / 128);
+
+    % print re golden of div to file
+    fprintf(fp_div_re_golden, "%s", regexprep(num2str(real(mul)),'\s+','\n'));
+    fprintf(fp_div_re_golden, "\n");
+    % print im golden of div to file
+    fprintf(fp_div_im_golden, "%s", regexprep(num2str(imag(mul)),'\s+','\n'));
+    fprintf(fp_div_im_golden, "\n");
+
         
     cfs(j,:) = ifft_frac(mul, N, N, fractional_len);  % wavelet transform[Eqn(4)]
     
     % print re output of ifft to file
-    fprintf(fp_ifft_re, "%s", regexprep(num2str(real(cfs(j,:))),'\s+','\n'));
-    fprintf(fp_ifft_re, "\n");
-    
+    fprintf(fp_ifft_re_golden, "%s", regexprep(num2str(real(cfs(j,:))),'\s+','\n'));
+    fprintf(fp_ifft_re_golden, "\n");
     % print im output of ifft to file
-    fprintf(fp_ifft_im, "%s", regexprep(num2str(imag(cfs(j,:))),'\s+','\n'));
-    fprintf(fp_ifft_im, "\n");
+    fprintf(fp_ifft_im_golden, "%s", regexprep(num2str(imag(cfs(j,:))),'\s+','\n'));
+    fprintf(fp_ifft_im_golden, "\n");
 
 end
 
 % close files of ouput of mul module 
-fclose(fp_ifft_re);
-fclose(fp_ifft_im);
+fclose(fp_div_im_golden);
+fclose(fp_div_re_golden);
 
-fclose(fp_im);
-fclose(fp_re);
+fclose(fp_ifft_re_golden);
+fclose(fp_ifft_im_golden);
+
+fclose(fp_mul_im_golden);
+fclose(fp_mul_re_golden);
 
 freq = 1./(fourier_factor.*scale);   % frequency conversion
 period = 1./freq;
 
 e_folding = e_folding*scale;         % COI [Sec.3g]
-L = min(floor(N/2), e_folding);
-R = max(ceil(N/2), N - e_folding);
+L = min(floor(n1/2), e_folding);
+R = max(ceil(n1/2), n1 - e_folding);
 coi = [L(:), R(:)];
 
-%cfs = cfs(:,1:n1);  % get rid of padding before returning
+% cfs = cfs(:,1:n1);  % get rid of padding before returning
 
 return
 

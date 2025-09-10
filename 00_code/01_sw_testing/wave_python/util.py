@@ -31,8 +31,7 @@ def fprint_vector(vector, rows, filename, mode='w'):
         for i in range(rows):
             np.savetxt(f, vector[i].reshape(1, -1), fmt='%f')
 
-
-def plot_cwt(t, f, cfs, coi, fs, opt, N, J1):
+def plot_cwt(t, f, cfs, coi, fs, opt, N, J1, first_time):
     """
     Plota o escalograma da Transformada Wavelet Contínua (CWT).
 
@@ -46,6 +45,63 @@ def plot_cwt(t, f, cfs, coi, fs, opt, N, J1):
         N (int): Número de amostras no tempo.
         J1 (int): Número de escalas.
     """
+
+    # Plotagem dos coeficientes da CWT
+    plt.contourf(t, f, np.abs(cfs), levels=20, cmap='jet')#, extend='both')
+    plt.pause(0.01)  # Pause to allow the plot to update
+
+    if first_time:
+        plt.colorbar(label='Magnitude')
+
+    # # Ajuste dos ticks do eixo Y
+    # if any(ticks):
+    #     plt.yticks(ticks, labels)
+
+    # Propriedades do gráfico
+    # plt.title("Scalogram and Instantaneous Frequencies")
+    # plt.xlabel("Time (Seconds)")
+    # plt.ylabel("Frequency (Hz)")
+
+    # Plotagem do Cone de Influência (COI)
+    # L = coi[:, 0]  # Lado esquerdo do COI
+    # R = coi[:, 1]  # Lado direito do COI
+
+    # Cria os valores para o eixo y
+    # y_values = np.concatenate(([f[0] - 1], f))  # [f(1)-1, f]
+
+    # Plotagem do Cone de Influência (COI)
+    # plt.plot(np.concatenate(([L[0]], L)) / fs, y_values, '--w', linewidth=1.5, label='COI')
+    # plt.plot(np.concatenate(([R[0]], R)) / fs, y_values, '--w', linewidth=1.5)
+    # plt.legend()
+
+    # plt.show()
+
+    # Salvar os coeficientes da CWT em arquivos
+    # golden_re_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_re.txt"
+    # golden_im_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_im.txt"
+
+    # with open(golden_re_filename, 'w') as fp:
+    #     for i in range(J1):
+    #         fp.write(" ".join(map(str, np.real(cfs[i, :]))) + "\n")
+
+    # with open(golden_im_filename, 'w') as fp:
+    #     for i in range(J1):
+    #         fp.write(" ".join(map(str, np.imag(cfs[i, :]))) + "\n")
+
+def configure_scale(f, fs, opt):
+    """
+    Configure the scale for the y-axis (log2, log10, or linear).
+
+    Parameters:
+        f (numpy array): Frequency vector.
+        fs (float): Sampling frequency.
+        opt (str): Scale option ('lin', 'log2', or 'log10').
+
+    Returns:
+        f (numpy array): Transformed frequency vector.
+        ticks (numpy array): Tick positions for the y-axis.
+        labels (list): Tick labels for the y-axis.
+    """
     tickmin = np.min(f)
     tickmax = fs / 2
 
@@ -53,7 +109,7 @@ def plot_cwt(t, f, cfs, coi, fs, opt, N, J1):
     if 'log2' in opt.lower():
         f = np.log2(f)
         numticks = int(np.ceil(np.log2(tickmax) - np.log2(tickmin)))
-        ticks = np.zeros(numticks) 
+        ticks = np.zeros(numticks)
         labels = []
 
         for tick in range(numticks):
@@ -65,56 +121,19 @@ def plot_cwt(t, f, cfs, coi, fs, opt, N, J1):
     elif 'log10' in opt.lower():
         f = np.log10(f)
         numticks = int(np.ceil(np.log10(tickmax) - np.log10(tickmin + 1e-7)))
-        ticks = np.zeros(numticks) 
+        ticks = np.zeros(numticks)
         labels = []
 
         for tick in range(numticks):
-            ticks[tick] = 10 ** (tick + int(np.log10(tickmin+ 1e-7)))
+            ticks[tick] = 10 ** (tick + int(np.log10(tickmin + 1e-7)))
             labels.append(str(ticks[tick]))
 
         ticks = np.log10(ticks)
+
     elif 'lin' in opt.lower():
         ticks = []
         labels = []
     else:
         raise ValueError("ERROR: opt must be 'lin', 'log2', or 'log10'.")
 
-    # Plotagem dos coeficientes da CWT
-    plt.figure(figsize=(10, 6))
-    plt.contourf(t, f, np.abs(cfs), levels=50, cmap='jet', extend='both')
-    plt.colorbar(label='Magnitude')
-
-    # Ajuste dos ticks do eixo Y
-    if any(ticks):
-        plt.yticks(ticks, labels)
-
-    # Propriedades do gráfico
-    plt.title("Scalogram and Instantaneous Frequencies")
-    plt.xlabel("Time (Seconds)")
-    plt.ylabel("Frequency (Hz)")
-
-    # Plotagem do Cone de Influência (COI)
-    L = coi[:, 0]  # Lado esquerdo do COI
-    R = coi[:, 1]  # Lado direito do COI
-
-    # Cria os valores para o eixo y
-    y_values = np.concatenate(([f[0] - 1], f))  # [f(1)-1, f]
-
-    # Plotagem do Cone de Influência (COI)
-    plt.plot(np.concatenate(([L[0]], L)) / fs, y_values, '--w', linewidth=1.5, label='COI')
-    plt.plot(np.concatenate(([R[0]], R)) / fs, y_values, '--w', linewidth=1.5)
-    plt.legend()
-
-    plt.show()
-
-    # Salvar os coeficientes da CWT em arquivos
-    golden_re_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_re.txt"
-    golden_im_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_im.txt"
-
-    with open(golden_re_filename, 'w') as fp:
-        for i in range(J1):
-            fp.write(" ".join(map(str, np.real(cfs[i, :]))) + "\n")
-
-    with open(golden_im_filename, 'w') as fp:
-        for i in range(J1):
-            fp.write(" ".join(map(str, np.imag(cfs[i, :]))) + "\n")
+    return f, ticks, labels

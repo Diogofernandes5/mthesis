@@ -76,7 +76,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>278ecb4b</spirit:value>
+            <spirit:value>f4a19972</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -104,7 +104,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>278ecb4b</spirit:value>
+            <spirit:value>f4a19972</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -596,8 +596,8 @@
       <xilinx:xpmLibraries>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>48</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2025-07-23T12:59:00Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>49</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2025-09-03T10:50:56Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@44cf15a1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@c920708_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
@@ -1433,12 +1433,24 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@340826e8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7985cb02_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@4b9a5091_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@447f068f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2f68664d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@82b62c_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@609b02cb_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@215db760_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@e5dea5d_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1aff8f0f_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6e2f40f1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@287622b7_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6cf5f64e_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2ac5c7d1_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5ab10ca8_ARCHIVE_LOCATION">/home/fernandes/thesis/00_code/ip/ifft_pipeline</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dbc0055f"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="ac094489"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="a9394f04"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="4a4937e5"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="d842010d"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="34eb34cc"/>

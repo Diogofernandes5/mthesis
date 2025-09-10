@@ -278,52 +278,6 @@
 
 /******************************************************************/
 
-#define XPAR_INTC_MAX_NUM_INTR_INPUTS 1
-#define XPAR_XINTC_HAS_IPR 1
-#define XPAR_XINTC_HAS_SIE 1
-#define XPAR_XINTC_HAS_CIE 1
-#define XPAR_XINTC_HAS_IVR 1
-/* Definitions for driver INTC */
-#define XPAR_XINTC_NUM_INSTANCES 1
-
-/* Definitions for peripheral AXI_INTC_0 */
-#define XPAR_AXI_INTC_0_DEVICE_ID 0
-#define XPAR_AXI_INTC_0_BASEADDR 0x41800000
-#define XPAR_AXI_INTC_0_HIGHADDR 0x4180FFFF
-#define XPAR_AXI_INTC_0_KIND_OF_INTR 0x00000000
-#define XPAR_AXI_INTC_0_HAS_FAST 0
-#define XPAR_AXI_INTC_0_IVAR_RESET_VALUE 0x0000000000000010
-#define XPAR_AXI_INTC_0_NUM_INTR_INPUTS 1
-#define XPAR_AXI_INTC_0_NUM_SW_INTR 0
-#define XPAR_AXI_INTC_0_ADDR_WIDTH 32
-
-
-/******************************************************************/
-
-#define XPAR_INTC_SINGLE_BASEADDR 0x41800000
-#define XPAR_INTC_SINGLE_HIGHADDR 0x4180FFFF
-#define XPAR_INTC_SINGLE_DEVICE_ID XPAR_AXI_INTC_0_DEVICE_ID
-#define XPAR_AXI_INTC_0_TYPE 0U
-#define XPAR_SYSTEM_INTR_I_MASK 0X000001U
-#define XPAR_AXI_INTC_0_SYSTEM_INTR_I_INTR 0U
-
-/******************************************************************/
-
-/* Canonical definitions for peripheral AXI_INTC_0 */
-#define XPAR_INTC_0_DEVICE_ID XPAR_AXI_INTC_0_DEVICE_ID
-#define XPAR_INTC_0_BASEADDR 0x41800000U
-#define XPAR_INTC_0_HIGHADDR 0x4180FFFFU
-#define XPAR_INTC_0_KIND_OF_INTR 0x00000000U
-#define XPAR_INTC_0_HAS_FAST 0U
-#define XPAR_INTC_0_IVAR_RESET_VALUE 0x0000000000000010U
-#define XPAR_INTC_0_NUM_INTR_INPUTS 1U
-#define XPAR_INTC_0_NUM_SW_INTR 0U
-#define XPAR_INTC_0_ADDR_WIDTH 32U
-#define XPAR_INTC_0_INTC_TYPE 0U
-
-
-/******************************************************************/
-
 /* Definitions for driver QSPIPS */
 #define XPAR_XQSPIPS_NUM_INSTANCES 1
 
@@ -350,12 +304,13 @@
 /******************************************************************/
 
 /* Definitions for Fabric interrupts connected to ps7_scugic_0 */
-#define XPAR_FABRIC_AXI_INTC_0_IRQ_INTR 61U
+#define XPAR_FABRIC_TEST_SPI_READ_0_CONFIG_DONE_O_INTR 61U
+#define XPAR_FABRIC_DATA_READY_INTR 62U
 
 /******************************************************************/
 
 /* Canonical definitions for Fabric interrupts connected to ps7_scugic_0 */
-#define XPAR_FABRIC_INTC_0_VEC_ID XPAR_FABRIC_AXI_INTC_0_IRQ_INTR
+#define XPAR_FABRIC_TEST_SPI_READ_0_VEC_ID XPAR_FABRIC_TEST_SPI_READ_0_CONFIG_DONE_O_INTR
 
 /******************************************************************/
 

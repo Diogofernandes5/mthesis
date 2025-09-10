@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="pvParameters"/>
+		<item key="selection" value="TimerTask"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="timertask"/>
+			<item value="task"/>
+			<item value="timertas"/>
+			<item value="timer"/>
+			<item value="xTimerTask"/>
+			<item value="INTC_DEVICE_ID"/>
+			<item value="configmax"/>
+			<item value="maxconfig"/>
+			<item value="config"/>
 			<item value="pvParameters"/>
 			<item value="256"/>
 			<item value="xSemaphore"/>
 			<item value="TtcHandler"/>
-			<item value="xTimerTask"/>
 			<item value="TTC"/>
 			<item value="xTaskHandleInstance"/>
-			<item value="ttc"/>
-			<item value="xTaskHandle"/>
-			<item value="XPAR_XTTCPS_3_DEVICE_ID"/>
-			<item value="INTERRUPT_ID"/>
-			<item value="xtt"/>
-			<item value="XPAR_TMRCTR_1_DEVICE_ID"/>
 		</list>
 		<list key="replacehistory">
 			<item value="timerSemaphore"/>

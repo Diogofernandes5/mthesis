@@ -20,3 +20,6 @@ domain active {zynq_fsbl}
 domain active {standalone_ps7_cortexa9_0}
 platform generate -quick
 platform generate
+platform config -updatehw {/home/fernandes/thesis/00_code/tests/spi_read/proj/design_1_wrapper.xsa}
+platform config -updatehw {/home/fernandes/thesis/00_code/tests/spi_read/proj/design_1_wrapper.xsa}
+platform generate -domains 

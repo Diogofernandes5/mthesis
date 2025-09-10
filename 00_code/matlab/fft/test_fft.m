@@ -1,4 +1,4 @@
-N = 1024;
+N = 256;
 
 fractional_len = 8;
 % this refer to the number of points compared to the number os stages:

@@ -15,10 +15,11 @@ module test_spi_read_v1_0_S00_AXI #
 )
 (
     // Users to add ports here
-    input data_valid,
-    input [12:0] data,
+    input wire data_valid,
+    input wire [12:0] data,
     
-    output [7:0] axis_to_read,
+    output wire [7:0] axis_to_read,
+    output wire rstn, 
 
     // User ports ends
     // Do not modify the ports beyond this line
@@ -406,6 +407,8 @@ end
 reg [C_S_AXI_DATA_WIDTH-1:0] data_r;
 
 assign axis_to_read = slv_reg1 & 32'h000000FF;
+
+assign rstn = slv_reg2[0];
 
 // Update data_r when data_valid is asserted
 always @(posedge S_AXI_ACLK or negedge S_AXI_ARESETN) begin

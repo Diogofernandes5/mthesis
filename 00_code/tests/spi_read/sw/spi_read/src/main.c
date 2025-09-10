@@ -1,16 +1,20 @@
 #include "xil_io.h"        // For Xil_In functions
 #include "xparameters.h"   // XPAR parameters
 #include "xil_printf.h"    // For printing
-#include "xintc.h"         // For AXI Interrupt Controller
+//#include "xintc.h"         // For AXI Interrupt Controller
+#include "xscugic.h"         // For AXI Interrupt Controller
 #include "xil_exception.h"
 
 //#define __DEBUG
-//#define INTR_EN
+#define INTR_EN
 
 // Define the base address of your slave device
-#define SLAVE_BASE_ADDRESS XPAR_TEST_SPI_READ_0_S00_AXI_BASEADDR  // Replace with your slave's base address
+#define SLAVE_BASE_ADDRESS 	XPAR_TEST_SPI_READ_0_S00_AXI_BASEADDR
+#define DATA_REG 			0
+#define AXIS_TO_READ_REG	1
+#define RSTN_REG			2
 
-// Define the register offset you want to read
+
 #define REGISTER_OFFSET    0x00  // Replace with your register's offset
 
 typedef enum {
@@ -20,15 +24,18 @@ typedef enum {
 } axis_reg;
 
 #ifdef INTR_EN
-#define INTG_INTC_DEVICE_ID	XPAR_INTC_0_DEVICE_ID
-// Define the Interrupt ID (replace with your actual ID)
-#define CONFIG_DONE_INTERRUPT_ID 0U
+#define INTC_DEVICE_ID	XPAR_PS7_SCUGIC_0_DEVICE_ID
+
+#define CONFIG_DONE_INT_ID 	XPAR_FABRIC_TEST_SPI_READ_0_CONFIG_DONE_O_INTR
+#define INT1_INT_ID 		XPAR_FABRIC_DATA_READY_INTR
 
 // Interrupt controller instance
-static XIntc InterruptController;
+static XScuGic InterruptController;
 
 // Global flag to indicate interrupt occurred
 volatile int data_ready = 0;
+volatile int config_done = 0;
+
 #endif // INTR_EN
 
 int twos_complement(uint16_t value, int bits);
@@ -37,23 +44,25 @@ int twos_complement(uint16_t value, int bits);
 int intr_setup(void);
 
 // Interrupt handler function
-void IntrHandler(void *CallbackRef) {
+void Intr_Handler(void *CallbackRef) {
     data_ready = 1;  // Set the flag to indicate interrupt occurred
+}
+
+void ConfigDone_Handler(void *CallbackRef) {
+    config_done = 1;
 }
 #endif // INTR_EN
 
 int main() {
     u32 register_value = 0;
-    u32 register_value_aux = 0;
-    // Calculate the full address of the register
-    u32 register_address = SLAVE_BASE_ADDRESS + REGISTER_OFFSET;
 
     double double_reg = 0.0;
 
-    int counter = 30000;
-
     char axis_ch = 'X';
     axis_reg axis_to_read = X_AXIS;
+
+    xil_printf("\n\n\r-------- TESTING SPI COMMUNICATION WITH ACC ---------\n\r");
+    xil_printf("Setting up interrupts...\n\r");
 
 #ifdef INTR_EN
     // Set up the interrupt
@@ -63,13 +72,16 @@ int main() {
         return err;
     }
 
+    Xil_Out32(SLAVE_BASE_ADDRESS+4*RSTN_REG, 1);
+
+    xil_printf("Waiting for Configuration Done!\r\n");
 	// Wait for the config_done interrupt
-	while (!config_done_flag);
+	while (!config_done);
 	xil_printf("Configuration of ADXL313 done!\n\r");
 #endif // INTR_EN
 
 	// wait config done ~30000clk
-    while(counter--){}
+//    while(counter--){}
 
 #ifdef __DEBUG
     xil_printf("\n\rRegisters Values: \n\r");
@@ -117,12 +129,15 @@ int main() {
 	if(axis_to_read != X_AXIS)
 		axis_ch = (axis_to_read == Y_AXIS) ? 'Y' : 'Z';
 
-	Xil_Out32(register_address+0x04, axis_to_read);
-	while(1){
-		register_value = Xil_In32(register_address);
-		double_reg = (double) 100 * twos_complement((uint16_t)register_value & 0x1FFF, 13) * (double)0.000976562;
+	Xil_Out32(SLAVE_BASE_ADDRESS + 4*AXIS_TO_READ_REG, axis_to_read);
 
-		xil_printf("Acc on %C-Axis = %d (0x%X)\n\r", axis_ch, (int) double_reg, (u16)register_value);
+	while(1){
+		if(data_ready){
+			register_value = Xil_In32(SLAVE_BASE_ADDRESS + DATA_REG);
+			double_reg = (double) 100 * twos_complement((uint16_t)register_value & 0x1FFF, 13) * (double)0.000976562;
+
+			xil_printf("Acc on %C-Axis = %d (0x%X)\n\r", axis_ch, (int) double_reg, (u16)register_value);
+		}
 	}
 
     return 0;
@@ -143,42 +158,53 @@ int twos_complement(uint16_t value, int bits)
     // Function to set up the interrupt
 int intr_setup(void) {
 	int Status;
+		XScuGic_Config *IntcConfig;
 
-	/* Initialize the interrupt controller and connect the ISRs */
-	Status = XIntc_Initialize(&InterruptController, INTG_INTC_DEVICE_ID);
-	if (Status != XST_SUCCESS)	{
-		xil_printf("Failed init intc\r\n");
-		return XST_FAILURE;
-	}
+		// Initialize the GIC
+		IntcConfig = XScuGic_LookupConfig(INTC_DEVICE_ID);
+		if (IntcConfig == NULL) {
+			xil_printf("GIC lookup failed\r\n");
+			return XST_FAILURE;
+		}
 
-	/*
-	 * Connect the driver interrupt handler
-	 */
-	Status = XIntc_Connect(&InterruptController, CONFIG_DONE_INTERRUPT_ID,
-				(XInterruptHandler)IntrHandler, NULL);
-	if (Status != XST_SUCCESS)	{
-		xil_printf("Failed connect intc\r\n");
-		return XST_FAILURE;
-	}
+		Status = XScuGic_CfgInitialize(&InterruptController, IntcConfig,
+		                               IntcConfig->CpuBaseAddress);
+		if (Status != XST_SUCCESS) {
+			xil_printf("GIC init failed\r\n");
+			return XST_FAILURE;
+		}
 
-	/*
-	 * Start the interrupt controller such that interrupts are enabled for
-	 * all devices that cause interrupts.
-	 */
-	Status = XIntc_Start(&InterruptController, XIN_REAL_MODE);
-	if (Status != XST_SUCCESS)
-		return XST_FAILURE;
+		// Connect and enable interrupts
+		Status = XScuGic_Connect(&InterruptController, CONFIG_DONE_INT_ID,
+		                         (Xil_InterruptHandler)ConfigDone_Handler,
+		                         NULL);
+		if (Status != XST_SUCCESS) {
+			xil_printf("Failed to connect CONFIG_DONE\r\n");
+			return XST_FAILURE;
+		}
 
-	/*
-	 * Enable the interrupt for the CSUDMA device.
-	 */
-	XIntc_Enable(&InterruptController, CONFIG_DONE_INTERRUPT_ID);
-	Xil_ExceptionInit();
-	Xil_ExceptionRegisterHandler(XIL_EXCEPTION_ID_INT,
-				(Xil_ExceptionHandler)XIntc_InterruptHandler,
-				(void *)&InterruptController);
+		Status = XScuGic_Connect(&InterruptController, INT1_INT_ID,
+		                         (Xil_InterruptHandler)Intr_Handler,
+		                         NULL);
+		if (Status != XST_SUCCESS) {
+			xil_printf("Failed to connect INT1\r\n");
+			return XST_FAILURE;
+		}
 
-	return XST_SUCCESS;
+		XScuGic_SetPriorityTriggerType(&InterruptController, CONFIG_DONE_INT_ID, 0xA0, 0x3);
+		XScuGic_SetPriorityTriggerType(&InterruptController, INT1_INT_ID, 0x80, 0x3);
+
+		XScuGic_Enable(&InterruptController, CONFIG_DONE_INT_ID);
+		XScuGic_Enable(&InterruptController, INT1_INT_ID);
+
+		// Register the GIC interrupt handler with the exception table
+		Xil_ExceptionInit();
+		Xil_ExceptionRegisterHandler(XIL_EXCEPTION_ID_INT,
+									 (Xil_ExceptionHandler)XScuGic_InterruptHandler,
+									 &InterruptController);
+		Xil_ExceptionEnable();
+
+		return XST_SUCCESS;
 }
 #endif // INTR_EN
 

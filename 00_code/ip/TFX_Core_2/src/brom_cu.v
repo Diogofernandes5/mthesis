@@ -9,7 +9,7 @@ module brom_cu #(
     
     output reg start_o,
     output reg dready_o,
-    output reg [($clog2(N)-1):0] brom_addr_o
+    output reg [($clog2(N*2)-1):0] brom_addr_o
 );
 
 localparam INPUT_CLK = 50000000;
@@ -22,8 +22,8 @@ localparam S_IDLE = 2'b00;
 localparam S_SEND = 2'b01;
 
 // state and nextstate registers
-reg[1:0] state;
-reg[1:0] nstate;
+reg [1:0] state;
+reg [1:0] nstate;
 
 reg [31:0] clk_counter;
 
@@ -33,6 +33,8 @@ reg new_data_r;
 reg [$clog2(N):0] data_counter;
 
 reg start_sending;
+
+reg toggle_page;
 
 // state register
 always @(posedge clk or negedge rstn) begin
@@ -65,7 +67,7 @@ end
 
 // output logic
 always @(*) begin
-    brom_addr_o <= data_counter;
+    brom_addr_o <= {0,data_counter} | (toggle_page << $clog2(N));
     
     case(state)
         S_IDLE: begin
@@ -75,6 +77,7 @@ always @(*) begin
         S_SEND: begin
             start_sending <= 1;
         end
+        
         default: begin
             start_sending <= 0;
         end
@@ -132,6 +135,15 @@ always @(posedge clk or negedge rstn) begin
             clk_counter <= 'd0;
         end
     end
+end
+
+always @(posedge clk or negedge rstn) begin
+    if(~rstn)
+        toggle_page <= 0;
+    else if (state == S_SEND && data_counter == N-1)
+        toggle_page <= ~toggle_page;
+    else
+        toggle_page <= toggle_page;
 end
 
 endmodule

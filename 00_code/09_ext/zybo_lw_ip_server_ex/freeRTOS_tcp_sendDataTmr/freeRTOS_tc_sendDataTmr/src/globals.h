@@ -1,13 +1,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include "FreeRTOS.h"
-#include "semphr.h"
-
-// Declare the semaphore (defined in one C file)
-extern SemaphoreHandle_t timerSemaphore;
-extern TaskHandle_t xTimerTask;
-
 // Useful shared defines
 /*------TIMER------*/
 #define DELAY_10_SECONDS		10000UL
@@ -18,11 +11,10 @@ extern TaskHandle_t xTimerTask;
 
 /*------DDR------*/
 // DDR Base address
-#define DDR_BASE_ADDR 	XPAR_PS7_DDR_0_S_AXI_BASEADDR
+//#define DDR_BASE_ADDR 	XPAR_PS7_DDR_0_S_AXI_BASEADDR
+#define DDR_BASE_ADDR 	0x10000000
 // Memory base address - sum to DDR_BASE_ADDR protects DDR
-#define MEM_ADDR 		0x00400000
-
-// Function prototypes if needed
-//void SomeFunction(void);
+//#define MEM_ADDR 		0x00400000
+#define MEM_ADDR 		0x00000000
 
 #endif

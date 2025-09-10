@@ -14,16 +14,18 @@ reg [31:0] x_re;
 reg [31:0] x_im;
 
 reg start;
+reg dready;
 reg dl_busy;
 
 // DUT outputs
 wire fft_ready;
+wire fft_done;
 wire busy;
 
 wire [31:0] X_re;
 wire [31:0] X_im;
 
-localparam N = 11'd1024;
+localparam N = 11'd256;
 
 wire [$clog2(N)-1:0] reversed_address;
 
@@ -44,13 +46,13 @@ integer i_out;  // num iterations
 integer num_errors;
 
 /**************** FILENAMES ***************/
-localparam INPUT_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/input.txt";
+localparam INPUT_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/input.txt";
 
-localparam GOLDEN_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/golden_re.txt";
-localparam GOLDEN_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/golden_im.txt";
+localparam GOLDEN_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/golden_re.txt";
+localparam GOLDEN_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/golden_im.txt";
 
-localparam OUTPUT_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/output_re.txt";
-localparam OUTPUT_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/fft/golden_vectors/output_im.txt";
+localparam OUTPUT_RE_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/output_re.txt";
+localparam OUTPUT_IM_FILENAME = "/home/fernandes/thesis/00_code/matlab/golden_vectors/fft/output_im.txt";
 
 /******************** TESTS *********************/
 wire [31:0] x0_re_ram;
@@ -82,9 +84,11 @@ fft_architecture #(N) dut(
     .x0_re_i(x_re),
     .x0_im_i(x_im),
     .start_i(start),
+    .dready_i(dready),
     .dl_busy_i(dl_busy),
     
     .fft_ready_o(fft_ready),
+    .fft_done_o(fft_done),
     .busy_o(busy),
     .x0_re_o(X_re),
     .x0_im_o(X_im),
@@ -122,6 +126,7 @@ end
 
 initial begin
     start = 0;
+    dready = 0;
 
     x_re = 32'd0;
     x_im = 32'd0;
@@ -129,8 +134,18 @@ initial begin
     #(`CLK_PERIOD*15); // 3 clk cycles
     start = 1;
     
+    #(`CLK_PERIOD*15); // 3 clk cycles
+    dready = 1;
+    
+    #(`CLK_PERIOD*30); // 3 clk cycles
+    dready = 0;
+    
+    #(`CLK_PERIOD*15); // 3 clk cycles
+    dready = 1;
+    
     #(`CLK_PERIOD * N); // 3 clk cycles
     start = 0;
+    dready = 0;
     
     dl_busy = 0;
 end
@@ -159,7 +174,7 @@ always @(posedge clk or negedge rstn) begin
     if(!rstn)
         i_in = 0;
 
-    else if(start) begin
+    else if(dready) begin
 //        #(`CLK_PERIOD*1); // if you give inputs immed/ after the start is asserted,
         // the inputs passed to the dut are not correct 
         
@@ -184,8 +199,8 @@ always @(negedge clk or negedge rstn or negedge start) begin
 end
 
 /*************** COMPARE VALUES ****************/
-always @(posedge fft_ready) begin
-    #(`CLK_PERIOD*N + 1);
+always @(posedge fft_done) begin
+    wait(~fft_ready);
     
     /******** RE VECTOR -> OUTPUT FILE **********/
     fp = $fopen(OUTPUT_RE_FILENAME, "w");

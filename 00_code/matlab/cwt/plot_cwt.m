@@ -3,7 +3,7 @@ function plot_cwt(t, f, cfs, coi, fs, opt, N, J1);
 tickmin = min(f);
 tickmax = fs/2;
 
-figure;
+% figure;
 
 %% Calculate tick lables for the representation (opt)
 if contains(opt,'log2','IgnoreCase',true)
@@ -92,20 +92,20 @@ hold off
 % end
 
 %% Print the CWT Coeficients to File 
-golden_re_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_re.txt";
-fp = fopen(golden_re_filename,'w');
-for i=1:J1
-    fprintf(fp, "%s", regexprep(num2str(real(cfs(i,:))),'\s+','\n'));
-    fprintf(fp, "\n");
-end
-fclose(fp);
-
-golden_im_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_im.txt";
-fp = fopen(golden_im_filename,'w');
-for i=1:J1
-    fprintf(fp, "%s", regexprep(num2str(imag(cfs(i,:))),'\s+','\n'));
-    fprintf(fp, "\n");
-end
-fclose(fp);
+% golden_re_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_re.txt";
+% fp = fopen(golden_re_filename,'w');
+% for i=1:J1
+%     fprintf(fp, "%s", regexprep(num2str(real(cfs(i,:))),'\s+','\n'));
+%     fprintf(fp, "\n");
+% end
+% fclose(fp);
+% 
+% golden_im_filename = "/home/fernandes/thesis/00_code/matlab/cwt/golden_vectors/cfs_im.txt";
+% fp = fopen(golden_im_filename,'w');
+% for i=1:J1
+%     fprintf(fp, "%s", regexprep(num2str(imag(cfs(i,:))),'\s+','\n'));
+%     fprintf(fp, "\n");
+% end
+% fclose(fp);
 
 return

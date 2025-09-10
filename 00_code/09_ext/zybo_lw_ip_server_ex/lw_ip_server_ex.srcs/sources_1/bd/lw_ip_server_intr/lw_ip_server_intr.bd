@@ -26,7 +26,6 @@
       },
       "rst_ps7_0_50M": "",
       "xlconcat_0": "",
-      "system_ila_0": "",
       "axi_master_full_0": ""
     },
     "interface_ports": {
@@ -679,10 +678,10 @@
             "value": "0"
           },
           "PCW_EN_EMIO_TTC0": {
-            "value": "0"
+            "value": "1"
           },
           "PCW_EN_EMIO_TTC1": {
-            "value": "0"
+            "value": "1"
           },
           "PCW_EN_EMIO_UART0": {
             "value": "0"
@@ -763,10 +762,10 @@
             "value": "0"
           },
           "PCW_EN_TTC0": {
-            "value": "0"
+            "value": "1"
           },
           "PCW_EN_TTC1": {
-            "value": "0"
+            "value": "1"
           },
           "PCW_EN_UART0": {
             "value": "0"
@@ -1653,6 +1652,15 @@
           "PCW_S_AXI_HP0_ID_WIDTH": {
             "value": "6"
           },
+          "PCW_S_AXI_HP1_DATA_WIDTH": {
+            "value": "64"
+          },
+          "PCW_S_AXI_HP2_DATA_WIDTH": {
+            "value": "64"
+          },
+          "PCW_S_AXI_HP3_DATA_WIDTH": {
+            "value": "64"
+          },
           "PCW_TPIU_PERIPHERAL_CLKSRC": {
             "value": "External"
           },
@@ -1661,6 +1669,9 @@
           },
           "PCW_TRACE_PERIPHERAL_ENABLE": {
             "value": "0"
+          },
+          "PCW_TTC0_BASEADDR": {
+            "value": "0xE0104000"
           },
           "PCW_TTC0_CLK0_PERIPHERAL_CLKSRC": {
             "value": "CPU_1X"
@@ -1680,8 +1691,17 @@
           "PCW_TTC0_CLK2_PERIPHERAL_DIVISOR0": {
             "value": "1"
           },
+          "PCW_TTC0_HIGHADDR": {
+            "value": "0xE0104fff"
+          },
           "PCW_TTC0_PERIPHERAL_ENABLE": {
-            "value": "0"
+            "value": "1"
+          },
+          "PCW_TTC0_TTC0_IO": {
+            "value": "EMIO"
+          },
+          "PCW_TTC1_BASEADDR": {
+            "value": "0xE0105000"
           },
           "PCW_TTC1_CLK0_PERIPHERAL_CLKSRC": {
             "value": "CPU_1X"
@@ -1701,8 +1721,17 @@
           "PCW_TTC1_CLK2_PERIPHERAL_DIVISOR0": {
             "value": "1"
           },
+          "PCW_TTC1_HIGHADDR": {
+            "value": "0xE0105fff"
+          },
           "PCW_TTC1_PERIPHERAL_ENABLE": {
-            "value": "0"
+            "value": "1"
+          },
+          "PCW_TTC1_TTC1_IO": {
+            "value": "EMIO"
+          },
+          "PCW_TTC_PERIPHERAL_FREQMHZ": {
+            "value": "50"
           },
           "PCW_UART0_PERIPHERAL_ENABLE": {
             "value": "0"
@@ -2399,28 +2428,16 @@
         "xci_path": "ip/lw_ip_server_intr_xlconcat_0_0/lw_ip_server_intr_xlconcat_0_0.xci",
         "inst_hier_path": "xlconcat_0"
       },
-      "system_ila_0": {
-        "vlnv": "xilinx.com:ip:system_ila:1.1",
-        "xci_name": "lw_ip_server_intr_system_ila_0_0",
-        "xci_path": "ip/lw_ip_server_intr_system_ila_0_0/lw_ip_server_intr_system_ila_0_0.xci",
-        "inst_hier_path": "system_ila_0",
-        "parameters": {
-          "C_MON_TYPE": {
-            "value": "NATIVE"
-          },
-          "C_NUM_OF_PROBES": {
-            "value": "1"
-          },
-          "C_PROBE0_TYPE": {
-            "value": "0"
-          }
-        }
-      },
       "axi_master_full_0": {
         "vlnv": "user.org:user:axi_master_full:1.0",
         "xci_name": "lw_ip_server_intr_axi_master_full_0_0",
         "xci_path": "ip/lw_ip_server_intr_axi_master_full_0_0/lw_ip_server_intr_axi_master_full_0_0.xci",
         "inst_hier_path": "axi_master_full_0",
+        "parameters": {
+          "C_M_AXI_TARGET_SLAVE_BASE_ADDR": {
+            "value": "0x10000000"
+          }
+        },
         "interface_ports": {
           "M_AXI": {
             "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
@@ -2503,17 +2520,8 @@
       "axi_master_full_0_tx_done_intr": {
         "ports": [
           "axi_master_full_0/tx_done_intr",
-          "xlconcat_0/In0",
-          "system_ila_0/probe0"
-        ],
-        "hdl_attributes": {
-          "DEBUG": {
-            "value": "true"
-          },
-          "MARK_DEBUG": {
-            "value": "true"
-          }
-        }
+          "xlconcat_0/In0"
+        ]
       },
       "m_axi_init_axi_txn_0_1": {
         "ports": [
@@ -2534,7 +2542,6 @@
           "axi_gpio_0/s_axi_aclk",
           "ps7_0_axi_periph/M00_ACLK",
           "ps7_0_axi_periph/ACLK",
-          "system_ila_0/clk",
           "axi_master_full_0/m_axi_aclk"
         ]
       },
