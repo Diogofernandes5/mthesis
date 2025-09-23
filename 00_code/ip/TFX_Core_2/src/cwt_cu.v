@@ -7,9 +7,10 @@ module cwt_cu #(
 	input wire ifft_ready_i,
     input wire ifft_done_i,
 	
-	input wire dl_busy_i,
+//	input wire dl_busy_i,
 	
-	input wire next,
+	input wire tx_grant_i,     // possible to tx
+	input wire next_i,
 
 	output reg bram_en_o,
 	output reg bram_we_o,
@@ -17,18 +18,18 @@ module cwt_cu #(
 
 	output reg busy_o,
 	
-	output reg cwt_done_o,
+	output reg cwt_done_o,     // init tx
 	output reg cwt_ready_o,
 	
-	output reg cwt_irq_o
+	output reg cwt_irq_o       // tx done irq
 	);
 
 // define states
 localparam S_IDLE           = 3'b000;
 localparam S_RECEIVE_DATA   = 3'b001;
 localparam S_CHECK_J        = 3'b010;
-localparam S_SEND_RESULTS   = 3'b011;
-localparam S_SEND_INTR      = 3'b100;
+localparam S_PREP_SEND      = 3'b011;
+localparam S_SEND_RESULTS   = 3'b100;
 
 // state and nextstate registers
 reg [2:0] state;
@@ -54,6 +55,8 @@ end
 
 // nextstate logic
 always @(*) begin
+    nstate = S_IDLE;
+    
 	case(state)
 		S_IDLE:
 			if(ifft_done_i & ifft_ready_i)
@@ -68,117 +71,88 @@ always @(*) begin
 				nstate = S_RECEIVE_DATA;
 		
 		S_CHECK_J:
-//			if(counter_j == (J1-1))
 			if(counter_j == J1)
-                if(~dl_busy_i)
-                    nstate = S_SEND_RESULTS;
-                else 
-                    nstate = S_CHECK_J;
+                nstate = S_PREP_SEND;
 			else
-				nstate = S_IDLE;		
-
-		S_SEND_RESULTS: 
+				nstate = S_IDLE;
+	   
+	   S_PREP_SEND:
+            if(tx_grant_i)
+                nstate = S_SEND_RESULTS;
+            else 
+                nstate = S_PREP_SEND;
+		
+		S_SEND_RESULTS: // sends results via axi
 			if(data_counter == (N*J1*2))
-				nstate = S_SEND_INTR;
+				nstate = S_IDLE;
 			else 
 				nstate = S_SEND_RESULTS;
-				
-        S_SEND_INTR:
-            if(clk_counter > 3'd6)
-                nstate = S_IDLE;
-            else
-                nstate = S_SEND_INTR;
-		default:
-			nstate = S_IDLE;
 	endcase
 end
 
 // output logic
 always @(*) begin
+    bram_en_o = 1'b0;
+    bram_we_o = 1'b0;
+    bram_addr_o = 32'd0;
+    
+    start_sending = 1'b0;
+    busy_o = 1'b0;
+    
+    cwt_irq_o = 1'b0;
 	case(state)
 		S_IDLE: begin
-			bram_en_o <= 1'b0;
-			bram_we_o <= 1'b0;
-			bram_addr_o <= 32'd0;
-
-			start_sending <= 1'b0;
-			busy_o <= 1'b0;
-			
-			cwt_irq_o <= 0;
+		    // default
 		end
 			
 		S_RECEIVE_DATA: begin
-			bram_en_o <= 1'b1;
-			bram_we_o <= 1'b1;
-			bram_addr_o <= ((counter_j - 1) << $clog2(N)) + data_counter;
-//			bram_addr_o <= ((counter_j) << $clog2(N)) + data_counter;
+			bram_en_o = 1'b1;
+			bram_we_o = 1'b1;
+			bram_addr_o = ((counter_j - 1) << $clog2(N)) + data_counter;
 
-			start_sending <= 1'b0;
-			busy_o <= 1'b1;
-			
-			cwt_irq_o <= 0;
+			busy_o = 1'b1;
 		end
 		
 		S_CHECK_J: begin
-			bram_en_o <= 1'b1;
-			bram_we_o <= 1'b0;
-			bram_addr_o <= 32'd0;
-
-			start_sending <= 1'b0;
-			busy_o <= 1'b1;
+			busy_o = 1'b1;
+		end
+		
+		S_PREP_SEND: begin
+			busy_o = 1'b1;
+			bram_en_o = 1'b1;
 			
-			cwt_irq_o <= 0;
+		    start_sending = 1'b1;
 		end
 
 		S_SEND_RESULTS: begin
-			bram_en_o <= 1'b1;
-			bram_we_o <= 1'b0;
-			bram_addr_o <= data_counter;
+			bram_en_o = 1'b1;
+			bram_addr_o = data_counter;
 
-			start_sending <= 1'b1;
-			busy_o <= 1'b1;			
+			busy_o = 1'b1;
 			
-			cwt_irq_o <= 0;    
-		end
-		
-		S_SEND_INTR: begin
-		    bram_en_o <= 1'b0;
-			bram_we_o <= 1'b0;
-			bram_addr_o <= 'd0;
-
-			start_sending <= 1'b0;
-			busy_o <= 1'b1;			
-			
-			cwt_irq_o <= 1;
-		end
-		
-		default: begin
-            bram_en_o <= 1'b0;
-            bram_we_o <= 1'b0;
-            bram_addr_o <= 32'd0;
-            
-            start_sending <= 1'b0;
-            busy_o <= 1'b0;
-            
-			cwt_irq_o <= 0;
+			if(data_counter > (N*J1*2 - 4))
+                 cwt_irq_o = 1'b1;
+            else
+                 cwt_irq_o = 1'b0;
 		end
 
 	endcase
 end
 
-/********** CWT_READY LOGIC *********/
+/********** CWT_DONE LOGIC *********/
 always @(negedge clk) begin
     cwt_done_o <= 0;
     /* start sending and bram address bigger than 0, because of the bram delay */
     if(start_sending) begin
         cwt_done_o <= 1;
         
-        if(data_counter > 10'd2) begin
+        if(tx_grant_i) begin
             cwt_done_o <= 0;
         end
     end
 end
 
+/********** cwt_ready_o LOGIC *********/
 always @(posedge clk or negedge rstn) begin
 	if(~rstn) begin
 		cwt_ready_o <= 0;
@@ -186,7 +160,7 @@ always @(posedge clk or negedge rstn) begin
     else
         if(cwt_done_o)
             cwt_ready_o <= 1;
-        else if(~start_sending)
+        else if(!start_sending)
             cwt_ready_o <= 0;        
 end
 
@@ -195,13 +169,11 @@ end
 always @(posedge clk or negedge rstn) begin
 	if(~rstn) begin
 		data_counter <= 32'd0;
-		clk_counter <= 'd0;
 	end
 	else begin
 		case(state)
 			S_IDLE: begin
 				data_counter <= 32'd0;
-                clk_counter <= 'd0;
 			end
 				
 			S_RECEIVE_DATA: begin
@@ -216,34 +188,16 @@ always @(posedge clk or negedge rstn) begin
 			end
 			
 			S_SEND_RESULTS: begin
-                if(next)
+                if(next_i)
 				    data_counter <= data_counter + 1;
 				else 
 				    data_counter <= data_counter;
             end
-            
-            S_SEND_INTR:
-                clk_counter <= clk_counter + 1;
         endcase
 	end
 end
 
 assign counter_j = counter_j_aux;
-
-//always @(posedge clk or negedge rstn) begin
-//    if(~rstn)
-//        counter_j_aux <= {($clog2(J1)){1'b1}}; // negative
-//    else begin
-//        ifft_done_d <= ifft_done_i;  // Register the previous state of ifft_done_i
-    
-//        if (ifft_done_i && !ifft_done_d) begin
-//            // Rising edge detected
-//            counter_j_aux <= counter_j_aux + 1;
-//        end
-//        else if (state == S_SEND_RESULTS)
-//            counter_j_aux <= {($clog2(J1)){1'b1}};
-//    end
-//end
 
 always @(posedge clk or negedge rstn) begin
     if(~rstn)
@@ -251,11 +205,10 @@ always @(posedge clk or negedge rstn) begin
     else begin
         ifft_done_d <= ifft_done_i;  // Register the previous state of ifft_done_i
     
-        if (ifft_done_i && !ifft_done_d) begin
-            // Rising edge detected
+        if(ifft_done_i && !ifft_done_d) // Rising edge detected
             counter_j_aux <= counter_j_aux + 1;
-        end
-        else if (state == S_SEND_RESULTS)
+            
+        else if(state == S_SEND_RESULTS)
             counter_j_aux <= 'd0;
     end
 end

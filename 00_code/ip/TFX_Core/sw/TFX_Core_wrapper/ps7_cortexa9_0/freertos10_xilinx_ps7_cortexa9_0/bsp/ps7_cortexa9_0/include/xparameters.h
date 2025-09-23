@@ -310,7 +310,8 @@
 /******************************************************************/
 
 /* Definitions for Fabric interrupts connected to ps7_scugic_0 */
-#define XPAR_FABRIC_TFX_CORE_V1_0_0_CWT_DONE_INTR 61U
+#define XPAR_FABRIC_TFX_CORE_V1_0_0_TXI_DONE_O_INTR 61U
+#define XPAR_FABRIC_TFX_CORE_V1_0_0_TXO_DONE_O_INTR 62U
 
 /******************************************************************/
 

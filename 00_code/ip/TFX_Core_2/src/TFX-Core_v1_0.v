@@ -30,8 +30,8 @@ module TFX_Core_v1_0 #
        
 //    input wire start_but_i,
 //    input wire [C_M_AXI_Data_DATA_WIDTH-1:0] data_i,
-    
-    output wire cwt_done_o,
+    output wire txi_done_o,
+    output wire txo_done_o,
     
     // User ports ends
     // Do not modify the ports beyond this line
@@ -114,21 +114,34 @@ localparam C_M_PROT_VAL = 3'b000;
 // Number of transactions to be operated, independently of the data width
 localparam integer C_NUM_OF_TRANSFERS = 2048;
 
-//wire cwt_ready;
-
 wire econnected;
-wire irq_status;
+
+wire send_inputs_en;
+
+wire txi_irq_status;
+wire txi_ack;
+
+wire txo_irq_status;
+wire txo_ack;
 
 // Instantiation of Axi Bus Interface S_AXI_Config
 TFX_Core_v1_0_S_AXI_Config # ( 
     .C_S_AXI_DATA_WIDTH(C_S_AXI_Config_DATA_WIDTH),
     .C_S_AXI_ADDR_WIDTH(C_S_AXI_Config_ADDR_WIDTH)
-) S_AXI_Config (
-//    .cwt_ready_i(cwt_ready),
-    .econnected(econnected),
-    .irq_status(irq_status),
-    .cwt_irq_i(cwt_done_o),
+) S_AXI_Config (   
+    .txi_irq_i(txi_done_o),
+    .txo_irq_i(txo_done_o),
+    
+    .econnected_o(econnected),
+    
+    .send_inputs_en_o(send_inputs_en),
 
+    .txi_irq_status_o(txi_irq_status),
+    .txi_ack_o(txi_ack),
+    
+    .txo_irq_status_o(txo_irq_status),
+    .txo_ack_o(txo_ack),
+    
     .S_AXI_ACLK(s_axi_config_aclk),
     .S_AXI_ARESETN(s_axi_config_aresetn),
     .S_AXI_AWADDR(s_axi_config_awaddr),
@@ -170,11 +183,18 @@ TFX_Core_v1_0_M_AXI_Data # (
     .C_NUM_OF_TRANSFERS(C_NUM_OF_TRANSFERS)
     
 ) M_AXI_Data (
-
-    .irq_status(irq_status),
-    .econnected(econnected),
-        
-    .cwt_irq_o(cwt_done_o),
+    .econnected_i(econnected),
+    
+    .txi_status_i(txi_irq_status),
+    .txi_ack_i(txi_ack),
+    
+    .txo_status_i(txo_irq_status),
+    .txo_ack_i(txo_ack),
+    
+    .send_inputs_en_i(send_inputs_en),
+    
+    .txi_done_o(txi_done_o),
+    .txo_done_o(txo_done_o),
     
     .M_AXI_ACLK(m_axi_data_aclk),
     .M_AXI_ARESETN(m_axi_data_aresetn),

@@ -67,19 +67,19 @@ end
 
 // output logic
 always @(*) begin
-    brom_addr_o <= {0,data_counter} | (toggle_page << $clog2(N));
+    brom_addr_o = {0,data_counter} | (toggle_page << $clog2(N));
     
     case(state)
         S_IDLE: begin
-            start_sending <= 0;
+            start_sending = 0;
         end
 
         S_SEND: begin
-            start_sending <= 1;
+            start_sending = 1;
         end
         
         default: begin
-            start_sending <= 0;
+            start_sending = 0;
         end
     endcase
 end

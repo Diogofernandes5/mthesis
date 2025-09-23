@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x49E273DCAD4CBCA4",
+      "boundary_crc": "0x8301650E24E52F27",
       "device": "xc7z010clg400-1",
       "gen_directory": "../../../../TFX_Core.gen/sources_1/bd/master_test",
       "name": "master_test",
@@ -60,13 +60,26 @@
           }
         }
       },
-      "cwt_done_o": {
+      "txo_done_o": {
         "type": "intr",
         "direction": "O",
         "parameters": {
           "PortWidth": {
             "value": "1",
             "value_src": "default"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
+            "value_src": "const_prop"
+          }
+        }
+      },
+      "txi_done_o": {
+        "direction": "O",
+        "parameters": {
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default_prop"
           },
           "SENSITIVITY": {
             "value": "LEVEL_HIGH",
@@ -194,8 +207,14 @@
     "nets": {
       "TFX_Core_v1_0_0_cwt_done": {
         "ports": [
-          "TFX_Core_v1_0_0/cwt_done_o",
-          "cwt_done_o"
+          "TFX_Core_v1_0_0/txo_done_o",
+          "txo_done_o"
+        ]
+      },
+      "TFX_Core_v1_0_0_txi_done_o": {
+        "ports": [
+          "TFX_Core_v1_0_0/txi_done_o",
+          "txi_done_o"
         ]
       },
       "m_axi_data_aclk_0_1": {

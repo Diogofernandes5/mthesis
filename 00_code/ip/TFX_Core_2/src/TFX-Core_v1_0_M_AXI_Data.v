@@ -39,11 +39,19 @@ module TFX_Core_v1_0_M_AXI_Data #
     // Users to add ports here
 //    input wire intr_i,
     
-    input wire irq_status, // em principio podes por a 0
-    input wire econnected,
+    input wire econnected_i,
+    
+    input wire send_inputs_en_i,
+    
+    input wire txi_status_i,
+    input wire txi_ack_i,
+    
+    input wire txo_status_i,
+    input wire txo_ack_i,
     
 //    output wire cwt_ready_o, //inicio das transmissões
-    output wire cwt_irq_o,
+    output wire txi_done_o,
+    output wire txo_done_o,
 
     // User ports ends
     // Do not modify the ports beyond this line
@@ -246,7 +254,7 @@ reg write_done_prev;
 wire write_done_pulse;
 
 /*********************************************************/
-wire [C_M_AXI_DATA_WIDTH-1:0] cwt_output;
+wire [C_M_AXI_DATA_WIDTH-1:0] data_tx;
 
 // addr to be added to the axi_waddr
 reg [C_M_AXI_ADDR_WIDTH-1:0] waddr_offset_r;
@@ -301,7 +309,9 @@ assign M_AXI_RREADY	= axi_rready;
 //assign TXN_DONE	= compare_done;
 //Burst size in bytes
 assign burst_size_bytes	= C_M_AXI_BURST_LEN * C_M_AXI_DATA_WIDTH/8;
+
 assign init_txn_pulse	= (!init_txn_ff2) && init_txn_ff;
+//assign init_txn_pulse	= init_txn_pulse_2;
 assign init_txn_pulse_2	= (!init_txn_ff) && INIT_AXI_TXN;
 
 
@@ -471,12 +481,12 @@ Data pattern is only a simple incrementing count from 0 for each burst  */
 always @(posedge M_AXI_ACLK)                                                      
 begin                                                                             
     if (M_AXI_ARESETN == 0 || init_txn_pulse == 1'b1)                                                         
-        axi_wdata <= cwt_output;                                                             
+        axi_wdata <= data_tx;                                                             
     //else if (wnext && axi_wlast)                                                  
     //  axi_wdata <= 'b0;                                                           
     else if (wnext)  
        //	      axi_wdata <= axi_wdata + 1;                                                   
-        axi_wdata <= cwt_output;                                                   
+        axi_wdata <= data_tx;                                                   
     else                                                                            
         axi_wdata <= axi_wdata;                                                       
 end                                                                             
@@ -879,7 +889,15 @@ wire [C_M_AXI_DATA_WIDTH-1:0] x_re;
 wire [C_M_AXI_DATA_WIDTH-1:0] x_im;
 
 /**************** AXI *****************/
+wire [C_M_AXI_DATA_WIDTH-1:0] x_input;
+wire input_tx;
+wire sending_inputs;
+
 wire next;
+reg axi_write_busy;
+
+wire grantIN;
+wire grantOUT;
 
 /*************** CORE ****************/
 wire [C_M_AXI_DATA_WIDTH-1:0] X_re;
@@ -889,6 +907,8 @@ wire core_busy;
 
 wire cwt_row_done;
 wire cwt_row_ready;
+
+wire [C_M_AXI_DATA_WIDTH-1:0] cwt_output;
 
 /*************** CWT CU ***************/
 
@@ -902,12 +922,23 @@ wire cwt_busy;
 wire cwt_done;
 wire cwt_ready;
 
+/******************** ADDR CHANGE ********************/
+localparam INPUT_BUF_BASE_ADDR = 0;
+localparam OUTPUT_BUF_BASE_ADDR = 32'h10000000;
+
+wire pageIN_id;
+wire pageIN_ready;
+wire pageOUT_id;
+wire pageOUT_ready;
+
 /******************** INPUT BROM *******************/
 brom_cu #(.N(N)) input_gen(
     .clk(M_AXI_ACLK),
     .rstn(M_AXI_ARESETN),
+    
     .dl_busy_i(core_busy),
-    .econnected_i(econnected),
+    .econnected_i(econnected_i),
+    
     .start_o(brom_sampling_done),
     .dready_o(brom_dready),
     .brom_addr_o(brom_addr)
@@ -940,20 +971,6 @@ assign x_re_brom = { { (C_M_AXI_DATA_WIDTH-ACC_RESOLUTION) { brom_data[ACC_RESOL
 //    .SPI_CS_o(SPI_CS_o)
 //);
 
-//// Receives and send via AXI the accelerometer data
-//send_acc_data #(
-//    .N(N))
-//send_data (
-//    .clk(M_AXI_ACLK),
-//    .rstn(M_AXI_ARESETN),
-//    .start(acc_sampling_done),
-//    .dready(acc_dready),
-//    .acc_data(x_re_acc),
-//    .next(next),
-//    .data_o(x),
-//    .send_acc_data_o(acc_start_send),
-//    .send_done_o(acc_send_done_o)
-//);
 assign x_re_acc = { { (C_M_AXI_DATA_WIDTH-ACC_RESOLUTION) { acc_data[ACC_RESOLUTION-1] } }, acc_data };
 
 /******************** INPUT GEN *********************/
@@ -974,6 +991,28 @@ cwt_input_gen (
     .dready(dready)
 );
 assign x_im = 'b0;
+
+/******************** SEND INPUTS *********************/
+//// Receives and send via AXI the input data
+send_input_data #(
+    .N(N))
+send_in_data (
+    .clk(M_AXI_ACLK),
+    .rstn(M_AXI_ARESETN),
+    
+    .start_i(start),
+    .enable_i(send_inputs_en_i),
+    .dready_i(dready),
+    
+    .data_i(x_re),
+    
+    .tx_grant_i(grantIN),
+    .next_i(next),
+    
+    .data_o(x_input),
+    .init_tx_o(input_tx),
+    .tx_done_o(txi_done_o)
+);
 
 // CWT Core 
 // sends a row each time cwt_row_done_o comes high
@@ -1000,6 +1039,22 @@ CWT_nBRAM CWT_core (
 //assign next = wnext || init_txn_pulse;
 assign next = wnext || init_txn_pulse;
 
+/************ axi busy flag ***************/
+always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
+    if(!M_AXI_ARESETN) begin
+        axi_write_busy <= 1'b0;
+    end else begin
+        // Start of write transaction
+        if(M_AXI_AWVALID && M_AXI_AWREADY)
+            axi_write_busy <= 1'b1;
+
+        // End of write transaction (response accepted)
+        if((txi_done_o || txo_done_o) && M_AXI_WLAST)
+            axi_write_busy <= 1'b0;
+    end
+end
+
+/************ CWT CU ************/
 cwt_cu #(
     .N(N),
     .J1(J1)) 
@@ -1010,9 +1065,10 @@ cwt_control_unit (
     .ifft_ready_i(cwt_row_ready),
     .ifft_done_i(cwt_row_done),
     
-    .dl_busy_i(irq_status),
+//    .dl_busy_i(irq_status),
     
-    .next(next),
+    .tx_grant_i(grantOUT),
+    .next_i(next),
     
     .bram_en_o(bram_en),
     .bram_we_o(bram_we),
@@ -1023,12 +1079,34 @@ cwt_control_unit (
     .cwt_done_o(cwt_done),
     .cwt_ready_o(cwt_ready),
     
-    .cwt_irq_o(cwt_irq_o)
+    .cwt_irq_o(txo_done_o)
 );
 // make it to the second half of the bram
 assign bram_addr_x_im = bram_addr_x_re | N_J1;
 
-assign INIT_AXI_TXN = cwt_done;
+//assign INIT_AXI_TXN = cwt_done | input_tx;
+//assign data_tx = sending_inputs ? x_input : cwt_output;
+
+/********* ROUND-ROBIN ARBITRER ***********/
+/* Just atributes the axi master ownership*/
+rr_arbitrer in_out_arbitrer (
+    .clk(M_AXI_ACLK), 
+    .rstn(M_AXI_ARESETN),
+
+    .reqIN_i(input_tx),            // input requests transfer
+    .pageIN_ready_i(pageIN_ready),
+    .dataIN_i(x_input),           // data from input to be sent
+    .grantIN_o(grantIN),          // arbiter grants master to input
+
+    .reqOUT_i(cwt_done),
+    .pageOUT_ready_i(pageOUT_ready),
+    .dataOUT_i(cwt_output),
+    .grantOUT_o(grantOUT),
+
+    .master_busy_i(axi_write_busy),      // produced by AW/B handshake logic
+    .master_data_o(data_tx),
+    .master_start_o(INIT_AXI_TXN)    // pulse to start master with current params
+);
 
 // When receiving we use both ports of BRAM
 // When sending data out, we use only the A port of BRAM
@@ -1048,52 +1126,66 @@ cwt_results bram_results (
     .dinb(X_im)            // input wire [31 : 0] dinb
 );
 
-/******************** ADDR CHANGE ********************/
-localparam INPUT_BUF_BASE_ADDR = 0;
-localparam OUTPUT_BUF_BASE_ADDR = 32'h10000000;
+/************ PAGE MANAGER INPUT **********/
+page_manager page_manager_input (
+    .clk(M_AXI_ACLK), 
+    .rstn(M_AXI_ARESETN),
+    .req_page_i(input_tx),
+    .tx_ack_i(txi_ack_i),
+    .page_id_o(pageIN_id),
+    .page_ready_o(pageIN_ready)
+);
 
-always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-    if(!M_AXI_ARESETN)
-        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR;
-    else 
-        waddr_offset_r <= waddr_offset_r;   
-end
-
-//reg cwt_num;
+/************ PAGE MANAGER OUTPUT **********/
+page_manager page_manager_output (
+    .clk(M_AXI_ACLK), 
+    .rstn(M_AXI_ARESETN),
+    .req_page_i(cwt_done),
+    .tx_ack_i(txo_ack_i),
+    .page_id_o(pageOUT_id),
+    .page_ready_o(pageOUT_ready)
+);
 
 //always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
 //    if(!M_AXI_ARESETN)
-//        waddr_offset_r <= INPUT_BUF_BASE_ADDR;
-
-//    else if(!SPI_ENABLE)
-//        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
-
-////    else if(acc_send_done_o)
-////        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (cwt_num << $clog2(2*N*J1*4));
-
-////    else if(cwt_send_done_o)
-////        waddr_offset_r <= INPUT_BUF_BASE_ADDR | (!cwt_num << $clog2(N*4));
+//        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR;
 //    else 
 //        waddr_offset_r <= waddr_offset_r;   
 //end
 
-//reg cwt_num_toggled;
+reg cwt_num;
 
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(!M_AXI_ARESETN) begin
-//        cwt_num <= 0;
-//        cwt_num_toggled <= 0;
-//    end
-//    else if(init_txn_pulse)
-//        cwt_num_toggled <= 0;
-//    else if(!cwt_done && cwt_ready && !cwt_num_toggled) begin
-//        cwt_num <= ~cwt_num;
-//        cwt_num_toggled <= 1; 
-//    end    
-//    else begin
-//        cwt_num <= cwt_num;
-//        cwt_num_toggled <= cwt_num_toggled; 
-//    end    
-//end
+always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
+    if(!M_AXI_ARESETN)
+        waddr_offset_r <= INPUT_BUF_BASE_ADDR;
+
+    else if(pageOUT_ready)
+        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR | (pageOUT_id << $clog2(2*N*J1*4));
+
+    else if(pageIN_ready)
+        waddr_offset_r <= INPUT_BUF_BASE_ADDR | (pageIN_id << $clog2(N*4));
+        
+    else 
+        waddr_offset_r <= waddr_offset_r;   
+end
+
+reg cwt_num_toggled;
+
+always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
+    if(!M_AXI_ARESETN) begin
+        cwt_num <= 0;
+        cwt_num_toggled <= 0;
+    end
+    else if(init_txn_pulse)
+        cwt_num_toggled <= 0;
+    else if(!cwt_done && cwt_ready && !cwt_num_toggled) begin
+        cwt_num <= ~cwt_num;
+        cwt_num_toggled <= 1; 
+    end    
+    else begin
+        cwt_num <= cwt_num;
+        cwt_num_toggled <= cwt_num_toggled; 
+    end    
+end
                                                                                                 
 endmodule

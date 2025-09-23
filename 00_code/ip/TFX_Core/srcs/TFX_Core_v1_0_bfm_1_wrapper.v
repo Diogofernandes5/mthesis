@@ -12,24 +12,27 @@
 module TFX_Core_v1_0_bfm_1_wrapper
    (ACLK,
     ARESETN,
-//    start_i,
-    cwt_done_o);
+    
+    txi_done_o,
+    txo_done_o);
+    
   input ACLK;
   input ARESETN;
-   
-//  input start_i;
   
-  output cwt_done_o;
+  output txi_done_o;    
+  output txo_done_o;
 
   wire ACLK;
   wire ARESETN;
-//  wire start_i;
-  wire cwt_done_o;
+  
+  wire txi_done_o;    
+  wire txo_done_o;
   
   master_test TFX_Core_v1_0_bfm_1_i
        (.ACLK(ACLK),
         .ARESETN(ARESETN),
-//        .start_i(start_i),
-        .cwt_done_o(cwt_done_o));
+        
+        .txi_done_o(txi_done_o),
+        .txo_done_o(txo_done_o));
         
 endmodule
