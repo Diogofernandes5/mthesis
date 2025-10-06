@@ -4,6 +4,7 @@ module page_manager
     input wire rstn,
     
     input wire req_page_i,
+    input wire master_busy_i,
     input wire tx_ack_i,
 
     output wire page_id_o,
@@ -25,7 +26,7 @@ reg req_page_writen;
 
 always @(posedge clk) begin
     // rising edge detect
-    if(req_page_i && !req_page_writen && !pages_full) begin
+    if(req_page_i && !req_page_writen && !pages_full && !master_busy_i) begin
         page_ready_o <= 1;
         req_page_writen <= 1;
     end

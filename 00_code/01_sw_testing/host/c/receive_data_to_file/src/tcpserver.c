@@ -16,6 +16,8 @@
 pthread_mutex_t cli_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t data_ready_cond = PTHREAD_COND_INITIALIZER;
 
+static void deserialize_header(const uint8_t *buf, header_t *h);
+
 void close_connection(void *arg)
 {
 	client_socket_info_t *client_info = (client_socket_info_t *) arg;
@@ -54,50 +56,50 @@ void *thread_recv(void *arg)
 	// char buffer_exit[BUFFER_LEN];
 	// int int_data;
 	// uint16_t err_num = 0;
-	int32_t rcv_len;
+	uint8_t recv_eder_buf[9];
+	header_t eder;
 	int *buffer;
 
 	pthread_cleanup_push(close_connection, info);
 
 	while(info->state==THREAD_ALIVE)
 	{
-		// printf("Exiting receive loop: socket state = %d\n", socket_table[info->index].state);
-		// receive lenght of data
-		if (recv_all(info->sockfd, &rcv_len, sizeof(rcv_len)) < 0) {
-	        printf("Failed to receive length\n\r");
+		// receive header
+		if (recv_all(info->sockfd, &recv_eder_buf, sizeof(recv_eder_buf)) < 0) {
+	        printf("[RECV] Failed to receive header!\n\r");
 	        return NULL;
     	}
 
-    	// sprintf(buffer_exit, "%d", rcv_len);
+    	deserialize_header(recv_eder_buf, &eder); // convert from network to host order
+
+    	// sprintf(buffer_exit, "%d", eder.len);
 		// if(strcmp(buffer_exit, "exit") == 0){
 		// 	close_connection(&info->index);
 		// 	break;
 		// }
 
-    	// Receive Length
-    	rcv_len = ntohl(rcv_len);
-	    if (rcv_len % sizeof(uint32_t) != 0) {
-	        printf("Invalid length: %d\n", rcv_len);
+	    if (eder.len % sizeof(uint32_t) != 0) { // is length valid?
+	        printf("[RECV] Invalid length: %d\n", eder.len);
 	        return NULL;
 	    }
 
 	    // transform bytes in words
-	    size_t count = rcv_len / sizeof(uint32_t);
-	    printf("Receive length (words): %ld\n", count);
+	    size_t count = eder.len / sizeof(uint32_t);
+	    printf("[RECV] Receive length (words): %ld\n", count);
 
 	    // Allocate buffer to receive
-	    if (!(buffer = (int *) malloc(rcv_len)))
+	    if (!(buffer = (int *) malloc(eder.len)))
 		    panic("Memory allocation failed\n\r");
 
 		// receive data
-	    if (recv_all(info->sockfd, buffer, rcv_len) < 0) {
+	    if (recv_all(info->sockfd, buffer, eder.len) < 0) {
 	        free(buffer);
 	        panic("Failed to receive data");
 	    }
 	    
 	    pthread_mutex_lock(&cli_mutex);
 		
-		info->recv_len = count;
+		info->eder = eder;
 	    info->recv_buf = buffer;
 	    info->data_available = 1;
 
@@ -114,8 +116,6 @@ void *thread_send(void *arg)
 {	
 	client_socket_info_t *info = (client_socket_info_t *) arg;            /* get & convert the socket */
 	char buffer[BUFFER_LEN];
-
-	// pthread_cleanup_push(close_connection, &(info->index));
 
 	pthread_cleanup_push(close_connection, info);
 
@@ -171,4 +171,18 @@ void init_tcpserver(int port, int *sd_listen, struct sockaddr_in *sock_addr, int
         printf("Starting server on %s:%d\n", host_name, port);
 
     printf("Listening for incoming connections on sockfd: %d\n", *sd_listen);
+}
+
+static void deserialize_header(const uint8_t *buf, header_t *h) {
+    uint8_t op;
+    uint32_t id;
+    uint32_t len;
+
+    memcpy(&op,  buf, 	sizeof(op));
+    memcpy(&id,  buf+1, sizeof(id));
+    memcpy(&len, buf+5, sizeof(len));
+
+    h->op  = ntohl(op);
+    h->id  = ntohl(id);
+    h->len = ntohl(len);
 }

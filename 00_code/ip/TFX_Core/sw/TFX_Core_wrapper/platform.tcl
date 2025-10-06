@@ -20,3 +20,7 @@ domain active {zynq_fsbl}
 domain active {freertos10_xilinx_ps7_cortexa9_0}
 platform generate -quick
 platform generate
+platform generate
+platform active {TFX_Core_wrapper}
+platform config -updatehw {/home/fernandes/thesis/00_code/ip/TFX_Core/TFX_Core_wrapper.xsa}
+platform generate -domains 

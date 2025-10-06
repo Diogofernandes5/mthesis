@@ -7,7 +7,8 @@
       "name": "TFX_Core",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2021.1"
+      "tool_version": "2021.1",
+      "validated": "true"
     },
     "design_tree": {
       "processing_system7_0": "",
@@ -23,19 +24,74 @@
           "auto_pc": ""
         }
       },
-      "xlconcat_0": "",
       "TFX_Core_v1_0_0": ""
     },
     "interface_ports": {
       "DDR": {
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:interface:ddrx:1.0",
-        "vlnv": "xilinx.com:interface:ddrx_rtl:1.0"
+        "vlnv": "xilinx.com:interface:ddrx_rtl:1.0",
+        "parameters": {
+          "AXI_ARBITRATION_SCHEME": {
+            "value": "TDM",
+            "value_src": "default"
+          },
+          "BURST_LENGTH": {
+            "value": "8",
+            "value_src": "default"
+          },
+          "CAN_DEBUG": {
+            "value": "false",
+            "value_src": "default"
+          },
+          "CAS_LATENCY": {
+            "value": "11",
+            "value_src": "default"
+          },
+          "CAS_WRITE_LATENCY": {
+            "value": "11",
+            "value_src": "default"
+          },
+          "CS_ENABLED": {
+            "value": "true",
+            "value_src": "default"
+          },
+          "DATA_MASK_ENABLED": {
+            "value": "true",
+            "value_src": "default"
+          },
+          "DATA_WIDTH": {
+            "value": "8",
+            "value_src": "default"
+          },
+          "MEMORY_TYPE": {
+            "value": "COMPONENTS",
+            "value_src": "default"
+          },
+          "MEM_ADDR_MAP": {
+            "value": "ROW_COLUMN_BANK",
+            "value_src": "default"
+          },
+          "SLOT": {
+            "value": "Single",
+            "value_src": "default"
+          },
+          "TIMEPERIOD_PS": {
+            "value": "1250",
+            "value_src": "default"
+          }
+        }
       },
       "FIXED_IO": {
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:display_processing_system7:fixedio:1.0",
-        "vlnv": "xilinx.com:display_processing_system7:fixedio_rtl:1.0"
+        "vlnv": "xilinx.com:display_processing_system7:fixedio_rtl:1.0",
+        "parameters": {
+          "CAN_DEBUG": {
+            "value": "false",
+            "value_src": "default"
+          }
+        }
       }
     },
     "components": {
@@ -2313,12 +2369,6 @@
           }
         }
       },
-      "xlconcat_0": {
-        "vlnv": "xilinx.com:ip:xlconcat:2.1",
-        "xci_name": "TFX_Core_xlconcat_0_0",
-        "xci_path": "ip/TFX_Core_xlconcat_0_0/TFX_Core_xlconcat_0_0.xci",
-        "inst_hier_path": "xlconcat_0"
-      },
       "TFX_Core_v1_0_0": {
         "vlnv": "user.org:user:TFX_Core_v1_0:1.0",
         "xci_name": "TFX_Core_TFX_Core_v1_0_0_0",
@@ -2393,22 +2443,10 @@
       }
     },
     "nets": {
-      "TFX_Core_v1_0_0_cwt_done": {
-        "ports": [
-          "xlconcat_0/dout",
-          "processing_system7_0/IRQ_F2P"
-        ]
-      },
-      "TFX_Core_v1_0_0_txi_done_o": {
-        "ports": [
-          "TFX_Core_v1_0_0/txi_done_o",
-          "xlconcat_0/In0"
-        ]
-      },
       "TFX_Core_v1_0_0_txo_done_o": {
         "ports": [
           "TFX_Core_v1_0_0/txo_done_o",
-          "xlconcat_0/In1"
+          "processing_system7_0/IRQ_F2P"
         ]
       },
       "processing_system7_0_FCLK_CLK0": {

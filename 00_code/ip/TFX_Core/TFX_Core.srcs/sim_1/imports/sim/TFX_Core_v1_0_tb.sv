@@ -7,6 +7,8 @@ import master_test_axi_vip_1_0_pkg::*;
 
 module TFX_Core_v1_0_tb();
 
+localparam CLOCK_PERIOD = 10;
+
 localparam N = 256;
 localparam J1 = 4;
 
@@ -15,6 +17,10 @@ localparam SPI_ENABLE_SLVR      = 1*4;
 localparam SEND_INPUTS_EN_SLVR  = 2*4;
 localparam TXI_IRQ_STATUS_SLVR  = 3*4;
 localparam TXO_IRQ_STATUS_SLVR  = 4*4;
+
+localparam ECONNECTED_BIT       = 1;
+localparam SPI_ENABLE_BIT       = 0;
+localparam SEND_INPUTS_EN_BIT   = 0;
 
 /************SLAVE***********/
 axi_monitor_transaction             slv_monitor_transaction;  
@@ -60,6 +66,7 @@ integer                             pos_aux;
 master_test_axi_vip_0_0_slv_mem_t   slv_agent_0;
 master_test_axi_vip_1_0_mst_t       mst_agent_0;
 
+/************** DUT ***************/
 `BD_WRAPPER DUT(
     .ARESETN(resetn), 
     .ACLK(clock),
@@ -75,24 +82,6 @@ assign cwt_row_ready = DUT.`BD_INST_NAME.TFX_Core_v1_0_0.inst.M_AXI_Data.cwt_row
 assign cwt_ready = DUT.`BD_INST_NAME.TFX_Core_v1_0_0.inst.M_AXI_Data.cwt_ready;
 //assign cwt_num = DUT.`BD_INST_NAME.TFX_Core_v1_0_0.inst.M_AXI_Data.cwt_num;
 
-
-initial begin
-    slv_agent_0 = new("slave vip agent",DUT.`BD_INST_NAME.axi_vip_0.inst.IF);
-    slv_agent_0.vif_proxy.set_dummy_drive_type(XIL_AXI_VIF_DRIVE_NONE);
-    slv_agent_0.set_agent_tag("Slave VIP");
-    slv_agent_0.set_verbosity(slv_agent_verbosity);
-    slv_agent_0.start_slave();
-    $timeformat (-12, 1, " ps", 1);
-end
-
-initial begin
-    mst_agent_0 = new("master vip agent",DUT.`BD_INST_NAME.axi_vip_1.inst.IF);
-    mst_agent_0.vif_proxy.set_dummy_drive_type(XIL_AXI_VIF_DRIVE_NONE);
-    mst_agent_0.set_agent_tag("Master VIP");
-    mst_agent_0.set_verbosity(mst_agent_verbosity);
-    mst_agent_0.start_master();
-end
-
 initial begin
     resetn <= 1'b0;
     #200ns;
@@ -100,45 +89,43 @@ initial begin
     repeat (5) @(negedge clock); 
 end
 
-always #5 clock <= ~clock;
+always #(CLOCK_PERIOD/2) clock <= ~clock;
 
-task set_eth_busy(input bit b);
+/***************** TASK TO SEND ACKS ****************/
+task send_ack_task(input bit [31:0] addr, input bit b);
     begin
+        mtestWID = $urandom_range(0,(1<<(0)-1)); 
+        mtestWADDR = addr;
+        mtestWBurstLength = 0;
+        mtestWDataSize = xil_axi_size_t'(xil_clog2((32)/8));
+        mtestWBurstType = XIL_AXI_BURST_TYPE_INCR;
+        
+        wr_trans = mst_agent_0.wr_driver.create_transaction("write transaction");
+        wr_trans.set_write_cmd(mtestWADDR,mtestWBurstType,mtestWID,
+                                   mtestWBurstLength,mtestWDataSize);
         mtestWData = b;
         wr_trans.set_data_block(mtestWData);
         mst_agent_0.wr_driver.send(wr_trans);
     end
 endtask
 
-initial begin 
-    $display("EXAMPLE TEST M_AXI_Data:");
-    wait(txo_done == 1'b1);
-    
-    /******************* SET UP MASTER TRANSFER ****************/
-    mtestWID = $urandom_range(0,(1<<(0)-1)); 
-    mtestWADDR = TXO_IRQ_STATUS_SLVR;
-    mtestWBurstLength = 0;
-    mtestWDataSize = xil_axi_size_t'(xil_clog2((32)/8));
-    mtestWBurstType = XIL_AXI_BURST_TYPE_INCR;
-    
-    wr_trans = mst_agent_0.wr_driver.create_transaction("write transaction");
-    wr_trans.set_write_cmd(mtestWADDR,mtestWBurstType,mtestWID,
-                               mtestWBurstLength,mtestWDataSize);
-    
+/************* STIMULUS **********/
+initial begin  
     forever begin
-        #1000us;
-        set_eth_busy(1);
+        wait(txi_done == 1'b1);
+        #300us;
+        send_ack_task(TXI_IRQ_STATUS_SLVR, 1);
+    end
+end
+
+initial begin 
+    forever begin
+        wait(txo_done == 1'b1);
+        #500us;
+        send_ack_task(TXO_IRQ_STATUS_SLVR, 1);
     end
 end
   
-initial begin
-    #1;
-    forever begin
-        slv_agent_0.monitor.item_collected_port.get(slv_monitor_transaction);
-        slave_moniter_transaction_queue.push_back(slv_monitor_transaction);
-        slave_moniter_transaction_queue_size++;
-    end
-end
 
 /************ load buffers ***************/
 bit [31:0] golden_re_buf[0:(N*J1*2)-1];
@@ -193,7 +180,6 @@ task automatic read_golden_file(
         $fclose(fp);
     end
 endtask
-
 
 assign pos_aux = cwt_num ? (N*J1) : 0;
 
@@ -251,10 +237,11 @@ end
 
 /************** INIT SLAVE REGISTERS ***************/
 initial begin
+    #60;
     // ECONNECTED
     mtestWID = $urandom_range(0,(1<<(0)-1)); 
     mtestWADDR = ECONNECTED_SLVR;
-    mtestWData = 1;
+    mtestWData = ECONNECTED_BIT;
     mtestWBurstLength = 0;
     mtestWDataSize = xil_axi_size_t'(xil_clog2((32)/8));
     mtestWBurstType = XIL_AXI_BURST_TYPE_INCR;
@@ -267,7 +254,7 @@ initial begin
     
     // SPI_ENABLE
     mtestWADDR = SPI_ENABLE_SLVR;
-    mtestWData = 0;
+    mtestWData = SPI_ENABLE_BIT;
     wr_trans.set_write_cmd(mtestWADDR,mtestWBurstType,mtestWID,
                                mtestWBurstLength,mtestWDataSize);
     wr_trans.set_data_block(mtestWData);
@@ -275,7 +262,7 @@ initial begin
     
     // SEND_INPUTS_EN_SLVR
     mtestWADDR = SEND_INPUTS_EN_SLVR;
-    mtestWData = 0;
+    mtestWData = SEND_INPUTS_EN_BIT;
     wr_trans.set_write_cmd(mtestWADDR,mtestWBurstType,mtestWID,
                                mtestWBurstLength,mtestWDataSize);
     wr_trans.set_data_block(mtestWData);
@@ -289,5 +276,30 @@ initial begin
     read_golden_file(GOLDEN_IM2_FILENAME, golden_im_buf[N*J1:N*J1*2-1]);
 end
 
+initial begin
+    slv_agent_0 = new("slave vip agent",DUT.`BD_INST_NAME.axi_vip_0.inst.IF);
+    slv_agent_0.vif_proxy.set_dummy_drive_type(XIL_AXI_VIF_DRIVE_NONE);
+    slv_agent_0.set_agent_tag("Slave VIP");
+    slv_agent_0.set_verbosity(slv_agent_verbosity);
+    slv_agent_0.start_slave();
+    $timeformat (-12, 1, " ps", 1);
+end
+
+initial begin
+    mst_agent_0 = new("master vip agent",DUT.`BD_INST_NAME.axi_vip_1.inst.IF);
+    mst_agent_0.vif_proxy.set_dummy_drive_type(XIL_AXI_VIF_DRIVE_NONE);
+    mst_agent_0.set_agent_tag("Master VIP");
+    mst_agent_0.set_verbosity(mst_agent_verbosity);
+    mst_agent_0.start_master();
+end
+
+initial begin
+    #1;
+    forever begin
+        slv_agent_0.monitor.item_collected_port.get(slv_monitor_transaction);
+        slave_moniter_transaction_queue.push_back(slv_monitor_transaction);
+        slave_moniter_transaction_queue_size++;
+    end
+end
 
 endmodule

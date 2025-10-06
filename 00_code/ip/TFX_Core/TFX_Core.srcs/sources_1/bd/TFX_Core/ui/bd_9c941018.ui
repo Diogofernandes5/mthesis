@@ -11,19 +11,16 @@ preplace inst processing_system7_0 -pg 1 -lvl 5 -x 1600 -y 290 -defaultsOSRD
 preplace inst axi_mem_intercon -pg 1 -lvl 4 -x 1220 -y 270 -defaultsOSRD
 preplace inst rst_ps7_0_50M -pg 1 -lvl 1 -x 210 -y 430 -defaultsOSRD
 preplace inst ps7_0_axi_periph -pg 1 -lvl 2 -x 560 -y 190 -defaultsOSRD
-preplace inst xlconcat_0 -pg 1 -lvl 4 -x 1220 -y 80 -defaultsOSRD
 preplace inst TFX_Core_v1_0_0 -pg 1 -lvl 3 -x 880 -y 230 -defaultsOSRD
-preplace netloc TFX_Core_v1_0_0_cwt_done 1 4 1 1370 80n
-preplace netloc TFX_Core_v1_0_0_txi_done_o 1 3 1 1040 70n
-preplace netloc TFX_Core_v1_0_0_txo_done_o 1 3 1 1050 90n
-preplace netloc processing_system7_0_FCLK_CLK0 1 0 6 20 230 400 70 710 120 1070 390 1380 400 1830
+preplace netloc TFX_Core_v1_0_0_txo_done_o 1 3 2 1040J 150 1370
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 6 20 230 400 70 710 120 1060 390 1380 400 1830
 preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 6 30 330 NJ 330 NJ 330 1040J 410 NJ 410 1820
-preplace netloc rst_ps7_0_50M_peripheral_aresetn 1 1 3 390 60 720 130 1060
+preplace netloc rst_ps7_0_50M_peripheral_aresetn 1 1 3 390 50 720 130 1050
 preplace netloc TFX_Core_v1_0_0_m_axi_data 1 3 1 N 210
 preplace netloc axi_mem_intercon_M00_AXI 1 4 1 N 270
 preplace netloc processing_system7_0_DDR 1 5 1 NJ 240
 preplace netloc processing_system7_0_FIXED_IO 1 5 1 NJ 260
-preplace netloc processing_system7_0_M_AXI_GP0 1 1 5 410 10 NJ 10 NJ 10 NJ 10 1830
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 5 410 60 NJ 60 NJ 60 NJ 60 1830
 preplace netloc ps7_0_axi_periph_M00_AXI 1 2 1 N 190
 levelinfo -pg 1 0 210 560 880 1220 1600 1860
 pagesize -pg 1 -db -bbox -sgen 0 0 1980 530

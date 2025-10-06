@@ -53,13 +53,23 @@ always @(*) begin
             else if(reqOUT_i && !reqIN_i && pageOUT_ready_i) 
                 nstate = S_GRANT_OUT;
             
-            else if(reqIN_i && pageIN_ready_i && reqOUT_i && pageOUT_ready_i)
+            else if(reqIN_i && reqOUT_i)
                 if(!rr_arbitrer_r && pageIN_ready_i) // RR arb
                     nstate = S_GRANT_IN; 
-                else
+                else if(rr_arbitrer_r && pageOUT_ready_i)
                     nstate = S_GRANT_OUT;
+                else
+                    nstate = S_IDLE;
             else 
                 nstate = S_IDLE;
+                
+//            else if(reqIN_i && pageIN_ready_i && reqOUT_i && pageOUT_ready_i)
+//                if(!rr_arbitrer_r && pageIN_ready_i) // RR arb
+//                    nstate = S_GRANT_IN; 
+//                else
+//                    nstate = S_GRANT_OUT;
+//            else 
+//                nstate = S_IDLE;
         end
 
         S_GRANT_IN:

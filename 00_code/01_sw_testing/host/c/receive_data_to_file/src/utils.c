@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+// #include <string.h>
 
 void check_sequence(int *data, int *golden_vect, size_t size) {
 	uint32_t error = 0;
@@ -19,6 +20,24 @@ void check_sequence(int *data, int *golden_vect, size_t size) {
     	return;
     
     printf("Data is correct!\n");
+}
+
+void write_sensor_data_to_file(const int *data_buf, const char *filepath, const int client_index, const int id, const int len)
+{
+    FILE *fd;
+    char fn[256];
+
+    sprintf(fn, "%s/client%d/inputs/%d%s", filepath, client_index, id,".txt"); // "/client*x*/inputs/*id*.txt
+
+    /* Open RE Golden file */
+    fd = fopen(fn, "a");
+    if (fd == NULL)
+        panic("Opening file");
+
+    for (int i = 0; i < len; i++)
+        fprintf(fd, "%d", data_buf[i]);
+
+    fclose(fd);
 }
 
 int *read_golden_file(const char *filename_re, const char *filename_im, int len)

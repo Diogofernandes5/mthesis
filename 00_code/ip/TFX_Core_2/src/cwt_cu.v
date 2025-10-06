@@ -130,7 +130,7 @@ always @(*) begin
 
 			busy_o = 1'b1;
 			
-			if(data_counter > (N*J1*2 - 4))
+			if(data_counter > (N*J1*2 - 5))
                  cwt_irq_o = 1'b1;
             else
                  cwt_irq_o = 1'b0;

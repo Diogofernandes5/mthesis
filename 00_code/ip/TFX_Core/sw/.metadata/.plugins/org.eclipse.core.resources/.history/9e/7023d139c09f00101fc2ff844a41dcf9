@@ -1,0 +1,36 @@
+/**
+ * @file       tcp.h
+ * @author     Diogo Fernandes (diogo.cf20@gmail.com)
+ * */
+
+#ifndef     __TCP_H__
+#define     __TCP_H__
+
+/******************************************************************************
+Defines and macros
+******************************************************************************/
+
+
+/******************************************************************************
+Data structures
+******************************************************************************/
+typedef enum tx_op tx_op_t;
+enum tx_op {
+	TXI_OP,
+	TXO_OP
+};
+
+typedef struct header header_t;
+struct header{
+	tx_op_t op; 			// indicates if it is !input or output
+	uint32_t id;			// number of the transfer
+	uint32_t len;			// size of the length
+};
+
+
+/******************************************************************************
+Function Prototypes
+******************************************************************************/
+void serialize_header(const struct header *h, uint8_t *buf);
+
+#endif //__TCPSERVER_H__

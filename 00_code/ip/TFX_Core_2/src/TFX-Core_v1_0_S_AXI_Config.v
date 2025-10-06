@@ -31,10 +31,7 @@ module TFX_Core_v1_0_S_AXI_Config #
     output wire spi_enable_o,
     output wire send_inputs_en_o,
     
-    output reg txi_irq_status_o,
     output reg txi_ack_o,
-    
-    output reg txo_irq_status_o,
     output reg txo_ack_o,
 
     // User ports ends
@@ -469,59 +466,40 @@ assign send_inputs_en_o = slv_reg2[0];
 
 /**************** ACK of the TXI *************/
 wire ps_txi_ack;
-wire writing_ps_txi_ack;
+reg writing_ps_txi_ack;
 
 assign ps_txi_ack = slv_reg3[0];
-assign writing_ps_txi_ack = slv_reg_wren && (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] == 3'd3);
 
 always @(posedge S_AXI_ACLK) begin
-    if(!S_AXI_ARESETN) begin
-        txi_irq_status_o <= 0;
-    end
-    else begin
-        if(txi_irq_i) begin
-            txi_irq_status_o <= 1;
-            txi_ack_o <= 0;
-        end
-        else if(ps_txi_ack && writing_ps_txi_ack) begin// reset by PS (ACK)
-            txi_irq_status_o <= 0;
-            txi_ack_o <= 1; 
-        end
-        else begin
-            txi_irq_status_o <= txi_irq_status_o;
-            txi_ack_o <= 0;
-        end
-    end
+    writing_ps_txi_ack <= slv_reg_wren && (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] == 3'd3);
+    
+    if(txi_irq_i)
+        txi_ack_o <= 0;
+        
+    else if(ps_txi_ack && writing_ps_txi_ack) // reset by PS (ACK)
+        txi_ack_o <= 1; 
+        
+    else
+        txi_ack_o <= 0;
 end
-
 
 /**************** ACK of the TXO *************/
 wire ps_txo_ack;
 reg writing_ps_txo_ack;
 
 assign ps_txo_ack = slv_reg4[0];
-//assign writing_ps_txo_ack = slv_reg_wren && (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] == 3'd4);
 
 always @(posedge S_AXI_ACLK) begin
-    if(!S_AXI_ARESETN) begin
-        txo_irq_status_o <= 0;
-    end
-    else begin
-        writing_ps_txo_ack <= slv_reg_wren && (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] == 3'd4);
+    writing_ps_txo_ack <= slv_reg_wren && (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] == 3'd4);
 
-        if(txo_irq_i) begin
-            txo_irq_status_o <= 1;
-            txo_ack_o <= 0;
-        end
-        else if(ps_txo_ack && writing_ps_txo_ack) begin // reset by PS (ACK)
-            txo_irq_status_o <= 0;
-            txo_ack_o <= 1;
-        end
-        else begin
-            txo_irq_status_o <= txo_irq_status_o;
-            txo_ack_o <= 0;
-        end
-    end
+    if(txo_irq_i)
+        txo_ack_o <= 0;
+        
+    else if(ps_txo_ack && writing_ps_txo_ack) // reset by PS (ACK)
+        txo_ack_o <= 1;
+        
+    else
+        txo_ack_o <= 0;
 end
 
 // start logic

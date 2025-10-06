@@ -158,7 +158,7 @@
       "TFX_Core_v1_0_0": {
         "vlnv": "user.org:user:TFX_Core_v1_0:1.0",
         "xci_name": "master_test_TFX_Core_v1_0_0_0",
-        "xci_path": "ip/master_test_TFX_Core_v1_0_0_0/master_test_TFX_Core_v1_0_0_0.xci",
+        "xci_path": "ip/master_test_TFX_Core_v1_0_0_0_3/master_test_TFX_Core_v1_0_0_0.xci",
         "inst_hier_path": "TFX_Core_v1_0_0",
         "parameters": {
           "C_M_AXI_Data_BURST_LEN": {

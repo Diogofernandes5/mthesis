@@ -10,6 +10,8 @@
 #include <signal.h>
 
 /*****DEFINES AND MACROS*****/
+#define TXI_TXT_FILEPATH "/home/fernandes/thesis/00_code/matlab/output_vectors/"
+
 #define GOLDEN_RE_FILENAME "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/golden_re.txt"
 #define GOLDEN_IM_FILENAME "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/golden_im.txt"
 #define GOLDEN_RE_2_FILENAME "/home/fernandes/thesis/00_code/matlab/golden_vectors/cwt/golden_re2.txt"
@@ -17,8 +19,8 @@
 
 #define MAX_CLIENT_NUM 		5
 
-#define ACK_MSG "ACK_OK"
-#define ACK_MSG_LEN 6
+#define ACK_MSG 	"ACK_OK"
+#define ACK_MSG_LEN 11
 
 /*****DATA STRUCTURES*****/
 client_socket_info_t socket_table[MAX_CLIENT_NUM];
@@ -88,7 +90,9 @@ int main(int argc, char *args[]){
 			socket_table[cli_count].sockfd = sd;
 			socket_table[cli_count].state = THREAD_ALIVE;		/*means connection opened*/
 			socket_table[cli_count].index = cli_count;
-			socket_table[cli_count].recv_len = 0;
+			socket_table[cli_count].eder.op = 0;
+			socket_table[cli_count].eder.id = 0;
+			socket_table[cli_count].eder.len = 0;
 			socket_table[cli_count].recv_buf = NULL;
 			socket_table[cli_count].data_available = 0;
 
@@ -123,7 +127,7 @@ void *thread_proc_data(void *arg)
 {
 	client_socket_info_t *info = (client_socket_info_t *) arg;
 	unsigned int cwt_num = 0;
-	unsigned int cwt_count = 0;
+	char ack_msg[ACK_MSG_LEN];
 
 	while (1)
 	{
@@ -134,19 +138,25 @@ void *thread_proc_data(void *arg)
 		    pthread_cond_wait(&data_ready_cond, &cli_mutex);
 		}
 
-		printf("\n\r********* CWT Count %0d **********\n\r", cwt_count);
-		cwt_count++;
-
 		for (int i = 0; i < MAX_CLIENT_NUM; i++) {
 		    if (info[i].data_available) {
-		        // confirm has the right sequence
-		        check_sequence(info[i].recv_buf, golden_vect[cwt_num], info[i].recv_len);
-		        
-		        // DEBUG---------
-		        // getchar();
+		    	if(info[i].eder.op == 1) { // Output operation
+		    		printf("\n\r********* TXO Count %0d **********\n\r", info[i].eder.id);
+				
+					// confirm has the right sequence
+			        check_sequence(info[i].recv_buf, golden_vect[cwt_num], info[i].eder.len);
+			        sprintf(ack_msg, "%s%s", ACK_MSG, "_TXO");
+		    	}
+		    	else {
+		    		printf("\n\r********* TXI Count %0d **********\n\r", info[i].eder.id);
+		    		write_sensor_data_to_file(info[i].recv_buf, TXI_TXT_FILEPATH, 
+		    			info[i].index, info[i].eder.id, info[i].eder.len);
+
+		    		sprintf(ack_msg, "%s%s", ACK_MSG, "_TXI");
+		    	}
 
 		        printf("[PROC] Send ACK_OK\n\r");
-		        send(info[i].sockfd, ACK_MSG, ACK_MSG_LEN, 0); // Send ACK_OK
+		        send(info[i].sockfd, ack_msg, ACK_MSG_LEN, 0); // Send ACK_OK
 
 		        // free buffer
 		        free(info[i].recv_buf);

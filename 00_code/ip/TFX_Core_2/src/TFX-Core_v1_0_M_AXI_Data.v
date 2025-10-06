@@ -43,10 +43,7 @@ module TFX_Core_v1_0_M_AXI_Data #
     
     input wire send_inputs_en_i,
     
-    input wire txi_status_i,
     input wire txi_ack_i,
-    
-    input wire txo_status_i,
     input wire txo_ack_i,
     
 //    output wire cwt_ready_o, //inicio das transmissões
@@ -172,13 +169,32 @@ module TFX_Core_v1_0_M_AXI_Data #
 
 // function called clogb2 that returns an integer which has the 
 // value of the ceiling of the log base 2.                      
-function integer clogb2 (input integer bit_depth);              
-begin                                                           
-    for(clogb2=0; bit_depth>0; clogb2=clogb2+1)                   
-        bit_depth = bit_depth >> 1;                                 
-end                                                           
-endfunction                                                     
+function integer clogb2;
+    input [31:0] bit_depth;
+    integer i;
+    integer tmp;
+    begin
+        tmp = bit_depth;
+        clogb2 = 0;
+        for(i = 0; i < 32; i = i + 1) begin
+            if(tmp > 0)
+                clogb2 = i + 1;
+            tmp = tmp >> 1;
+        end
+    end
+endfunction            
 
+/*********************************************************/
+wire [C_M_AXI_DATA_WIDTH-1:0] data_tx;
+
+// addr to be added to the axi_waddr
+reg [C_M_AXI_ADDR_WIDTH-1:0] waddr_offset_r;                                         
+
+reg [15:0] num_transfers;
+wire [31:0] num_bytes;
+wire [15:0] num_bursts_req;
+wire [7:0] master_length;
+                                            
 // C_TRANSACTIONS_NUM is the width of the index counter for 
 // number of write or read transaction.
 // Defines the size of the index inside of the burst 
@@ -186,14 +202,17 @@ localparam integer C_TRANSACTIONS_NUM = clogb2(C_M_AXI_BURST_LEN-1);
 
 // Number of bytes to be sent or received 
 // (C_NUM_OF_TRANSFERS-1 to not gain another bit)
+assign num_bytes = (C_M_AXI_DATA_WIDTH/8) * (num_transfers-1);
 localparam integer C_NUM_BYTES = (C_M_AXI_DATA_WIDTH/8) * (C_NUM_OF_TRANSFERS-1);
 
 // Burst length for transactions, in C_M_AXI_DATA_WIDTHs - used to define the size of the variables
 // Non-2^n lengths will eventually cause bursts across 4K address boundaries.
 // Ex: for 4096 bytes (1024 words) the size will be 12
-localparam integer C_MASTER_LENGTH	= clogb2(C_NUM_BYTES);
+assign master_length = clogb2(num_bytes);
+localparam integer C_MASTER_LENGTH = clogb2(C_NUM_BYTES);
 
 // total number of burst transfers is master length divided by burst length and burst size
+assign num_bursts_req = master_length-clogb2((C_M_AXI_BURST_LEN * (C_M_AXI_DATA_WIDTH/8))-1);
 localparam integer C_NO_BURSTS_REQ = C_MASTER_LENGTH-clogb2((C_M_AXI_BURST_LEN * (C_M_AXI_DATA_WIDTH/8))-1);
 
 // Example State machine to initialize counter, initialize write transactions, 
@@ -252,12 +271,6 @@ wire    INIT_AXI_TXN;
 
 reg write_done_prev;
 wire write_done_pulse;
-
-/*********************************************************/
-wire [C_M_AXI_DATA_WIDTH-1:0] data_tx;
-
-// addr to be added to the axi_waddr
-reg [C_M_AXI_ADDR_WIDTH-1:0] waddr_offset_r;
 
 // I/O Connections assignments
 
@@ -701,7 +714,7 @@ begin
                                                                                                                                                                               
     else if (M_AXI_AWREADY && axi_awvalid)                                                                  
       begin                                                                                                 
-        if (write_burst_counter[C_NO_BURSTS_REQ] == 1'b0)                                                                                                                                              
+        if (write_burst_counter[num_bursts_req] == 1'b0)                                                                                                                                              
             write_burst_counter <= write_burst_counter + 1'b1;                                              
             //write_burst_counter[C_NO_BURSTS_REQ] <= 1'b1;                                                                                                                                              
       end                                                                                                   
@@ -718,7 +731,7 @@ begin
                                                                                                                                                                                  
     else if (M_AXI_ARREADY && axi_arvalid)                                                                  
       begin                                                                                                 
-        if (read_burst_counter[C_NO_BURSTS_REQ] == 1'b0)                                                                                                                                             
+        if (read_burst_counter[num_bursts_req] == 1'b0)                                                                                                                                             
             read_burst_counter <= read_burst_counter + 1'b1;                                                
             //read_burst_counter[C_NO_BURSTS_REQ] <= 1'b1;                                                                                                                                           
       end                                                                                                   
@@ -809,7 +822,7 @@ begin
                                                                                                             
     //The writes_done should be associated with a bready response                                           
     //else if (M_AXI_BVALID && axi_bready && (write_burst_counter == {(C_NO_BURSTS_REQ-1){1}}) && axi_wlast)
-    else if (M_AXI_BVALID && (write_burst_counter[C_NO_BURSTS_REQ]) && axi_bready)                          
+    else if (M_AXI_BVALID && (write_burst_counter[num_bursts_req]) && axi_bready)                          
         writes_done <= 1'b1;                                                                                  
     else                                                                                                    
         writes_done <= writes_done;                                                                           
@@ -844,7 +857,7 @@ begin
                                                                                                             
     //The reads_done should be associated with a rready response                                            
     //else if (M_AXI_BVALID && axi_bready && (write_burst_counter == {(C_NO_BURSTS_REQ-1){1}}) && axi_wlast)
-    else if (M_AXI_RVALID && (read_index == C_M_AXI_BURST_LEN-1) && (read_burst_counter[C_NO_BURSTS_REQ])) //&& axi_rready 
+    else if (M_AXI_RVALID && (read_index == C_M_AXI_BURST_LEN-1) && (read_burst_counter[num_bursts_req])) //&& axi_rready 
       reads_done <= 1'b1;                                                                                   
     else                                                                                                    
       reads_done <= reads_done;                                                                             
@@ -1131,6 +1144,7 @@ page_manager page_manager_input (
     .clk(M_AXI_ACLK), 
     .rstn(M_AXI_ARESETN),
     .req_page_i(input_tx),
+    .master_busy_i(axi_write_busy),
     .tx_ack_i(txi_ack_i),
     .page_id_o(pageIN_id),
     .page_ready_o(pageIN_ready)
@@ -1141,19 +1155,23 @@ page_manager page_manager_output (
     .clk(M_AXI_ACLK), 
     .rstn(M_AXI_ARESETN),
     .req_page_i(cwt_done),
+    .master_busy_i(axi_write_busy),
     .tx_ack_i(txo_ack_i),
     .page_id_o(pageOUT_id),
     .page_ready_o(pageOUT_ready)
 );
 
-//always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-//    if(!M_AXI_ARESETN)
-//        waddr_offset_r <= OUTPUT_BUF_BASE_ADDR;
-//    else 
-//        waddr_offset_r <= waddr_offset_r;   
-//end
-
-reg cwt_num;
+always @(posedge M_AXI_ACLK) begin
+    if(pageIN_ready)
+        num_transfers <= N;
+    else if(pageOUT_ready)
+        num_transfers <= 2*N_J1;
+    else
+        num_transfers <= num_transfers;
+        
+    if(!M_AXI_ARESETN)
+        num_transfers <= 'd0;
+end
 
 always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
     if(!M_AXI_ARESETN)
@@ -1167,25 +1185,6 @@ always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
         
     else 
         waddr_offset_r <= waddr_offset_r;   
-end
-
-reg cwt_num_toggled;
-
-always @(posedge M_AXI_ACLK or negedge M_AXI_ARESETN) begin
-    if(!M_AXI_ARESETN) begin
-        cwt_num <= 0;
-        cwt_num_toggled <= 0;
-    end
-    else if(init_txn_pulse)
-        cwt_num_toggled <= 0;
-    else if(!cwt_done && cwt_ready && !cwt_num_toggled) begin
-        cwt_num <= ~cwt_num;
-        cwt_num_toggled <= 1; 
-    end    
-    else begin
-        cwt_num <= cwt_num;
-        cwt_num_toggled <= cwt_num_toggled; 
-    end    
 end
                                                                                                 
 endmodule

@@ -118,10 +118,7 @@ wire econnected;
 
 wire send_inputs_en;
 
-wire txi_irq_status;
 wire txi_ack;
-
-wire txo_irq_status;
 wire txo_ack;
 
 // Instantiation of Axi Bus Interface S_AXI_Config
@@ -136,10 +133,7 @@ TFX_Core_v1_0_S_AXI_Config # (
     
     .send_inputs_en_o(send_inputs_en),
 
-    .txi_irq_status_o(txi_irq_status),
     .txi_ack_o(txi_ack),
-    
-    .txo_irq_status_o(txo_irq_status),
     .txo_ack_o(txo_ack),
     
     .S_AXI_ACLK(s_axi_config_aclk),
@@ -185,10 +179,7 @@ TFX_Core_v1_0_M_AXI_Data # (
 ) M_AXI_Data (
     .econnected_i(econnected),
     
-    .txi_status_i(txi_irq_status),
     .txi_ack_i(txi_ack),
-    
-    .txo_status_i(txo_irq_status),
     .txo_ack_i(txo_ack),
     
     .send_inputs_en_i(send_inputs_en),
